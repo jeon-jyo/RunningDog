@@ -4,13 +4,13 @@
 <head>
 <meta charset="UTF-8">
 <title>trailMain</title>
-<link href="${pageContext.request.contextPath}/assets/css/trailMain.css" rel="stylesheet"
-	type="text/css">
+<link href="${pageContext.request.contextPath}/assets/css/trailMain.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
 </head>
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="contents">
-		<h1>산책로메인</h1>
+		<h1>산책로추천</h1>
 
 		<div class="explorer">
 			<div class="segment-map-filters">
@@ -31,20 +31,35 @@
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+								<h1 class="modal-title fs-5" id="exampleModalLabel">태그 선택</h1>
 								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 							</div>
-							<div class="modal-body">...</div>
+							<div class="modal-body">
+								<button class="btn badge btn1 selected-tag">공원 근처</button>
+								<button class="btn badge btn1">산 근처</button>
+								<button class="btn badge btn1">카페 근처</button>
+								<button class="btn badge btn2">넓은 공간</button>
+								<button class="btn badge btn2">흙길</button>
+								<button class="btn badge btn2">액티비티</button>
+								<button class="btn badge btn3 step2">유동인구 많음</button>
+								<button class="btn badge btn3 step2">유동인구 적음</button>
+								<div class="form-check step2">
+									<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+									<label class="form-check-label" for="flexCheckDefault">
+										전체 해제
+									</label>
+								</div>
+							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save changes</button>
+								<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+								<button type="button" class="btn btn-secondary">완료</button>
 							</div>
 						</div>
 					</div>
 				</div>
 
 				<div class="btn-group" role="group" aria-label="Default button group">
-					<button type="button" class="btn btn-outline-dark">이용자순</button>
+					<button type="button" class="btn btn-outline-dark selected-filter">이용자순</button>
 					<button type="button" class="btn btn-outline-dark">인기순</button>
 					<button type="button" class="btn btn-outline-dark">최신순</button>
 					<button type="button" class="btn btn-outline-dark">오래된순</button>
@@ -55,13 +70,96 @@
 
 			<div class="main-content">
 				<div class="segments-sidebar">
-					<span>산책로 목록</span>
+					<h5>동네 산책로 목록</h5>
+					<ul>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x selected-maker"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+						<li>
+							<i class="fa-solid fa-location-dot fa-2x"></i>
+							<div>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
+								<span>0.87km</span>
+								<span>30분</span>
+							</div>
+						</li>
+					</ul>
 				</div>
-				<div class="main-map">
-					<span>Map</span>
-				</div>
+				<div class="main-map" id="map"></div>
 			</div>
 		</div>
 	</div>
 </body>
+<script>
+	var map = new naver.maps.Map('map');
+</script>
 </html>
