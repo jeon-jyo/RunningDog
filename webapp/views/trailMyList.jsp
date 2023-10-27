@@ -11,7 +11,7 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="contents">
-		<h1>산책로추천</h1>
+		<h1 class="myList">등록한 산책로</h1>
 
 		<div class="explorer">
 			<div class="segment-map-filters">
@@ -66,7 +66,8 @@
 					<button type="button" class="btn btn-outline-dark">오래된순</button>
 				</div>
 
-				<button type="button" class="btn btn-primary">MY</button>
+				<i class="fa-solid fa-circle-plus"></i>
+				<button type="button" class="btn btn-primary">자세히 보기</button>
 			</div>
 
 			<div class="main-content">
