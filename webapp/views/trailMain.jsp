@@ -11,7 +11,7 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="contents">
-		<h1>산책로추천</h1>
+		<h1>산책로 추천</h1>
 
 		<div class="explorer">
 			<div class="segment-map-filters">
@@ -58,7 +58,7 @@
 						</div>
 					</div>
 				</div>
-
+				
 				<div class="btn-group" role="group" aria-label="Default button group">
 					<button type="button" class="btn btn-outline-dark selected-filter">이용자순</button>
 					<button type="button" class="btn btn-outline-dark">인기순</button>
@@ -71,7 +71,6 @@
 
 			<div class="main-content">
 				<div class="segments-sidebar" id="segments-sidebar">
-					<h5>..</h5>
 					<ul>
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x selected-maker"></i>

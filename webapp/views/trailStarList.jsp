@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>trailMain</title>
+<title>trailStarList</title>
 <link href="${pageContext.request.contextPath}/assets/css/trailMain.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
@@ -11,7 +11,7 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="contents">
-		<h1 class="myList">찜한 산책로</h1>
+		<h1>찜한 산책로</h1>
 
 		<div class="explorer">
 			<div class="segment-map-filters">
@@ -71,7 +71,6 @@
 
 			<div class="main-content">
 				<div class="segments-sidebar" id="segments-sidebar">
-					<h5>..</h5>
 					<ul>
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x selected-maker"></i>
