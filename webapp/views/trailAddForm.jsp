@@ -14,7 +14,7 @@
 		<h1 class="myList">산책로 등록</h1>
 
 		<div class="explorer">
-			<div class="segment-map-filters">
+			<div class="segment-map-info">
 				<i class="fa-solid fa-circle-check"></i>
 				<div class="addInfo">예상 소요시간 : <strong>30분</strong></div>
 				<div class="addInfo">거리 : <strong>1.8km</strong></div>
@@ -23,7 +23,7 @@
 			</div>
 
 			<div class="main-content">
-				<div class="trail-sidebar" id="trail-sidebar">
+				<div class="segment-sidebar" id="trail-sidebar">
 					<h6>산책로 이름</h6>
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="산책로 이름을 입력해주세요." aria-label="Recipient's username" aria-describedby="button-addon2">

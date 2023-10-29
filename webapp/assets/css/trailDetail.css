@@ -1,139 +1,101 @@
 @charset "UTF-8";
 
-/***** trailForm *****/
+/***** trailDetail *****/
 
-/* contant main */
-.explorer {
-	position: relative;
-	height: 710px;
-	width: 100%;
-	margin-top: 10px;
+/* section main */
+.contents > h1 > i {
+    font-size: 25px;
 }
-
-/* map filters main */
-.segment-map-filters {
-	position: relative;
-	height: 80px;
-	width: 100%;
+.contents > h1 > i.fa-diagram-project {
+    font-size: 20px;
 }
 
-/* 등록 버튼 추가 */
-.segment-map-filters .fa-circle-check {
-	float: right;
-	margin: 0px 10px;
-	color: #0d6efd;
-	font-size: 34px;
+.section {
+	height: 155px;
+	width: 790px;
+	padding: 0px 32px;
 }
-.segment-map-filters .fa-circle-check:hover {
-	color: rgb(1, 48, 118);
-}
-
-/* 등록 정보 추가 */
-.segment-map-filters > div.addInfo,
-.segment-map-filters > i.fa-location-dot {
-	float: right;
-	margin-top: 10px;
-	margin-right: 5px;
-}
-.segment-map-filters > div.addInfo {
-	margin-right: 50px;
-}
-.segment-map-filters > div.addInfo > strong,
-.segment-map-filters > i.fa-location-dot {
-	font-weight: bold;
-	color: #fc5200;
-}
-
-/* map main */
-.main-content {
-	position: relative;
-	height: 630px;
-	width: 100%;
-}
-
-/* map sidebar main */
-.trail-sidebar {
-	height: 100%;
-	width: 380px;
-	float: left;
-	padding: 5px 0px 10px 25px;
-}
-.trail-sidebar > h6 {
+.section > div.location {
+	font-size: 12px;
 	font-weight: bold;
 }
-.trail-sidebar > h6.infoName {
-	margin-top: 40px;
+.section > div.stat {
+	position: relative;
+	display: inline-block;
+	height: 49px;
+	width: 95px;
+	margin: 15px 25px 20px 0px;
 }
-
-/* search */
-.trail-sidebar .input-group {
+.section > div.stat2 {
+	font-size: 12px;
+	color: #494950;
+}
+.section > div.stat .stat-subtext {
+	height: 15px;
+	width: 94px;
+	font-size: 12px;
+	color: #494950;
+	display: block;
+}
+.section > div.stat .stat-text {
 	height: 34px;
-	margin-top: 10px;
-}
-.input-group .form-control {
-	height: 34px;
-	width: 260px;
-}
-.input-group > button {
-	height: 34px;
-	width: 56.33px;
-}
-.input-group > button.btn {
-	--bs-btn-border-color: #dee2e6;
+	width: 94px;
+	font-size: 28px;
+	display: block;
 }
 
-/* tag */
-.tag-btn {
-	height: 80px;
-	width: 350px;
-	margin-top: 10px;
-	border: 1px solid #dee2e6;
-	border-radius: 5px;
-	padding: 8px 6px;
-}
-
-.tag-btn > button.btn1 {
-	background-color: #F96666;
-}
-.tag-btn > button.btn2 {
-	background-color: #674747;
-}
-.tag-btn > button.btn3 {
-	background-color: #829460;
-}
-.tag-btn > button.selected-tag {
-	border: 3px solid var(--bs-body-color);
-}
-.tag-btn .step2 {
-	margin-top: 10px;
-}
-.tag-btn .form-check {
-	float: right;
-	text-align: right;
-	font-size: 14px;
-}
-
-/* 위치 설정 */
-.trail-sidebar > .form-check {
-	margin-bottom: 20px;
-}
-.form-check > input.form-check-input {
-	height: 25px;
-	width: 50px;
-}
-.form-check > button {
-	height: 25px;
-	margin-left: 220px;
+/* map-container main */
+.map-container {
+	height: 900px;
+	width: 100%;
+	background-color: aliceblue;
 }
 
 /* map */
 .main-map {
-	height: 100%;
-	width: 845px;
-	float: right;
+	/*height: 300px;
+	width: 800px;*/
+	height: 500px;
+	width: 800px;
+	float: left;
 }
 
-/***** trailAddForm *****/
-.contents .myList {
-	color: #fc5200;
+/* map sidebar */
+.map-sidebar {
+	height: 340px;
+	width: 415px;
+	float: right;
+	border: 1px solid #dee2e6;
+	border-radius: 5px;
+}
+.map-sidebar > h2 {
+	font-size: 20px;
+	font-weight: bold;
+	padding: 12px 12px 0px;
+	margin: 0px 0px 5px;
+}
+.map-sidebar > div {
+	display: inline-block;
+}
+.map-sidebar > div > .detail-text {
+	height: 68px;
+	width: 390px;
+	background-color: red;
+	margin-left: 10px;
+}
+.map-sidebar > div > .detail-text > span {
+/*	display: block;
+	margin-left: 10px;*/
+}
+.map-sidebar > div > img {
+	height: 60px;
+	width: 60px;
+	margin-left: 10px;
+}
+
+/* comments main */
+.segment-comments {
+	height: 900px;
+	width: 100%;
+	background-color: lightcyan;
 }
