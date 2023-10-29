@@ -39,15 +39,14 @@
 		</div>
 		
 		<div class="map-container">
-		
 			<div class="map-container-left">
 				<div class="main-map" id="map"></div>
 				
 				<div class="map-info">
 					<div class="map-detail-info">
 						<div class="tag-btn">
-							<button class="btn badge btn1 selected-tag">공원 근처</button>
-							<button class="btn badge btn3 selected-tag step2">유동인구 많음</button>
+							<button class="btn badge btn1">공원 근처</button>
+							<button class="btn badge btn3 step2">유동인구 많음</button>
 						</div>
 						<div class="check-info">
 							<span>주차장 있음</span>
@@ -66,7 +65,7 @@
 						주변에 주택가라서 조용함
 					</div>
 					
-					<div class="map-detail-chart">
+					<div class="map-detail-chart detail-border">
 						<h2><i class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;&nbsp;산책로 이용 시간대</h2>
 						<div class="detail-chart">chart</div>
 					</div>
@@ -77,24 +76,24 @@
 							<i class="fa-solid fa-chevron-left"></i>
 							<div class="meetings">
 								<div class="metting">
-									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
-									<span>내 닉네임</span>
+									<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg">
+									<span>동아리 이름</span>
 								</div>
 								<div class="metting">
-									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
-									<span>내 닉네임</span>
+									<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg">
+									<span>동아리 이름</span>
 								</div>
 								<div class="metting">
-									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
-									<span>내 닉네임</span>
+									<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg">
+									<span>동아리 이름</span>
 								</div>
 								<div class="metting">
-									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
-									<span>내 닉네임</span>
+									<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg">
+									<span>동아리 이름</span>
 								</div>
 								<div class="metting">
-									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
-									<span>내 닉네임</span>
+									<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg">
+									<span>동아리 이름</span>
 								</div>
 							</div>
 							<i class="fa-solid fa-chevron-right"></i>
@@ -133,16 +132,16 @@
 					</div>
 				</div>
 				
-				<div class="map-sidebar">
+				<div class="map-sidebar share-sidebar">
 					<h2>공유 메이트</h2>
 					<div class="detail-bar">
-						<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+						<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
 						<div class="detail-text">
 							<span>닉네임</span>
 							<span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>20</strong></span>
 						</div>
 					</div>
-					<div class="record-bar share-bar">
+					<div class="record-bar share-detail">
 						<div class="detail-text">
 							<span class="textName">작성일</span>
 							<span>2023/08/08</span>
@@ -153,11 +152,241 @@
 						</div>
 					</div>
 				</div>
+				
+				<div class="map-sidebar ranking-sidebar">
+					<h2><i class="fa-solid fa-crown"></i>&nbsp;가장 많이 이용한 메이트</h2>
+					<div class="ranking-detail-bar">
+						<img src="${pageContext.request.contextPath}/assets/images/sarang5.jpg">
+						<div class="detail-text">
+							<span>닉네임</span>
+							<span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>20</strong></span>
+						</div>
+					</div>
+					<div class="ranking-detail-bar">
+						<img src="${pageContext.request.contextPath}/assets/images/sarang5.jpg">
+						<div class="detail-text">
+							<span>닉네임</span>
+							<span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>20</strong></span>
+						</div>
+					</div>
+					<div class="ranking-detail-bar">
+						<img src="${pageContext.request.contextPath}/assets/images/sarang5.jpg">
+						<div class="detail-text">
+							<span>닉네임</span>
+							<span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>20</strong></span>
+						</div>
+					</div>
+					<div class="ranking-detail-bar">
+						<img src="${pageContext.request.contextPath}/assets/images/sarang5.jpg">
+						<div class="detail-text">
+							<span>닉네임</span>
+							<span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>20</strong></span>
+						</div>
+					</div>
+					<div class="ranking-detail-bar">
+						<img src="${pageContext.request.contextPath}/assets/images/sarang5.jpg">
+						<div class="detail-text">
+							<span>닉네임</span>
+							<span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>20</strong></span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="map-sidebar segment-list-sidebar">
+					<h2>비슷한 산책로 추천</h2>
+					<div class="segments-sidebar" id="segments-sidebar">
+						<ul>
+							<li>
+								<i class="fa-solid fa-location-dot fa-2x selected-maker"></i>
+								<div>
+									<span class="sideBar-title">천호공원 한바퀴</span><br>
+									<span>0.87km</span>
+									<span>30분</span>
+								</div>
+							</li>
+							<li>
+								<i class="fa-solid fa-location-dot fa-2x"></i>
+								<div>
+									<span class="sideBar-title">천호공원 한바퀴</span><br>
+									<span>0.87km</span>
+									<span>30분</span>
+								</div>
+							</li>
+							<li>
+								<i class="fa-solid fa-location-dot fa-2x"></i>
+								<div>
+									<span class="sideBar-title">천호공원 한바퀴</span><br>
+									<span>0.87km</span>
+									<span>30분</span>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- // map-container-right -->
+		</div>
+		<!-- // map-container -->
+		
+		<div class="segment-comments">
+			<div class="comment-nav">
+				<div>후기</div>
+				<div>산책일지</div>
+				<div>모임일지</div>
+				<i class="fa-solid fa-caret-up"></i>
 			</div>
 			
+			<div class="comment-container">
+				<div class="comment-bar">
+					<div class="comment-number"><i class="fa-regular fa-comment-dots"></i>&nbsp;1k</div>
+					
+					<!-- Button trigger modal -->
+					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+						후기 작성하기&nbsp;&nbsp;&nbsp;
+						<i class="fa-regular fa-images"></i>
+					</button>
+					<!-- Modal -->
+					<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h1 class="modal-title fs-5" id="exampleModalLabel">후기 작성</h1>
+									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+								</div>
+								<div class="modal-body">
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+									<button type="button" class="btn btn-secondary">작성</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-check">
+						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+						<label class="form-check-label" for="flexCheckDefault">내 후기만 보기</label>
+					</div>
+					
+					<div class="btn-group" role="group" aria-label="Default button group">
+						<button type="button" class="btn btn-outline-dark">인기순</button>
+						<button type="button" class="btn btn-outline-dark">최신순</button>
+					</div>
+					
+					<div class="btn-group" role="group" aria-label="Default button group">
+						<button type="button" class="btn btn-outline-dark">목록</button>
+						<button type="button" class="btn btn-outline-dark">갤러리</button>
+					</div>
+				</div>
+				<!-- // comment-bar -->
+				
+				<div class="comment-list">
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<i class="fa-solid fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify">
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify">
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify">
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg">
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify">
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang5.jpg">
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify">
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- // comment-list -->
+			</div>
+			<!-- // comment-container -->
 		</div>
-		
-		<div class="segment-comments"></div>
+		<!-- // map-container -->
 	</div>
 </body>
 <script type="text/javascript">

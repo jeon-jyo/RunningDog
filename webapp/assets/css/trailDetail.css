@@ -46,8 +46,9 @@
 
 /* map-container main */
 .map-container {
-	height: 2000px;
+	height: 1425px;
 	width: 100%;
+	border-bottom: 1px solid #dee2e6;
 }
 .map-container-left {
 	height: 100%;
@@ -59,6 +60,8 @@
 	width: 415px;
 	float: right;
 }
+
+/* map-container-left main */
 
 /* map */
 .main-map {
@@ -75,6 +78,8 @@
 /* map-detail-info */
 .map-info .map-detail-info {
 	display: flex;
+	margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 /* tag */
@@ -105,21 +110,22 @@
 
 .check-info {
 	height: 20px;
-	margin-top: 20px;
+	margin-top: 17px;
 }
 .check-info > span {
     border: 1px solid #dee2e6;
     border-radius: 5px;
     margin-right: 10px;
     color: #fc5200;
-    padding: 5px;
+    padding: 3px;
+    font-size: 14px;
 }
 
-.user-modify {
-	margin-top: 20px;
-    padding-left: 80px;
+.map-detail-info .user-modify {
+	margin-top: 17px;
+    padding-left: 140px;
 }
-.user-modify > i {
+.map-detail-info .user-modify > i {
 	padding-left: 10px;
 }
 
@@ -138,13 +144,17 @@
 	font-size: 20px;
 	font-weight: bold;
 	padding: 12px 20px 0px;
-	margin: 20px 0px 15px;
+	margin: 35px 0px 15px;
 }
 .detail-chart {
 	height: 300px;
     width: 650px;
     background-color: lightgray;
     margin-left: 60px;
+}
+.detail-border {
+	/*border-top: 1px solid #dee2e6;*/
+	margin-top: 50px;
 }
 
 /* map-detail-meeting */
@@ -178,6 +188,8 @@
 	width: 65px;
 }
 
+/* map-container-right main */
+
 /* map sidebar */
 .map-sidebar {
 	height: 300px;
@@ -197,12 +209,14 @@
 	padding-bottom: 20px;
 	border-bottom: 1px solid #dfdfe8;
 }
-.map-sidebar > div.detail-bar > img {
+.map-sidebar > div.detail-bar > img,
+.map-sidebar > div.ranking-detail-bar > img {
 	height: 65px;
 	width: 65px;
 	margin-left: 20px;
 }
-.detail-bar .detail-text {
+.detail-bar .detail-text,
+.ranking-detail-bar .detail-text {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -220,13 +234,218 @@
 	display: inline-block;
     color: #494950;
 }
-.share-bar {
+.record-bar .detail-text > i.fa-chevron-right {
+	float: right;
+	margin-right: 20px;
+}
+
+/* share-sidebar */
+.share-sidebar {
+	height: 225px;
+}
+.share-detail {
 	margin-top: 12px;
+}
+
+/* ranking-sidebar */
+.ranking-sidebar {
+	height: 480px;
+}
+.map-sidebar > div.ranking-detail-bar {
+	display: flex;
+	padding-bottom: 20px;
+}
+
+/* segment-list-sidebar */
+.segment-list-sidebar {
+	height: 250px;
+}
+.segments-sidebar > ul {
+	padding-left: 10px;
+}
+.segments-sidebar > ul > li {
+	position: relative;
+	height: 60px;
+	margin: 5px 0px;
+	list-style: none;
+}
+.segments-sidebar > ul > li:hover {
+	background-color: rgb(255, 215, 196);
+}
+.segments-sidebar > ul > li .fa-solid {
+	height: 30px;
+	width: 23px;
+	margin: 10px;
+	float: left;
+	color: #fc5200;
+}
+.segments-sidebar > ul > li .selected-maker {
+	color: #0d6efd;
+}
+.segments-sidebar > ul > li > div {
+	padding-top: 5px;
+}
+.segments-sidebar > ul > li > div > span {
+	height: 5px;
+	width: 5px;
+	color: #494950;
+	font-size: 14px;
+	text-align: right;
+}
+.segments-sidebar > ul > li > div > span.sideBar-title {
+	font-weight: bold;
 }
 
 /* comments main */
 .segment-comments {
-	height: 900px;
+	height: 1000px;
 	width: 100%;
-	background-color: lightcyan;
+	/*background-color: lightcyan;*/
+	display: flex;
+}
+.comment-nav {
+    height: 150px;
+    width: 175px;
+    margin-left: 12px;
+    margin-right: 40px;
+    padding-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.comment-nav > div {
+    height: 35px;
+    width: 100%;
+    background-color: #f0f0f5;
+    margin-bottom: 5px;
+}
+.comment-nav > div:hover {
+	background-color: #fc5200;
+	color: white;
+}
+.comment-nav > i {
+    font-size: 30px;
+}
+
+/* comment-container main */
+.comment-container {
+	width: 1075px;
+	background-color: beige;
+}
+
+/* comment-bar */
+.comment-bar {
+    padding: 10px 100px;
+    border-bottom: 1px solid darkgray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.comment-bar > div.comment-number,
+.comment-bar > div.form-check {
+	margin-right: 30px;
+}
+.comment-bar > div.btn-group {
+	margin-right: 10px;
+}
+
+/* 후기 등록 modal */
+.comment-bar > button.btn-secondary {
+	height: 34px;
+	width: 166px;
+	float: left;
+	margin-right: 175px;
+	background-color: white;
+	color: #242428;
+	overflow: hidden;
+	border-color: #dee2e6;
+	font-size: 14px;
+}
+.comment-bar .modal {
+	--bs-modal-width: 450px;
+}
+.modal .modal-dialog .modal-content .modal-header,
+.modal .modal-dialog .modal-content .modal-footer {
+	padding: 5px 25px;
+}
+.modal .modal-dialog {
+	margin: 200px auto;
+}
+.modal .modal-dialog .modal-content .modal-footer > button {
+	height: 34px;
+}
+
+.comment-bar .form-check {
+	font-size: 14px;
+}
+
+/* filter button */
+.comment-bar .btn-group {
+	height: 34px;
+}
+.btn-group > button.btn {
+	border-color: #dee2e6;
+	font-size: 14px;
+}
+.btn-group > button.selected-filter {
+	background-color: var(--bs-body-color);
+	color: white;
+}
+
+/* comment-list main */
+.comment-detail {
+	height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #dfdfe8;
+}
+
+/* comment-img */
+.comment-img {
+	height: 150px;
+    width: 200px;
+    margin-right: 20px;
+    display: flex;
+    justify-content: center;
+}
+.comment-img > img {
+	height: 100%;
+}
+
+/* comment-content */
+.comment-content {
+    height: 150px;
+    width: 300px;
+    margin-right: 50px;
+}
+.comment-content > div {
+	height: 125px;
+    width: 100%;
+    background-color: floralwhite;
+}
+
+/* comment-info */
+.comment-info {
+	display: flex;
+    align-items: center;
+}
+.comment-info > img {
+	height: 60px;
+	width: 60px;
+}
+.comment-info .detail-text {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	margin-left: 15px;
+}
+.comment-info .user-modify {
+	width: 50px;
+	margin-left: 20px;
+    display: flex;
+    justify-content: space-around;
+}
+.comment-info .user-modify > i {
+	font-size: 15px;
 }
