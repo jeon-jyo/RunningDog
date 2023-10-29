@@ -40,7 +40,7 @@
 						<button class="btn badge btn2">넓은 공간</button>
 						<button class="btn badge btn2">흙길</button>
 						<button class="btn badge btn2">액티비티</button>
-						<button class="btn badge btn3 step2">유동인구 많음</button>
+						<button class="btn badge btn3 selected-tag step2">유동인구 많음</button>
 						<button class="btn badge btn3 step2">유동인구 적음</button>
 					</div>
 					

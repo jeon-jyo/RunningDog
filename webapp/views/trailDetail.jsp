@@ -39,18 +39,125 @@
 		</div>
 		
 		<div class="map-container">
-			<div class="main-map" id="map"></div>
-			<div class="map-sidebar">
-				<h2>나의 기록</h2>
-				<div><img src="${pageContext.request.contextPath}/assets/images/mapImg.png"></div>
-				<div class="detail-text">
-					<span>내 닉네임</span>
-					<span>20</span>
+		
+			<div class="map-container-left">
+				<div class="main-map" id="map"></div>
+				
+				<div class="map-info">
+					<div class="map-detail-info">
+						<div class="tag-btn">
+							<button class="btn badge btn1 selected-tag">공원 근처</button>
+							<button class="btn badge btn3 selected-tag step2">유동인구 많음</button>
+						</div>
+						<div class="check-info">
+							<span>주차장 있음</span>
+							<span>화장실 있음</span>
+							<span>쓰레기통 있음</span>
+						</div>
+						<div class="user-modify">
+							<i class="fa-solid fa-pen"></i>
+							<i class="fa-solid fa-trash"></i>
+						</div>
+					</div>
+					
+					<div class="map-detail-text">
+						저녁에 강아지들이 산책하러 많이 옴
+						쓰레기통 두 개나 있어서 좋음
+						주변에 주택가라서 조용함
+					</div>
+					
+					<div class="map-detail-chart">
+						<h2><i class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;&nbsp;산책로 이용 시간대</h2>
+						<div class="detail-chart">chart</div>
+					</div>
+					
+					<div class="map-detail-meeting">
+						<h2><i class="fa-solid fa-user-group"></i>&nbsp;&nbsp;&nbsp;오늘의 산책모임</h2>
+						<div class="detail-meeting">
+							<i class="fa-solid fa-chevron-left"></i>
+							<div class="meetings">
+								<div class="metting">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+									<span>내 닉네임</span>
+								</div>
+								<div class="metting">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+									<span>내 닉네임</span>
+								</div>
+								<div class="metting">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+									<span>내 닉네임</span>
+								</div>
+								<div class="metting">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+									<span>내 닉네임</span>
+								</div>
+								<div class="metting">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+									<span>내 닉네임</span>
+								</div>
+							</div>
+							<i class="fa-solid fa-chevron-right"></i>
+						</div>
+					</div>
 				</div>
 			</div>
+			
+			<div class="map-container-right">
+				<div class="map-sidebar">
+					<h2>나의 기록</h2>
+					<div class="detail-bar">
+						<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+						<div class="detail-text">
+							<span>내 닉네임</span>
+							<span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>20</strong></span>
+						</div>
+					</div>
+					<h2>최근 일지</h2>
+					<div class="record-bar">
+						<div class="detail-text">
+							<span>산책 기록이 없습니다.</span>
+						</div>
+						<div class="detail-text">
+							<span>2023/10/02</span>
+							<span>30분</span>
+							<span>800m</span>
+							<i class="fa-solid fa-chevron-right"></i>
+						</div>
+						<div class="detail-text">
+							<span>2023/10/02</span>
+							<span>30분</span>
+							<span>800m</span>
+							<i class="fa-solid fa-chevron-right"></i>
+						</div>
+					</div>
+				</div>
+				
+				<div class="map-sidebar">
+					<h2>공유 메이트</h2>
+					<div class="detail-bar">
+						<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+						<div class="detail-text">
+							<span>닉네임</span>
+							<span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>20</strong></span>
+						</div>
+					</div>
+					<div class="record-bar share-bar">
+						<div class="detail-text">
+							<span class="textName">작성일</span>
+							<span>2023/08/08</span>
+						</div>
+						<div class="detail-text">
+							<span>마지막 수정일</span>
+							<span>2023/09/09</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</div>
 		
-		<div class="segment-comments"></div>		
+		<div class="segment-comments"></div>
 	</div>
 </body>
 <script type="text/javascript">
