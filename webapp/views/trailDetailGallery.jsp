@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>trailDetail</title>
+<title>trailDetailGallery</title>
 <link href="${pageContext.request.contextPath}/assets/css/trailDetail.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
@@ -294,141 +294,107 @@
 				</div>
 				<!-- // comment-bar -->
 				
-				<div class="comment-list">
-					<div class="comment-detail">
+				<div class="comment-list gallery-list">
+					<div class="gallery-img">
 						<div class="comment-img">
 							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 							<div class="imgCount">3</div>
 						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
-							</div>
-							<div class="user-modify modify-modal">
-								<!-- Button trigger modal -->
-								<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modifyModal">
-									<i class="fa-solid fa-pen"></i>
-								</button>
-								<!-- modifyModal -->
-								<div class="modal fade" id="modifyModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" id="exampleModalLabel">후기 수정</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<div>
-													<div class="mb-3">
-														<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
-														<textarea class="form-control modal-input" id="exampleFormControlTextarea1" rows="3"></textarea>
-													</div>
-													<div class="mb-3">
-														<label for="formFileMultiple" class="form-label" hidden></label>
-														<input class="form-control" type="file" id="formFileMultiple" multiple>
-													</div>
-												</div>
-												<div class="img-content">
-													<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-													<div class="imgCount">3</div>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-												<button type="button" class="btn btn-secondary">수정</button>
-											</div>
-										</div>
-									</div>
-								</div>
-									
-								<i class="fa-solid fa-trash"></i>
-							</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
 						</div>
 					</div>
-					<div class="comment-detail">
+					<div class="gallery-img">
 						<div class="comment-img">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
-						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
-							</div>
-							<div class="user-modify">
-								<i class="fa-solid fa-pen"></i>
-								<i class="fa-solid fa-trash"></i>
-							</div>
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
 						</div>
 					</div>
-					<div class="comment-detail">
+					<div class="gallery-img">
 						<div class="comment-img">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
-							</div>
-							<div class="user-modify">
-								<i class="fa-solid fa-pen"></i>
-								<i class="fa-solid fa-trash"></i>
-							</div>
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
 						</div>
 					</div>
-					<div class="comment-detail">
+					<div class="gallery-img">
 						<div class="comment-img">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg">
-						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
-							</div>
-							<div class="user-modify">
-								<i class="fa-solid fa-pen"></i>
-								<i class="fa-solid fa-trash"></i>
-							</div>
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
 						</div>
 					</div>
-					<div class="comment-detail">
+					<div class="gallery-img">
 						<div class="comment-img">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang5.jpg">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
 						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
 						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
-							</div>
-							<div class="user-modify">
-								<i class="fa-solid fa-pen"></i>
-								<i class="fa-solid fa-trash"></i>
-							</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+					</div>
+					<div class="gallery-img">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+							<div class="imgCount">3</div>
 						</div>
 					</div>
 				</div>

@@ -23,12 +23,12 @@
 				</div>
 				
 				<!-- Button trigger modal -->
-				<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+				<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#tagModal">
 					태그 전체보기&nbsp;&nbsp;&nbsp;
 					<i class="fa-solid fa-chevron-down"></i>
 				</button>
-				<!-- Modal -->
-				<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				<!-- tagModal -->
+				<div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">

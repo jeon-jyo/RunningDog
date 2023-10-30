@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>trailDetail</title>
+<title>trailDetailMyList</title>
 <link href="${pageContext.request.contextPath}/assets/css/trailDetail.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
@@ -278,7 +278,7 @@
 					</div>
 					
 					<div class="form-check">
-						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
 						<label class="form-check-label" for="flexCheckDefault">내 후기만 보기</label>
 					</div>
 					
@@ -295,7 +295,7 @@
 				<!-- // comment-bar -->
 				
 				<div class="comment-list">
-					<div class="comment-detail">
+					<div class="comment-detail selected">
 						<div class="comment-img">
 							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 							<div class="imgCount">3</div>

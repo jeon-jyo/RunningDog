@@ -230,7 +230,7 @@
 	margin-right: 25px;
 }
 .record-bar .detail-text > span.textName {
-	width: 100px;
+	width: 120px;
 	display: inline-block;
     color: #494950;
 }
@@ -313,24 +313,33 @@
     flex-wrap: wrap;
     justify-content: center;
 }
+.comment-nav .selected {
+	background-color: #fc5200;
+	color: white;
+	font-weight: blod;
+}
 .comment-nav > div {
     height: 35px;
     width: 100%;
     background-color: #f0f0f5;
     margin-bottom: 5px;
+    padding-left: 20px;
+    padding-top: 5px;
 }
 .comment-nav > div:hover {
 	background-color: #fc5200;
 	color: white;
+	font-weight: blod;
 }
 .comment-nav > i {
     font-size: 30px;
+    margin-top: 50px;
 }
 
 /* comment-container main */
 .comment-container {
 	width: 1075px;
-	background-color: beige;
+	background-color: #fff5f01f;
 }
 
 /* comment-bar */
@@ -362,17 +371,65 @@
 	font-size: 14px;
 }
 .comment-bar .modal {
-	--bs-modal-width: 450px;
+	--bs-modal-width: 685px;
 }
 .modal .modal-dialog .modal-content .modal-header,
 .modal .modal-dialog .modal-content .modal-footer {
 	padding: 5px 25px;
 }
 .modal .modal-dialog {
-	margin: 200px auto;
+	margin: 400px auto;
 }
 .modal .modal-dialog .modal-content .modal-footer > button {
 	height: 34px;
+}
+
+/* modal-body */
+.modal-body {
+	display: flex;
+}
+.mb-3 .form-control {
+	width: 350px;
+	margin-left: 10px;
+}
+.modal-input {
+	height: 200px;
+}
+.img-content {
+	height: 250px;
+    width: 300px;
+    margin-left: 30px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+.img-content > img {
+	height: 100%;
+	object-fit:cover;
+}
+.img-content .imgCount {
+   position: absolute;
+   right: 0;
+   bottom: 0;
+   width: 30px;
+   height: 30px;
+   background-color: black;
+   opacity: 50%;
+   color: white;
+   line-height: 30px;
+   text-align: center;
+   font-size: 17px;
+}
+
+/* 작성 버튼 변경 */
+.modal-footer > button.btn-secondary {
+	background-color: #fc5200;
+	--bs-btn-border-color: #fc5200;
+}
+.modal-footer > button.btn-secondary:hover {
+	background-color: #fc5200;
+	border-color: rgb(255, 215, 196);
 }
 
 .comment-bar .form-check {
@@ -393,36 +450,58 @@
 }
 
 /* comment-list main */
+.comment-list .selected {
+	background-color: #fff5f0;
+}
 .comment-detail {
 	height: 180px;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
     border-bottom: 1px solid #dfdfe8;
 }
+.comment-detail:hover {
+	background-color: #fff5f0;
+}
 
 /* comment-img */
-.comment-img {
+.comment-detail .comment-img {
 	height: 150px;
     width: 200px;
     margin-right: 20px;
     display: flex;
     justify-content: center;
+    position: relative;
 }
-.comment-img > img {
+.comment-img > img,
+.gallery-img .comment-img > img {
 	height: 100%;
+	object-fit:cover;
+}
+.comment-img .imgCount,
+.gallery-img .comment-img .imgCount {
+   position: absolute;
+   right: 0;
+   bottom: 0;
+   width: 30px;
+   height: 30px;
+   background-color: black;
+   opacity: 50%;
+   color: white;
+   line-height: 30px;
+   text-align: center;
+   font-size: 17px;
 }
 
 /* comment-content */
 .comment-content {
     height: 150px;
     width: 300px;
-    margin-right: 50px;
 }
 .comment-content > div {
 	height: 125px;
     width: 100%;
-    background-color: floralwhite;
+    background-color: white;
 }
 
 /* comment-info */
@@ -430,22 +509,127 @@
 	display: flex;
     align-items: center;
 }
-.comment-info > img {
+.comment-info > img,
+.img-info > div > img {
 	height: 60px;
 	width: 60px;
 }
-.comment-info .detail-text {
+.comment-info .detail-text,
+.img-info .img-info-detail .detail-text {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	margin-left: 15px;
 }
-.comment-info .user-modify {
+.comment-info .user-modify,
+.img-info .img-info-detail .user-modify {
 	width: 50px;
 	margin-left: 20px;
     display: flex;
     justify-content: space-around;
 }
-.comment-info .user-modify > i {
+.comment-info .user-modify > i,
+.img-info .img-info-detail .user-modify > i {
 	font-size: 15px;
+}
+
+/* 후기 수정 modal */
+.comment-info .modify-modal {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.user-modify .modal {
+	--bs-modal-width: 685px;
+}
+
+/* 후기 상세 modal */
+.detailModal {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.detailModal .modal {
+	--bs-modal-width: 720px;
+}
+.detailModal .modal-body {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.detail-img-content {
+	height: 450px;
+    width: 500px;
+	display: flex;
+    justify-content: center;
+}
+.detail-img-content > img {
+	height: 100%;
+	object-fit:cover;
+}
+.modal-body .fa-chevron-left, .modal-body .fa-chevron-right {
+	font-size: 30px;
+	margin: 200px 30px 0px 30px;
+}
+
+.img-slider {
+	display: flex;
+}
+
+/* img-info */
+.img-info {
+	margin: 30px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+.img-info > span {
+	margin-bottom: 20px;
+	font-size: 25px;
+}
+.img-info-detail {
+	display: flex;
+    align-items: center;
+}
+
+/* trailDetailGallery */
+
+/* gallery-list main */
+.gallery-list {
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+/* gallery-img */
+.gallery-img {
+    height: 210px;
+    width: 220px;
+    border: 1px solid #dee2e6;
+    display: flex;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+}
+.gallery-img:hover {
+	background-color: #fff5f0;
+}
+
+/* comment-img */
+.gallery-img .comment-img {
+	height: 150px;
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+/* trailDeletedDetail */
+
+.contents > h1 > i.deleted {
+    color: #fc5200;
+}
+.map-container-left .deleted {
+	border: 1px solid black;
 }
