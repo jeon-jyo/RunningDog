@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>trailDetail</title>
+<title>trailDetailMeetingLog</title>
 <link href="${pageContext.request.contextPath}/assets/css/trailDetail.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
@@ -230,258 +230,204 @@
 		
 		<div class="segment-comments">
 			<div class="comment-nav">
-				<div class="selected">후기</div>
+				<div>후기</div>
 				<div>산책일지</div>
-				<div>모임일지</div>
+				<div class="selected">모임일지</div>
 				<i class="fa-solid fa-caret-up"></i>
 			</div>
 			
 			<div class="comment-container">
-				<div class="comment-bar">
-					<div class="comment-number"><i class="fa-regular fa-comment-dots"></i>&nbsp;1k</div>
+				<div class="comment-bar comment-meeting-bar">
+					<div class="comment-number"><i class="fa-solid fa-user-group"></i>&nbsp;1k</div>
 					
-					<!-- Button trigger modal -->
-					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal">
-						후기 작성하기&nbsp;&nbsp;&nbsp;
-						<i class="fa-regular fa-images"></i>
-					</button>
-					<!-- addModal -->
-					<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h1 class="modal-title fs-5" id="exampleModalLabel">후기 작성</h1>
-									<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-								</div>
-								<div class="modal-body">
-									<div>
-										<div class="mb-3">
-											<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
-											<textarea class="form-control modal-input" id="exampleFormControlTextarea1" rows="3"></textarea>
-										</div>
-										<div class="mb-3">
-											<label for="formFileMultiple" class="form-label" hidden></label>
-											<input class="form-control" type="file" id="formFileMultiple" multiple>
-										</div>
-									</div>
-									<div class="img-content">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="imgCount">3</div>
-									</div>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-									<button type="button" class="btn btn-secondary">작성</button>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="form-check">
+					<div class="form-check meeting-check">
 						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-						<label class="form-check-label" for="flexCheckDefault">내 후기만 보기</label>
+						<label class="form-check-label" for="flexCheckDefault">내 모임만 보기</label>
 					</div>
 					
 					<div class="btn-group" role="group" aria-label="Default button group">
 						<button type="button" class="btn btn-outline-dark">인기순</button>
 						<button type="button" class="btn btn-outline-dark">최신순</button>
 					</div>
-					
-					<div class="btn-group" role="group" aria-label="Default button group">
-						<button type="button" class="btn btn-outline-dark">목록</button>
-						<button type="button" class="btn btn-outline-dark">갤러리</button>
-					</div>
 				</div>
 				<!-- // comment-bar -->
 				
-				<div class="comment-list">
-					<div class="comment-detail">
-						<div class="comment-img">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
-							<div class="imgCount">3</div>
+				<div class="meetingList">
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
 							</div>
-							<div class="user-modify modify-modal">
-								<!-- Button trigger modal -->
-								<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modifyModal">
-									<i class="fa-solid fa-pen"></i>
-								</button>
-								<!-- modifyModal -->
-								<div class="modal fade" id="modifyModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
-									<div class="modal-dialog">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" id="exampleModalLabel">후기 수정</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-body">
-												<div>
-													<div class="mb-3">
-														<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
-														<textarea class="form-control modal-input" id="exampleFormControlTextarea1" rows="3"></textarea>
-													</div>
-													<div class="mb-3">
-														<label for="formFileMultiple" class="form-label" hidden></label>
-														<input class="form-control" type="file" id="formFileMultiple" multiple>
-													</div>
-												</div>
-												<div class="img-content">
-													<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-													<div class="imgCount">3</div>
-												</div>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-												<button type="button" class="btn btn-secondary">수정</button>
-											</div>
-										</div>
-									</div>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
+								<div class="comment-img">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+									<div class="imgCount">3</div>
 								</div>
-									
-								<i class="fa-solid fa-trash"></i>
 							</div>
 						</div>
 					</div>
-					<div class="comment-detail">
-						<div class="comment-img">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
-						<div class="comment-content">
-							<div></div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+							</div>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p class="info-none">후기가 없습니다.</p>
 							</div>
 						</div>
 					</div>
-					<div class="comment-detail">
-						<div class="comment-img">
-							<%-- <img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"> --%>
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
 							</div>
-							<div class="user-modify">
-								<i class="fa-solid fa-pen"></i>
-								<i class="fa-solid fa-trash"></i>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
 							</div>
 						</div>
 					</div>
-					<div class="comment-detail">
-						<div class="comment-img">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg">
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
 							</div>
-							<div class="user-modify">
-								<i class="fa-solid fa-pen"></i>
-								<i class="fa-solid fa-trash"></i>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
+								<div class="comment-img">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+									<div class="imgCount">3</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="comment-detail">
-						<div class="comment-img">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang5.jpg">
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
-						<div class="comment-content">
-							<div>사람이 많아도 조용해요</div>
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-						</div>
-						<div class="comment-info">
-							<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-							<div class="detail-text">
-								<span>닉네임</span>
-								<span>2023/10/11</span>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
 							</div>
-							<div class="user-modify">
-								<i class="fa-solid fa-pen"></i>
-								<i class="fa-solid fa-trash"></i>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
+								<div class="comment-img">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+									<div class="imgCount">3</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
+						</div>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+							</div>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
+								<div class="comment-img">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+									<div class="imgCount">3</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
+						</div>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+							</div>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
+								<div class="comment-img">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+									<div class="imgCount">3</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
+						</div>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+							</div>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
+								<div class="comment-img">
+									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
+									<div class="imgCount">3</div>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<!-- // comment-list -->
+				<!-- // meetingList -->
 			</div>
 			<!-- // comment-container -->
 		</div>
 		<!-- // map-container -->
 	</div>
-	
-	<!-- detailModal -->
-	<div class="detailModal">
-		<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="img-slider">
-							<i class="fa-solid fa-chevron-left"></i>
-							<div class="detail-img">
-								<div class="detail-img-content">
-									<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-								</div>
-							</div>
-							<i class="fa-solid fa-chevron-right"></i>
-						</div>
-						<div class="img-info">
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-							<div class="img-info-detail">
-								<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-								<div class="detail-text">
-									<span>닉네임</span>
-									<span>2023/10/11</span>
-								</div>
-								<div class="user-modify">
-									<i class="fa-solid fa-pen" id="detail-modify-btn"></i>
-									<i class="fa-solid fa-trash"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
 </body>
 <script type="text/javascript">
 	var map = new naver.maps.Map('map');
-
-	$(".comment-img").on("click", function() {
-		$('#detailModal').modal("show");
-	});
-	
-	const modifyModal = document.getElementById('modifyModal');
-	
-	$("#detail-modify-btn").on("click", function() {
-		$('#modifyModal').modal("show");
-		modifyModal.focus();
-	});
 </script>
 </html>
