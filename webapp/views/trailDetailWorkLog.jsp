@@ -261,17 +261,16 @@
 						</div>
 						<div class="meetingContent">
 							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
+								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
 								<div class="img-info">
 									<div class="img-info-detail">
 										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
 										<div class="detail-text">
 											<span>닉네임</span>
-											<span>2023/10/11</span>
+											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
 										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										<%-- <div class="dog-img"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div> --%>
+										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
 									</div>
 								</div>
 							</div>
@@ -298,61 +297,14 @@
 										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
 										<div class="detail-text">
 											<span>닉네임</span>
-											<span>2023/10/11</span>
+											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
 										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
+										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
 									</div>
 								</div>
 							</div>
-							<div class="left"></div>
-						</div>
-					</div>
-					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
-						</div>
-						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span>2023/10/11</span>
-										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-									</div>
-								</div>
-							</div>
-							<div class="left"></div>
-						</div>
-					</div>
-					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
-						</div>
-						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span>2023/10/11</span>
-										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-									</div>
-								</div>
-							</div>
-							<div class="left">
+							<div class="left work-img">
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -369,19 +321,46 @@
 						</div>
 						<div class="meetingContent">
 							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
+								<p class="info-none">내용이 없습니다.</p>
 								<div class="img-info">
 									<div class="img-info-detail">
 										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
 										<div class="detail-text">
 											<span>닉네임</span>
-											<span>2023/10/11</span>
+											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
 										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
+										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
 									</div>
 								</div>
 							</div>
-							<div class="left">
+							<div class="left work-img">
+							</div>
+						</div>
+					</div>
+					
+					<div class="meeting workLog">
+						<div class="meetingTitle workTitle">
+							<div class="left work-title1">0.87km</div>
+							<div class="left work-title2">30분</div>
+							<div class="right">2023/10/04</div>
+						</div>
+						<div class="meetingContent">
+							<div class="meetingInfo left">
+								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
+								<div class="img-info">
+									<div class="img-info-detail">
+										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
+										<div class="detail-text">
+											<span>닉네임</span>
+											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
+										</div>
+										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+									</div>
+								</div>
+							</div>
+							<div class="left work-img">
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -398,19 +377,20 @@
 						</div>
 						<div class="meetingContent">
 							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
+								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
 								<div class="img-info">
 									<div class="img-info-detail">
 										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
 										<div class="detail-text">
 											<span>닉네임</span>
-											<span>2023/10/11</span>
+											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
 										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
+										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
 									</div>
 								</div>
 							</div>
-							<div class="left">
+							<div class="left work-img">
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -427,19 +407,20 @@
 						</div>
 						<div class="meetingContent">
 							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
+								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
 								<div class="img-info">
 									<div class="img-info-detail">
 										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
 										<div class="detail-text">
 											<span>닉네임</span>
-											<span>2023/10/11</span>
+											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
 										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
+										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
 									</div>
 								</div>
 							</div>
-							<div class="left">
+							<div class="left work-img">
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -456,19 +437,20 @@
 						</div>
 						<div class="meetingContent">
 							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
+								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
 								<div class="img-info">
 									<div class="img-info-detail">
 										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
 										<div class="detail-text">
 											<span>닉네임</span>
-											<span>2023/10/11</span>
+											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
 										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
+										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
 									</div>
 								</div>
 							</div>
-							<div class="left">
+							<div class="left work-img">
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -485,44 +467,16 @@
 						</div>
 						<div class="meetingContent">
 							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
+								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
 								<div class="img-info">
 									<div class="img-info-detail">
 										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
 										<div class="detail-text">
 											<span>닉네임</span>
-											<span>2023/10/11</span>
+											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
 										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-									</div>
-								</div>
-							</div>
-							<div class="left">
-								<div class="comment-img">
-									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
-									<div class="imgCount">3</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
-						</div>
-						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span>2023/10/11</span>
-										</div>
-										<span class="workLogLike"><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
+										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
+										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
 									</div>
 								</div>
 							</div>

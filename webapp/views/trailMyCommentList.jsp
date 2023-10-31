@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>trailMyList</title>
+<title>trailMyCommentList</title>
 <link href="${pageContext.request.contextPath}/assets/css/trailMyList.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
@@ -14,9 +14,9 @@
 		<h1 class="myList">내 산책로</h1>
 		
 		<div class="clubCategory">
-            <div class="tab active">등록한 산책로</div>
+            <div class="tab">등록한 산책로</div>
             <div class="tab">찜한 산책로</div>
-            <div class="tab">산책로 후기</div>
+            <div class="tab active">산책로 후기</div>
         </div>
         
 		<div class="segment-map-filters">
@@ -68,9 +68,6 @@
 				<button type="button" class="btn btn-outline-dark">최신순</button>
 				<button type="button" class="btn btn-outline-dark">오래된순</button>
 			</div>
-
-			<i class="fa-solid fa-circle-plus"></i>
-			<button type="button" class="btn btn-primary">맵으로 보기</button>
 		</div>
 		
 		<table class="table">
@@ -79,10 +76,10 @@
 					<th scope="col" style="width: 10%">찜</th>
 					<th scope="col" style="width: 15%">태그</th>
 					<th scope="col" style="width: 25%">산책로 이름</th>
-					<th scope="col" style="width: 15%">거리</th>
-					<th scope="col" style="width: 15%">예상 소요시간</th>
-					<th scope="col" style="width: 10%">My&nbsp;&nbsp;<i class="fa-solid fa-person-walking"></i></th>
-					<th scope="col" style="width: 10%">My&nbsp;&nbsp;<i class="fa-regular fa-comment-dots"></i></th>
+					<th scope="col" style="width: 30%">내용</th>
+					<th scope="col" style="width: 10%">작성날짜</th>
+					<th scope="col" style="width: 5%"><i class="fa-regular fa-heart"></i></th>
+					<th scope="col" style="width: 15%">첨부</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -95,19 +92,19 @@
 						</div>
 					</td>
 					<td>천호공원 한바퀴</td>
-					<td>0.87km</td>
-					<td>30분</td>
+					<td>갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ...</td>
+					<td>2023/10/01</td>
 					<td>20</td>
-					<td>10</td>
+					<td class="img"><i class="fa-regular fa-images"></i></td>
 				</tr>
 				<tr>
 					<td><i class="fa-regular fa-star"></i></td>
 					<td></td>
 					<td>천호공원 한바퀴</td>
-					<td>0.87km</td>
-					<td>30분</td>
+					<td>갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ...</td>
+					<td>2023/10/01</td>
 					<td>20</td>
-					<td>10</td>
+					<td class="img"></td>
 				</tr>
 				<tr>
 					<td><i class="fa-regular fa-star"></i></td>
@@ -118,10 +115,10 @@
 						</div>
 					</td>
 					<td>천호공원 한바퀴</td>
-					<td>0.87km</td>
-					<td>30분</td>
+					<td>갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ... 갈 때 마다 힐링되는 ...</td>
+					<td>2023/10/01</td>
 					<td>20</td>
-					<td>10</td>
+					<td class="img"><i class="fa-regular fa-images"></i></td>
 				</tr>
 			</tbody>
 		</table>

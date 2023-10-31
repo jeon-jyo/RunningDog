@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>trailAddList</title>
+<title>trailMainMyList</title>
 <link href="${pageContext.request.contextPath}/assets/css/trailMain.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
@@ -11,7 +11,7 @@
 <body>
 	<jsp:include page="header.jsp"></jsp:include>
 	<div class="contents">
-		<h1 class="myList">산책로 등록</h1>
+		<h1>등록한 산책로</h1>
 
 		<div class="explorer">
 			<div class="segment-map-filters">
@@ -21,6 +21,41 @@
 						<i class="fa-solid fa-magnifying-glass"></i>
 					</button>
 				</div>
+				
+				<!-- Button trigger modal -->
+				<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#tagModal">
+					태그 전체보기&nbsp;&nbsp;&nbsp;
+					<i class="fa-solid fa-chevron-down"></i>
+				</button>
+				<!-- tagModal -->
+				<div class="modal fade" id="tagModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h1 class="modal-title fs-5" id="exampleModalLabel">태그 선택</h1>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<button class="btn badge btn1 selected-tag">공원 근처</button>
+								<button class="btn badge btn1">산 근처</button>
+								<button class="btn badge btn1">카페 근처</button>
+								<button class="btn badge btn2">넓은 공간</button>
+								<button class="btn badge btn2">흙길</button>
+								<button class="btn badge btn2">액티비티</button>
+								<button class="btn badge btn3 step2">유동인구 많음</button>
+								<button class="btn badge btn3 step2">유동인구 적음</button>
+								<div class="form-check step2">
+									<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+									<label class="form-check-label" for="flexCheckDefault">전체 해제</label>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+								<button type="button" class="btn btn-secondary">완료</button>
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<div class="btn-group" role="group" aria-label="Default button group">
 					<button type="button" class="btn btn-outline-dark selected-filter">이용자순</button>
@@ -29,17 +64,17 @@
 					<button type="button" class="btn btn-outline-dark">오래된순</button>
 				</div>
 
-				<i class="fa-solid fa-pen-to-square"></i>
+				<i class="fa-solid fa-circle-plus"></i>
+				<button type="button" class="btn btn-primary">자세히 보기</button>
 			</div>
 
 			<div class="main-content">
 				<div class="segments-sidebar" id="segments-sidebar">
-					<h6>나의 산책일지</h6>
 					<ul>
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x selected-maker"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -47,7 +82,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -55,7 +90,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -63,7 +98,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -71,7 +106,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -79,7 +114,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -87,7 +122,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -95,7 +130,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -103,7 +138,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>
@@ -111,7 +146,7 @@
 						<li>
 							<i class="fa-solid fa-location-dot fa-2x"></i>
 							<div>
-								<span class="sideBar-title">2023/10/10</span><br>
+								<span class="sideBar-title">천호공원 한바퀴</span><br>
 								<span>0.87km</span>
 								<span>30분</span>
 							</div>

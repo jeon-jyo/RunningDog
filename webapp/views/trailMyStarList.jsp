@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>trailMyList</title>
+<title>trailMyStarList</title>
 <link href="${pageContext.request.contextPath}/assets/css/trailMyList.css" rel="stylesheet" type="text/css">
 <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
@@ -14,8 +14,8 @@
 		<h1 class="myList">내 산책로</h1>
 		
 		<div class="clubCategory">
-            <div class="tab active">등록한 산책로</div>
-            <div class="tab">찜한 산책로</div>
+            <div class="tab">등록한 산책로</div>
+            <div class="tab active">찜한 산책로</div>
             <div class="tab">산책로 후기</div>
         </div>
         
@@ -69,7 +69,6 @@
 				<button type="button" class="btn btn-outline-dark">오래된순</button>
 			</div>
 
-			<i class="fa-solid fa-circle-plus"></i>
 			<button type="button" class="btn btn-primary">맵으로 보기</button>
 		</div>
 		
@@ -101,7 +100,7 @@
 					<td>10</td>
 				</tr>
 				<tr>
-					<td><i class="fa-regular fa-star"></i></td>
+					<td><i class="fa-solid fa-star"></i></td>
 					<td></td>
 					<td>천호공원 한바퀴</td>
 					<td>0.87km</td>
@@ -110,7 +109,7 @@
 					<td>10</td>
 				</tr>
 				<tr>
-					<td><i class="fa-regular fa-star"></i></td>
+					<td><i class="fa-solid fa-star"></i></td>
 					<td>
 						<div class="tag-btn">
 							<button class="btn badge btn1">공원 근처</button>

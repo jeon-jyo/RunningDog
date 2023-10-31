@@ -46,7 +46,7 @@
 					<div class="map-detail-info">
 						<div class="tag-btn">
 							<button class="btn badge btn1">공원 근처</button>
-							<button class="btn badge btn3 step2">유동인구 많음</button>
+							<button class="btn badge btn3">유동인구 많음</button>
 						</div>
 						<div class="check-info">
 							<span>주차장 있음</span>

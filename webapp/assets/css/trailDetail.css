@@ -62,7 +62,6 @@
 }
 
 /* map-container-left main */
-
 /* map */
 .main-map {
 	height: 500px;
@@ -73,39 +72,6 @@
 .map-info {
 	height: 700px;
 	width: 100%;
-}
-
-/* map-detail-info */
-.map-info .map-detail-info {
-	display: flex;
-	margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-/* tag */
-.tag-btn {
-	width: 200px;
-	padding: 8px 6px;
-}
-.tag-btn > button.btn1 {
-	background-color: #F96666;
-}
-.tag-btn > button.btn2 {
-	background-color: #674747;
-}
-.tag-btn > button.btn3 {
-	background-color: #829460;
-}
-.tag-btn > button.selected-tag {
-	border: 3px solid var(--bs-body-color);
-}
-.tag-btn .step2 {
-	margin-top: 10px;
-}
-.tag-btn .form-check {
-	float: right;
-	text-align: right;
-	font-size: 14px;
 }
 
 .check-info {
@@ -121,12 +87,36 @@
     font-size: 14px;
 }
 
+/* map-detail-info */
+.map-info .map-detail-info {
+	display: flex;
+	margin-top: 20px;
+    margin-bottom: 20px;
+}
 .map-detail-info .user-modify {
 	margin-top: 17px;
     padding-left: 140px;
 }
 .map-detail-info .user-modify > i {
 	padding-left: 10px;
+}
+
+/* tag */
+.tag-btn {
+	width: 200px;
+    margin: 17px 8px;
+}
+.tag-btn > button.btn1 {
+	background-color: #F96666;
+}
+.tag-btn > button.btn2 {
+	background-color: #674747;
+}
+.tag-btn > button.btn3 {
+	background-color: #829460;
+}
+.tag-btn > button.selected-tag {
+	border: 3px solid var(--bs-body-color);
 }
 
 /* map-detail-text */
@@ -153,7 +143,6 @@
     margin-left: 60px;
 }
 .detail-border {
-	/*border-top: 1px solid #dee2e6;*/
 	margin-top: 50px;
 }
 
@@ -161,23 +150,21 @@
 .detail-meeting {
 	height: 120px;
     width: 700px;
-    /*background-color: lightgray;*/
     margin-left: 20px;
     display: flex;
 }
 .detail-meeting > i {
 	padding: 45px 20px;
 }
+
 .meetings {
 	width: 600px;
-	/*background-color: black;*/
 	overflow: hidden;
     display: flex;
     justify-content: space-around;
 }
 .metting {
 	width: 100px;
-	/*background-color: white;*/
     display: flex;
     flex-wrap: wrap;
     align-content: space-around;
@@ -189,7 +176,6 @@
 }
 
 /* map-container-right main */
-
 /* map sidebar */
 .map-sidebar {
 	height: 300px;
@@ -303,6 +289,7 @@
 	/*background-color: lightcyan;*/
 	display: flex;
 }
+
 .comment-nav {
     height: 150px;
     width: 175px;
@@ -395,6 +382,8 @@
 .modal-input {
 	height: 200px;
 }
+
+/* 이미지 modal img-content */
 .img-content {
 	height: 250px;
     width: 300px;
@@ -404,11 +393,21 @@
     justify-content: center;
     position: relative;
 }
-.img-content > img {
+.img-content > img,
+.detail-img-content > img,
+.comment-img > img,
+.gallery-img .comment-img > img,
+.meetingInfo .comment-img > img {
+	/*height: 100%;
+	object-fit:cover;*/
 	height: 100%;
+	width: 100%;
 	object-fit:cover;
 }
-.img-content .imgCount {
+.img-content .imgCount,
+.comment-img .imgCount,
+.gallery-img .comment-img .imgCount,
+.meetingInfo .comment-img .imgCount {
    position: absolute;
    right: 0;
    bottom: 0;
@@ -465,7 +464,7 @@
 	background-color: #fff5f0;
 }
 
-/* comment-img */
+/* 이미지 comment-list comment-img */
 .comment-detail .comment-img {
 	height: 150px;
     width: 200px;
@@ -473,27 +472,6 @@
     display: flex;
     justify-content: center;
     position: relative;
-}
-.comment-img > img,
-.gallery-img .comment-img > img,
-.meetingInfo .comment-img > img {
-	height: 100%;
-	object-fit:cover;
-}
-.comment-img .imgCount,
-.gallery-img .comment-img .imgCount,
-.meetingInfo .comment-img .imgCount {
-   position: absolute;
-   right: 0;
-   bottom: 0;
-   width: 30px;
-   height: 30px;
-   background-color: black;
-   opacity: 50%;
-   color: white;
-   line-height: 30px;
-   text-align: center;
-   font-size: 17px;
 }
 
 /* comment-content */
@@ -568,10 +546,6 @@
 	display: flex;
     justify-content: center;
 }
-.detail-img-content > img {
-	height: 100%;
-	object-fit:cover;
-}
 .modal-body .fa-chevron-left, .modal-body .fa-chevron-right {
 	font-size: 30px;
 	margin: 200px 30px 0px 30px;
@@ -598,7 +572,7 @@
     align-items: center;
 }
 
-/* trailDetailGallery */
+/***** trailDetailGallery *****/
 
 /* gallery-list main */
 .gallery-list {
@@ -607,7 +581,7 @@
     justify-content: space-evenly;
 }
 
-/* gallery-img */
+/* 이미지 gallery gallery-img */
 .gallery-img {
     height: 210px;
     width: 220px;
@@ -621,7 +595,7 @@
 	background-color: #fff5f0;
 }
 
-/* comment-img */
+/* 이미지 gallery comment-img */
 .gallery-img .comment-img {
 	height: 150px;
     width: 200px;
@@ -630,7 +604,7 @@
     position: relative;
 }
 
-/* trailDeletedDetail */
+/***** trailDetailDeleted *****/
 
 .contents > h1 > i.deleted {
     color: #fc5200;
@@ -639,7 +613,7 @@
 	border: 1px solid black;
 }
 
-/* trailDetailMeetingLog */
+/***** trailDetailMeetingLog *****/
 
 /* meetingList main */
 .meetingList {
@@ -650,7 +624,7 @@
 }
 .meetingList .meeting {
 	width: 450px;
-	height: 280px;
+	height: 300px;
 	border-radius: 20px;
 	box-shadow: 3px 3px 10px -3px rgb(77, 71, 71);
 	margin-bottom: 30px;
@@ -702,6 +676,8 @@
     width: 25px;
 }
 .meetingList .meeting .meetingContent .meetingInfo .info-border {
+	height: 45px;
+    overflow: hidden;
 	padding-bottom: 5px;
     border-bottom: 1px solid #dee2e6;
 }
@@ -711,12 +687,11 @@
 .right {
 	float: right;
 }
-
 .info-none {
 	padding: 10px;
 }
 
-/* comment-img */
+/* 이미지 meetingLog comment-img */
 .meetingInfo .comment-img {
 	height: 100px;
     width: 150px;
@@ -739,8 +714,9 @@
 	margin-left: 450px;
 }
 
-/* trailDetailWorkLog */
+/***** trailDetailWorkLog *****/
 
+/* 이미지 workLog comment-img */
 .left .comment-img {
 	height: 100px;
     width: 150px;
@@ -781,13 +757,18 @@
 	margin-left: 30px;
 }
 
-.meetingContent .work-img {
-	margin: 10px;
-}
-/*.img-info-detail .dog-img {
-	margin-left: 10px;
-}
 .img-info-detail .dog-img > img {
 	height: 40px;
 	width: 40px;
-}*/
+}
+.leftImg {
+	margin-left: 35px;
+}
+.rightImg {
+	margin-left: 5px;
+}
+
+.meetingContent .work-img {
+	margin: 10px;
+	margin: 10px 10px 0px 15px;
+}
