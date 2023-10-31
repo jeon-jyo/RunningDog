@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+/***** trailAddForm *****/
+
+.contents .myList {
+	color: #fc5200;
+}
+
+/* contant main */
+.explorer {
+	position: relative;
+	height: 710px;
+	width: 100%;
+	margin-top: 10px;
+}
+
+/* map filters main */
+.segment-map-info {
+	position: relative;
+	height: 80px;
+	width: 100%;
+}
+
+/* 등록 버튼 추가 */
+.segment-map-info .fa-circle-check {
+	float: right;
+	margin: 0px 10px;
+	color: #0d6efd;
+	font-size: 34px;
+}
+.segment-map-info .fa-circle-check:hover {
+	color: rgb(1, 48, 118);
+}
+
+/* 등록 정보 추가 */
+.segment-map-info > div.addInfo,
+.segment-map-info > i.fa-location-dot {
+	float: right;
+	margin-top: 10px;
+	margin-right: 5px;
+}
+.segment-map-info > div.addInfo {
+	margin-right: 50px;
+}
+.segment-map-info > div.addInfo > strong,
+.segment-map-info > i.fa-location-dot {
+	font-weight: bold;
+	color: #fc5200;
+}
+
+/* map main */
+.main-content {
+	position: relative;
+	height: 630px;
+	width: 100%;
+}
+
+/* map sidebar main */
+.segment-sidebar {
+	height: 100%;
+	width: 380px;
+	float: left;
+	padding: 5px 0px 10px 25px;
+}
+.segment-sidebar > h6 {
+	font-weight: bold;
+}
+.segment-sidebar > h6.infoName {
+	margin-top: 25px;
+}
+
+/* search */
+.segment-sidebar .input-group {
+	height: 34px;
+	margin-top: 10px;
+}
+.input-group .form-control {
+	height: 34px;
+	width: 260px;
+}
+.input-group > button {
+	height: 34px;
+	width: 56.33px;
+}
+.input-group > button.btn {
+	--bs-btn-border-color: #dee2e6;
+}
+
+/* tag */
+.tag-btn {
+	height: 80px;
+	width: 350px;
+	margin-top: 10px;
+	border: 1px solid #dee2e6;
+	border-radius: 5px;
+	padding: 8px 6px;
+}
+.tag-btn > button.btn1 {
+	background-color: #F96666;
+}
+.tag-btn > button.btn2 {
+	background-color: #674747;
+}
+.tag-btn > button.btn3 {
+	background-color: #829460;
+}
+.tag-btn > button.selected-tag {
+	border: 3px solid var(--bs-body-color);
+}
+.tag-btn .step2 {
+	margin-top: 10px;
+}
+.tag-btn .form-check {
+	float: right;
+	text-align: right;
+	font-size: 14px;
+}
+
+/* 위치 설정 */
+.form-check > input.form-check-input {
+	height: 25px;
+	width: 50px;
+}
+.form-check > button {
+	height: 25px;
+	margin-left: 220px;
+	margin-bottom: 10px;
+}
+
+/* map */
+.main-map {
+	height: 500px;
+	width: 800px;
+	float: right;
+	margin-top: 30px;
+}
+
+/***** trailModifyForm *****/
+
+/* 등록 정보 변경 */
+.segment-map-info > div.addInfo,
+.segment-map-info > i.fa-location-pin-lock {
+	float: right;
+	margin-top: 10px;
+	margin-right: 5px;
+}
+.segment-map-info > div.addInfo {
+	margin-right: 50px;
+}
+.segment-map-info > div.addInfo > strong,
+.segment-map-info > i.fa-location-pin-lock {
+	font-weight: bold;
+	color: #fc5200;
+}
