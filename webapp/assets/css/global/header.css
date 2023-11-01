@@ -1,0 +1,68 @@
+@charset "UTF-8";
+
+
+.global-header {
+	border-bottom: 1px solid black;
+	margin-bottom: 30px;
+}
+
+.global-header nav {
+	width:1250px;
+	height: 55px;
+	margin: auto;
+}
+
+.global-header nav > ul {
+	padding: 0;
+	float: left;
+}
+
+.global-header nav ul .logo img{
+	height: 31px;
+}
+
+.global-header nav ul .logo {
+	margin-right: 20px;
+}
+.global-header > nav > ul > li a{
+	text-decoration: none;
+	color: grey;
+}
+.global-header > nav > ul > li {
+	display: inline-block;
+	line-height: 55px;
+	margin-right: 13px;
+}
+
+.global-header .right {
+	line-height: 55px;
+	float: right;
+}
+
+.global-header .right li:last-child {
+	margin-right: 0;
+}
+
+.global-header nav ul li .drop-toggle::after{
+	  margin-left: 5px;
+	  width: 1.25em;
+	  line-height: 0;
+	  content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+	  transition: transform .35s ease;
+	  transform-origin: .5em 50%;
+	  transform: rotate(90deg);
+}
+
+.global-header nav ul li .drop-toggle[aria-expanded="true"] {
+	color: #FC5200;
+}
+
+.global-header nav ul li .dropdown-menu .dropdown-item {
+	line-height: normal;
+	padding-top: 13px;
+	padding-bottom: 13px;
+}
+
+
+
+

@@ -3,13 +3,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>trailDetailWorkLog</title>
-<link href="${pageContext.request.contextPath}/assets/css/trailDetail.css" rel="stylesheet" type="text/css">
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+<title>trailDetailMeetingLog</title>
+<link href="${pageContext.request.contextPath}/assets/css/walkTrail/trailDetail.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
 </head>
 <body>
-	<jsp:include page="header.jsp"></jsp:include>
+	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
 		<h1><i class="fa-regular fa-star"></i>&nbsp;천호공원 한바퀴&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-diagram-project"></i></h1>
 		
@@ -231,18 +231,18 @@
 		<div class="segment-comments">
 			<div class="comment-nav">
 				<div>후기</div>
-				<div class="selected">산책일지</div>
-				<div>모임일지</div>
+				<div>산책일지</div>
+				<div class="selected">모임일지</div>
 				<i class="fa-solid fa-caret-up"></i>
 			</div>
 			
 			<div class="comment-container">
 				<div class="comment-bar comment-meeting-bar">
-					<div class="comment-number"><i class="fa-solid fa-person-walking"></i>&nbsp;1k</div>
+					<div class="comment-number"><i class="fa-solid fa-user-group"></i>&nbsp;1k</div>
 					
 					<div class="form-check meeting-check">
 						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-						<label class="form-check-label" for="flexCheckDefault">내 일지만 보기</label>
+						<label class="form-check-label" for="flexCheckDefault">내 모임만 보기</label>
 					</div>
 					
 					<div class="btn-group" role="group" aria-label="Default button group">
@@ -253,28 +253,20 @@
 				<!-- // comment-bar -->
 				
 				<div class="meetingList">
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
 						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										</div>
-										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-									</div>
-								</div>
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
 							</div>
-							<div class="left work-img">
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -283,28 +275,55 @@
 						</div>
 					</div>
 					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
 						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-none">내용이 없습니다.</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										</div>
-										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-									</div>
-								</div>
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
 							</div>
-							<div class="left work-img">
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p class="info-none">후기가 없습니다.</p>
+							</div>
+						</div>
+					</div>
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
+						</div>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+							</div>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
+							</div>
+						</div>
+					</div>
+					
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
+						</div>
+						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+							</div>
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -313,54 +332,20 @@
 						</div>
 					</div>
 					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
 						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+							</div>
 							<div class="meetingInfo left">
-								<p class="info-none">내용이 없습니다.</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										</div>
-										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-									</div>
-								</div>
-							</div>
-							<div class="left work-img">
-							</div>
-						</div>
-					</div>
-					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
-						</div>
-						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										</div>
-										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-									</div>
-								</div>
-							</div>
-							<div class="left work-img">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -369,28 +354,20 @@
 						</div>
 					</div>
 					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
 						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										</div>
-										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-									</div>
-								</div>
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
 							</div>
-							<div class="left work-img">
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -399,28 +376,20 @@
 						</div>
 					</div>
 					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
 						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										</div>
-										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-									</div>
-								</div>
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
 							</div>
-							<div class="left work-img">
+							<div class="meetingInfo left">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>
@@ -429,58 +398,20 @@
 						</div>
 					</div>
 					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
+					<div class="meeting">
+						<div class="meetingTitle">
+							<div class="left">천호공원 투어</div>
+							<div class="right">천호동아리</div>
 						</div>
 						<div class="meetingContent">
+							<div class="course left">
+								<img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg">
+							</div>
 							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										</div>
-										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-									</div>
-								</div>
-							</div>
-							<div class="left work-img">
-								<div class="comment-img">
-									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
-									<div class="imgCount">3</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<div class="meeting workLog">
-						<div class="meetingTitle workTitle">
-							<div class="left work-title1">0.87km</div>
-							<div class="left work-title2">30분</div>
-							<div class="right">2023/10/04</div>
-						</div>
-						<div class="meetingContent">
-							<div class="meetingInfo left">
-								<p class="info-border">나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기 나의 산책일지 일기</p>
-								<div class="img-info">
-									<div class="img-info-detail">
-										<img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg">
-										<div class="detail-text">
-											<span>닉네임</span>
-											<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;20</span>
-										</div>
-										<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-										<div class="dog-img rightImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>
-									</div>
-								</div>
-							</div>
-							<div class="left work-img">
+								<p><i class="fa-regular fa-calendar"></i>&nbsp;10/13 08시 30분</p>
+								<p class="info-border"><i class="fa-solid fa-user-group"></i>&nbsp;8명</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;다음에 또 모입시다</p>
+								<p><i class="fa-regular fa-comment-dots"></i>&nbsp;오늘 찍은 사진 올려주세요</p>
 								<div class="comment-img">
 									<img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg">
 									<div class="imgCount">3</div>

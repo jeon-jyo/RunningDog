@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.contents {
+	width:1250px;
+	margin: auto;
+	min-height: 100vh;
+	position: relative;
+	padding: 0;
+}
+
+.contents h1 {
+	font-size: 34px;
+	font-weight: bold;
+	line-height: 41px;
+}
