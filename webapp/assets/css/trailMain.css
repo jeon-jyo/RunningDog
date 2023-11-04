@@ -1,0 +1,219 @@
+@charset "UTF-8";
+
+/***** trailMain *****/
+
+/* contant main */
+.explorer {
+	position: relative;
+	height: 710px;
+	width: 100%;
+	margin-top: 10px;
+}
+
+/* map filters main */
+.segment-map-filters {
+	position: relative;
+	height: 80px;
+	width: 100%;
+}
+
+/* search */
+.segment-map-filters .input-group {
+	position: relative;
+	height: 34px;
+	width: 317px;
+	float: left;
+	margin: 0px 25px 0px 5px;	/* 상우하좌 */
+}
+.input-group .form-control {
+	height: 34px;
+}
+.input-group > button {
+	height: 34px;
+	width: 56.33px;
+}
+.input-group > button.btn {
+	--bs-btn-border-color: #dee2e6;
+}
+
+/* tag modal */
+.segment-map-filters > button.btn-secondary {
+	height: 34px;
+	width: 166px;
+	float: left;
+	margin-right: 25px;
+	background-color: white;
+	color: #242428;
+	overflow: hidden;
+	border-color: #dee2e6;
+	font-size: 14px;
+}
+.segment-map-filters .modal {
+	--bs-modal-width: 450px;
+}
+.modal .modal-dialog .modal-content .modal-header,
+.modal .modal-dialog .modal-content .modal-footer {
+	padding: 5px 25px;
+}
+.modal .modal-dialog {
+	margin: 200px auto;
+}
+.modal .modal-dialog .modal-content .modal-body {
+	padding: 25px;
+}
+.modal .modal-dialog .modal-content .modal-body > button.btn1 {
+	background-color: #829460;
+}
+.modal .modal-dialog .modal-content .modal-body > button.btn2 {
+	background-color: #674747;
+}
+.modal .modal-dialog .modal-content .modal-body > button.btn3 {
+	background-color: #F96666;
+}
+.modal .modal-dialog .modal-content .modal-body > button.selected-tag {
+	border: 3px solid var(--bs-body-color);
+}
+.modal .modal-dialog .modal-content .modal-body .step2 {
+	margin-top: 10px;
+}
+.modal .modal-dialog .modal-content .modal-body .form-check {
+	float: right;
+	text-align: right;
+	font-size: 14px;
+}
+.modal .modal-dialog .modal-content .modal-footer > button {
+	height: 34px;
+}
+
+/* filter button */
+.segment-map-filters .btn-group {
+	height: 34px;
+	margin-right: 25px;
+}
+.btn-group > button.btn {
+	border-color: #dee2e6;
+	font-size: 14px;
+}
+.btn-group > button.selected-filter {
+	background-color: var(--bs-body-color);
+	color: white;
+}
+
+/* my button */
+.segment-map-filters > button.btn-primary {
+	height: 34px;
+	font-size: 14px;
+	float: right;
+	margin-right: 5px;
+	background-color: #fc5200;
+	--bs-btn-border-color: #fc5200;
+}
+.segment-map-filters > button.btn-primary:hover {
+	background-color: #fc5200;
+	border-color: rgb(255, 215, 196);
+}
+
+/* map main */
+.main-content {
+	position: relative;
+	height: 630px;
+	width: 100%;
+}
+
+/* map sidebar */
+.segments-sidebar {
+	height: 100%;
+	width: 260px;
+	float: left;
+	overflow-y: scroll;
+}
+.segments-sidebar::-webkit-scrollbar {
+	height: 600px;
+}
+.segments-sidebar > h6 {
+	padding-left: 35px;
+	font-weight: bold;
+}
+.segments-sidebar > ul {
+	padding-left: 10px;
+}
+.segments-sidebar > ul > li {
+	position: relative;
+	height: 60px;
+	width: 230px;
+	margin: 5px 0px;
+	list-style: none;
+}
+.segments-sidebar > ul > li:hover {
+	background-color: rgb(255, 215, 196);
+}
+.segments-sidebar > ul > li .fa-solid {
+	height: 30px;
+	width: 23px;
+	margin: 10px;
+	float: left;
+	color: #fc5200;
+}
+.segments-sidebar > ul > li .selected-maker {
+	color: #0d6efd;
+}
+.segments-sidebar > ul > li > div {
+	padding-top: 5px;
+}
+.segments-sidebar > ul > li > div > span {
+	height: 5px;
+	width: 5px;
+	color: #494950;
+	font-size: 14px;
+	text-align: right;
+}
+.segments-sidebar > ul > li > div > span.sideBar-title {
+	font-weight: bold;
+}
+
+/* 화살표 */
+.main-content > i.fa-solid {
+	padding-left: 4px;
+	color: #0d6efd;
+}
+
+/* map */
+.main-map {
+	height: 100%;
+	width: 960px;
+	float: right;
+}
+
+/***** trailNonList *****/
+
+/* map sidebar 숨김 */
+.main-content .segments-sidebar.nonList {
+	display: none;
+}
+
+/* map 크기 확대 */
+.main-map.nonList {
+	width: 1225px;
+}
+
+/***** trailMainMyList *****/
+
+/* 등록 버튼 추가, 편집 버튼 추가 */
+.segment-map-filters .fa-circle-plus,
+.segment-map-filters .fa-pen-to-square {
+	float: right;
+	margin: 0px 10px;
+	color: #0d6efd;
+	font-size: 34px;
+}
+.segment-map-filters .fa-circle-plus:hover,
+.segment-map-filters .fa-pen-to-square:hover {
+	color: rgb(1, 48, 118);
+}
+
+/***** trailMainAddList *****/
+
+/* 대표 이름색 변경 */
+.contents .myList {
+	color: #fc5200;
+}
