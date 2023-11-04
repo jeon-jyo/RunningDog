@@ -100,13 +100,13 @@
 	padding: 25px;
 }
 .modal .modal-dialog .modal-content .modal-body > button.btn1 {
-	background-color: #F96666;
+	background-color: #829460;
 }
 .modal .modal-dialog .modal-content .modal-body > button.btn2 {
 	background-color: #674747;
 }
 .modal .modal-dialog .modal-content .modal-body > button.btn3 {
-	background-color: #829460;
+	background-color: #F96666;
 }
 .modal .modal-dialog .modal-content .modal-body > button.selected-tag {
 	border: 3px solid var(--bs-body-color);

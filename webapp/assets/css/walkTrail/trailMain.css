@@ -39,7 +39,7 @@
 /* tag modal */
 .segment-map-filters > button.btn-secondary {
 	height: 34px;
-	width: 166px;
+	width: 170px;
 	float: left;
 	margin-right: 25px;
 	background-color: white;
@@ -61,17 +61,21 @@
 .modal .modal-dialog .modal-content .modal-body {
 	padding: 25px;
 }
-.modal .modal-dialog .modal-content .modal-body > button.btn1 {
+.modal .modal-dialog .modal-content .modal-body > button.btn1,
+.modalBtn > button.btn1 {
 	background-color: #829460;
 }
-.modal .modal-dialog .modal-content .modal-body > button.btn2 {
+.modal .modal-dialog .modal-content .modal-body > button.btn2,
+.modalBtn > button.btn2 {
 	background-color: #674747;
 }
-.modal .modal-dialog .modal-content .modal-body > button.btn3 {
+.modal .modal-dialog .modal-content .modal-body > button.btn3,
+.modalBtn > button.btn3 {
 	background-color: #F96666;
 }
 .modal .modal-dialog .modal-content .modal-body > button.selected-tag {
 	border: 3px solid var(--bs-body-color);
+	color: var(--bs-btn-color);
 }
 .modal .modal-dialog .modal-content .modal-body .step2 {
 	margin-top: 10px;

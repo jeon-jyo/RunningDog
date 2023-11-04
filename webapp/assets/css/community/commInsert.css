@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+	.content {		
+		width:1250px;
+		margin: auto;		
+	}
+
+	.insertForm {	
+		display: flex;
+		/*min-height: 100vh;
+		background-color: darkgrey;
+		position: relative;
+		padding: 0;*/
+	}	
+
+	.insertHeader {
+		width: 200px;
+		margin-right: 10px;
+	}
+	
+	.btn-group {
+		margin-right: auto;
+	}
+	
+	#button {
+		font-size: 18px;
+		font-weight: bold;
+		margin-left: 5px;
+	}
+	
+	.insertBox {
+		margin-top: 20px;
+	}

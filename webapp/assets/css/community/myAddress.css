@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+	li {
+		list-style:none;
+	}
+
+	#insertButton{
+		cursor:pointer;
+	}	
+		
+	.subtitle{
+		display: flex;
+		justify-content: space-between; 
+		/*background: skyblue;*/
+	}
+	
+	.address {
+		font-size: 25px;
+		font-weight: bold;
+		display: flex;	
+		margin-bottom: 10px;
+	    align-items: center;
+	}
+	
+	.mine {
+	    display: flex;
+	    align-items: center;
+	}
+	
+	.aTag {
+		color:white;		
+		text-decoration:none;
+	}
+	
+	.aTags {
+		color: #FC5200;
+		text-decoration:none;
+	}
+	
+	.myColor {
+		color: #FC5200;
+		font-weight: bold;
+	}
+
+
+	.search {
+		display: flex;
+		justify-content: space-between; 
+		/*background: plum;*/
+	}

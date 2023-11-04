@@ -1,0 +1,332 @@
+@charset "UTF-8";
+
+
+/* 메인 */
+
+#pageContainer{
+	width:1250px;
+	margin: auto;
+	/*background-color:rgb(192, 192, 192);*/
+	min-height: 100vh;
+	position: relative;
+	padding: 0;
+}	 
+
+.backgroundWhite{
+	background-color: white;
+}
+
+.noBorder{
+	border:none;
+}
+
+
+
+
+/* 왼쪽 메뉴 */
+
+#pageContainer .myMenu{
+	width: 25%;
+	/*border: 1px solid black;
+	box-sizing: border-box;*/
+	float: left;
+	padding-right: 16px;
+}
+
+#pageContainer .myMenu .miniProfile{
+	margin: 38px 0 24px;
+	padding: 24px 0 0;
+	position: relative;
+	border-radius: 4px;
+}
+
+#pageContainer .myMenu .miniProfile .textArea{
+	text-align: center;
+	padding: 16px;
+    clear: both;
+    margin-top: 10px;
+}
+
+#pageContainer .myMenu .miniProfile a{
+	font-size: 22px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+#pageContainer .myMenu .miniProfile span{
+	font-size: 14px;
+    text-decoration: none;
+    color: rgb(128, 128, 128);
+    line-height: 5px;
+}
+
+#pageContainer .myMenu .miniProfile a img{
+	width: 80px;
+	height: 80px;
+	border-radius: 50%;
+	position: absolute;
+	top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f7f7fa;
+}
+
+#pageContainer .myMenu .miniProfile .menuList{
+    height: 61px;
+    border-top: 1px solid gray;
+}
+
+#pageContainer .myMenu .miniProfile .menuList .smallMenu{
+	padding: 15px 0 16px;
+	width: 25%;
+	float:left;
+    text-align: center;
+}
+
+#pageContainer .myMenu .miniProfile .menuList .smallMenu a{
+	font-size: 15px;
+	display: block;
+	line-height: 30px;
+    font-weight: bold;
+    border-right: 1px solid gray;
+    text-decoration: none;
+}
+
+#pageContainer .myMenu .miniProfile .menuList .smallMenu .noBorder{
+    border: none;
+}
+
+#pageContainer .myMenu .sideMenu{
+	background-color: white;
+	border-radius: 4px;
+	padding: 14px;
+	margin-bottom: 24px;
+}
+
+#pageContainer .myMenu .sideMenu h3{
+	display: inline-block;
+	font-weight: bold;
+}
+
+#pageContainer .myMenu .sideMenu .sideContent{
+	margin-top: 18px;
+}
+
+#pageContainer .myMenu .sideMenu .sideContent .sideContentTitle{
+	font-weight: bold;
+}
+
+#pageContainer .myMenu .sideMenu .sideContent .sideContentSub{
+	height: 110px;
+	margin-top: 8px;
+	background-color: skyblue;
+	text-align: center;
+}
+
+#pageContainer .myMenu .sideMenu .writeDate{
+	float:right;
+	font-size: 15px;
+}
+
+#pageContainer .myMenu .sideMenu .sideContent .sideContentWrite{
+	height: 82px;
+	margin-top: 8px;
+}
+
+#pageContainer .myMenu .sideMenu .sideContent .sideContentWrite div{
+	width: 180px;
+	height: 82px;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	overflow : hidden;
+    word-break:break-all;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    float: left;
+}
+
+#pageContainer .myMenu .sideMenu .sideContent .sideContentWrite img{
+	width: 82px;
+	height: 82px;
+	float: right;
+}
+
+
+
+
+/* 메인 컨텐츠 */
+
+#pageContainer .mainContent{
+	width: 75%;
+	min-height: 100vh;
+	float: left;
+	padding-left: 16px;
+}
+
+#pageContainer .mainContent .mainContentOne{
+	width: 100%;
+	margin: 38px 0 24px;
+	padding: 16px;
+	border-radius: 4px;
+	background-color: white;
+	position: relative;
+	float: left;
+}
+
+#pageContainer .mainContent h3{
+	width: 80%;
+	font-weight: bold;
+	float: left;
+}
+
+#pageContainer .mainContent a{
+	text-decoration: none;
+	color: gray;
+	font-size: 14px;
+	float: right;
+}
+
+#pageContainer .mainContent .noMargin{
+	margin-top: 0;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf{
+	width: 50%;
+	border-right: 1px solid gray;
+	box-sizing: border-box;
+	float:left;
+	padding-right: 16px;
+}
+
+#pageContainer .mainContent .mainContentOne .noBorder{
+	border:none;
+	padding-left: 16px;
+	padding-right: 0;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .cateTilte{
+	float: left;
+	text-align: right;
+	width: 100%;
+	font-weight: bold;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writerProfile{
+	width: 100%;
+	float: left;
+	margin-bottom: 8px;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writerProfile > img{
+	width: 50px;
+	height: 50px;
+	float: left;
+	border-radius: 50%;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writerProfile .nameDate{
+	height: 50px;
+	float: left;
+	padding-left: 8px;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writerProfile .nameDate .nickname{
+	font-weight: bold;
+	line-height: 25px;
+}
+#pageContainer .mainContent .mainContentOne .contentHalf .writerProfile .nameDate .writeDate{
+	color: gray;
+	font-size: 14px;
+	line-height: 25px;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .walkTitle{
+	width: 100%;
+	font-size: 24px;
+	margin-bottom: 8px;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .mapPlace{
+	height: 120px;
+	background-color: bisque;
+}
+
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writeContent{
+	margin-top: 8px;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writeContentTitle{
+	font-weight: bold;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writeContentText{
+	height: 108px;
+	margin-top: 8px;
+	text-align: center;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writeContentText div{
+	width: 301px;
+	height: 108px;
+	font-size: 14px;
+	text-overflow: ellipsis;
+	overflow : hidden;
+    word-break:break-all;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    float: left;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .writeContentText img{
+	width: 108px;
+	height: 108px;
+	float: right;
+}
+
+
+#pageContainer .mainContent .mainContentOne .contentHalf .clubProfile{
+	width: 100%;
+	float: left;
+	margin-bottom: 18px;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .noMargin{
+	margin-bottom: 0px;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .clubProfile > img{
+	width: 90px;
+	height: 90px;
+	float: left;
+	border-radius: 50%;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .clubProfile .clubBox{
+	height: 90px;
+	float: left;
+	padding-left: 16px;
+}
+
+#pageContainer .mainContent .mainContentOne .contentHalf .clubProfile .clubBox .clubName{
+	font-weight: bold;
+	font-size: 20px;
+	line-height: 45px;
+}
+#pageContainer .mainContent .mainContentOne .contentHalf .clubProfile .clubBox .clubContent{
+	color: gray;
+	font-size: 18px;
+	line-height: 45px;
+}
+
+
+
+
+
+
+

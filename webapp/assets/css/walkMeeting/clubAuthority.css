@@ -1,0 +1,10 @@
+@charset "UTF-8";
+.content h1 {
+	margin-bottom: 30px;
+}
+.selectTitle {
+	font-size: 23px;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+

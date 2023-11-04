@@ -1,0 +1,104 @@
+@charset "UTF-8";
+	
+	/* 왼쪽메뉴(aside) */
+	#aside {		
+		background-color: rgb(255, 255, 255);
+		position: fixed;
+	}
+	
+	/* 사이드 박스 */
+	#aside ul {
+	width: 180px;
+	padding: 0;
+	}	
+	
+	/* 사이드 개별버튼 박스 */
+	#aside #asideBox {
+		border-bottom: 2px solid gray;
+		width: 180px;
+		height: 60px;
+		line-height: 60px;
+		font-size: 20px;
+		font-weight: bold;		
+		color: black;	
+		list-style:none;	
+	}
+		
+	.click-box {
+		border-left: 4px solid #FC5200;
+		box-sizing: border-box;
+	}
+	
+	/*----------------------------------------------------------------------------*/
+	/*리스트 박스*/
+	#contentRead {	
+		height: 100vh;
+	    margin-left: 200px; /* 레이아웃에 따라 이 값을 조정하세요. */
+	    margin-right: 20px;
+	    background-color: darkgray;
+	}    
+	
+	/*리스트의 한 박스*/
+	.content-info {
+		margin-bottom: 10px;
+	    padding: 14px; /* 사이드바와 내용을 구분하기 위한 간격 추가 */
+		background-color: rgb(255, 255, 255);
+	    display: flex;
+	   /* flex-direction: column;
+	    justify-content: space-between;
+	    align-items: flex-start;*/
+	}
+	
+	.author-info {
+	    display: flex;		
+	}
+			
+	/*유저 프로필 모양*/		
+	.profile-circle {
+	    width: 44px; /* 프로필 동그라미의 너비 설정 */
+	    height: 44px; /* 프로필 동그라미의 높이 설정 */
+	    border-radius: 50%; /* 원 모양으로 만들기 */   
+	    margin: 5px; /* 동그라미 상하 간격 설정 */
+	    overflow: hidden; /* 이미지를 동그라미 안에 잘라내기 */
+	    /*border:3px solid rgb(0, 0, 0);*/
+	}
+	
+	/*유저 프로필사진*/
+	.profile-circle img {
+	    width: 100%; /* 이미지를 동그라미의 크기에 맞춤 */
+	    height: 100%; /* 이미지를 동그라미의 크기에 맞춤 */
+	    object-fit: cover; /* 이미지를 비율 유지하며 동그라미 안에 맞춤 */
+	    vertical-align: middle; /* 수직 가운데 정렬 */
+	}	
+	
+	/*유저닉네임+시간*/
+	.author-details {
+	    display: flex;
+	    flex-direction: column;
+	    align-items: flex-start;
+	    margin-left: 10px; /* 추가 간격 설정 */
+	}
+	
+	.images {
+		float: right;
+	}
+	
+	.images a img {
+		max-width: 240px;
+	}	
+	
+	.title {
+	    font-size: 20px;
+	    margin-top: 5px;
+	}
+	
+	.content-text {
+	    margin-top: 5px;
+	    padding-right: 10px;
+	    font-size: 14px;
+	}
+	
+	.like {
+	    margin-top: 10px;
+	}
+	

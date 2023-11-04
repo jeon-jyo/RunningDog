@@ -1,0 +1,572 @@
+@charset "UTF-8";
+
+
+/*공통*/
+
+.button{
+	color: #fff;
+	background-color: rgb(230, 126, 34);
+	float: right;
+	text-decoration: none;
+	border-radius: 4px;
+	padding: 6px 16px;
+	display: inline;
+	border: none;
+}
+
+.deleteBtn{
+	color: #fff;
+	background-color: rgb(231, 76, 60);
+	float: right;
+	text-decoration: none;
+	border-radius: 4px;
+	padding: 6px 16px;
+	display: inline;
+	border: none;
+	margin-right: 20px;
+}
+
+.pageContainer{
+	width:1250px;
+	min-height: 100vh;
+	overflow: hidden;
+	margin: auto;
+	position: relative;
+}
+
+.firstElement > h1{
+	font-weight: bold;
+}
+
+.floatLeft{
+	float:left;
+}
+
+.floatRight{
+	float:right;
+}
+
+
+
+/* 사이드 바 */
+
+#settingsMenu{
+	width: 17%;
+	float: left;
+	margin-right: 30px;
+	padding: 0px;
+	position: relative;
+}
+
+#settingsMenu li{
+	height: 42px;
+	border-top: 1px;
+	border-left: 1px;
+	border-right: 1px;
+	border-color: rgb(192, 192, 192);
+	border-style: solid;
+	text-align: left;
+	line-height: 42px;
+}
+
+#settingsMenu .settingSubLi{
+	height: 40px;
+}
+
+#settingsMenu .noTopBorder{
+	border-top: none;
+	padding-top: 0px;
+}
+
+#settingsMenu li a{
+	padding: 10px;
+	font-size: 14px;
+	text-decoration: none;
+	color: #212529;
+	display: block;
+	line-height: 20px;
+}
+
+#settingsMenu li .setting_sub{
+	padding-left: 30px;
+	text-decoration: none;
+	color: #212529;
+}
+
+
+#settingsMenu .last_li{
+	border-bottom: 1px;
+	border-color: rgb(192, 192, 192);
+	border-style: solid;
+}
+
+
+#settingsMenu .selected{
+	background-color: rgb(230, 126, 34);
+}
+#settingsMenu .selected a{
+	color: white;
+}
+
+
+.selectedBold{
+	font-weight: bold;
+}
+
+
+
+
+
+/* 내 정보 */
+
+#profile{
+	float: left;
+	width: 54%;	
+	position: relative;
+}
+
+#profile > div{
+	border-bottom: 1px;
+	border-style: solid;
+	border-color: rgb(192, 192, 192);
+	padding: 20px;
+}
+
+#profile > .noBorder{
+	border: none;
+	padding: none;
+}
+
+#profile > .firstElement{
+	padding: 0 0 10px;
+}
+
+#profile > div *{
+	display: inline-block;
+}
+
+
+#profile > .firstElement *{
+	display: block;
+}
+
+#profile .settingLabel{
+	width: 160px;
+	padding-right: 16px;
+	text-align: right;
+}
+
+#profile > .imageArea *{
+	display: block;
+}
+
+#profile > .imageArea img{
+	width: 124px;
+	height: 124px;
+	margin-left: 176px;
+	border-radius: 50%;
+}
+
+#profile > .imageArea input{
+	margin-left: 176px;
+	margin-top: 10px;
+}
+
+
+#profile > .genderSelect > input{
+	margin-right: 10px;
+}
+
+#profile > .genderSelect > input:nth-child(3) {
+	margin-left: 50px;
+}
+
+#profile #address{
+	width: 250px;
+}
+
+#profile #searchAddress{
+	border: 1px solid rgb(133, 133, 133); 
+	border-radius: 2px;
+}
+
+
+
+
+
+/* 강아지 */
+
+#dogProfile{
+	float: left;
+	width: 80.6%;	
+	position: relative;
+}
+
+#dogProfile > div{
+	border-bottom: 1px;
+	border-style: solid;
+	border-color: rgb(192, 192, 192);
+	padding: 20px;
+}
+
+#dogProfile .dogSlickBox{
+	display: flex;
+	justify-content: center;
+}
+
+#dogProfile .dogSlickBox .dogCardBox{
+	width: 93%;	
+}
+
+#dogProfile .dogSlickBox .dogCardBox .dogCard{
+	height: 240px;
+	background-color: rgb(200, 225, 255);
+	border-radius: 4px;
+	padding: 15px;
+	border: 1px solid rgb(192, 192, 192);
+	margin: 0 10px;
+}
+
+#dogProfile .dogSlickBox .dogCardBox .emptyCard{
+	background-color: rgb(192, 192, 192);
+	text-align: center;
+	line-height: 220px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+#dogProfile > .noBorder{
+	border: none;
+	padding: none;
+}
+
+#dogProfile > .firstElement{
+	padding: 0 0 10px;
+}
+
+#dogProfile > h2{
+	margin-top: 30px;
+	font-weight: bold;
+}
+
+#dogProfile > .myDogWord{
+	margin-top: 0;
+}
+
+#dogProfile .dogSlickBox .profileImg{
+	width: 140px;
+	height: 140px;
+	border-radius: 50%;
+	float: right;
+}
+
+
+#dogProfile .dogSlickBox .dogCard > h3{
+	text-align: center;
+	font-size: 24px;
+	font-weight: bold;
+/*	color: white;
+	text-shadow: -1px 0px #212529, 0px 1px #212529, 1px 0px #212529, 0px -1px #212529;*/
+}
+
+#dogProfile .dogSlickBox .dogCard > div{
+	width: 200px;
+	margin-bottom: 4px;
+	float: left;
+}
+
+
+#dogProfile .dogSlickBox .dogCard > .lastElement{
+	width: 100%;
+	height: 20px;
+	font-size: 20px;
+	border-top: 1px;
+	border-color: rgb(192, 192, 192);
+	border-style: solid;
+	padding-top: 6px;
+}
+
+#dogProfile .dogSlickBox .dogCard > .dogCardEliment{
+	width: 125px;
+}
+
+#dogProfile .dogSlickBox .dogCard > .personal{
+	width: 100%;
+	word-break:break-all;
+}
+
+
+.slick-dots{
+    text-align: center;
+    /* position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%); */
+    font-size: 0;
+    margin-top: 30px;
+}
+.slick-dots li{
+    width: 16px;
+    height: 16px;
+    background-color: gray;
+    border-radius: 50%;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 20px;
+}
+.slick-dots .slick-active{
+    background-color: rgb(0, 128, 255);
+}
+.slick-dots li button{
+    display: none;
+}
+
+.slick-arrow{
+	border: none;
+	background-color: white;
+	font-size: 30px;
+	font-weight: bold;
+	margin: 10px 0 70px;
+}
+
+
+.certifyMark{
+	background-color: rgb(200, 225, 255);
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	margin-top: -5px;
+	margin-left: -3px;
+}
+
+.iconPencil{
+	display: inline-block;
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	margin-top: 148px;
+	margin-left:175px;
+}
+	
+.iconPencil i{
+	font-size: 30px;
+	color: black;
+}
+
+
+
+/* 강아지 등록 */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+ 
+#profile .checkAnimalBox{
+	width: 330px;
+}
+ 
+#profile .checkAnimalNum{
+	border: none;
+}
+
+#profile .checkAnimalNum *{
+	width: 200px;
+	margin-right: 10px;
+	margin-bottom: 20px;
+}
+
+#profile .checkAnimalNum select{
+	width: 90px;
+}
+
+#profile #animalBtn{
+	color: #fff;
+	background-color: rgb(230, 126, 34);
+	text-decoration: none;
+	border-radius: 4px;
+	border: none;
+	padding: 4px 10px; 
+	font-size: 14px;
+}
+
+#profile .vertialTop{
+	vertical-align: top;
+}
+
+#profile textarea{
+	width: 300px;
+}
+
+#profile #weight{
+	width: 80px;
+}
+
+
+
+
+
+/* 친구 */
+
+#friendProfile{
+	float: left;
+	width: 80.6%;	
+	position: relative;
+}
+
+#friendProfile > div{
+	border-bottom: 1px;
+	border-style: solid;
+	border-color: rgb(192, 192, 192);
+	padding: 20px;
+}
+
+#friendProfile .firstElement{
+	border: none;
+	padding: 0 0 10px;
+}
+
+#friendProfile > .listBox > .friendList > input:nth-child(1) {
+	margin-left: 50px;
+}
+
+#friendProfile .listBox .friendList tr td img{
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+}
+
+#friendProfile .listBox .friendList{
+	width: 100%;
+	text-align: center;
+	border-bottom: 1px solid rgb(192, 192, 192);
+	box-sizing: border-box;
+}
+
+#friendProfile .listBox .friendList td{
+	text-align: center;
+	padding: 7px 0;
+}
+
+#friendProfile .listBox .friendList tr td .deleteBtn{
+	float: none;
+	display: inline-block;
+	font-size: 14px;
+	padding: 4px 10px;
+	margin-right: 0;
+}
+
+#friendProfile #paging {
+	margin: 0px auto;
+	width: 420px;
+	border: none;
+	margin-top: 30px;
+	text-align: center;
+}
+
+#friendProfile #paging ul {
+	margin: 10px 5px 10px 5px;
+}
+
+#friendProfile #paging ul > li{
+	float: left;
+	margin: 0px 8px 0px 8px;
+}
+
+#friendProfile #paging ul > li a{
+	color: #212529;
+	text-decoration: none;
+}
+
+#friendProfile .listBox {
+	width: 100%;
+	float:left;
+	border: none;
+	padding: 0;
+}
+
+#friendProfile .listBox > form{
+	width: 100%;
+	float:right;
+	border-bottom: 1px solid rgb(192, 192, 192);
+}
+
+#friendProfile .listBox form .searchBox{
+	display: block;
+	float:right;
+	padding-bottom: 20px;
+}
+
+
+#friendProfile .listBox .searchBox select{
+	float:left;
+	margin-right: 5px;
+	height: 30px;
+}
+
+#friendProfile .listBox .searchBox input{
+	float:left;
+}
+
+#friendProfile .listBox .searchBox #searchBtn{
+	height: 30px;
+	font-size: 14px;
+	float: left;
+	line-height: 15px;
+	margin-left: 5px;
+}
+
+#friendProfile .listBox > .borderBottom{
+	border-bottom: 1px solid rgb(192, 192, 192);
+}
+
+#friendProfile .listBox .friendList tr td .ok{
+	background-color: dodgerblue;
+}
+
+#friendProfile .listBox .friendList tr th{
+	font-weight: bold;
+	padding: 7px 0;
+	border-bottom: 1px solid rgb(192, 192, 192);
+}
+
+
+
+
+
+/* 회원탈퇴 */
+
+#profile .warningBox{
+	padding-left: 0;
+	padding-bottom: 5px;
+}
+
+#profile .warningBox .warning span{
+	margin-bottom: 25px;
+	font-weight: bold;
+	color: red;
+}
+
+#profile .warningBox .warning .lastSpan{
+	margin-top:40px;
+	margin-bottom:0px;
+	font-weight: 300;
+	color: gray;
+	font-size: 15px;
+}
+
+#profile > .noBottomStyle{
+	border: none;
+	padding-bottom: 0px;
+}
+
+#profile .resignLabel{
+	width: 80px;
+	padding-right: 16px;
+	text-align: right;
+}
+
+
+
+

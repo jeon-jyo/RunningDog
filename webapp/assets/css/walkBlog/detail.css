@@ -1,0 +1,236 @@
+@charset "UTF-8";
+
+
+.mainBox{
+	margin-top: 50px;
+    width: 1250px;
+    margin: auto;
+    background-color: #ffffff;
+    
+    border-style: solid;
+  	border-color:#dee2e6;
+    
+    padding : 15px;
+   
+  
+  }
+  
+  
+  
+  .dataBox {
+	  display: flow-root;
+	  border-style: solid;
+  	border-color:#dee2e6;
+  	width: 1216px;
+  	height: 315px;
+  	padding: 5px;
+	  
+  }
+   .profileBox{
+	   display: flow-root;
+	padding: 15px;
+	border-style: solid;
+  	border-color:#dee2e6;
+	width: 600px;
+	float: left;
+	   
+   }
+   .profileWrapper1{
+	   float: left;
+	   width: 110px;
+   }
+  .profileImg1 {
+    width: 100px;
+    height: 100px;
+    
+    
+  }
+  
+  .profileImg1 > img {
+    width: 100px;
+    height: 100px;
+    
+  }
+  
+  .userName1{
+	  font-size: 20px;
+	  font-weight: bold;
+	  width: 100px;
+	  
+	  
+  }
+  .titleBox{
+	  width: 400px;
+	  height: 100px;
+	  
+  	float: right;
+  	margin-right: 30px;
+	  
+  }
+  
+  .time{
+	  
+	  font-size: 18px;
+    line-height: 16px;
+  }
+  
+  .title{
+	  font-size: 28px;
+    line-height: 34px;
+  }
+  
+  
+  .recordBox{
+	  width: 600px;
+	  height: 130px;
+	  border-style: solid;
+  	border-color:#dee2e6;
+	  float: left;
+	  margin-top: 5px;
+	  display: flow-root;
+	  padding:30px;
+	  
+  }
+  
+  .dogCardBox{
+	  width:600px;
+	  height: 300px;
+	  border-style: solid;
+  	border-color:#dee2e6;
+	  float: right;
+	  padding: 20px;
+  }
+  
+  .dogCards{
+	  display: flow-root;
+	 
+	  
+  }
+  .dogCards div{
+	  margin-right: 10px;
+  }
+  
+ .dogCard1{																														
+	 float: left;
+ }
+ 
+ .dogCard2{
+	 float: left;
+ }
+  
+  .dogCardBox img{
+	  width: 150px;
+	  height: 150px;
+  }
+  
+  .partnerDoglabel{
+	  font-size: 28px;
+  }
+  
+  .distanceBox{
+	  float: left;
+	  width: 100px;
+	  margin-right: 30px;
+	  
+  }
+  .recordData{
+	  font-size: 28px;
+	  width: 90px;
+  }
+  
+  .timeBox{
+	  float: left;
+	  
+  }
+  .label{
+	  font-size: 12px;
+	  width: 90px;
+  }
+
+  
+  .walkRecordSection{
+	  padding:10px;
+	  margin-top: 10px;
+	  margin-bottom: 10px;
+	  width: 1216px;
+	  height: 900px;
+	  border-style: solid;
+  	border-color:#dee2e6;
+	  
+  }
+  .walkData > img{
+	  margin-bottom: 10px;
+  }
+  
+  
+  .walkData > img{
+	  width: 1190px;
+	  height: 600px;
+  }
+  
+  .pictures {
+	  display: flow-root;
+  }
+  
+  .pictures img{
+	  float: left;
+	  margin-right: 20px;
+	  width: 270px;
+	  height: 270px;
+	 
+  }
+  
+  .input-group{
+	  
+	  width: 1215px;
+  }
+  
+  .replyButton {
+    background-color:grey;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+  }
+  
+  
+  .comments img{
+	  width: 60px;
+	  height: 60px;
+	  float: left;
+	  
+  }
+  
+  .comments > div{
+	  display: flow-root;
+	  border-style: solid;
+	 border-color:#dee2e6;
+  	border-width: 0 0 1px 0 ;
+  	margin-bottom: 10px;
+  }
+  
+  .userIdandContent{
+	  margin-left: 5px;
+	  float: left;
+  }
+  
+  .replyUserId{
+	  font-size: 16px;
+	   font-weight: bold;
+  }
+  
+  .replyContent{
+	  font-size: 14px;
+  }
+  
+  .replyDate{
+	  float: right;
+	  margin-top:10px;
+	  margin-right:10px;
+  }
+  
+  
+  

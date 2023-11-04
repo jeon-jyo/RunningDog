@@ -1,0 +1,165 @@
+@charset "UTF-8";
+
+	#h3 {
+		font-size: 24px;
+		margin-bottom: 10px;	
+		font-weight: bold;
+	}
+	
+	.content {		
+		/*background-color: darkgray;*/
+		height: 1300px;
+		display: flex;
+	}	
+	
+	.likeBox {
+		display: flex;
+		flex-direction: column; /* 요소들을 수직 방향으로 배치 */
+		/*align-items: center;  수직 방향으로 중앙 정렬 */
+		justify-content: space-between; /* 상단과 하단 정렬을 고르게 분배 */	
+		height: 100%;
+		/*background-color: darkturquoise;*/
+		margin-right: 40px;
+	}
+	
+	#lBox {
+		width:800px;
+		margin: auto;
+		/*background-color: rgb(128, 255, 128);*/
+	}
+	
+	.likeBox-01{
+		height: 44%;
+	}
+	.likeBox-02{
+		height: 55%;
+	}	
+	
+	#mainImg {		
+		max-width: 531px;
+	}
+	
+	#subBox {	
+		float: right;
+		display: flex;
+		flex-direction: column; /* 요소들을 수직 방향으로 배치 */
+		align-items: center; /* 수직 방향으로 중앙 정렬 */
+		justify-content: space-between; /* 상단과 하단 정렬을 고르게 분배 */	
+		height: 530px;	
+	}
+	
+	#subImg {	
+		max-width: 260px;
+	}
+	
+	/*리스트의 한 박스*/
+	.content-info {
+		margin-top: 10px;
+		margin-bottom: 10px;
+	    padding: 5px; /* 사이드바와 내용을 구분하기 위한 간격 추가 */
+		background-color: rgb(255, 255, 255);
+	    display: flex;
+		border-bottom: 2px solid rgb(221, 221, 221);
+	}	
+	.author-info {
+	    display: flex;		
+	}
+	.textArea {
+		display: flex;
+		flex-direction: column;
+ 		justify-content: space-between; /* 요소들 사이의 간격을 자동 조절 */
+	}			
+	/*유저 프로필 모양*/		
+	.profile-circle {
+	    width: 44px; /* 프로필 동그라미의 너비 설정 */
+	    height: 44px; /* 프로필 동그라미의 높이 설정 */
+	    border-radius: 50%; /* 원 모양으로 만들기 */ 
+	    overflow: hidden; /* 이미지를 동그라미 안에 잘라내기 */
+	    /*border:3px solid rgb(0, 0, 0);*/
+	}	
+	/*유저 프로필사진*/
+	.profile-circle img {
+	    width: 100%; /* 이미지를 동그라미의 크기에 맞춤 */
+	    height: 100%; /* 이미지를 동그라미의 크기에 맞춤 */
+	    object-fit: cover; /* 이미지를 비율 유지하며 동그라미 안에 맞춤 */
+	    vertical-align: middle; /* 수직 가운데 정렬 */
+	}	
+	/*유저닉네임+시간*/
+	.author-details {
+	    display: flex;
+	    flex-direction: column;
+	    align-items: flex-start;
+	    margin-left: 10px; /* 추가 간격 설정 */
+	    font-size: 16px;	    
+	}
+	
+	.time {
+		color: rgb(177, 177, 177);
+	}
+	
+	
+	.title {
+	    font-size: 20px;
+	    display: flex;
+	    align-items: center;		
+		font-weight: bold;	    
+	}	
+	.content-text {
+	    margin-top: 3px;
+	    padding-right: 10px;
+	    font-size: 13px;
+	}	
+	.like {
+	    font-size: 13px;		
+	    bottom: 0;
+	}	
+	
+	#likeIcon {
+		color: rgb(255, 64, 64);
+	}
+	
+	.images {
+		float: right;
+	}	
+	.images a img {
+		max-width: 170px;
+	}	
+	
+	
+	.rankingBox {
+		display: flex;
+		flex-direction: column; /* 요소들을 수직 방향으로 배치 */
+		/*align-items: center;  수직 방향으로 중앙 정렬 */
+		/*justify-content: space-between; /* 상단과 하단 정렬을 고르게 분배 */
+		height: 100%;
+		/*background-color: rgb(255, 128, 255);*/
+	}	
+	
+	#rBox {
+		width:410px;
+		margin: auto;
+		height: 32%;
+	}
+	
+	.ranking {
+		width: 100%;
+		height: 98%;
+	}
+	
+	.ranking li {
+		margin-top: 8px; /* 위쪽 간격을 10px로 설정 */
+ 		margin-bottom: 8px; /* 아래쪽 간격을 10px로 설정 */
+	}
+	
+	#rNum {
+		color: rgb(200, 0, 0);
+		font-size: 20px;		
+		font-weight: bold;
+	}
+	
+	#tNum {
+		color: rgb(0, 0, 0);
+		font-size: 18px;
+		font-weight: normal;		
+	}
+	

@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+
+#loginContainer{
+	width: 400px;
+	height: 580px;
+	margin: 60px auto;
+	background-color: rgb(70, 70, 70, 0.5);
+	border-radius: 3px;
+}
+
+#loginLetterBox{
+	padding: 20px 50px;
+	background-color: rgb(70, 70, 70, 0.75);
+}
+
+#loginLetter{
+	display: block;
+	width: 300px;
+	font-size: 34px;
+    font-weight: 700;
+    line-height: 41px;
+    text-align: center;
+    color: white;
+}
+
+#loginForm{
+	margin: 0 auto;
+	padding: 50px;
+}
+
+#loginForm a img{
+	width: 42px;
+	height: 42px;
+	float: left;
+}
+
+#idLoginMessage{
+	text-align: center;
+	margin-bottom: 20px;
+	font-size: 17px;
+    line-height: 22px;
+    color: white;
+}
+
+.formEliments{
+	width: 100%;
+    height: 42px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.social{
+	display: inline-block;
+	text-align: center;
+	line-height: 42px;
+	text-decoration : none;
+}
+
+#naver{
+	color: white;
+	background-color: rgb(0, 200, 90);
+}
+
+#google{
+	color: rgb(36, 36, 40);
+	background-color: white;
+}
+
+.rm{
+	outline: none;
+    border: none;
+}
+
+#loginBtn{
+	margin-top: 20px;
+	background-color: rgb(230, 126, 34);
+	color: white;
+	text-align: center;
+	line-height: 42px;
+}
+
+#subMenuBox{
+	text-align: center;
+}
+
+.subMenu{
+	text-decoration : none;
+	color : rgb(255, 255, 255);
+}
+
+.subMenuC{
+	border-left: 1px solid white; 
+	border-right: 1px solid white; 
+	padding: 0 6px;
+}
+
+
+
+.joinformEliments{
+	margin-bottom: 40px;
+}
+
+
+
+
+

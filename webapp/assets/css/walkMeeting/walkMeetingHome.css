@@ -1,0 +1,305 @@
+@charset "UTF-8";
+
+.coverImg {
+	width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.left {
+	float: left;
+}
+
+.left.location {
+	font-size: 25px;
+	font-weight: bold;
+}
+.myColor {
+	color: #FC5200;
+	font-weight: bold;
+}
+
+.right {
+	float: right;
+}
+
+.contents p {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.semiHeader {
+	margin-top: 20px;
+	display: flow-root;
+}
+
+.semiHeader > p {
+	margin-bottom: 4px;
+}
+
+.semiHeader .right .myColor {
+	font-weight: bold;
+}
+
+.infoHeader {
+	display: flow-root;
+}
+.clubList {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+}
+.clubList .club {
+	width: 186px;
+	height: 230px;
+	border-radius: 20px;
+	margin-bottom: 20px;
+	position: relative;
+	box-sizing: border-box;
+	box-shadow: 3px 3px 10px -3px rgb(77, 71, 71);
+	overflow: hidden;
+	margin-right: 26px;
+}
+.clubList .club:nth-child(6n){
+	margin-right: 0px;
+}
+.clubList .club .cover {
+	height: 60%;
+}
+
+.clubList .club .addCover {
+	padding-top:70px ;
+	text-align: center;
+}
+
+.clubList .club .addCover i {
+	font-size: 70px;
+	line-height: 40px;
+}
+
+.clubList .club .clubInfo {
+	padding: 5px;
+	height: 40%;
+}
+
+.clubList .club .addClubInfo {
+	padding-top: 5px;
+	text-align: center;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.clubList .club .cover img {
+	width:100%;
+    height:100%;
+    object-fit:cover;
+}
+.clubList .club .clubInfo p {
+	margin-bottom: 2px;
+	font-size: 12px;
+}
+
+.clubList .club .clubInfo .clubName {
+	font-size: 15px;
+	font-weight: bold;
+	
+} 
+
+.meetingList {
+	margin-top: 10px;
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+
+.meetingList .meeting {
+	width: 45%;
+	height: 320px;
+	border-radius: 20px;
+	box-shadow: 3px 3px 10px -3px rgb(77, 71, 71);
+	margin-bottom: 30px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+.meetingList .meeting .meetingTitle {
+	display: flow-root;
+	padding-top: 7px;
+	position: relative;
+}
+
+.meetingList .meeting .meetingTitle .right {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	
+}
+
+.meetingList .meeting .meetingTitle .left {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.meetingList .meeting .meetingContent {
+	padding-bottom: 10px;
+	padding-top: 10px;
+	display: flow-root;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+}
+
+.meetingList .meeting .meetingContent .cource {
+	width: 40%;
+	height: 200px;
+	overflow: hidden;
+	border-radius: 10px;
+}
+
+.meetingList .meeting .meetingContent .cource img {
+	width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.meetingList .meeting .meetingContent .meetingInfo {
+	width: 60%;
+	height: 200px;
+	padding-left: 10px;
+}
+
+.meetingList .meeting .meetingContent .meetingInfo p {
+	margin-bottom: 2px;
+	font-size: 14px;
+}
+
+.meetingList .meeting .meetingContent .meetingInfo .meetingSpot {
+	margin-bottom: 10px;
+}
+
+.meetingList .meeting .memberList {
+	height: 60px;
+	font-size: 40px;
+	text-align: center;
+}
+
+.meetingList .meeting .memberList > i:first-child{
+	position: relative;
+}
+
+.meetingList .meeting .memberList > i > i{
+	position: absolute;
+	left: 9px;
+	transform: translateY(-50%);
+	font-size: 20px;
+}
+
+.meetingList .meeting .memberList i:last-child {
+	margin-right: 0;
+}
+
+.recommendClubList {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+}
+
+.recommendClubList .recommendClub {
+	width: 48%;
+	height: 110px;
+	margin-bottom: 20px;
+}
+
+.recommendClubList .recommendClub .imgBox {
+	width: 110px;
+	height: 110px;
+	overflow: hidden;
+	border-radius: 10px;
+	margin-right: 10px;
+}
+
+.recommendClubList .recommendClub .recommendClubInfo {
+	width: 480px;
+	height: 90px;
+	margin-top: 10px;
+	position: relative;
+}
+
+.recommendClubList .recommendClub .recommendClubInfo p {
+	margin-bottom: 0px;
+}
+
+.recommendClubList .recommendClub .recommendClubInfo .clubDescription {
+	font-size: 15px;
+	font-weight: normal;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+}
+
+.recommendClubList .recommendClub .recommendClubInfo .clubInfo {
+	font-size: 10px;	
+	font-weight: normal;
+	color: lightslategrey;
+	position: absolute;
+	bottom: 0;
+	margin-bottom: 0;
+}
+
+.bestPostList {
+	display:flex;
+	justify-content: space-between;
+	
+}
+
+.bestPostList .bestPost {
+	
+	width: 200px;
+	height: 250px;
+	
+}
+
+.bestPostList .bestPost .imgBox {
+	border-radius: 10px;
+	height: 120px;
+	overflow: hidden;
+	position: relative;
+}
+
+.bestPostList .bestPost .imgBox .imgCount {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	width: 30px;
+	height: 30px;
+	background-color: black;
+	opacity: 50%;
+	color: white;
+	line-height: 30px;
+	text-align: center;
+	font-size: 17px;
+}
+
+.bestPostList .bestPost .postInfo{
+	margin-top: 10px;
+	height: 120px;
+}
+
+.bestPostList .bestPost .postInfo p{
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+}
+
+.bestPostList .bestPost .postInfo .postTitle {
+	font-size: 18px;
+	font-weight: bold;
+	max-height: 54px;
+	overflow:hidden;
+	 white-space: normal;
+}
+
+.bestPostList .bestPost .postInfo p:last-child{
+	font-size: 12px;
+	color: rgb(128, 128, 128);
+}
+

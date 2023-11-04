@@ -1,0 +1,100 @@
+@charset "UTF-8";
+.left {
+	float: left;
+}
+
+.coverImg {
+	width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+body .global-header nav ul {
+	margin-bottom: 0;
+}
+body .global-header {
+	margin-bottom: 0;
+}
+
+.clubSidebar {
+	width: 250px;
+	float: left;
+	height: calc(100vh - 56px);
+	background-color: #f0f0f5;
+	position: fixed;
+	display: flow-root;
+}
+
+.sideClub {
+	text-align: center;
+	margin-top: 20px;
+}
+
+.sideClub .imgBox {
+	margin: auto;
+	border-radius: 10px;
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+}
+
+.sideClub p {
+	margin-top: 10px;
+	font-size: 25px;
+	font-weight: bold;
+}
+.clubSidebar ul {
+	padding: 0;
+	text-align: center;
+}
+
+.clubSidebar ul li {
+	height: 50px;
+	line-height: 50px;
+	font-size: 20px;
+	font-weight: bold;
+	list-style: none;
+	margin-right: 0;
+	margin : 0 40px;
+	position: relative;
+	cursor: pointer;
+}
+
+.clubSidebar ul li:last-child {
+	color: red;
+}
+
+.clubSidebar ul li::after {
+	width: 0;
+    height: 25px;
+    content: "";
+    border-bottom: 4px solid #fd582f;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%);
+    transition: 0.5s;
+}
+.clubSidebar ul li:hover {
+	color: #fd582f;
+}
+
+.clubSidebar ul li:last-child:hover{
+	color: red;
+	font-weight: 900;
+} 
+
+.clubSidebar ul li:last-child::after{
+	border-color: red;
+} 
+
+.clubSidebar ul li:hover::after {
+    width: 100%;
+}
+
+.content {
+	margin-top: 30px;
+	padding-left: 300px;
+	width: 1250px;
+	float: left;
+}

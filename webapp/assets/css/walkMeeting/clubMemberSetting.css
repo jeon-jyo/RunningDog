@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+.wrap {
+	margin-top: 50px;
+}
+.contents .input-group {
+	width: 500px;
+	margin-top: 50px;
+}
+
+.contents table {
+	margin-top: 10px;
+}
+
+.contents table tr:first-child th{
+	background-color: #f7f7fa;
+}
+
+.contents p {
+	white-space: nowrap;
+	font-size: 20px;
+}
+.contents p span {
+	line-height: 38px;
+	float: left;
+}
+.contents p .form-select {
+	float: left;
+	width: 200px;
+}

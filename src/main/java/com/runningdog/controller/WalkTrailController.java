@@ -13,6 +13,12 @@ public class WalkTrailController {
 		return "walkTrail/trailMain";
 	}
 	
+	@RequestMapping(value = "/main2")
+	public String trailMain2() {
+		System.out.println("WalkTrailController.trailMain2()");
+		return "walkTrail/trailMain2";
+	}
+	
 	@RequestMapping(value = "/main/myList")
 	public String trailMainMyList() {
 		System.out.println("WalkTrailController.trailMainMyList()");

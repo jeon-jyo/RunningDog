@@ -107,13 +107,13 @@
     margin: 17px 8px;
 }
 .tag-btn > button.btn1 {
-	background-color: #F96666;
+	background-color: #829460;
 }
 .tag-btn > button.btn2 {
 	background-color: #674747;
 }
 .tag-btn > button.btn3 {
-	background-color: #829460;
+	background-color: #F96666;
 }
 .tag-btn > button.selected-tag {
 	border: 3px solid var(--bs-body-color);

@@ -1,0 +1,882 @@
+ @charset "UTF-8";
+
+
+  .contents {
+    width: 1250px;
+    margin: auto;
+    background-color: #FFFFFF;
+    min-height: 100vh;
+    
+    padding-top: 15px;
+    padding-left: 15px;
+   
+  }
+
+  .contents .userName {
+    margin: 5px 0 10px;
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+
+
+
+.infoHeader {
+	display: flow-root;
+}
+
+.left.location {
+	font-size: 25px;
+	font-weight: bold;
+	float: left;
+}
+
+.myColor {
+	color: #FC5200;
+	font-weight: bold;
+}
+
+.right {
+	float: right;
+}
+
+.homeMainSection{
+	display: flow-root;
+	margin-top:20px;
+}
+
+.bestWrapper{
+	float: left;
+	width: 780px;
+}
+
+.popularSidbar{
+	float: right;
+	width: 360px;
+}
+
+.homeCategory{
+	float: left;
+}
+
+.homeRecordList{
+	float: left;
+	
+	width: 780px;
+}
+
+.bestWalk1 >img{
+	width: 510px;
+	height: 510px;
+}
+
+.bestWalk2 >img{
+	width: 250px;
+	height: 250px;
+	
+}
+
+
+.bestWalk3 >img{
+	width: 250px;
+	height: 250px;
+}
+
+.bestBody{
+	display:flow-root;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+.bestWalkWrapper{
+	float:right;
+	margin-right: 10px;
+}
+
+.bestWalk1{
+	float: left;
+}
+.bestWalk2{
+	float: right;
+	margin-bottom:10px;
+}
+.bestWalk3{
+	float: right;
+}
+
+.bestWalkWrapper{
+	width: 250px;
+}
+
+.bestTitle{
+	display: flow-root;
+	
+}
+
+.bestTitle >div {
+	float: left;
+	width: 170px;
+	font-size: 22px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.walKing{
+	margin-right: 50px;
+}
+
+.active1{
+	border-style: solid;
+  border-color:#fc5200;
+  border-width: 0 0 3px 0 ; 
+}
+
+.popularSidebar{
+	display: flow-root;
+	float: right;
+	width: 400px;
+	margin-left: 20px;
+}
+
+
+.popularSidebar div > img{
+	
+	width: 400px;
+	height: 400px;
+}
+.pSidebar1{
+	
+	
+	
+}
+
+.pSidebar2{
+	
+	
+}
+
+.pSidebar3{
+	
+	
+}
+
+
+  .backgroundImg {
+    width: 1250px;
+    height: 350px;
+    margin: auto;
+  }
+
+  .backgroundImg > img {
+    width: 1250px;
+    height: 350px;
+  }
+
+  .profileSection {
+    margin: 16px 0;
+    height: 250px;
+   
+  }
+  
+  .wrap{
+	  width: 150px;
+	  float: left;
+  }
+
+  .profileImg {
+    width: 136px;
+    height: 136px;
+    float: left;
+  }
+
+  /* 팔로우 버튼 스타일 */
+  .followButton {
+    background-color:#fc5200;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+  }
+
+  .profileImg > img {
+    width: 136px;
+    height: 136px;
+    
+  }
+
+  .profileWrapper {
+    display: flow-root;
+    width: 700px;
+    
+     
+    
+  }
+
+
+  .mainDogCard {
+    
+    float: right;
+    width: 200px;
+    height: 200px;
+    margin-right:200px;
+    
+    
+  }
+  
+  .maindogCardBox{
+	position: relative;
+	width: 260px;
+	height: 200px;
+	overflow: auto;
+}
+
+.maindogCardBox > div{
+	width: 200px;
+	height: 66px;
+	border-style: solid;
+	 border-color:#dee2e6;
+  	border-width: 0 0 1px 0 ;
+  	display: flow-root;
+}
+
+.maindogCardBox div > img{
+	width: 60px;
+	height: 60px;
+	float: left;
+}
+
+.mainDogCardName{
+	float: left;
+	margin: 5px 0 0 5px;
+}
+
+
+  
+
+  .calendar {
+    
+    
+    float: right;
+  }
+  
+  .calendar >img{
+	  width: 500px;
+	  height: 300px;
+  }
+
+  .contents h1 {
+    font-size: 34px;
+    font-weight: bold;
+    line-height: 41px;
+  }
+
+.mainWrapper {
+	
+    
+    
+    width: 100%;
+    display: flow-root;
+    
+}
+
+.mainPosts {
+    background-color: #FFFFFF;
+    width: 780px;
+    height: 800px;
+    /*height: 100%;*/
+    float: left;
+    display: flow-root;
+}
+
+.selector{
+	
+	width: 150px;
+}
+
+.category{
+	display: flow-root;
+	margin-bottom: 10px;
+	
+}
+
+.tab {
+	text-align: center;
+	width: 120px;
+	height: 40px;
+	line-height: 40px;
+	text-decoration: none;
+	color : #242428;
+	float: left;
+	
+	border-style: solid;
+  	border-color:#dee2e6;
+  	border-width: 0 0 1px 0;
+  	
+  	
+}
+
+h2{
+	margin: 0 0 9px;
+	font-size: 22px;
+	    line-height: 28px;
+	    font-weight: 600;
+}
+
+
+
+.active {
+  border-style: solid;
+  border-color:#fc5200 #dee2e6 white #dee2e6;
+  border-width: 2px 1px; /* 위, 오른쪽, 아래, 왼쪽 테두리의 두께를 지정합니다. */
+}
+
+.blank {
+	
+	width: 420px;
+	background-color: #FFFFFF;
+	
+}
+
+
+
+.mainSidebar {
+    height: 400px;
+    
+    width: 360px;
+    float:right;
+    
+     /* Add this line to push it to the right */
+}
+
+.clubsWrapper {
+	width: 360px;
+	height: 360px;
+	padding: 20px 0 0 0 ;
+	
+	
+}
+
+.clubBox{
+	position: relative;
+	width: 360px;
+	height: 300px;
+	overflow: auto;
+}
+
+.clubBox > div{
+	width: 300px;
+	height: 100px;
+	border-style: solid;
+	 border-color:#dee2e6;
+  	border-width: 0 0 1px 0 ;
+  	display: flow-root;
+}
+
+.clubBox div > img{
+	width: 90px;
+	height: 90px;
+	float: left;
+}
+
+.clubs, .social{
+	font-size: 22px;
+	margin : 0 0 9px;
+	color:#000000;
+	
+}
+
+
+
+.clubCardName{
+	font-size: 16px;
+	float: left;
+	margin: 5px 0 0 5px;
+	
+}
+
+.socialWrapper {
+	width: 360px;
+	height: 140px;
+	padding: 20px 0px;
+	
+	
+}
+
+.socialBox{
+	width: 180px;
+	display: flow-root;
+}
+
+.social {
+	float: left;
+}
+
+.followingBox {
+	width: 80px;
+	float: left;
+}
+.followerBox {
+	width: 80px;
+	float: left;
+}
+
+.followNum{
+	line-height: 1em;
+    font-size: 24px;
+    font-weight: 300;
+}
+
+.followText{
+	font-size: 12px;
+    color: #6d6d78;
+}
+
+.stats {
+	
+	width: 360px;
+	height: 600px;
+	padding: 20px 0px;
+	
+}
+
+.MRprofileBox{
+	   display: flow-root;
+	padding: 15px;
+	border-style: solid;
+  	border-color:#dee2e6;
+	width: 780px;
+	height: 204px;
+	float: left;
+	   
+   }
+   .MRprofileWrapper1{
+	   float: left;
+	   width: 110px;
+   }
+  .MRprofileImg1 {
+    width: 70px;
+    height: 70px;
+    
+    
+  }
+  
+  .MRprofileImg1 > img {
+    width: 70px;
+    height: 70px;
+    
+  }
+  
+  .MRuserName1{
+	  margin-top:5px;
+	  font-size: 14px;
+	  font-weight: bold;
+	  width: 120px;
+	  
+	  
+  }
+  .MRtitleBox{
+	  width: 300px;
+	  height: 50px;
+  	float: left;
+  	margin-right: 30px;
+	  
+  }
+  
+  .MRtime{
+	  
+	  font-size: 18px;
+    line-height: 16px;
+    margin-bottom: 10px;
+  }
+  
+  .MRtitle{
+	  font-size: 28px;
+    line-height: 34px;
+    margin-bottom: 10px;
+     
+  }
+  
+  .MRrecordBox{
+	  width: 300px;
+	  height: 60px;
+	 
+	  float: left;
+	  margin-top: 20px;
+	  display: flow-root;
+	  
+	  
+  }
+  
+  .MRdistanceBox{
+	  float: left;
+	  width: 100px;
+	  margin-right: 10px;
+	  
+  }
+  .MRrecordData{
+	  font-size: 20px;
+	  width: 90px;
+  }
+  
+  .MRtimeBox{
+	  float: left;
+	  
+  }
+  .MRlabel{
+	  font-size: 12px;
+	  width: 90px;
+  }
+  
+  .MRdogName{
+	  text-align: center;
+  }
+  
+  .MRdogCardBox{
+	  width:300px;
+	  height: 100px;
+	  
+	  float: right;
+	  padding: 20px;
+  }
+  
+  .MRdogCards{
+	  margin-top: 5px;
+	  display: flow-root;
+	 
+	  
+  }
+  .MRdogCards div{
+	  margin-right: 10px;
+  }
+  
+ .MRdogCard1{
+	 float: left;
+ }
+ 
+ .MRdogCard2{
+	 float: left;
+ }
+ .MRdogCard3{
+	 float: left;
+ }
+  
+  .MRdogCardBox img{
+	  width: 50px;
+	  height: 50px;
+  }
+  
+  .MRpartnerDoglabel{
+	  font-size: 20px;
+  }
+  .wrappingBox{
+	  float: left;
+	  width: 310px;
+  }
+  
+  .modifyDelete{
+	 float: right;
+	  
+  }
+  
+  .modifyButton{
+	   background-color:grey;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+	  
+  }
+  
+  .deleteButton{
+	   background-color:grey;
+    color: #fff;
+    padding: 5px 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    
+	  
+  }
+  
+  .MRwalkRecordSection{
+	  padding:10px;
+	  margin-top: 10px;
+	  margin-bottom: 10px;
+	  width: 780px;
+	  height: 760px;
+	  border-style: solid;
+  	border-color:#dee2e6;
+	  
+  }
+  .MRwalkData > img{
+	  margin-bottom: 10px;
+  }
+  
+  
+  .MRwalkData > img{
+	  width: 745px;
+	  height: 380px;
+  }
+  
+  .MRpictures {
+	  display: flow-root;
+  }
+  
+  .MRpictures img{
+	  float: left;
+	  margin-right: 20px;
+	  width: 166px;
+	  height: 166px;
+	 
+  }
+  
+  .MRcommentInputBox{
+	  height: 62px;
+	  display: flow-root;
+  }
+  
+  .MRinput-group{
+	  float: left;
+	  width: 670px;
+  }
+  
+  .MRreplyButton {
+    background-color:grey;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 28px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: left;
+  }
+  
+  
+  .MRcomments img{
+	  width: 60px;
+	  height: 60px;
+	  float: left;
+	  
+  }
+  
+  .MRcomments > div{
+	  display: flow-root;
+	  border-style: solid;
+	 border-color:#dee2e6;
+  	border-width: 0 0 1px 0 ;
+  	margin-bottom: 10px;
+  }
+  
+  .MRuserIdandContent{
+	  margin-left: 5px;
+	  float: left;
+  }
+  
+  .MRreplyUserId{
+	  font-size: 16px;
+	   font-weight: bold;
+  }
+  
+  .MRreplyContent{
+	  font-size: 14px;
+  }
+  
+  .MRreplyDate{
+	  float: right;
+	  margin-top:10px;
+	  margin-right:10px;
+  }
+  
+  .MRborder{
+	  margin-top:10px;
+	  border-style: solid;
+	 border-color:black;
+  	border-width: 0 0 1px 0 ;
+  }
+
+	
+
+  .followings{
+	  display: flow-root;
+  }
+  
+  .followings > div{
+	  float: left;
+	  width: 770px;
+	  margin-top: 5px;
+	  border-style: solid;
+	 border-color:#dee2e6;
+  	border-width: 0 0 1px 0 ;
+	  
+  }
+  
+  .followings img{
+	  width: 60px;
+	  height: 60px;
+	  float: left;
+  }
+  
+  
+  .followings button{
+	  float: right;
+  }
+  
+  .followingNickname{
+	  font-size: 18px;
+  }
+  .statslabel{
+	  margin-bottom: 20px;
+	  font-size: 22px;
+  }
+  
+  
+  .statsTable{
+	  margin-bottom: 20px;
+	  border-style: solid;
+	 border-color:#dee2e6;
+  }
+  
+  .statsTable th{
+	  
+	  padding-left: 10px;
+  } .statsTableAll th{
+	  padding-left: 10px;
+  }
+  
+  
+  
+  .statsTable td{
+	  width: 200px;
+	  border-left: 1px solid #f0f0f5;
+	  border-bottom: 1px solid #f0f0f5;
+    padding: 5px 10px;
+    background-color: rgba(0,0,0,0.03);
+  }
+  
+  .statsTableAll{
+	  border-style: solid;
+	 border-color:#dee2e6;
+  }
+  
+  .statsTableAll td{
+	  width: 200px;
+	  border-left: 1px solid #f0f0f5;
+	  border-bottom: 1px solid #f0f0f5;
+    padding: 5px 10px;
+    background-color: rgba(0,0,0,0.03);
+  }
+  
+  
+  
+  .editContents{
+	  width: 1250px;
+	  margin: auto;
+	  display: flow-root;
+  }
+  
+  .editTitleBox{
+	  
+	  width: 1250px;
+	  padding: 20px 16px;
+	  float: left;
+	  display: flow-root;
+	  
+	  
+  }
+  
+  .editTitle{
+	  font-size: 34px;
+    font-weight: 600;
+    line-height: 41px;
+    width: 300px;
+    float: left;
+  }
+  
+  .saveButton {
+	  width: 140px;
+    background-color:#fc5200;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+    
+  }
+  
+  .editMain{
+	  width: 800px;
+	  display: flow-root;
+  }
+  
+  
+  
+  .editTitleBox{
+	  width: 1250px;
+	  margin-bottom: 20px;
+  }
+  
+  .editTitleWrapper{
+	  width: 800px;
+	  margin-bottom: 10px;
+  }
+  
+  .descriptionWrapper{
+	  width: 800px;
+	  margin-bottom: 10px;
+  }
+  
+  .editData{
+	  width: 380px;
+	  float: right;
+	 
+  }
+  
+  .imgContainer >img{
+	  width: 383px;
+	  height: 215px;
+  }
+  
+  .editTitleinput-group{
+	  width: 800px;
+	  margin-bottom: 10px;
+	  
+	  
+	  
+  }
+  
+  .editMain h1{
+	  font-size: 14px;
+	  margin: 0 0 10px;
+	      line-height: 18px;
+	      font-weight: bold;
+	      float: left;
+	  
+  }
+  
+    .editDataTable{
+		margin-top:20px;
+	  margin-bottom: 20px;
+	  border-style: solid;
+	 border-color:#dee2e6;
+  }
+  
+
+  
+  
+  
+  .editDataTable td{
+	  width: 200px;
+	  border-left: 1px solid #f0f0f5;
+	  border-bottom: 1px solid #f0f0f5;
+    padding: 5px 10px;
+    background-color: rgba(0,0,0,0.03);
+  }
+  
