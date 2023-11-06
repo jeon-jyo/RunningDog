@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -66,88 +68,7 @@
 
 			<div class="main-content">
 				<div class="segments-sidebar" id="segments-sidebar">
-					<ul>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x selected-maker"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-						<li>
-							<i class="fa-solid fa-location-dot fa-2x"></i>
-							<div>
-								<span class="sideBar-title">천호공원 한바퀴</span><br>
-								<span>0.87km</span>
-								<span>30분</span>
-							</div>
-						</li>
-					</ul>
+					<ul id="trailList"></ul>
 				</div>
 				<i class="fa-solid fa-angles-left" id="fa-angles"></i>
 				<div class="main-map" id="map"></div>
@@ -158,11 +79,114 @@
 <script type="text/javascript">
 
 	/* map */
-	var map = new naver.maps.Map('map');
+	var map = new naver.maps.Map('map', {
+		center: new naver.maps.LatLng(37.5446493, 127.1243433),
+		zoom: 16
+	});
+	let overlay = [];
+	
+	$(document).ready(function() {
+		getNewCoords();
+	})
+	naver.maps.Event.addListener(map, 'zoom_changed', function() {
+		// console.log("zoom_changed()");
+		getNewCoords();
+    })
+    naver.maps.Event.addListener(map, 'dragend', function() {
+    	// console.log("dragend()");
+    	getNewCoords();
+    })
+    
+    function getNewCoords() {
+		// ne 북동 / sw 남서
+		let coordsMap = {
+			neX : map.getBounds()._ne.x,
+			neY : map.getBounds()._ne.y,
+			swX : map.getBounds()._sw.x,
+			swY : map.getBounds()._sw.y,
+		}
+		console.log("coordsMap ", coordsMap);
+		
+		fetchList(coordsMap);
+	}
+
+	function fetchList(coordsMap) {
+		// console.log("fetchList()");
+		// console.log("coordsMap ", coordsMap);
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/listMap",
+			type : "get",
+			data : coordsMap,
+			
+			dataType : "json",
+			success : function(listMap) {
+				// console.log("overlay.length ", overlay.length);
+				
+				for(let i = 0; i < overlay.length; i++) {
+					overlay[i].setMap(null);
+				}
+				overlay.length = 0;
+				$("#trailList").empty();
+				
+				for(let i = 0; i < listMap.trailList.length; i++) {
+					listRender(listMap.trailList[i]);
+					mapRender(listMap.coordsList[i]);
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		}); 
+	}
+	
+	// trail list
+	function listRender(trailVo) {
+		// console.log("listRender()");
+		
+		let str = '';
+		str += '<li>';
+		str += '	<i class="fa-solid fa-location-dot fa-2x"></i>';
+		str += '	<div>';
+		str += '		<span class="sideBar-title">' + trailVo.name + '</span><br>';
+		str += '		<span>' + trailVo.distance + '</span>';
+		str += '		<span>' + trailVo.eta + '</span>';
+		str += '	</div>'
+		str += '</li>';
+		
+		$("#trailList").append(str);
+	}
+	
+	// coords list
+	function mapRender(coords) {
+		// console.log("mapRender()");
+		
+		let path = [];
+		for(let i = 0; i < coords.length; i++) {
+			path.push(new naver.maps.LatLng(coords[i].lat, coords[i].lng));
+		}
+		
+		var polyline = new naver.maps.Polyline({
+	        path: path,
+	        strokeColor: '#fc5200',
+	        strokeOpacity: 0.8,
+	        strokeWeight: 5,
+	        zIndex: 2,
+	        clickable: true,
+	        map: map
+	    });
+		
+		var marker = new naver.maps.Marker({
+	        map: map,
+	        position: path[0]
+	    });
+		overlay.push(polyline);
+		overlay.push(marker);
+	}
 	
 	/* Non-list */
  	$("#fa-angles").on("click", function() {
-		console.log("fa-angles click");
+		// console.log("fa-angles click");
 		
 		if(document.getElementById("map").classList.contains("nonList")) {
 			document.getElementById("fa-angles").classList.replace("fa-angles-right", "fa-angles-left");
@@ -226,18 +250,18 @@
         })
     });
  	
- 	/* tag selected */
+ 	// tag selected
  	$("#tagSelected").on("click", function() {
-		console.log("tagSelected click");
+		// console.log("tagSelected click");
 		
 		tagList();
 		
 		$('#tagModal').modal('hide');
 	});
  	
- 	/* tag list */
+ 	// tag list
  	let tagList = function() {
- 		console.log("tagList", tagArr);
+ 		console.log("tagArr ", tagArr);
  		
  		$(".modalBtn")[0].innerHTML = "";
  		

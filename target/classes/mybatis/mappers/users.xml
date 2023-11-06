@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="users">
+	
+	<!-- 쿼리문 작성 --> 
+	
+	<insert id="insert" >  
+		 <![CDATA[
+	     INSERT INTO users
+	     VALUES  (02,
+			      30,     
+			      '아이디1',  
+			      '1234', 
+			      '손성진',
+			      '4321',
+			      SYSDATE, 
+			      '남자',
+			      't')
+		 ]]>
+	</insert>
+	
+
+</mapper>

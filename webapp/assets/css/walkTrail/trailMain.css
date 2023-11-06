@@ -129,10 +129,7 @@
 	height: 100%;
 	width: 260px;
 	float: left;
-	overflow-y: scroll;
-}
-.segments-sidebar::-webkit-scrollbar {
-	height: 600px;
+	overflow: hidden;
 }
 .segments-sidebar > h6 {
 	padding-left: 35px;
@@ -143,8 +140,8 @@
 }
 .segments-sidebar > ul > li {
 	position: relative;
-	height: 60px;
-	width: 230px;
+	height: 58px;
+	width: 250px;
 	margin: 5px 0px;
 	list-style: none;
 }

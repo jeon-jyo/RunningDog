@@ -4,7 +4,7 @@ public class UsersVo {
 	
 	//필드
 	private int userNo;
-	private int locationNo;
+	private LocationVo locationVo;
 	private String id;
 	private String password;
 	private String name;
@@ -18,11 +18,11 @@ public class UsersVo {
 		
 	}
 	
-	public UsersVo(int userNo, int locationNo, String id, String password, String name, String code, String birth,
+	public UsersVo(int userNo, LocationVo locationVo, String id, String password, String name, String code, String birth,
 			String gender, char status) {
 		super();
 		this.userNo = userNo;
-		this.locationNo = locationNo;
+		this.locationVo = locationVo;
 		this.id = id;
 		this.password = password;
 		this.name = name;
@@ -39,11 +39,11 @@ public class UsersVo {
 	public void setUserNo(int userNo) {
 		this.userNo = userNo;
 	}
-	public int getLocationNo() {
-		return locationNo;
+	public LocationVo getLocationVo() {
+		return locationVo;
 	}
-	public void setLocationNo(int locationNo) {
-		this.locationNo = locationNo;
+	public void setLocationVo(LocationVo locationVo) {
+		this.locationVo = locationVo;
 	}
 	public String getId() {
 		return id;
@@ -91,7 +91,7 @@ public class UsersVo {
 	//toString
 	@Override
 	public String toString() {
-		return "UserVo [userNo=" + userNo + ", locationNo=" + locationNo + ", id=" + id + ", password=" + password
+		return "UserVo [userNo=" + userNo + ", locationVo=" + locationVo + ", id=" + id + ", password=" + password
 				+ ", name=" + name + ", code=" + code + ", birth=" + birth + ", gender=" + gender + ", status=" + status
 				+ "]";
 	}

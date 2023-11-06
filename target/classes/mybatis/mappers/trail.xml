@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="trail">
+
+	<resultMap id="LocationMap" type="com.runningdog.vo.LocationVo">
+		<result column="si" property="si"></result>
+		<result column="gu" property="gu"></result>
+		<result column="dong" property="dong"></result>
+	</resultMap>
+	
+	<resultMap id="UsersMap" type="com.runningdog.vo.UsersVo">
+		<result column="userNo" property="userNo"></result>
+		<result column="id" property="id"></result>
+		<result column="password" property="password"></result>
+		<result column="name" property="name"></result>
+		<result column="code" property="code"></result>
+		<result column="birth" property="birth"></result>
+		<result column="gender" property="gender"></result>
+		<result column="status" property="status"></result>
+		<collection property="locationVo" resultMap="LocationMap"></collection>
+	</resultMap>
+	
+	<resultMap id="TrailMap" type="com.runningdog.vo.TrailVo">
+		<result column="trailNo" property="trailNo"></result>
+		<result column="name" property="name"></result>
+		<result column="spot" property="spot"></result>
+		<result column="distance" property="distance"></result>
+		<result column="eta" property="eta"></result>
+		<result column="parking" property="parking"></result>
+		<result column="restroom" property="restroom"></result>
+		<result column="trashCan" property="trashCan"></result>
+		<result column="explanation" property="explanation"></result>
+		<result column="regDate" property="regDate"></result>
+		<result column="updateDate" property="updateDate"></result>
+		<result column="status" property="status"></result>
+		<collection property="usersVo" resultMap="UsersMap"></collection>
+		<collection property="locationVo" resultMap="LocationMap"></collection>
+	</resultMap>
+
+	<!-- trailMain -->
+	
+	<!-- 산책로 목록 -->
+	<select id="trailList" parameterType="java.util.Map" resultType="com.runningdog.vo.TrailVo">
+		 <![CDATA[
+			SELECT t.trailNo
+			       ,t.name
+			       ,t.distance
+			       ,t.eta
+			  FROM trail t, coords c
+			 WHERE t.trailNo = c.useNo
+			   AND c.type = 'trail'
+			   AND c.coordorder = 1
+			   AND c.lng BETWEEN #{swX} AND #{neX}
+			   AND c.lat BETWEEN #{swY} AND #{neY}
+			   AND t.status = 'T'
+		 ]]>
+	</select>
+	
+	<!-- 산책로 좌표 목록 -->
+	<select id="coordsList" parameterType="int" resultType="com.runningdog.vo.CoordsVo">
+		 <![CDATA[
+			SELECT c.useNo
+			       ,c.coordOrder
+			       ,c.lat
+			       ,c.lng
+			  FROM trail t, coords c
+			 WHERE t.locationNo = 1174010900
+			   AND t.trailNo = c.useNo
+			   AND c.useNo = #{no}
+			   AND c.type = 'trail'
+			   AND t.status = 'T'
+		 ]]>
+	</select>
+	
+	<!-- 산책로 정보 -->
+	<select id="trailInfo" resultMap="TrailMap">
+		 <![CDATA[
+			SELECT t.trailNo
+			       ,t.name
+			       ,t.distance
+			       ,t.eta
+			       ,t.regdate
+			       ,u.userNo
+			       ,u.name
+			  FROM trail t, users u
+			 WHERE t.userNo = u.userNo
+			   AND t.trailNo = 1
+		 ]]>
+	</select>
+
+	<!-- 산책로 유저 프로필 -->
+	<select id="trailUserImg" resultType="com.runningdog.vo.ImagesVo">
+		 <![CDATA[
+			SELECT u.userNo
+			       ,u.name
+			       ,i.orgName
+			       ,i.saveName
+			       ,i.filePath
+			  FROM users u, images i
+			 WHERE i.type = 'users'
+			   AND i.useNo = 1
+		 ]]>
+	</select>
+	
+	<!-- 산책로 이용자수 -->
+	<select id="trailUsedCnt" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			  FROM trailUsed
+			 WHERE trailNo = 1
+		 ]]>
+	</select>
+	
+	<!-- 산책로 찜 갯수 -->
+	<select id="trailStarCnt" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			  FROM trailStar
+			 WHERE trailNo = 1
+		 ]]>
+	</select>
+	
+	<!-- 산책로 후기 갯수 -->
+	<select id="trailCmtCnt" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			  FROM trailCmt
+			 WHERE trailNo = 1
+		 ]]>
+	</select>
+	
+	<!-- 산책로 선택태그 목록 -->
+	<select id="trailTagList" resultType="com.runningdog.vo.TrailVo">
+		 <![CDATA[
+			SELECT trailNo 
+			       ,name
+			       ,distance
+			       ,eta
+			  FROM trail
+			 WHERE locationNo = 1174010900
+			   AND status = 'T'
+		 ]]>
+	</select>
+
+</mapper>
