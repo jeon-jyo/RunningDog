@@ -136,7 +136,8 @@
 		
 		fetchList(coordsMap);
 	}
-
+	
+    // list
 	function fetchList(coordsMap) {
 		// console.log("fetchList()");
 		
@@ -147,7 +148,7 @@
 			
 			dataType : "json",
 			success : function(listMap) {
-				console.log("listMap ", listMap);
+				// console.log("listMap ", listMap);
 				
 				for(let i = 0; i < overlayPolyline.length; i++) {
 					overlayPolyline[i].setMap(null);
@@ -165,9 +166,10 @@
 			error : function(XHR, status, error) {
 				console.error(status + " : " + error);
 			}
-		}); 
+		});
 	}
 	
+	// coords list
 	function mapRender(coords) {
 		// console.log("mapRender()");
 		
@@ -180,7 +182,7 @@
 	        path: path,
 	        strokeColor: '#fc5200',
 	        strokeOpacity: 0.8,
-	        strokeWeight: 5,
+	        strokeWeight: 3,
 	        zIndex: 2,
 	        clickable: true,
 	        map: map
@@ -196,45 +198,103 @@
 		
 		naver.maps.Event.addListener(marker, "mouseover", function () {
 	        polyline.setOptions({
-	            strokeWeight: 7
+	        	strokeColor: 'red',
+	            strokeWeight: 5
 	        });
 	    });
 		
 		naver.maps.Event.addListener(marker, "mouseout", function () {
 	        polyline.setOptions({
-	            strokeWeight: 5
+	        	strokeColor: '#fc5200',
+	            strokeWeight: 3
 	        });
 	    });
 		
-		var contentString = [
-		    '<div class="iw_inner">',
-		    '   <h3>서울특별시청</h3>',
-		    '   <p>서울특별시 중구 태평로1가 31 | 서울특별시 중구 세종대로 110 서울특별시청<br>',
-		    '       <img src="./img/hi-seoul.jpg" width="55" height="55" alt="서울시청" class="thumb" /><br>',
-		    '       02-120 | 공공,사회기관 > 특별,광역시청<br>',
-		    '       <a href="http://www.seoul.go.kr" target="_blank">www.seoul.go.kr/</a>',
-		    '   </p>',
-		    '</div>'
-		].join('');
-		
-		var infowindow = new naver.maps.InfoWindow({
-		    content: contentString
-		});
-
 		naver.maps.Event.addListener(marker, "click", function(e) {
+ 			let trailNo = 1;
+			tooltipInfo(trailNo);
+			
 		    if (infowindow.getMap()) {
 		        infowindow.close();
 		    } else {
 		        infowindow.open(map, marker);
 		    }
 		});
+		
+		var infowindow = new naver.maps.InfoWindow({
+		    content: trailTooltip.join('')
+		});
+		
+/* 		var contentString = [
+		].join(''); */
 	}
 	
+	function tooltipInfo(trailNo) {
+		console.log("tooltipInfo()", trailNo);
+		
+ 		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/tooltip",
+			type : "get",
+			data : {trailNo: trailNo},
+			
+			dataType : "json",
+			success : function(infoMap) {
+				console.log("infoMap ", infoMap);
+				
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	}
+	
+	var trailTooltip = [
+	    '<div class="iw_inner trail-tootip">',
+	    '   <h5>서울특별시청</h5>',
+	    '	<div class="trailInfo">',
+	    '		<div class="info">',
+	    '			<span class="detail-text">0.87km</span>',
+	    '			<span class="detail-info">거리</span>',
+	    '		</div>',
+	    '		<div class="info">',
+	    '			<span class="detail-text">30분</span>',
+	    '			<span class="detail-info">소요시간</span>',
+	    '		</div>',
+	    '		<div class="vr"></div>',
+	    '		<div class="info cntInfo">',
+	    '			<span class="detail-text">2k</span>',
+	    '			<span class="detail-info">이용자</span>',
+	    '		</div>',
+	    '		<div class="info cntInfo">',
+	    '			<span class="detail-text">391</span>',
+	    '			<span class="detail-info">찜</span>',
+	    '		</div>',
+	    '		<div class="info cntInfo">',
+	    '			<span class="detail-text">1k</span>',
+	    '			<span class="detail-info">후기</span>',
+	    '		</div>',
+	    '	</div>',
+	    '	<div class="userInfo">',
+	    '		<div class="info userDetail">',
+	    '       	<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg" width="55" height="55" alt="서울시청" class="thumb" />',
+	    '       	<div class="detail-text">',
+	    '       		<span>닉네임</span>',
+	 		'       		<span>2023/10/01</span>',
+	    '       	</div>',
+	    '		</div>',
+	    '		<div class="info userBtn">상세보기</div>',
+	    '	</div>',
+	    '</div>'
+	];
+	
+	// trail list
 	function listRender(trailVo, index) {
 		// console.log("listRender()");
 		
 		let str = '';
-		str += '<li>';
+		// str += '<li id="l' + trailVo.trailNo + '">';
+		str += '<li data-trailno="' + trailVo.trailNo + '">';
 		str += '	<i class="fa-solid fa-location-dot fa-2x"></i>';
 		str += '	<div>';
 		str += '		<span class="sideBar-title">' + trailVo.name + '</span><br>';
@@ -247,15 +307,24 @@
 		$("#trailList").children().last().hover(
 			function() {
 				overlayPolyline[index].setOptions({
-		            strokeWeight: 7
+					strokeColor: 'red',
+		            strokeWeight: 5
 		        });
 			},function() {
 				overlayPolyline[index].setOptions({
-		            strokeWeight: 5
+					strokeColor: '#fc5200',
+		            strokeWeight: 3
 		        });
 			}
 		);
 	}
+	
+	$("#trailList").on("click", "li", function(e) {
+		let $this = $(this);
+		let trailNo = $this.data("trailno");
+		console.log("trailNo, " + trailNo);
+
+	});
 	
 	/* Non-list */
  	$("#fa-angles").on("click", function() {

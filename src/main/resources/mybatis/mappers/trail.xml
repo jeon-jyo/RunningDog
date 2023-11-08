@@ -81,30 +81,30 @@
 			  FROM trail t, coords c
 			 WHERE t.locationNo = 1174010900
 			   AND t.trailNo = c.useNo
-			   AND c.useNo = #{no}
+			   AND c.useNo = #{trailNo}
 			   AND c.type = 'trail'
 			   AND t.status = 'T'
 		 ]]>
 	</select>
 	
 	<!-- 산책로 정보 -->
-	<select id="trailInfo" resultMap="TrailMap">
+	<select id="trailInfo" parameterType="int" resultMap="TrailMap">
 		 <![CDATA[
 			SELECT t.trailNo
 			       ,t.name
 			       ,t.distance
 			       ,t.eta
-			       ,t.regdate
+			       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI') regDate
 			       ,u.userNo
 			       ,u.name
 			  FROM trail t, users u
 			 WHERE t.userNo = u.userNo
-			   AND t.trailNo = 1
+			   AND t.trailNo = #{trailNo}
 		 ]]>
 	</select>
 
 	<!-- 산책로 유저 프로필 -->
-	<select id="trailUserImg" resultType="com.runningdog.vo.ImagesVo">
+	<select id="trailUserImg" parameterType="int" resultType="com.runningdog.vo.ImagesVo">
 		 <![CDATA[
 			SELECT u.userNo
 			       ,u.name
@@ -113,34 +113,34 @@
 			       ,i.filePath
 			  FROM users u, images i
 			 WHERE i.type = 'users'
-			   AND i.useNo = 1
+			   AND i.useNo = #{userNo}
 		 ]]>
 	</select>
 	
 	<!-- 산책로 이용자수 -->
-	<select id="trailUsedCnt" resultType="int">
+	<select id="trailUsedCnt" parameterType="int" resultType="int">
 		 <![CDATA[
 			SELECT COUNT(*)
 			  FROM trailUsed
-			 WHERE trailNo = 1
+			 WHERE trailNo = #{trailNo}
 		 ]]>
 	</select>
 	
 	<!-- 산책로 찜 갯수 -->
-	<select id="trailStarCnt" resultType="int">
+	<select id="trailStarCnt" parameterType="int" resultType="int">
 		 <![CDATA[
 			SELECT COUNT(*)
 			  FROM trailStar
-			 WHERE trailNo = 1
+			 WHERE trailNo = #{trailNo}
 		 ]]>
 	</select>
 	
 	<!-- 산책로 후기 갯수 -->
-	<select id="trailCmtCnt" resultType="int">
+	<select id="trailCmtCnt" parameterType="int" resultType="int">
 		 <![CDATA[
 			SELECT COUNT(*)
 			  FROM trailCmt
-			 WHERE trailNo = 1
+			 WHERE trailNo = #{trailNo}
 		 ]]>
 	</select>
 	

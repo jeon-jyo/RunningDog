@@ -33,7 +33,7 @@ public class TrailService {
 	// 산책로 목록 ajax
 	public Map<String, Object> trailListMap(Map<String, Object> coordsMap) {
 		System.out.println("TrailService.trailListMap()");
-//		System.out.println("coordsMap : " + coordsMap);
+		// System.out.println("coordsMap : " + coordsMap);
 		
 		// 산책로 목록
 		List<TrailVo> trailList = trailDao.trailList(coordsMap);
@@ -42,8 +42,8 @@ public class TrailService {
 		// 산책로 좌표 목록
 		List<List<CoordsVo>> coordsList = new ArrayList<List<CoordsVo>>();
 		for (TrailVo trailVo : trailList) {
-			int no = trailVo.getTrailNo();
-			List<CoordsVo> coords = trailDao.coordsList(no);
+			int trailNo = trailVo.getTrailNo();
+			List<CoordsVo> coords = trailDao.coordsList(trailNo);
 			coordsList.add(coords);
 		}
 		// System.out.println("coordsList : "  +coordsList);
@@ -56,17 +56,17 @@ public class TrailService {
 	}
 	
 	// 산책로 툴팁 ajax
-	public Map<String, Object> trailTooltip() {
+	public Map<String, Object> trailTooltip(int trailNo) {
 		System.out.println("TrailService.trailTooltip()");
 		
 		// 산책로 정보
-		TrailVo trailVo = trailDao.trailInfo();
+		TrailVo trailVo = trailDao.trailInfo(trailNo);
 		// 산책로 유저 프로필
-		ImagesVo imagesVo = trailDao.trailUserImg();
+		ImagesVo imagesVo = trailDao.trailUserImg(trailVo.getUsersVo().getUserNo());
 		// 산책로 이용 정보
-		int trailUsedCnt = trailDao.trailUsedCnt();
-		int trailStarCnt = trailDao.trailStarCnt();
-		int trailCmtCnt = trailDao.trailCmtCnt();
+		int trailUsedCnt = trailDao.trailUsedCnt(trailNo);
+		int trailStarCnt = trailDao.trailStarCnt(trailNo);
+		int trailCmtCnt = trailDao.trailCmtCnt(trailNo);
 		
 		Map<String, Object> infoMap = new HashMap<String, Object>();
 		infoMap.put("trailVo", trailVo);

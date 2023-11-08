@@ -39,55 +39,55 @@ public class TrailDao {
 	}
 
 	// 산책로 좌표 목록
-	public List<CoordsVo> coordsList(int no) {
+	public List<CoordsVo> coordsList(int trailNo) {
 		// System.out.println("TrailDao.coordsList()");
 		
-		List<CoordsVo> coords = sqlSession.selectList("trail.coordsList", no);
+		List<CoordsVo> coords = sqlSession.selectList("trail.coordsList", trailNo);
 		
 		return coords;
 	}
 
 	// 산책로 정보
-	public TrailVo trailInfo() {
-		System.out.println("TrailDao.trailInfo()");
+	public TrailVo trailInfo(int trailNo) {
+		// System.out.println("TrailDao.trailInfo()");
 		
-		TrailVo trailVo = sqlSession.selectOne("trail.trailInfo");
+		TrailVo trailVo = sqlSession.selectOne("trail.trailInfo", trailNo);
 		
 		return trailVo;
 	}
 	
 	// 산책로 유저 프로필
-	public ImagesVo trailUserImg() {
-		System.out.println("TrailDao.trailUserImg()");
+	public ImagesVo trailUserImg(int userNo) {
+		// System.out.println("TrailDao.trailUserImg()");
 		
-		ImagesVo imagesVo = sqlSession.selectOne("trail.trailUserImg");
+		ImagesVo imagesVo = sqlSession.selectOne("trail.trailUserImg", userNo);
 		
 		return imagesVo;
 	}
 
 	// 산책로 이용자수
-	public int trailUsedCnt() {
-		System.out.println("TrailDao.trailUsedCnt()");
+	public int trailUsedCnt(int trailNo) {
+		// System.out.println("TrailDao.trailUsedCnt()");
 		
-		int trailUsedCnt = sqlSession.selectOne("trail.trailUsedCnt");
+		int trailUsedCnt = sqlSession.selectOne("trail.trailUsedCnt", trailNo);
 		
 		return trailUsedCnt;
 	}
-
+	
 	// 산책로 찜 갯수
-	public int trailStarCnt() {
-		System.out.println("TrailDao.trailStarCnt()");
+	public int trailStarCnt(int trailNo) {
+		// System.out.println("TrailDao.trailStarCnt()");
 		
-		int trailStarCnt = sqlSession.selectOne("trail.trailStarCnt");
+		int trailStarCnt = sqlSession.selectOne("trail.trailStarCnt", trailNo);
 		
 		return trailStarCnt;
 	}
 	
 	// 산책로 후기 갯수
-	public int trailCmtCnt() {
-		System.out.println("TrailDao.trailCmtCnt()");
+	public int trailCmtCnt(int trailNo) {
+		// System.out.println("TrailDao.trailCmtCnt()");
 		
-		int trailCmtCnt = sqlSession.selectOne("trail.trailCmtCnt");
+		int trailCmtCnt = sqlSession.selectOne("trail.trailCmtCnt", trailNo);
 		
 		return trailCmtCnt;
 	}
