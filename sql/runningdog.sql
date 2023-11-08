@@ -87,13 +87,13 @@ SELECT t.trailNo
    AND c.type = 'trail'
    AND t.status = 'T';
 
---
+-- 산책로 툴팁
 
 SELECT t.trailNo
        ,t.name
        ,t.distance
        ,t.eta
-       ,t.regdate
+       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI') regDate
        ,u.userNo
        ,u.name
   FROM trail t, users u
