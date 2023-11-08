@@ -23,7 +23,7 @@ SELECT u.userNo
        ,l.dong
   FROM users u, location l
  WHERE u.locationNo = l.locationno
-   AND u.userNo = 1;
+   AND u.userNo = 2;
 
 SELECT t.trailNo
        ,t.name
