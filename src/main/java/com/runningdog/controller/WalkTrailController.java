@@ -2,14 +2,19 @@ package com.runningdog.controller;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.runningdog.service.TrailService;
+import com.runningdog.vo.UserVo;
+import com.runningdog.vo.UsersVo;
 
 @Controller
 @RequestMapping(value = "/walkTrail")
@@ -22,11 +27,21 @@ public class WalkTrailController {
 
 	// 산책로 메인 - 추천 목록
 	@RequestMapping(value = "/main", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailMain() {
+	public String trailMain(Model model) {
 		System.out.println("WalkTrailController.trailMain()");
 		
+		// UserVo authUser = userService.selectOneUser(userVo);
+		
+		// authUser 를 UsersVo 로 받을 수 있는지 ?
+		// UserVo authUser = (UserVo)session.getAttribute("authUser");
+		// UsersVo usersVo = trailService.userLocation(authUser.getUserNo());
+		
+		UsersVo usersVo = trailService.userLocation(2);
+		
+		model.addAttribute("usersVo", usersVo);
+		
 		return "walkTrail/trailMain";
-	}	
+	}
 
 	// 산책로 목록 ajax
 	@ResponseBody

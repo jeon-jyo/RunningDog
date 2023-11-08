@@ -1,19 +1,125 @@
 SELECT * FROM tab;
 SELECT * FROM user_sequences;
 
-select * from trail;
-select * from trailTag;
-select * from coords;
+SELECT * FROM trail;
+SELECT * FROM trailTag;
+SELECT * FROM coords;
 
 -- DELETE FROM trail;
 -- DELETE FROM trailTag;
 -- DELETE FROM coords;
 
-commit;
+COMMIT;
 
 ---------------------------------------------------------------------------------------
 
+-- 산책로 메인
+
+-- 산책로 목록
+SELECT u.userNo
+       ,u.locationNo
+       ,l.si
+       ,l.gu
+       ,l.dong
+  FROM users u, location l
+ WHERE u.locationNo = l.locationno
+   AND u.userNo = 1;
+
+SELECT t.trailNo
+       ,t.name
+       ,t.distance
+       ,t.eta
+  FROM trail t, coords c
+ WHERE t.trailNo = c.useNo
+   AND c.type = 'trail'
+   AND c.coordorder = 1
+   AND c.lng BETWEEN 127.1252811 AND 127.1252813
+   AND c.lat BETWEEN 37.5436749 AND 37.5436749
+   AND t.status = 'T';
+
+SELECT t.trailNo
+       ,t.name
+       ,t.distance
+       ,t.eta
+  FROM trail t, trailTag ta
+ WHERE t.locationNo = 1174010900
+   AND t.trailNo = ta.trailNo
+   AND ta.tagName = '공원 근처'
+    OR ta.tagName = '공원 근처'
+   AND t.status = 'T';
+
+SELECT t.trailNo
+       ,ta.tagName
+  FROM trail t, trailtag ta
+ WHERE t.trailno = ta.trailNol;
+
+SELECT t.trailNo
+       ,t.name
+       ,t.spot
+       ,t.distance
+       ,t.eta
+       ,ta.tagName
+  FROM trail t, trailTag ta
+ WHERE t.locationNo = 1174010900
+   AND t.trailNo = ta.trailNo
+   AND ta.tagName = '공원 근처'
+   AND t.status = 'T';
+
+SELECT c.useNo
+       ,c.coordOrder
+       ,c.lat
+       ,c.lng
+  FROM trail t, coords c
+ WHERE t.locationNo = 1174010900
+   AND t.trailNo = c.useNo
+   AND c.useNo = 1
+   AND c.type = 'trail'
+   AND t.status = 'T';
+
+SELECT t.trailNo
+       ,c.coordOrder
+       ,c.lat
+       ,c.lng
+  FROM trail t, coords c
+ WHERE t.locationNo = 1174010900
+   AND t.trailNo = c.useNo
+   AND c.useNo = 1
+   AND c.type = 'trail'
+   AND t.status = 'T';
+
 --
+
+SELECT t.trailNo
+       ,t.name
+       ,t.distance
+       ,t.eta
+       ,t.regdate
+       ,u.userNo
+       ,u.name
+  FROM trail t, users u
+ WHERE t.userNo = u.userNo
+   AND t.trailNo = 1;
+
+SELECT u.userNo
+       ,u.name
+       ,i.orgName
+       ,i.saveName
+       ,i.filePath
+  FROM users u, images i
+ WHERE i.type = 'users'
+   AND i.useNo = 1;
+
+SELECT COUNT(*)
+  FROM trailUsed
+ WHERE trailNo = 1;
+
+SELECT COUNT(*)
+  FROM trailStar
+ WHERE trailNo = 1;
+
+SELECT COUNT(*)
+  FROM trailCmt
+ WHERE trailNo = 1;
 
 ---------------------------------------------------------------------------------------
 

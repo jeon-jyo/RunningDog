@@ -12,6 +12,7 @@ import com.runningdog.dao.TrailDao;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.TrailVo;
+import com.runningdog.vo.UsersVo;
 
 @Service
 public class TrailService {
@@ -19,6 +20,15 @@ public class TrailService {
 	@Autowired TrailDao trailDao;
 	
 	// trailMain //////////////////////////////
+	
+	// 유저 설정 위치
+	public UsersVo userLocation(int userNo) {
+		System.out.println("TrailService.userLocation()");
+		
+		UsersVo usersVo = trailDao.userLocation(userNo);
+		
+		return usersVo;
+	}
 
 	// 산책로 목록 ajax
 	public Map<String, Object> trailListMap(Map<String, Object> coordsMap) {
@@ -41,7 +51,6 @@ public class TrailService {
 		Map<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("trailList", trailList);
 		listMap.put("coordsList", coordsList);
-		// System.out.println("listMap : " + listMap);
 
 		return listMap;
 	}

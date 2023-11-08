@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.TrailVo;
+import com.runningdog.vo.UsersVo;
 
 @Repository
 public class TrailDao {
@@ -18,6 +19,15 @@ public class TrailDao {
 	private SqlSession sqlSession;
 	
 	// trailMain //////////////////////////////
+	
+	// 유저 설정 위치
+	public UsersVo userLocation(int userNo) {
+		System.out.println("TrailDao.userLocation()");
+		
+		UsersVo usersVo = sqlSession.selectOne("trail.userLocation", userNo);
+		
+		return usersVo;
+	}
 	
 	// 산책로 목록
 	public List<TrailVo> trailList(Map<String, Object> coordsMap) {

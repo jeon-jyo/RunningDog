@@ -40,6 +40,20 @@
 
 	<!-- trailMain -->
 	
+	<!-- 유저 설정 위치 -->
+	<select id="userLocation" parameterType="int" resultMap="UsersMap">
+		 <![CDATA[
+			SELECT u.userNo
+			       ,u.locationNo
+			       ,l.si
+			       ,l.gu
+			       ,l.dong
+			  FROM users u, location l
+			 WHERE u.locationNo = l.locationno
+			   AND u.userNo = #{userNo}
+		 ]]>
+	</select>
+	
 	<!-- 산책로 목록 -->
 	<select id="trailList" parameterType="java.util.Map" resultType="com.runningdog.vo.TrailVo">
 		 <![CDATA[

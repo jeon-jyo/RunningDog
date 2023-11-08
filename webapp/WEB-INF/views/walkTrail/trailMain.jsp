@@ -8,7 +8,7 @@
 <title>trailMain</title>
 <link href="${pageContext.request.contextPath}/assets/css/walkTrail/trailMain.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
+<script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script>
 </head>
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
@@ -18,7 +18,7 @@
 		<div class="explorer">
 			<div class="segment-map-filters">
 				<div class="input-group mb-3">
-					<input type="text" class="form-control" placeholder="서울 특별시 강동구 천호동" aria-label="Recipient's username" aria-describedby="button-addon2">
+					<input type="text" class="form-control" id="address" value="${usersVo.locationVo.si } ${usersVo.locationVo.gu } ${usersVo.locationVo.dong }" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
 					<button class="btn btn-outline-secondary" type="button" id="button-addon2">
 						<i class="fa-solid fa-magnifying-glass"></i>
 					</button>
@@ -78,26 +78,53 @@
 </body>
 <script type="text/javascript">
 
+	/* location change */
+/* 	$("#button-addon2").on("click", function() {
+		console.log("button-addon2 click");
+		
+		let address = $("#address").value;
+		console.log("address ", address);
+	}); */
+
 	/* map */
-	var map = new naver.maps.Map('map', {
-		center: new naver.maps.LatLng(37.5446493, 127.1243433),
-		zoom: 16
+   	var map = new naver.maps.Map('map', {
+		zoom: 15
 	});
-	let overlay = [];
+   	getCenterCoords();
+	let overlayPolyline = [];
+	let overlayMarker = [];
 	
-	$(document).ready(function() {
-		getNewCoords();
-	})
 	naver.maps.Event.addListener(map, 'zoom_changed', function() {
-		// console.log("zoom_changed()");
 		getNewCoords();
     })
     naver.maps.Event.addListener(map, 'dragend', function() {
-    	// console.log("dragend()");
     	getNewCoords();
     })
     
+	function getCenterCoords() {
+		// console.log("getCenterCoords()");
+		
+		let location = "${usersVo.locationVo.si } ${usersVo.locationVo.gu } ${usersVo.locationVo.dong }";
+		console.log("location ", location);
+		
+   		naver.maps.Service.geocode({
+	        query: location
+	    }, function(status, response) {
+	    	if (status !== naver.maps.Service.Status.OK) {
+	            return console.log('Something wrong!');
+	        }
+
+	        var result = response.v2, 		// 검색 결과의 컨테이너
+	            items = result.addresses;	// 검색 결과의 배열
+	        
+	        map.setCenter(new naver.maps.Point(items[0].x, items[0].y));
+	        getNewCoords();
+	    });
+	}
+    
     function getNewCoords() {
+    	// console.log("getNewCoords()");
+    	
 		// ne 북동 / sw 남서
 		let coordsMap = {
 			neX : map.getBounds()._ne.x,
@@ -105,14 +132,13 @@
 			swX : map.getBounds()._sw.x,
 			swY : map.getBounds()._sw.y,
 		}
-		console.log("coordsMap ", coordsMap);
+		// console.log("coordsMap ", coordsMap);
 		
 		fetchList(coordsMap);
 	}
 
 	function fetchList(coordsMap) {
 		// console.log("fetchList()");
-		// console.log("coordsMap ", coordsMap);
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/walkTrail/listMap",
@@ -121,17 +147,19 @@
 			
 			dataType : "json",
 			success : function(listMap) {
-				// console.log("overlay.length ", overlay.length);
+				console.log("listMap ", listMap);
 				
-				for(let i = 0; i < overlay.length; i++) {
-					overlay[i].setMap(null);
+				for(let i = 0; i < overlayPolyline.length; i++) {
+					overlayPolyline[i].setMap(null);
+					overlayMarker[i].setMap(null);
 				}
-				overlay.length = 0;
+				overlayPolyline.length = 0;
+				overlayMarker.length = 0;
 				$("#trailList").empty();
 				
 				for(let i = 0; i < listMap.trailList.length; i++) {
-					listRender(listMap.trailList[i]);
 					mapRender(listMap.coordsList[i]);
+					listRender(listMap.trailList[i], i);
 				}
 			},
 			error : function(XHR, status, error) {
@@ -140,24 +168,6 @@
 		}); 
 	}
 	
-	// trail list
-	function listRender(trailVo) {
-		// console.log("listRender()");
-		
-		let str = '';
-		str += '<li>';
-		str += '	<i class="fa-solid fa-location-dot fa-2x"></i>';
-		str += '	<div>';
-		str += '		<span class="sideBar-title">' + trailVo.name + '</span><br>';
-		str += '		<span>' + trailVo.distance + '</span>';
-		str += '		<span>' + trailVo.eta + '</span>';
-		str += '	</div>'
-		str += '</li>';
-		
-		$("#trailList").append(str);
-	}
-	
-	// coords list
 	function mapRender(coords) {
 		// console.log("mapRender()");
 		
@@ -180,8 +190,71 @@
 	        map: map,
 	        position: path[0]
 	    });
-		overlay.push(polyline);
-		overlay.push(marker);
+		
+		overlayPolyline.push(polyline);
+		overlayMarker.push(marker);
+		
+		naver.maps.Event.addListener(marker, "mouseover", function () {
+	        polyline.setOptions({
+	            strokeWeight: 7
+	        });
+	    });
+		
+		naver.maps.Event.addListener(marker, "mouseout", function () {
+	        polyline.setOptions({
+	            strokeWeight: 5
+	        });
+	    });
+		
+		var contentString = [
+		    '<div class="iw_inner">',
+		    '   <h3>서울특별시청</h3>',
+		    '   <p>서울특별시 중구 태평로1가 31 | 서울특별시 중구 세종대로 110 서울특별시청<br>',
+		    '       <img src="./img/hi-seoul.jpg" width="55" height="55" alt="서울시청" class="thumb" /><br>',
+		    '       02-120 | 공공,사회기관 > 특별,광역시청<br>',
+		    '       <a href="http://www.seoul.go.kr" target="_blank">www.seoul.go.kr/</a>',
+		    '   </p>',
+		    '</div>'
+		].join('');
+		
+		var infowindow = new naver.maps.InfoWindow({
+		    content: contentString
+		});
+
+		naver.maps.Event.addListener(marker, "click", function(e) {
+		    if (infowindow.getMap()) {
+		        infowindow.close();
+		    } else {
+		        infowindow.open(map, marker);
+		    }
+		});
+	}
+	
+	function listRender(trailVo, index) {
+		// console.log("listRender()");
+		
+		let str = '';
+		str += '<li>';
+		str += '	<i class="fa-solid fa-location-dot fa-2x"></i>';
+		str += '	<div>';
+		str += '		<span class="sideBar-title">' + trailVo.name + '</span><br>';
+		str += '		<span>' + trailVo.distance + '</span>';
+		str += '		<span>' + trailVo.eta + '</span>';
+		str += '	</div>'
+		str += '</li>';
+		
+		$("#trailList").append(str);
+		$("#trailList").children().last().hover(
+			function() {
+				overlayPolyline[index].setOptions({
+		            strokeWeight: 7
+		        });
+			},function() {
+				overlayPolyline[index].setOptions({
+		            strokeWeight: 5
+		        });
+			}
+		);
 	}
 	
 	/* Non-list */
