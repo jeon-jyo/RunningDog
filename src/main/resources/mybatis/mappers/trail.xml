@@ -105,7 +105,7 @@
 			       ,t.name
 			       ,t.distance
 			       ,t.eta
-			       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI') regDate
+			       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
 			       ,u.userNo
 			       ,u.name userName
 			  FROM trail t, users u

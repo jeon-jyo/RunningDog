@@ -276,6 +276,10 @@ INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coor
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 18, 'trail', 3, 127.1173743, 37.5441451);
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 19, 'trail', 3, 127.1172294, 37.5437666);
 
+
+
+
+
 -----------------------------------------------------------------------------------------------
 ---동아리 
 

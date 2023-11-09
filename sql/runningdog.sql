@@ -45,24 +45,179 @@ SELECT t.trailNo
    AND c.lat BETWEEN 37.5342968 AND 37.5557335
    AND t.status = 'T';
 
+-- 태그전체 , 최신순
 SELECT t.trailNo
        ,t.name
        ,t.distance
        ,t.eta
-  FROM trail t, coords c, trailTag ta
+       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS')
+  FROM trail t, coords c
  WHERE t.trailNo = c.useNo
    AND c.type = 'trail'
    AND c.coordorder = 1
    AND c.lng BETWEEN 127.1162072 AND 127.157406
    AND c.lat BETWEEN 37.5342968 AND 37.5557335
-   AND t.trailNo = ta.trailNo
+   AND t.status = 'T'
+ ORDER BY t.regDate DESC;
+
+-- 태그전체 , 후기순
+SELECT t.trailNo
+       ,t.name
+       ,t.distance
+       ,t.eta
+       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS')
+       ,tc.cmtCnt
+  FROM trail t, coords c, ( SELECT COUNT(userNo) cmtCnt
+                                   ,trailNo
+                              FROM trailCmt
+                             WHERE status = 'T'
+                             GROUP BY trailNo ) tc
+ WHERE t.trailNo = c.useNo
+   AND t.trailNo = tc.trailNo
+   AND c.type = 'trail'
+   AND c.coordorder = 1
+   AND c.lng BETWEEN 127.1162072 AND 127.157406
+   AND c.lat BETWEEN 37.5342968 AND 37.5557335
+   AND t.status = 'T'
+ ORDER BY tc.cmtCnt DESC;
+
+SELECT COUNT(userNo) cmtCnt
+       ,trailNo
+  FROM trailCmt
+ WHERE status = 'T'
+ GROUP BY trailNo;
+
+-- 태그전체 , 인기순
+SELECT t.trailNo
+       ,t.name
+       ,t.distance
+       ,t.eta
+       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS')
+       ,st.starCnt
+  FROM trail t, coords c, ( SELECT COUNT(userNo) starCnt
+                                   ,trailNo
+                              FROM trailStar
+                             GROUP BY trailNo ) st
+ WHERE t.trailNo = c.useNo
+   AND t.trailNo = st.trailNo
+   AND c.type = 'trail'
+   AND c.coordorder = 1
+   AND c.lng BETWEEN 127.1162072 AND 127.157406
+   AND c.lat BETWEEN 37.5342968 AND 37.5557335
+   AND t.status = 'T'
+ ORDER BY st.starCnt DESC;
+
+SELECT COUNT(userNo) starCnt
+       ,trailNo
+  FROM trailStar
+ GROUP BY trailNo;
+
+-- 태그전체 , 이용자순
+
+
+SELECT COUNT(walkLogNo) usedCnt
+       ,trailNo
+  FROM trailUsed
+ GROUP BY trailNo;
+
+SELECT COUNT(trailNo) usedCnt
+       ,trailNo
+  FROM trailUsed
+ GROUP BY trailNo;
+
+
+
+
+
+SELECT COUNT(*)
+  FROM trailStar
+ WHERE trailNo = 1;
+
+SELECT trailStarNo
+       ,userNo
+       ,trailNo
+       ,StarDate
+  FROM trailStar
+  WHERE trailno = 3;
+
+SELECT COUNT(*)
+  FROM trailStar
+ WHERE trailNo = 1;
+
+SELECT trailStarNo
+       ,userNo
+       ,trailNo
+       ,StarDate
+  FROM trailStar
+  WHERE trailno = 3;
+
+
+
+
+
+
+SELECT t.trailNo
+       ,t.name
+       ,ta.trailTagNo
+       ,ta.tagname
+  FROM trail t, trailTag ta
+ WHERE t.trailNo = ta.trailNo
+   AND ta.tagname LIKE '%넓은%'
+   AND t.status = 'T';
+
+SELECT t.trailNo
+       ,t.name
+       ,ta.trailTagNo
+       ,ta.tagname
+  FROM trail t, trailTag ta
+ WHERE t.trailNo = ta.trailNo
+   AND ta.tagname LIKE '%공원%'
+   AND t.status = 'T';
+
+SELECT t.trailNo
+       ,t.name
+       ,ta.trailTagNo
+       ,ta.tagname
+  FROM trail t, trailTag ta
+ WHERE t.trailNo = ta.trailNo
+   AND ta.tagname LIKE '%많음%'
+   AND t.status = 'T';
+
+SELECT t.trailNo
+       ,t.name
+       ,ta.trailTagNo
+       ,ta.tagname
+  FROM trail t, trailTag ta
+ WHERE t.trailNo = ta.trailNo
+   AND (ta.tagname LIKE '%넓은%' OR ta.tagname LIKE '%공원%')
+   AND t.status = 'T';
+
+SELECT t.trailNo
+       ,t.name
+  FROM trail t, trailTag ta
+ WHERE t.trailNo = ta.trailNo
+   AND (ta.tagname LIKE '%넓은%' OR ta.tagname LIKE '%공원%')
    AND t.status = 'T';
 
 SELECT t.trailNo 
        ,t.name
+       ,ta.trailTagNo
+       ,ta.tagname
   FROM trail t, trailTag ta
  WHERE t.trailNo = ta.trailNo
    AND t.status = 'T';
+
+SELECT t.trailNo 
+       ,t.name
+       ,ta.trailTagNo
+       ,ta.tagname
+  FROM trail t, trailTag ta
+ WHERE t.trailNo = ta.trailNo
+   AND t.status = 'T';
+
+
+
+
 
 -- 산책로 좌표 목록
 SELECT c.useNo
@@ -81,7 +236,7 @@ SELECT t.trailNo
        ,t.name
        ,t.distance
        ,t.eta
-       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI') regDate
+       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
        ,u.userNo
        ,u.name
   FROM trail t, users u
@@ -108,6 +263,55 @@ SELECT COUNT(*)
 SELECT COUNT(*)
   FROM trailCmt
  WHERE trailNo = 1;
+
+---------------------------------------------------------------------------------------
+
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 1, 1);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 2, 1);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 2, 2);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 1, 3);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 2, 3);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 3, 3);
+
+INSERT INTO trailCmt
+VALUES(seq_trailcmt_no.NEXTVAL, 1, 1, sysdate, '산책로 좋아요', 'T');
+INSERT INTO trailCmt
+VALUES(seq_trailcmt_no.NEXTVAL, 1, 2, sysdate, '굿', 'T');
+INSERT INTO trailCmt
+VALUES(seq_trailcmt_no.NEXTVAL, 1, 3, sysdate, '짱', 'T');
+INSERT INTO trailCmt
+VALUES(seq_trailcmt_no.NEXTVAL, 2, 1, sysdate, '산책로 좋아요', 'T');
+INSERT INTO trailCmt
+VALUES(seq_trailcmt_no.NEXTVAL, 2, 2, sysdate, '굿', 'T');
+INSERT INTO trailCmt
+VALUES(seq_trailcmt_no.NEXTVAL, 3, 1, sysdate, '산책로 좋아요', 'T');
+
+INSERT INTO trailStar
+VALUES(seq_trailstar_no.NEXTVAL, 1, 1, sysdate);
+INSERT INTO trailStar
+VALUES(seq_trailstar_no.NEXTVAL, 2, 1, sysdate);
+INSERT INTO trailStar
+VALUES(seq_trailstar_no.NEXTVAL, 3, 1, sysdate);
+INSERT INTO trailStar
+VALUES(seq_trailstar_no.NEXTVAL, 1, 2, sysdate);
+INSERT INTO trailStar
+VALUES(seq_trailstar_no.NEXTVAL, 2, 2, sysdate);
+INSERT INTO trailStar
+VALUES(seq_trailstar_no.NEXTVAL, 3, 3, sysdate);
+
+UPDATE trail
+   SET regDate = sysdate
+ WHERE trailNo = 3;
+
+UPDATE trailTag
+   SET tagName = '넓은 공간'
+ WHERE trailTagNo = 5;
 
 ---------------------------------------------------------------------------------------
 

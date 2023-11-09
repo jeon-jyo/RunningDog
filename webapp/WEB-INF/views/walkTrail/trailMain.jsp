@@ -64,8 +64,8 @@
 				<div class="btn-group" role="group" aria-label="Default button group">
 					<button type="button" class="btn btn-outline-dark">이용자순</button>
 					<button type="button" class="btn btn-outline-dark">인기순</button>
+					<button type="button" class="btn btn-outline-dark">후기순</button>
 					<button type="button" class="btn btn-outline-dark">최신순</button>
-					<button type="button" class="btn btn-outline-dark">오래된순</button>
 				</div>
 
 				<button type="button" class="btn btn-primary">MY</button>
@@ -207,7 +207,7 @@
 	        map: map,
 	        position: path[0],
 	        icon: {
-	            url: '${pageContext.request.contextPath}/assets/images/marker' + index + '.png',
+	            url: '${pageContext.request.contextPath}/assets/images/walkTrail/marker' + index + '.png',
 	            size: new naver.maps.Size(30, 30),
 	            scaledSize: new naver.maps.Size(30, 30),
 	        }
@@ -293,18 +293,18 @@
 				
 				if(infoMap.imagesVo != null) {
 					tooltipInfo.push(
-					    '       <img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg" />',
+					    '       <img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg" />',
 					);
 				} else {
 					tooltipInfo.push(
-					    '       <img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg" />',
+					    '       <img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang2.jpg" />',
 					);
 				}
 				
 				tooltipInfo.push(
 					'       	<div class="detail-text">',
 				    '       		<span>' + infoMap.trailVo.usersVo.name + '</span>',
-				 	'       		<span>' + infoMap.trailVo.regDate + '</span>',
+				 	'       		<span class="detail-info">' + infoMap.trailVo.regDate + '</span>',
 				    '       	</div>',
 				    '		</div>',
 				    '		<div class="info userBtn">상세보기</div>',
@@ -324,7 +324,7 @@
 		
 		let str = '';
 		str += '<li>';
-		str += '	<img calss="markerImg" src="${pageContext.request.contextPath}/assets/images/marker' + index + '.png"/>';
+		str += '	<img calss="markerImg" src="${pageContext.request.contextPath}/assets/images/walkTrail/marker' + index + '.png"/>';
 		str += '	<div>';
 		str += '		<span class="sideBar-title">' + trailVo.name + '</span><br>';
 		str += '		<span>' + trailVo.distance + '</span>';
