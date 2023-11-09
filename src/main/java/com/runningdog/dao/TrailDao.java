@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
+import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailVo;
-import com.runningdog.vo.UsersVo;
 
 @Repository
 public class TrailDao {
@@ -21,12 +21,21 @@ public class TrailDao {
 	// trailMain //////////////////////////////
 	
 	// 유저 설정 위치
-	public UsersVo userLocation(int userNo) {
+	public LocationVo userLocation(int userNo) {
 		System.out.println("TrailDao.userLocation()");
 		
-		UsersVo usersVo = sqlSession.selectOne("trail.userLocation", userNo);
+		LocationVo locationVo = sqlSession.selectOne("trail.userLocation", userNo);
 		
-		return usersVo;
+		return locationVo;
+	}
+
+	// 게스트 설정 위치
+	public LocationVo guestLocation() {
+		System.out.println("TrailDao.guestLocation()");
+		
+		LocationVo locationVo = sqlSession.selectOne("trail.guestLocation");
+		
+		return locationVo;
 	}
 	
 	// 산책로 목록
@@ -91,5 +100,6 @@ public class TrailDao {
 		
 		return trailCmtCnt;
 	}
+
 
 }

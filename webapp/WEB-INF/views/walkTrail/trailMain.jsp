@@ -18,7 +18,12 @@
 		<div class="explorer">
 			<div class="segment-map-filters">
 				<div class="input-group mb-3">
-					<input type="text" class="form-control" id="address" value="${usersVo.locationVo.si } ${usersVo.locationVo.gu } ${usersVo.locationVo.dong }" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
+					<c:if test="${locationVo.gu != '전체' }">
+						<input type="text" class="form-control" id="address" value="${locationVo.si } ${locationVo.gu } ${locationVo.dong }" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
+					</c:if>
+					<c:if test="${locationVo.gu == '전체' }">
+						<input type="text" class="form-control" id="address" value="${locationVo.si }" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
+					</c:if>
 					<button class="btn btn-outline-secondary" type="button" id="button-addon2">
 						<i class="fa-solid fa-magnifying-glass"></i>
 					</button>
@@ -93,6 +98,8 @@
    	getCenterCoords();
 	let overlayPolyline = [];
 	let overlayMarker = [];
+	let overlayInfo = [];
+	var tooltipInfo = [];
 	
 	naver.maps.Event.addListener(map, 'zoom_changed', function() {
 		getNewCoords();
@@ -104,10 +111,15 @@
 	function getCenterCoords() {
 		// console.log("getCenterCoords()");
 		
-		let location = "${usersVo.locationVo.si } ${usersVo.locationVo.gu } ${usersVo.locationVo.dong }";
+		let location;
+		if(${locationVo.gu != '전체' }) {
+			location = "${locationVo.si } ${locationVo.gu } ${locationVo.dong }";
+		} else {
+			location = "${locationVo.si }";
+		}
 		console.log("location ", location);
-		
-   		naver.maps.Service.geocode({
+
+		naver.maps.Service.geocode({
 	        query: location
 	    }, function(status, response) {
 	    	if (status !== naver.maps.Service.Status.OK) {
@@ -153,13 +165,16 @@
 				for(let i = 0; i < overlayPolyline.length; i++) {
 					overlayPolyline[i].setMap(null);
 					overlayMarker[i].setMap(null);
+					// overlayInfo[i].setMap(null);
 				}
 				overlayPolyline.length = 0;
 				overlayMarker.length = 0;
+				overlayInfo.length = 0;
 				$("#trailList").empty();
 				
 				for(let i = 0; i < listMap.trailList.length; i++) {
-					mapRender(listMap.coordsList[i]);
+					let trailNo = listMap.trailList[i].trailNo;
+					mapRender(listMap.coordsList[i], i, trailNo);
 					listRender(listMap.trailList[i], i);
 				}
 			},
@@ -170,8 +185,8 @@
 	}
 	
 	// coords list
-	function mapRender(coords) {
-		// console.log("mapRender()");
+	function mapRender(coords, index, trailNo) {
+		console.log("mapRender()");
 		
 		let path = [];
 		for(let i = 0; i < coords.length; i++) {
@@ -188,15 +203,28 @@
 	        map: map
 	    });
 		
-		var marker = new naver.maps.Marker({
+ 		var marker = new naver.maps.Marker({
 	        map: map,
-	        position: path[0]
-	    });
+	        position: path[0],
+	        icon: {
+	            url: '${pageContext.request.contextPath}/assets/images/marker' + index + '.png',
+	            size: new naver.maps.Size(30, 30),
+	            scaledSize: new naver.maps.Size(30, 30),
+	        }
+	    }); 
 		
 		overlayPolyline.push(polyline);
 		overlayMarker.push(marker);
-		
-		naver.maps.Event.addListener(marker, "mouseover", function () {
+	    
+	    trailTooltip(trailNo);
+	    
+	    var infowindow = new naver.maps.InfoWindow({
+			    content: tooltipInfo.join('')
+		})
+	    
+	    overlayInfo.push(infowindow);
+	    
+	    naver.maps.Event.addListener(marker, "mouseover", function () {
 	        polyline.setOptions({
 	        	strokeColor: 'red',
 	            strokeWeight: 5
@@ -209,28 +237,19 @@
 	            strokeWeight: 3
 	        });
 	    });
-		
+	    
 		naver.maps.Event.addListener(marker, "click", function(e) {
- 			let trailNo = 1;
-			tooltipInfo(trailNo);
-			
-		    if (infowindow.getMap()) {
+			if (infowindow.getMap()) {
 		        infowindow.close();
 		    } else {
+		    	console.log("infowindow open");
 		        infowindow.open(map, marker);
 		    }
 		});
-		
-		var infowindow = new naver.maps.InfoWindow({
-		    content: trailTooltip.join('')
-		});
-		
-/* 		var contentString = [
-		].join(''); */
 	}
-	
-	function tooltipInfo(trailNo) {
-		console.log("tooltipInfo()", trailNo);
+
+	function trailTooltip(trailNo) {
+		// console.log("trailTooltip()", trailNo);
 		
  		$.ajax({
 			url : "${pageContext.request.contextPath}/walkTrail/tooltip",
@@ -238,10 +257,60 @@
 			data : {trailNo: trailNo},
 			
 			dataType : "json",
+			async : false,
 			success : function(infoMap) {
-				console.log("infoMap ", infoMap);
+				// console.log("infoMap ", infoMap);
 				
+				tooltipInfo = [
+				    '<div class="iw_inner trail-tootip">',
+				    '   <h5>' + infoMap.trailVo.name + '</h5>',
+				    '	<div class="trailInfo">',
+				    '		<div class="info">',
+				    '			<span class="detail-text">' + infoMap.trailVo.distance + '</span>',
+				    '			<span class="detail-info">거리</span>',
+				    '		</div>',
+				    '		<div class="info">',
+				    '			<span class="detail-text">' + infoMap.trailVo.eta + '</span>',
+				    '			<span class="detail-info">소요시간</span>',
+				    '		</div>',
+				    '		<div class="vr"></div>',
+				    '		<div class="info cntInfo">',
+				    '			<span class="detail-text">' + infoMap.trailUsedCnt + '</span>',
+				    '			<span class="detail-info">이용자</span>',
+				    '		</div>',
+				    '		<div class="info cntInfo">',
+				    '			<span class="detail-text">' + infoMap.trailStarCnt + '</span>',
+				    '			<span class="detail-info">찜</span>',
+				    '		</div>',
+				    '		<div class="info cntInfo">',
+				    '			<span class="detail-text">' + infoMap.trailCmtCnt + '</span>',
+				    '			<span class="detail-info">후기</span>',
+				    '		</div>',
+				    '	</div>',
+				    '	<div class="userInfo">',
+				    '		<div class="info userDetail">'
+				];
 				
+				if(infoMap.imagesVo != null) {
+					tooltipInfo.push(
+					    '       <img src="${pageContext.request.contextPath}/assets/images/sarang1.jpg" />',
+					);
+				} else {
+					tooltipInfo.push(
+					    '       <img src="${pageContext.request.contextPath}/assets/images/sarang2.jpg" />',
+					);
+				}
+				
+				tooltipInfo.push(
+					'       	<div class="detail-text">',
+				    '       		<span>' + infoMap.trailVo.usersVo.name + '</span>',
+				 	'       		<span>' + infoMap.trailVo.regDate + '</span>',
+				    '       	</div>',
+				    '		</div>',
+				    '		<div class="info userBtn">상세보기</div>',
+				    '	</div>',
+				    '</div>'
+				);
 			},
 			error : function(XHR, status, error) {
 				console.error(status + " : " + error);
@@ -249,53 +318,13 @@
 		});
 	}
 	
-	var trailTooltip = [
-	    '<div class="iw_inner trail-tootip">',
-	    '   <h5>서울특별시청</h5>',
-	    '	<div class="trailInfo">',
-	    '		<div class="info">',
-	    '			<span class="detail-text">0.87km</span>',
-	    '			<span class="detail-info">거리</span>',
-	    '		</div>',
-	    '		<div class="info">',
-	    '			<span class="detail-text">30분</span>',
-	    '			<span class="detail-info">소요시간</span>',
-	    '		</div>',
-	    '		<div class="vr"></div>',
-	    '		<div class="info cntInfo">',
-	    '			<span class="detail-text">2k</span>',
-	    '			<span class="detail-info">이용자</span>',
-	    '		</div>',
-	    '		<div class="info cntInfo">',
-	    '			<span class="detail-text">391</span>',
-	    '			<span class="detail-info">찜</span>',
-	    '		</div>',
-	    '		<div class="info cntInfo">',
-	    '			<span class="detail-text">1k</span>',
-	    '			<span class="detail-info">후기</span>',
-	    '		</div>',
-	    '	</div>',
-	    '	<div class="userInfo">',
-	    '		<div class="info userDetail">',
-	    '       	<img src="${pageContext.request.contextPath}/assets/images/sarang4.jpg" width="55" height="55" alt="서울시청" class="thumb" />',
-	    '       	<div class="detail-text">',
-	    '       		<span>닉네임</span>',
-	 		'       		<span>2023/10/01</span>',
-	    '       	</div>',
-	    '		</div>',
-	    '		<div class="info userBtn">상세보기</div>',
-	    '	</div>',
-	    '</div>'
-	];
-	
 	// trail list
 	function listRender(trailVo, index) {
 		// console.log("listRender()");
 		
 		let str = '';
-		// str += '<li id="l' + trailVo.trailNo + '">';
-		str += '<li data-trailno="' + trailVo.trailNo + '">';
-		str += '	<i class="fa-solid fa-location-dot fa-2x"></i>';
+		str += '<li>';
+		str += '	<img calss="markerImg" src="${pageContext.request.contextPath}/assets/images/marker' + index + '.png"/>';
 		str += '	<div>';
 		str += '		<span class="sideBar-title">' + trailVo.name + '</span><br>';
 		str += '		<span>' + trailVo.distance + '</span>';
@@ -304,6 +333,7 @@
 		str += '</li>';
 		
 		$("#trailList").append(str);
+		
 		$("#trailList").children().last().hover(
 			function() {
 				overlayPolyline[index].setOptions({
@@ -317,14 +347,16 @@
 		        });
 			}
 		);
+		
+		$("#trailList").children().last().on("click", function() {
+			 if (overlayInfo[index].getMap()) {
+				 overlayInfo[index].close();
+			 } else {
+			 	console.log("infowindow open");
+			 	overlayInfo[index].open(map, overlayMarker[index]);
+			 }
+		})
 	}
-	
-	$("#trailList").on("click", "li", function(e) {
-		let $this = $(this);
-		let trailNo = $this.data("trailno");
-		console.log("trailNo, " + trailNo);
-
-	});
 	
 	/* Non-list */
  	$("#fa-angles").on("click", function() {

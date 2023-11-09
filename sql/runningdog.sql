@@ -15,16 +15,24 @@ COMMIT;
 
 -- 산책로 메인
 
--- 산책로 목록
-SELECT u.userNo
-       ,u.locationNo
+-- 유저 설정 위치
+SELECT l.locationNo
        ,l.si
        ,l.gu
        ,l.dong
   FROM users u, location l
- WHERE u.locationNo = l.locationno
+ WHERE u.locationNo = l.locationNo
    AND u.userNo = 2;
 
+-- 서울 전체 위치
+SELECT locationNo
+       ,si
+       ,gu
+       ,dong
+  FROM location
+ WHERE l.gu LIKE '%전체%';
+
+-- 산책로 목록
 SELECT t.trailNo
        ,t.name
        ,t.distance
@@ -33,62 +41,42 @@ SELECT t.trailNo
  WHERE t.trailNo = c.useNo
    AND c.type = 'trail'
    AND c.coordorder = 1
-   AND c.lng BETWEEN 127.1252811 AND 127.1252813
-   AND c.lat BETWEEN 37.5436749 AND 37.5436749
+   AND c.lng BETWEEN 127.1162072 AND 127.157406
+   AND c.lat BETWEEN 37.5342968 AND 37.5557335
    AND t.status = 'T';
 
 SELECT t.trailNo
        ,t.name
        ,t.distance
        ,t.eta
-  FROM trail t, trailTag ta
- WHERE t.locationNo = 1174010900
+  FROM trail t, coords c, trailTag ta
+ WHERE t.trailNo = c.useNo
+   AND c.type = 'trail'
+   AND c.coordorder = 1
+   AND c.lng BETWEEN 127.1162072 AND 127.157406
+   AND c.lat BETWEEN 37.5342968 AND 37.5557335
    AND t.trailNo = ta.trailNo
-   AND ta.tagName = '공원 근처'
-    OR ta.tagName = '공원 근처'
    AND t.status = 'T';
 
-SELECT t.trailNo
-       ,ta.tagName
-  FROM trail t, trailtag ta
- WHERE t.trailno = ta.trailNol;
-
-SELECT t.trailNo
+SELECT t.trailNo 
        ,t.name
-       ,t.spot
-       ,t.distance
-       ,t.eta
-       ,ta.tagName
   FROM trail t, trailTag ta
- WHERE t.locationNo = 1174010900
-   AND t.trailNo = ta.trailNo
-   AND ta.tagName = '공원 근처'
+ WHERE t.trailNo = ta.trailNo
    AND t.status = 'T';
 
+-- 산책로 좌표 목록
 SELECT c.useNo
        ,c.coordOrder
        ,c.lat
        ,c.lng
   FROM trail t, coords c
- WHERE t.locationNo = 1174010900
-   AND t.trailNo = c.useNo
-   AND c.useNo = 1
+ WHERE t.trailNo = c.useNo
    AND c.type = 'trail'
-   AND t.status = 'T';
-
-SELECT t.trailNo
-       ,c.coordOrder
-       ,c.lat
-       ,c.lng
-  FROM trail t, coords c
- WHERE t.locationNo = 1174010900
-   AND t.trailNo = c.useNo
    AND c.useNo = 1
-   AND c.type = 'trail'
-   AND t.status = 'T';
+   AND t.status = 'T'
+ ORDER BY c.coordOrder;
 
 -- 산책로 툴팁
-
 SELECT t.trailNo
        ,t.name
        ,t.distance

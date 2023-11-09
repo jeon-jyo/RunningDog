@@ -13,7 +13,7 @@
 		<result column="userNo" property="userNo"></result>
 		<result column="id" property="id"></result>
 		<result column="password" property="password"></result>
-		<result column="name" property="name"></result>
+		<result column="userName" property="name"></result>
 		<result column="code" property="code"></result>
 		<result column="birth" property="birth"></result>
 		<result column="gender" property="gender"></result>
@@ -41,16 +41,27 @@
 	<!-- trailMain -->
 	
 	<!-- 유저 설정 위치 -->
-	<select id="userLocation" parameterType="int" resultMap="UsersMap">
+	<select id="userLocation" parameterType="int" resultType="com.runningdog.vo.LocationVo">
 		 <![CDATA[
-			SELECT u.userNo
-			       ,u.locationNo
+			SELECT l.locationNo
 			       ,l.si
 			       ,l.gu
 			       ,l.dong
 			  FROM users u, location l
-			 WHERE u.locationNo = l.locationno
+			 WHERE u.locationNo = l.locationNo
 			   AND u.userNo = #{userNo}
+		 ]]>
+	</select>
+	
+	<!-- 게스트 설정 위치 -->
+	<select id="guestLocation" resultType="com.runningdog.vo.LocationVo">
+		 <![CDATA[
+			SELECT locationNo
+			       ,si
+			       ,gu
+			       ,dong
+			  FROM location
+			 WHERE gu LIKE '%전체%'
 		 ]]>
 	</select>
 	
@@ -79,11 +90,11 @@
 			       ,c.lat
 			       ,c.lng
 			  FROM trail t, coords c
-			 WHERE t.locationNo = 1174010900
-			   AND t.trailNo = c.useNo
-			   AND c.useNo = #{trailNo}
+			 WHERE t.trailNo = c.useNo
 			   AND c.type = 'trail'
+			   AND c.useNo = #{trailNo}
 			   AND t.status = 'T'
+			 ORDER BY c.coordOrder
 		 ]]>
 	</select>
 	
@@ -96,7 +107,7 @@
 			       ,t.eta
 			       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI') regDate
 			       ,u.userNo
-			       ,u.name
+			       ,u.name userName
 			  FROM trail t, users u
 			 WHERE t.userNo = u.userNo
 			   AND t.trailNo = #{trailNo}

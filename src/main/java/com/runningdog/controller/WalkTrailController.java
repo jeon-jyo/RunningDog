@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.runningdog.service.TrailService;
+import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.UserVo;
-import com.runningdog.vo.UsersVo;
 
 @Controller
 @RequestMapping(value = "/walkTrail")
@@ -24,22 +24,30 @@ public class WalkTrailController {
 	private TrailService trailService;
 	
 	// trailMain //////////////////////////////
+	
+	// dogMapExample
+	@RequestMapping(value = "/ex", method= { RequestMethod.GET, RequestMethod.POST})
+	public String dogMapExample(HttpSession session, Model model) {
+		System.out.println("WalkTrailController.dogMapExample()");
+		
+		return "global/dogMapExample";
+	}
 
 	// 산책로 메인 - 추천 목록
 	@RequestMapping(value = "/main", method= { RequestMethod.GET, RequestMethod.POST})
 	public String trailMain(HttpSession session, Model model) {
 		System.out.println("WalkTrailController.trailMain()");
 		
-		// UserVo authUser = userService.selectOneUser(userVo);
-		// authUser 를 UsersVo 로 받을 수 있는지 ?
+		// UserVo authUser = userService.selectOneUser(userVo);	// UsersVo 로 변경되는지?
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		UsersVo usersVo = null;
+		LocationVo locationVo = null;
 		if(authUser != null) {
-			usersVo = trailService.userLocation(authUser.getUserNo());
+			locationVo = trailService.userLocation(authUser.getUserNo());
 		} else {
-			usersVo = trailService.userLocation(2);
+			// locationVo = trailService.userLocation(0);
+			locationVo = trailService.userLocation(2);
 		}
-		model.addAttribute("usersVo", usersVo);
+		model.addAttribute("locationVo", locationVo);
 		
 		return "walkTrail/trailMain";
 	}
@@ -60,10 +68,8 @@ public class WalkTrailController {
 	@RequestMapping(value = "/tooltip", method= { RequestMethod.GET, RequestMethod.POST})
 	public Map<String, Object> trailTooltip(@RequestParam(value="trailNo") int trailNo) {
 		System.out.println("WalkTrailController.trailTooltip()");
-		System.out.println("trailNo " + trailNo);
 		
 		Map<String, Object> infoMap = trailService.trailTooltip(trailNo);
-		System.out.println("infoMap : " + infoMap);
 		
 		return infoMap;
 	}

@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 import com.runningdog.dao.TrailDao;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
+import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailVo;
-import com.runningdog.vo.UsersVo;
 
 @Service
 public class TrailService {
@@ -22,18 +22,22 @@ public class TrailService {
 	// trailMain //////////////////////////////
 	
 	// 유저 설정 위치
-	public UsersVo userLocation(int userNo) {
+	public LocationVo userLocation(int userNo) {
 		System.out.println("TrailService.userLocation()");
 		
-		UsersVo usersVo = trailDao.userLocation(userNo);
+		LocationVo locationVo = null;
+		if(userNo != 0) {
+			locationVo = trailDao.userLocation(userNo);
+		} else {
+			locationVo = trailDao.guestLocation();
+		}
 		
-		return usersVo;
+		return locationVo;
 	}
 
 	// 산책로 목록 ajax
 	public Map<String, Object> trailListMap(Map<String, Object> coordsMap) {
 		System.out.println("TrailService.trailListMap()");
-		// System.out.println("coordsMap : " + coordsMap);
 		
 		// 산책로 목록
 		List<TrailVo> trailList = trailDao.trailList(coordsMap);
