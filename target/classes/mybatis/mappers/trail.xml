@@ -82,6 +82,160 @@
 		 ]]>
 	</select>
 	
+	<!-- 산책로 목록 - 최신순 -->
+	<select id="trailListDate" parameterType="java.util.Map" resultType="com.runningdog.vo.TrailVo">
+		 <![CDATA[
+			SELECT t.trailNo
+			       ,t.name
+			       ,t.distance
+			       ,t.eta
+			       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS')
+			  FROM trail t, coords c
+			 WHERE t.trailNo = c.useNo
+			   AND c.type = 'trail'
+			   AND c.coordorder = 1
+			   AND c.lng BETWEEN #{swX} AND #{neX}
+			   AND c.lat BETWEEN #{swY} AND #{neY}
+			   AND t.status = 'T'
+			 ORDER BY t.regDate DESC
+		 ]]>
+	</select>
+	
+	<!-- 산책로 목록 - 후기순 -->
+	<select id="trailListCmt" parameterType="java.util.Map" resultType="com.runningdog.vo.TrailVo">
+		 <![CDATA[
+			SELECT t.trailNo
+			       ,t.name
+			       ,t.distance
+			       ,t.eta
+			       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS')
+			  FROM trail t, coords c, ( SELECT COUNT(userNo) cnt
+			                                   ,trailNo
+			                              FROM trailCmt
+			                             WHERE status = 'T'
+			                             GROUP BY trailNo ) gt
+			 WHERE t.trailNo = c.useNo
+			   AND t.trailNo = gt.trailNo
+			   AND c.type = 'trail'
+			   AND c.coordorder = 1
+			   AND c.lng BETWEEN #{swX} AND #{neX}
+			   AND c.lat BETWEEN #{swY} AND #{neY}
+			   AND t.status = 'T'
+			 ORDER BY gt.cnt DESC
+		 ]]>
+	</select>
+
+	<!-- 산책로 목록 - 인기순 -->
+	<select id="trailListStar" parameterType="java.util.Map" resultType="com.runningdog.vo.TrailVo">
+		<![CDATA[
+			SELECT t.trailNo
+			       ,t.name
+			       ,t.distance
+			       ,t.eta
+			       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS')
+			  FROM trail t, coords c, ( SELECT COUNT(userNo) cnt
+			                                   ,trailNo
+			                              FROM trailStar
+			                             GROUP BY trailNo ) gt
+			 WHERE t.trailNo = c.useNo
+			   AND t.trailNo = gt.trailNo
+			   AND c.type = 'trail'
+			   AND c.coordorder = 1
+			   AND c.lng BETWEEN #{swX} AND #{neX}
+			   AND c.lat BETWEEN #{swY} AND #{neY}
+			   AND t.status = 'T'
+			 ORDER BY gt.cnt DESC
+		 ]]>
+	</select>
+	
+	<!-- 산책로 목록 - 태그별 / 필터별 -->
+	<select id="trailListUsed" parameterType="java.util.Map" resultType="com.runningdog.vo.TrailVo">
+		<![CDATA[
+			SELECT ort.trailNo
+			       ,ort.name
+			       ,ort.distance
+			       ,ort.eta
+			       ,ort.regDate
+			  FROM (SELECT ROWNUM rn
+			               ,ot.trailNo
+			               ,ot.name
+			               ,ot.distance
+			               ,ot.eta
+			               ,ot.regDate
+			          FROM (SELECT t.trailNo
+			                       ,t.name
+			                       ,t.distance
+			                       ,t.eta
+			                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+		]]>
+		<if test='filter == 0'>
+			<![CDATA[
+							  FROM trail t, coords c, ( SELECT COUNT(tt.walkLogNo) cnt
+			                                                   ,tt.trailNo
+			                                              FROM trailUsed tt, trailTag ta
+			                                             WHERE tt.trailNo = ta.trailNo
+			]]>
+		</if>		
+		<if test='filter == 1'>
+			<![CDATA[
+							  FROM trail t, coords c, ( SELECT COUNT(tt.userNo) cnt
+			                                                   ,tt.trailNo
+			                                              FROM trailStar tt, trailTag ta
+			                                             WHERE tt.trailNo = ta.trailNo
+			]]>
+		</if>
+		<if test='filter == 2'>
+			<![CDATA[
+				  			  FROM trail t, coords c, ( SELECT COUNT(tt.userNo) cnt
+			                                                   ,tt.trailNo
+			                                              FROM trailCmt tt, trailTag ta
+			                                             WHERE tt.trailNo = ta.trailNo
+			                                               AND tt.status = 'T'
+			]]>
+		</if>
+		<if test='filter == 3'>
+			<![CDATA[
+				  			  FROM trail t, coords c, ( SELECT tt.trailNo
+			                                              FROM trailTag tt
+			                                             WHERE tt.trailNo > 0
+			]]>
+		</if>
+		<if test='tags.size != 0'>
+			<![CDATA[
+														   AND ta.tagName IN
+			]]>
+			<foreach collection="tags" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+		<![CDATA[
+														 GROUP BY tt.trailNo ) gt
+			                 WHERE t.trailNo = c.useNo
+			                   AND t.trailNo = gt.trailNo
+			                   AND c.type = 'trail'
+			                   AND c.coordorder = 1
+			                   AND c.lng BETWEEN #{coordsMap.swX} AND #{coordsMap.neX}
+			   				   AND c.lat BETWEEN #{coordsMap.swY} AND #{coordsMap.neY}
+			                   AND t.status = 'T'
+		]]>
+		<if test='filter == 0 || filter == 1 || filter == 2'>
+			<![CDATA[
+				  			 ORDER BY gt.cnt DESC
+			]]>
+		</if>
+		<if test='filter == 3'>
+			<![CDATA[
+				  			 ORDER BY t.regDate DESC
+			]]>
+		</if>
+		<![CDATA[
+			               ) ot
+			       ) ort
+			 WHERE ort.rn >= 1
+			   AND ort.rn <= 10
+		 ]]>
+	</select>
+
 	<!-- 산책로 좌표 목록 -->
 	<select id="coordsList" parameterType="int" resultType="com.runningdog.vo.CoordsVo">
 		 <![CDATA[

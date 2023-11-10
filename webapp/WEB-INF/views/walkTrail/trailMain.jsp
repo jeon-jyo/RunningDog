@@ -135,7 +135,7 @@
 	}
     
     function getNewCoords() {
-    	// console.log("getNewCoords()");
+    	console.log("getNewCoords()");
     	
 		// ne 북동 / sw 남서
 		let coordsMap = {
@@ -144,23 +144,30 @@
 			swX : map.getBounds()._sw.x,
 			swY : map.getBounds()._sw.y,
 		}
-		// console.log("coordsMap ", coordsMap);
 		
 		fetchList(coordsMap);
 	}
 	
     // list
 	function fetchList(coordsMap) {
-		// console.log("fetchList()");
+		console.log("fetchList()");
+		
+		let fetchSet = {
+			"coordsMap" : coordsMap,
+			"tags" : tags,
+			"filter" : filterIndex
+		}
+		console.log("fetchSet ", fetchSet);
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/walkTrail/listMap",
-			type : "get",
-			data : coordsMap,
+			type : "post",
+			contentType : "application/json",
+			data : JSON.stringify(fetchSet),
 			
 			dataType : "json",
 			success : function(listMap) {
-				// console.log("listMap ", listMap);
+				console.log("listMap ", listMap);
 				
 				for(let i = 0; i < overlayPolyline.length; i++) {
 					overlayPolyline[i].setMap(null);
@@ -172,7 +179,7 @@
 				overlayInfo.length = 0;
 				$("#trailList").empty();
 				
-				for(let i = 0; i < listMap.trailList.length; i++) {
+  				for(let i = 0; i < listMap.trailList.length; i++) {
 					let trailNo = listMap.trailList[i].trailNo;
 					mapRender(listMap.coordsList[i], i, trailNo);
 					listRender(listMap.trailList[i], i);
@@ -382,6 +389,9 @@
         	filterGroup[filterIndex].classList.remove("selected-filter");
         	filterIndex = index;
         	filterGroup[filterIndex].classList.add("selected-filter");
+        	
+        	console.log("filterGroup click");
+        	getNewCoords();
         })
     });
 	
@@ -391,6 +401,7 @@
  	const tagGroup = document.querySelectorAll("#tagModal .modal-body button");
  	let tagActive = false;
  	let tagArr = [];
+ 	let tags = [];
  	
  	tagGroup.forEach(function (item, index) {
         item.addEventListener("click", function () {
@@ -429,25 +440,30 @@
 		// console.log("tagSelected click");
 		
 		tagList();
-		
+    	
 		$('#tagModal').modal('hide');
 	});
  	
  	// tag list
  	let tagList = function() {
- 		console.log("tagArr ", tagArr);
+ 		// console.log("tagArr ", tagArr);
  		
  		$(".modalBtn")[0].innerHTML = "";
+ 		tags.length = 0;
  		
  		if(tagArr.length != 0) {
  			for(let i = 0; i < tagArr.length; i++) {
 				let newTag = tagArr[i].cloneNode(true);
 				
 				$(".modalBtn")[0].append(newTag);
+				
+				tags.push(tagArr[i].innerText);
 			}
  		} else {
  			$(".modalBtn")[0].innerHTML = '태그 선택&nbsp;&nbsp;&nbsp<i class="fa-solid fa-chevron-down"></i>';
  		}
+ 		
+    	getNewCoords();
  	};
  	
 </script>

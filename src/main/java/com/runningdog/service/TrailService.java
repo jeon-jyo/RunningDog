@@ -36,11 +36,19 @@ public class TrailService {
 	}
 
 	// 산책로 목록 ajax
-	public Map<String, Object> trailListMap(Map<String, Object> coordsMap) {
+	public Map<String, Object> trailListMap(Map<String, Object> fetchSet) {
 		System.out.println("TrailService.trailListMap()");
 		
+		//Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
+		//ArrayList<String> tags = (ArrayList<String>) fetchSet.get("tags");
+		//int filter = (int) fetchSet.get("filter");
+		
+		//System.out.println("coordsMap : " + coordsMap);
+		//System.out.println("tags : " + tags);
+		//System.out.println("filter " + filter);
+		
 		// 산책로 목록
-		List<TrailVo> trailList = trailDao.trailList(coordsMap);
+		List<TrailVo> trailList = trailDao.trailList(fetchSet);
 		// System.out.println("trailList : " + trailList);
 		
 		// 산책로 좌표 목록

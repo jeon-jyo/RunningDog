@@ -1,5 +1,8 @@
 package com.runningdog.controller;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -7,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,13 +36,13 @@ public class WalkTrailController {
 		
 		return "global/dogMapExample";
 	}
-
+	
 	// 산책로 메인 - 추천 목록
 	@RequestMapping(value = "/main", method= { RequestMethod.GET, RequestMethod.POST})
 	public String trailMain(HttpSession session, Model model) {
 		System.out.println("WalkTrailController.trailMain()");
 		
-		// UserVo authUser = userService.selectOneUser(userVo);	// UsersVo 로 변경되는지?
+		// UserVo authUser = userService.selectOneUser(userVo);	// UsersVo 로 변경?
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		LocationVo locationVo = null;
 		if(authUser != null) {
@@ -55,10 +59,26 @@ public class WalkTrailController {
 	// 산책로 목록 ajax
 	@ResponseBody
 	@RequestMapping(value = "/listMap", method= { RequestMethod.GET, RequestMethod.POST})
-	public Map<String, Object> trailListMap(@RequestParam Map<String, Object> coordsMap) {
+	public Map<String, Object> trailListMap(@RequestBody Map<String, Object> fetchSet) {
 		System.out.println("WalkTrailController.trailListMap()");
+		System.out.println("fetchSet " + fetchSet);
 		
-		Map<String, Object> listMap = trailService.trailListMap(coordsMap);
+		/*
+		 * Map<String, Object> coordsMap = (Map<String, Object>)
+		 * fetchSet.get("coordsMap"); ArrayList<String> tags = (ArrayList<String>)
+		 * fetchSet.get("tags"); int filter = (int) fetchSet.get("filter");
+		 * 
+		 * System.out.println("coordsMap : " + coordsMap); System.out.println("tags : "
+		 * + tags); System.out.println("filter " + filter);
+		 */
+		
+		/*
+		 * if(tags.size() != 0) { for(String str : tags) { System.out.println("str : " +
+		 * str); } }
+		 */
+		
+		Map<String, Object> listMap = trailService.trailListMap(fetchSet);
+		// Map<String, Object> listMap = null;
 		
 		return listMap;
 	}

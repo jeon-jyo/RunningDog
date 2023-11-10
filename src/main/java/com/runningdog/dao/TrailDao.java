@@ -39,10 +39,10 @@ public class TrailDao {
 	}
 	
 	// 산책로 목록
-	public List<TrailVo> trailList(Map<String, Object> coordsMap) {
-		// System.out.println("TrailDao.trailList()");
+	public List<TrailVo> trailList(Map<String, Object> fetchSet) {
+		System.out.println("TrailDao.trailList()");
 		
-		List<TrailVo> trailList =  sqlSession.selectList("trail.trailList", coordsMap);
+		List<TrailVo> trailList =  sqlSession.selectList("trail.trailListUsed", fetchSet);
 		
 		return trailList;
 	}
