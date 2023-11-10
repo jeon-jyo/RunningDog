@@ -113,48 +113,31 @@ SELECT COUNT(userNo) starCnt
  GROUP BY trailNo;
 
 -- 태그전체 , 이용자순
-
+SELECT t.trailNo
+       ,t.name
+       ,t.distance
+       ,t.eta
+       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS')
+       ,uc.usedCnt
+  FROM trail t, coords c, ( SELECT COUNT(walkLogNo) usedCnt
+                                   ,trailNo
+                              FROM trailUsed
+                             GROUP BY trailNo ) uc
+ WHERE t.trailNo = c.useNo
+   AND t.trailNo = uc.trailNo
+   AND c.type = 'trail'
+   AND c.coordorder = 1
+   AND c.lng BETWEEN 127.1162072 AND 127.157406
+   AND c.lat BETWEEN 37.5342968 AND 37.5557335
+   AND t.status = 'T'
+ ORDER BY uc.usedCnt DESC;
 
 SELECT COUNT(walkLogNo) usedCnt
        ,trailNo
   FROM trailUsed
  GROUP BY trailNo;
 
-SELECT COUNT(trailNo) usedCnt
-       ,trailNo
-  FROM trailUsed
- GROUP BY trailNo;
-
-
-
-
-
-SELECT COUNT(*)
-  FROM trailStar
- WHERE trailNo = 1;
-
-SELECT trailStarNo
-       ,userNo
-       ,trailNo
-       ,StarDate
-  FROM trailStar
-  WHERE trailno = 3;
-
-SELECT COUNT(*)
-  FROM trailStar
- WHERE trailNo = 1;
-
-SELECT trailStarNo
-       ,userNo
-       ,trailNo
-       ,StarDate
-  FROM trailStar
-  WHERE trailno = 3;
-
-
-
-
-
+-- 태그
 
 SELECT t.trailNo
        ,t.name
@@ -199,13 +182,6 @@ SELECT t.trailNo
    AND (ta.tagname LIKE '%넓은%' OR ta.tagname LIKE '%공원%')
    AND t.status = 'T';
 
-SELECT t.trailNo 
-       ,t.name
-       ,ta.trailTagNo
-       ,ta.tagname
-  FROM trail t, trailTag ta
- WHERE t.trailNo = ta.trailNo
-   AND t.status = 'T';
 
 SELECT t.trailNo 
        ,t.name
