@@ -574,3 +574,8 @@ CREATE SEQUENCE seq_userlike_no
 INCREMENT BY 1                 
 START WITH 1                   
 nocache;
+
+CREATE SEQUENCE seq_walklog_no
+INCREMENT BY 1                 
+START WITH 4                 
+nocache;
