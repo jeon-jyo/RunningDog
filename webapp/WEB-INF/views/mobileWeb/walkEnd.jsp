@@ -21,6 +21,20 @@
 </head>
 <body>
 
+	<!-- 컨트롤러로 보내서 insert할 데이터들 -->
+	<form id="dataForm" action="${pageContext.request.contextPath}/m/walkInsert" method="post">
+		<!-- 좌표데이터 -->
+	    <input type="hidden" name="line" id="lineDataInput" value="">
+	    <!-- 거리데이터 -->
+	    <input type="hidden" name="distance" id="distanceDataInput" value="">
+	    <!-- 소요시간데이터 -->
+	    <input type="hidden" name="time" id="timeDataInput" value="">
+	    <!-- 시작시간데이터 -->
+	    <input type="hidden" name="sTime" id="sTimeDataInput" value="">
+	    <!-- 종료시간데이터 -->
+	    <input type="hidden" name="eTime" id="eTimeDataInput" value="">
+	</form>
+	
 	<div id="allBox">
 	
 		<!-- 헤더박스 -->
@@ -29,8 +43,8 @@
 			<div class="end" id="text01">산책종료</div>
 			
 			<div class="recordBox">
-				<div class="date" id="text02">2023년 10월 25일(화)</div>
-				<div class="record" id="text02"> 거리:34m  시간:0:45</div>
+				<div class="date" id="text02"> </div>
+				<div class="record" id="text02"> 거리:${distance}m  시간: ${time} </div>
 			</div>		
 			
 		</div>
@@ -87,7 +101,7 @@
 				</label>
 			</div>
 			
-			<div class="checkBox">
+			<!-- <div class="checkBox">
 			
 				<i class="fa-brands fa-instagram"></i>
 				
@@ -98,7 +112,7 @@
 				    <span class="onoff-switch"></span>
 				</label>
 				
-			</div>
+			</div> -->
 		</div>
 		
 		<!-- 작성하기 버튼 -->
@@ -130,8 +144,13 @@
 	
 	
 	<script th:inline="javascript">
-	// 경로로 표시할 배열(array)
-	// naver.maps.LatLng 위도 경도 변수
+	
+		// 날짜표시
+		const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+	    document.getElementById("text02").innerHTML = new Date().toLocaleDateString('ko-KR', options);
+	
+		// 경로로 표시할 배열(array)
+		// naver.maps.LatLng 위도 경도 변수
 		var polylinePath = [];	
 	
 		// 컨트롤러에서 전달한 lineList 데이터를 JSON 형식으로 파싱
@@ -145,9 +164,10 @@
 	        polylinePath.push(new naver.maps.LatLng(lat, lng));
 	    }
 	    
-	    console.log("내 이동 경로 표시 : " + polylinePath);
+	    console.log("내 이동 경로 표시 : " + polylinePath);	  
 	    
-	
+	    
+	  
 		// 중간 지점을 계산
 		var totalLat = 0;
 		var totalLng = 0;
@@ -193,6 +213,15 @@
 	        map: map
 	    });
 	    
+	    $("#lineDataInput").val(polylinePath);
+	    
+	    $(document).ready(function() {
+            $(".btn btn-primary").click(function() {
+                // 폼 제출
+            	$("#dataForm").submit();    
+            	console.log("기록완료");
+            });
+        });    
 	    
 	    $(document).ready(function() {
             $(".back").click(function() {

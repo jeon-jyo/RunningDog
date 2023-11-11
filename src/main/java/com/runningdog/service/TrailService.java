@@ -13,6 +13,7 @@ import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailVo;
+import com.runningdog.vo.WalkLogVo;
 
 @Service
 public class TrailService {
@@ -39,16 +40,21 @@ public class TrailService {
 	public Map<String, Object> trailListMap(Map<String, Object> fetchSet) {
 		System.out.println("TrailService.trailListMap()");
 		
-		//Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
-		//ArrayList<String> tags = (ArrayList<String>) fetchSet.get("tags");
-		//int filter = (int) fetchSet.get("filter");
+		// Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
+		// ArrayList<String> tags = (ArrayList<String>) fetchSet.get("tags");
+		// int filter = (int) fetchSet.get("filter");
+		String listKey = (String) fetchSet.get("listKey");
 		
-		//System.out.println("coordsMap : " + coordsMap);
-		//System.out.println("tags : " + tags);
-		//System.out.println("filter " + filter);
-		
-		// 산책로 목록
-		List<TrailVo> trailList = trailDao.trailList(fetchSet);
+		List<TrailVo> trailList = null;
+		if(listKey.equals("main") || listKey.equals("my")) {
+			// 산책로 추천 / 등록 목록
+			trailList = trailDao.trailList(fetchSet);
+		} else if(listKey.equals("star")) {
+			// 산책로 찜 목록
+			trailList = trailDao.trailStarList(fetchSet);
+		} else if(listKey.equals("add")) {
+			
+		}
 		// System.out.println("trailList : " + trailList);
 		
 		// 산책로 좌표 목록
@@ -88,6 +94,32 @@ public class TrailService {
 		infoMap.put("trailCmtCnt", trailCmtCnt);
 		
 		return infoMap;
+	}
+
+	// 산책일지 목록 ajax
+	public List<WalkLogVo> walkLogList(Map<String, Object> fetchSet) {
+		System.out.println("TrailService.walkLogList()");
+
+		// Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
+		// int filter = (int) fetchSet.get("filter");
+		
+		// 산책일지 목록
+		List<WalkLogVo> walkLogList = trailDao.walkLogList(fetchSet);
+		// System.out.println("walkLogList : " + walkLogList);
+
+		return walkLogList;
+	}
+
+	// 산책일지 좌표 ajax
+	public List<CoordsVo> walkLogMap(WalkLogVo walkLogVo) {
+		System.out.println("TrailService.walkLogMap()");
+		
+		// 산책일지 좌표
+		int walkLogNo = walkLogVo.getWalkLogNo();
+		List<CoordsVo> coords = trailDao.coords(walkLogNo);
+		// System.out.println("coords : "  +coords);
+		
+		return coords;
 	}
 	
 }

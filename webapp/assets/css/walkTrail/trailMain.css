@@ -291,9 +291,20 @@
 	color: rgb(1, 48, 118);
 }
 
-/***** trailMainAddList *****/
+/***** trailMainWalkLog *****/
 
 /* 대표 이름색 변경 */
 .contents .myList {
 	color: #fc5200;
+}
+.segment-map-filters > span {
+	color: #212529;
+    font-size: 14px;
+}
+
+.walkLog {
+	overflow-y: scroll;
+}
+.walkLog::-webkit-scrollbar {
+	height: 600px;
 }

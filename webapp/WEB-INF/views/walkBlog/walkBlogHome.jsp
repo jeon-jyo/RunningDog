@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,7 +20,11 @@
 					<span class="myColor">천호동</span> 산책일지 <i class="fa-regular fa-square-caret-down"></i>
 				</div>
 				<div class="right">
-					<span>내 <span class="myColor">산책일지</span></span>&nbsp;&nbsp;
+				<c:if test="${sessionScope.authUser != null}">
+					<span onclick="location.href='${pageContext.request.contextPath}/walkBlog/${authUser.id}'" style="cursor:pointer;
+" >내 <span class="myColor"  >산책블로그</span></span>&nbsp;&nbsp;
+
+</c:if>
 					<!-- <span>내 동아리 <span class="myColor">0</span>개</span>&nbsp;&nbsp; 
 				<span>내 모임 <span class="myColor">0</span>개
 				</span> -->

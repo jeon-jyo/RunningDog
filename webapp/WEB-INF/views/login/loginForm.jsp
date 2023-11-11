@@ -18,7 +18,7 @@
 		<div id="loginLetter">로그인</div>	
 	</div>
 
-	<form action="/login" id="loginForm">
+	<form method="post" action="${pageContext.request.contextPath}/login" id="loginForm">
 	
 		<div class="">
 			<a href="" class="social formEliments" id="naver"><img alt="" src="${pageContext.request.contextPath}/assets/images/naver-icon-file.png">네이버로 로그인</a>
@@ -40,7 +40,7 @@
 		<div id="subMenuBox">
 			<a href="" class="subMenu">아이디 찾기</a>
 			<a href="" class="subMenu subMenuC">비밀번호 찾기</a>
-			<a href="" class="subMenu">회원가입</a>
+			<a href="${pageContext.request.contextPath}/joinForm" class="subMenu">회원가입</a>
 		</div>
 	
 	</form>

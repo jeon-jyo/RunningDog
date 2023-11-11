@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="walkLog">
+   
+   <!-- 쿼리문 작성 --> 
+   
+   <!-- 산책로 가져오기 -->
+   <select id="trailSelect"  resultType="com.runningdog.vo.UseTrailVo">
+      <![CDATA[
+         SELECT co.coordno as coordNo
+		        ,tr.trailno as trailNo
+		        ,tr.name as name
+		        ,co.coordorder as coordOrder
+		        ,co.lat as lat
+		        ,co.lng as lng
+         FROM trail tr, coords co
+         where co.type = 'trail'
+         and tr.trailno = co.useno
+         ORDER BY co.coordno asc
+         , co.coordorder asc
+      ]]>
+   </select>
+   
+   <!-- 내 강아지 가져오기 -->
+   
+   
+   
+   
+
+</mapper>

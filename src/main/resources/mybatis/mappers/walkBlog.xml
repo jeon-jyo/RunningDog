@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="walkBlog">
+
+	<!-- 쿼리문 작성 -->
+
+	<!-- 산책로 가져오기 -->
+	<select id="selectBlogOwner" parameterType="String" resultType="String">
+      <![CDATA[
+      
+      SELECT name,
+      		 userNo
+      FROM users
+      WHERE id = #{id}
+      
+      ]]>
+	</select>
+
+
+
+	<select id="selectFollowerNum" parameterType="String" resultType="int">
+      <![CDATA[
+      
+      SELECT count(followeeNo) as followerNum
+      from follow
+      where followeeNo = (SELECT userNo
+                            From users
+                            WHERE id = #{paramId})
+      ]]>
+	</select>
+
+	<select id="selectFollowingNum" parameterType="String" resultType="int">
+      <![CDATA[
+      
+      SELECT count(followerNo) as followingNum
+      from follow
+      where followerNo = (SELECT userNo
+                            From users
+                            WHERE id = #{paramId})
+      ]]>
+	</select>
+
+
+
+	<select id="didIFollow" resultType="int" parameterType="Map">
+      <![CDATA[
+      
+      SELECT count(followNo) as followNo 
+	  from follow
+	  where followeeNo =(SELECT userNo
+        From users
+        WHERE id = #{paramId}) and followerNo = (SELECT userNo
+                          From users
+                          WHERE id = #{authId})
+      ]]>
+	</select>
+
+	<select id="walkLogList" resultType="com.runningdog.vo.ShowLogVo" parameterType="String">
+      <![CDATA[
+		select       WL.walkLogNo,
+		       		 US.userNo,
+		       	  	 WL.locationNo,
+		       		 TO_CHAR(WL.regDate, '""YYYY"년 "MM"월 "DD"일 "HH24"시 "MI"분"') regDate,
+		       		 WL.startTime,
+		      		 WL.endTime,
+		      		 WL.logTime,
+		      		 WL.distance,
+		      		 WL.content,
+		      		 WL.security,
+		      		 WL.status,
+		      		 US.name
+		             
+		from walkLog WL, users US
+		where WL.userNo = US.userNo 
+		and WL.userNo = (SELECT US.userNo
+		                 From users US
+		                WHERE id = #{paramId})
+		order by WL.walkLogNo desc
+      ]]>
+	</select>
+
+
+	<select id="getShowLogCmtList" parameterType="int" resultType="com.runningdog.vo.ShowLogCmtVo">
+    <![CDATA[
+        SELECT 
+               WC.walkLogCmtNo,
+               WC.walkLogNo,
+               US.userNo,
+               US.name,
+               WC.content,
+               TO_CHAR(WC.regDate, '""YYYY"년 "MM"월 "DD"일 "HH24"시 "MI"분"') regDate,
+               WC.status
+        FROM walkLogCmt WC, users US
+        where WC.userNo = US.userNo
+        and walkLogNo = #{walkLogNo}
+        ORDER BY walkLogCmtNo ASC
+    ]]>
+	</select>
+
+	<delete id="deleteWalkLog" parameterType="int">
+	
+	<![CDATA[
+	update  walkLog
+	SET 
+    status = 'F'
+    
+	where walkLogNo = #{no}
+	
+	
+	]]>
+
+
+
+
+	</delete>
+	
+	<insert id="addComment" parameterType="com.runningdog.vo.ShowLogCmtVo">
+    <![CDATA[
+        INSERT INTO walkLogCmt (walkLogCmtNo, walkLogNo, userNo, content, regDate, status)
+        VALUES (seq_walklogcmt_no.nextval, #{walkLogNo}, #{userNo}, #{content}, SYSDATE, 'T')
+    ]]>
+</insert>
+
+
+
+
+
+</mapper>

@@ -6,21 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class SettingController {
 
-	//로그인
-	@RequestMapping( "/loginForm")
-	public String loginForm(){
-		
-		return "login/loginForm";
-	}
-	
-	//회원가입
-	@RequestMapping( "/joinForm")
-	public String joinForm(){
-		
-		return "login/joinForm";
-	}	
-	
-	
 	
 	//내 정보
 	@RequestMapping( "/setting/myProfile")

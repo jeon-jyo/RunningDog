@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+	
+	<!-- 유저 1명 가져오기 (로그인) -->
+	<select id="selectOneUser" parameterType="com.runningdog.vo.UserVo" resultType="com.runningdog.vo.UserVo">
+		<![CDATA[
+			select  id,
+			        name,
+			        code
+			from users
+			where id = #{id}
+			and password = #{password}
+		]]>
+	</select>
+	
+	
+	<!-- 회원 가입 -->
+	<insert id="insertUser" parameterType="com.runningdog.vo.UserVo">
+		<![CDATA[
+			INSERT INTO users (userNo, locationNo, id, password, name, code, status)
+			VALUES (seq_users_no.nextval, 1100000000, #{id}, #{password}, #{name}, #{code}, 'T')
+		]]>
+	</insert>
+	
+	
+	<!-- 유저 코드 있는지 확인 -->
+	<select id="selectOneUserCode" parameterType="String" resultType="com.runningdog.vo.UserVo">
+		<![CDATA[
+			select code
+			from users
+			where code = #{code}
+		]]>
+	</select>
+
+
+
+</mapper>
+
+
+
+
+	

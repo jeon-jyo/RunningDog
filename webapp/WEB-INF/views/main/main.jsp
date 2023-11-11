@@ -12,6 +12,8 @@
 <body class="bg-secondary-subtle">
 <jsp:include page="../global/header.jsp"></jsp:include>
 
+<!-- 로그인 안 했을 때 동네 선택 버튼 숨기기 -->
+
 <div id="pageContainer">
 
 	<div class="myMenu">

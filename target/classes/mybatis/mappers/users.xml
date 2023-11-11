@@ -18,7 +18,33 @@
 			      '남자',
 			      't')
 		 ]]>
+
+	</insert>
+
+
+	<!-- 유저 1명 가져오기 (로그인) -->
+	<select id="selectOneUser" parameterType="com.runningdog.vo.UsersVo" resultType="com.runningdog.vo.UsersVo">
+		<![CDATA[
+			select  id,
+			        name,
+			        code
+			from users
+			where id = #{id}
+			and password = #{password}
+		]]>
+	</select>
+	
+	
+	<!-- 회원 가입 -->
+	<insert id="insertUser" parameterType="com.runningdog.vo.UsersVo">
+		<![CDATA[
+			
+		]]>
 	</insert>
 	
 
 </mapper>
+
+
+
+

@@ -1,4 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,8 +26,10 @@
 					<div class="dropdown">
 						<a class="drop-toggle d-inline-flex align-items-center fw-semibold" role="button" data-bs-toggle="dropdown" aria-expanded="false">산책로</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">추천 산책로</a></li>
-							<li><a class="dropdown-item" href="#">내 산책로</a></li>
+							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=main">추천 산책로</a></li>
+							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=my">등록한 산책로</a></li>
+							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=star">찜한 산책로</a></li>
+							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=add">산책로 등록하기</a></li>
 						</ul>
 					</div>
 				</li>
@@ -42,8 +47,8 @@
 					<div class="dropdown">
 						<a class="drop-toggle d-inline-flex align-items-center fw-semibold" role="button" data-bs-toggle="dropdown" aria-expanded="false">산책블로그</a>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">산책블로그 홈</a></li>
-							<li><a class="dropdown-item" href="#">내 산책블로그</a></li>
+							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkBlog/home">산책블로그 홈</a></li>
+							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkBlog/${authUser.id}">내 산책블로그</a></li>
 						</ul>
 					</div>
 				</li>
@@ -59,9 +64,19 @@
 				</li>
 			</ul>
 			<ul class="right">
-				<li>로그인</li>
-				<li>회원가입</li>
+				<!-- 로그인 전 메뉴 -->
+				<c:if test="${sessionScope.authUser == null}">
+					<li><a href="${pageContext.request.contextPath}/loginForm">로그인</a></li>
+					<li><a href="${pageContext.request.contextPath}/joinForm">회원가입</a></li>
+	 			</c:if>
+	 			
+	 			<!-- 로그인 후 메뉴 -->
+				<c:if test="${sessionScope.authUser != null}">
+					<li><a href="${pageContext.request.contextPath}/logout">로그아웃</a></li>
+					<li><a href="${pageContext.request.contextPath}/setting/myProfile">설정</a></li>
+	 			</c:if>
 			</ul>
+			
 		</nav>
 		
 	</header>

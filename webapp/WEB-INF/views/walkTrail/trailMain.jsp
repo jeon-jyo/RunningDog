@@ -13,7 +13,15 @@
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
-		<h1>산책로 추천</h1>
+		<c:if test="${listKey eq 'main' }">
+			<h1>추천 산책로</h1>
+		</c:if>
+		<c:if test="${listKey eq 'my' }">
+			<h1>등록한 산책로</h1>
+		</c:if>
+		<c:if test="${listKey eq 'star' }">
+			<h1>찜한 산책로</h1>
+		</c:if>
 
 		<div class="explorer">
 			<div class="segment-map-filters">
@@ -68,7 +76,16 @@
 					<button type="button" class="btn btn-outline-dark">최신순</button>
 				</div>
 
-				<button type="button" class="btn btn-primary">MY</button>
+				<c:if test="${listKey eq 'main' }">
+					<button type="button" class="btn btn-primary">MY</button>
+				</c:if>
+				<c:if test="${listKey eq 'my' }">
+					<i class="fa-solid fa-circle-plus"></i>
+					<button type="button" class="btn btn-primary">자세히 보기</button>
+				</c:if>
+				<c:if test="${listKey eq 'star' }">
+					<button type="button" class="btn btn-primary">자세히 보기</button>
+				</c:if>
 			</div>
 
 			<div class="main-content">
@@ -150,12 +167,14 @@
 	
     // list
 	function fetchList(coordsMap) {
-		console.log("fetchList()");
+		// console.log("fetchList()");
 		
+		let listKey = "${listKey }";
 		let fetchSet = {
 			"coordsMap" : coordsMap,
 			"tags" : tags,
-			"filter" : filterIndex
+			"filter" : filterIndex,
+			"listKey" : listKey
 		}
 		console.log("fetchSet ", fetchSet);
 		
@@ -193,7 +212,7 @@
 	
 	// coords list
 	function mapRender(coords, index, trailNo) {
-		console.log("mapRender()");
+		// console.log("mapRender()");
 		
 		let path = [];
 		for(let i = 0; i < coords.length; i++) {
@@ -390,7 +409,6 @@
         	filterIndex = index;
         	filterGroup[filterIndex].classList.add("selected-filter");
         	
-        	console.log("filterGroup click");
         	getNewCoords();
         })
     });

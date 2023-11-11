@@ -1,7 +1,5 @@
 package com.runningdog.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.runningdog.service.TrailService;
+import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.UserVo;
+import com.runningdog.vo.WalkLogVo;
 
 @Controller
 @RequestMapping(value = "/walkTrail")
@@ -37,12 +38,13 @@ public class WalkTrailController {
 		return "global/dogMapExample";
 	}
 	
-	// 산책로 메인 - 추천 목록
+	// 산책로 메인 - 추천 / 등록 / 찜 목록
 	@RequestMapping(value = "/main", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailMain(HttpSession session, Model model) {
+	public String trailMain(@RequestParam(value="listKey") String listKey,
+			HttpSession session, Model model) {
 		System.out.println("WalkTrailController.trailMain()");
+		System.out.println("listKey : " + listKey);
 		
-		// UserVo authUser = userService.selectOneUser(userVo);	// UsersVo 로 변경?
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		LocationVo locationVo = null;
 		if(authUser != null) {
@@ -52,6 +54,7 @@ public class WalkTrailController {
 			locationVo = trailService.userLocation(2);
 		}
 		model.addAttribute("locationVo", locationVo);
+		model.addAttribute("listKey", listKey);
 		
 		return "walkTrail/trailMain";
 	}
@@ -59,26 +62,18 @@ public class WalkTrailController {
 	// 산책로 목록 ajax
 	@ResponseBody
 	@RequestMapping(value = "/listMap", method= { RequestMethod.GET, RequestMethod.POST})
-	public Map<String, Object> trailListMap(@RequestBody Map<String, Object> fetchSet) {
+	public Map<String, Object> trailListMap(@RequestBody Map<String, Object> fetchSet,
+			HttpSession session) {
 		System.out.println("WalkTrailController.trailListMap()");
-		System.out.println("fetchSet " + fetchSet);
 		
-		/*
-		 * Map<String, Object> coordsMap = (Map<String, Object>)
-		 * fetchSet.get("coordsMap"); ArrayList<String> tags = (ArrayList<String>)
-		 * fetchSet.get("tags"); int filter = (int) fetchSet.get("filter");
-		 * 
-		 * System.out.println("coordsMap : " + coordsMap); System.out.println("tags : "
-		 * + tags); System.out.println("filter " + filter);
-		 */
-		
-		/*
-		 * if(tags.size() != 0) { for(String str : tags) { System.out.println("str : " +
-		 * str); } }
-		 */
-		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser != null) {
+			fetchSet.put("userNo", authUser.getUserNo());
+		} else {
+			// fetchSet.put("userNo", 0);
+			fetchSet.put("userNo", 2);
+		}
 		Map<String, Object> listMap = trailService.trailListMap(fetchSet);
-		// Map<String, Object> listMap = null;
 		
 		return listMap;
 	}
@@ -94,6 +89,55 @@ public class WalkTrailController {
 		return infoMap;
 	}
 	
+	// 산책로 등록 - 산책일지 목록
+	@RequestMapping(value = "/walkLog", method= { RequestMethod.GET, RequestMethod.POST})
+	public String trailWalkLog(HttpSession session, Model model) {
+		System.out.println("WalkTrailController.trailWalkLog()");
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		LocationVo locationVo = null;
+		if(authUser != null) {
+			locationVo = trailService.userLocation(authUser.getUserNo());
+		} else {
+			// locationVo = trailService.userLocation(0);
+			locationVo = trailService.userLocation(2);
+		}
+		model.addAttribute("locationVo", locationVo);
+		
+		return "walkTrail/trailWalkLog";
+	}
+	
+	// 산책일지 목록 ajax
+	@ResponseBody
+	@RequestMapping(value = "/walkLogList", method= { RequestMethod.GET, RequestMethod.POST})
+	public List<WalkLogVo> walkLogList(@RequestBody Map<String, Object> fetchSet,
+			HttpSession session) {
+		System.out.println("WalkTrailController.walkLogList()");
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser != null) {
+			fetchSet.put("userNo", authUser.getUserNo());
+		} else {
+			// fetchSet.put("userNo", 0);
+			fetchSet.put("userNo", 99);
+		}
+		List<WalkLogVo> walkLogList = trailService.walkLogList(fetchSet);
+		
+		return walkLogList;
+	}
+	
+	// 산책일지 좌표 ajax
+	@ResponseBody
+	@RequestMapping(value = "/walkLogMap", method= { RequestMethod.GET, RequestMethod.POST})
+	public List<CoordsVo> walkLogMap(@ModelAttribute WalkLogVo walkLogVo) {
+		System.out.println("WalkTrailController.walkLogMap()");
+		
+		List<CoordsVo> coords = trailService.walkLogMap(walkLogVo);
+		// List<CoordsVo> coords = null;
+		
+		return coords;
+	}
+
 	@RequestMapping(value = "/main/myList", method= { RequestMethod.GET, RequestMethod.POST})
 	public String trailMainMyList() {
 		System.out.println("WalkTrailController.trailMainMyList()");
