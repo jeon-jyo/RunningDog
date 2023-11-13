@@ -9,7 +9,6 @@
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc"></script>
 </head>
 <body>
-	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
 		<h1>등록한 산책로</h1>
 

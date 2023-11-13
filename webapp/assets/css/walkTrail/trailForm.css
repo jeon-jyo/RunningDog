@@ -85,6 +85,9 @@
 .input-group > button.btn {
 	--bs-btn-border-color: #dee2e6;
 }
+.input-group > button > i.true {
+	color: #0d6efd;
+}
 
 /* tag */
 .tag-btn {
@@ -125,6 +128,10 @@
 	height: 25px;
 	margin-left: 220px;
 	margin-bottom: 10px;
+	background-color: var(--bs-body-color);
+}
+.form-check > button.new-draw {
+	background-color: #6c757d;
 }
 
 /* map */
@@ -133,6 +140,25 @@
 	width: 800px;
 	float: right;
 	margin-top: 30px;
+}
+
+/* infoBox */
+.infoBox {
+	display: flow-root;
+	width: 800px;
+	float: right;
+}
+.infoBox > span {
+	color: #212529;
+    font-size: 14px;
+}
+.infoBox .drawBtn {
+	height: 25px;
+	background-color: var(--bs-body-color);
+	float: right;
+}
+.infoBox .new-draw {
+	background-color: #6c757d;
 }
 
 /***** trailModifyForm *****/

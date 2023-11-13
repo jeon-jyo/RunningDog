@@ -442,8 +442,8 @@
 		 ]]>
 	</select>
 	
-	<!-- 산책일지 목록 테스트 -->
-	<select id="test" parameterType="java.util.Map" resultType="com.runningdog.vo.WalkLogVo">
+	<!-- 산책일지 목록 페이징 테스트 -->
+	<select id="walkLogListTest" parameterType="java.util.Map" resultType="com.runningdog.vo.WalkLogVo">
 		<![CDATA[
 			SELECT ort.walkLogNo
 			       ,ort.userNo
@@ -518,6 +518,17 @@
 			 WHERE ort.rn >= 1
 			   AND ort.rn <= 10
 		 ]]>
+	</select>
+	
+	<!-- trailForm -->
+	
+	<!-- 산책로 이름 중복확인 -->
+	<select id="confirmName" parameterType="com.runningdog.vo.TrailVo" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*)
+			  FROM trail
+			 WHERE name = #{name}
+		]]>
 	</select>
 
 </mapper>

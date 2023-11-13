@@ -8,6 +8,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.runningdog.dao.TrailDao;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
@@ -103,7 +105,6 @@ public class TrailService {
 		// Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
 		// int filter = (int) fetchSet.get("filter");
 		
-		// 산책일지 목록
 		List<WalkLogVo> walkLogList = trailDao.walkLogList(fetchSet);
 		// System.out.println("walkLogList : " + walkLogList);
 
@@ -114,12 +115,33 @@ public class TrailService {
 	public List<CoordsVo> walkLogMap(WalkLogVo walkLogVo) {
 		System.out.println("TrailService.walkLogMap()");
 		
-		// 산책일지 좌표
 		int walkLogNo = walkLogVo.getWalkLogNo();
 		List<CoordsVo> coords = trailDao.coords(walkLogNo);
 		// System.out.println("coords : "  +coords);
 		
 		return coords;
+	}
+	
+	// trailForm //////////////////////////////
+	
+	// 산책일지 좌표
+	public String walkLogCoords(WalkLogVo walkLogVo) throws JsonProcessingException {
+		System.out.println("TrailService.walkLogCoords()");
+		
+		int walkLogNo = walkLogVo.getWalkLogNo();
+		ObjectMapper objectMapper = new ObjectMapper();
+		String coordsJson = objectMapper.writeValueAsString(trailDao.coords(walkLogNo));
+		
+		return coordsJson;
+	}
+
+	// 산책로 이름 중복확인 ajax
+	public int confirmName(TrailVo trailVo) {
+		System.out.println("TrailService.confirmName()");
+		
+		int selectCnt = trailDao.confirmName(trailVo);
+		
+		return selectCnt;
 	}
 	
 }

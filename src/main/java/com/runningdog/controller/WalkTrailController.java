@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.runningdog.service.TrailService;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.LocationVo;
+import com.runningdog.vo.TrailVo;
 import com.runningdog.vo.UserVo;
 import com.runningdog.vo.WalkLogVo;
 
@@ -133,35 +135,36 @@ public class WalkTrailController {
 		System.out.println("WalkTrailController.walkLogMap()");
 		
 		List<CoordsVo> coords = trailService.walkLogMap(walkLogVo);
-		// List<CoordsVo> coords = null;
 		
 		return coords;
-	}
-
-	@RequestMapping(value = "/main/myList", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailMainMyList() {
-		System.out.println("WalkTrailController.trailMainMyList()");
-		return "walkTrail/trailMainMyList";
-	}
-	
-	@RequestMapping(value = "/main/starList", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailMainStarList() {
-		System.out.println("WalkTrailController.trailMainStarList()");
-		return "walkTrail/trailMainStarList";
-	}
-	
-	@RequestMapping(value = "/main/addList", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailMainAddList() {
-		System.out.println("WalkTrailController.trailMainAddList()");
-		return "walkTrail/trailMainAddList";
 	}
 	
 	// trailForm //////////////////////////////
 	
+	// 산책로 등록폼
 	@RequestMapping(value = "/addForm", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailAddForm() {
+	public String trailAddForm(@ModelAttribute WalkLogVo walkLogVo,
+			Model model) throws JsonProcessingException {
 		System.out.println("WalkTrailController.trailAddForm()");
+
+		String coordsJson = trailService.walkLogCoords(walkLogVo);
+		
+		model.addAttribute("coordsJson", coordsJson);
+		
 		return "walkTrail/trailAddForm";
+	}
+	
+	// 산책로 이름 중복확인 ajax
+	@ResponseBody
+	@RequestMapping(value = "/confirmName", method= { RequestMethod.GET, RequestMethod.POST})
+	public int confirmName(@ModelAttribute TrailVo trailVo) {
+		System.out.println("WalkTrailController.confirmName()");
+		System.out.println("trailVo : " + trailVo);
+		
+		int selectCnt = trailService.confirmName(trailVo);
+		System.out.println("selectCnt : " + selectCnt);
+		
+		return selectCnt;
 	}
 	
 	@RequestMapping(value = "/modifyForm", method= { RequestMethod.GET, RequestMethod.POST})

@@ -129,4 +129,14 @@ public class TrailDao {
 		return coords;
 	}
 
+	// trailForm //////////////////////////////
+	
+	// 산책로 이름 중복확인
+	public int confirmName(TrailVo trailVo) {
+		System.out.println("TrailDao.confirmName()");
+		
+		int selectCnt = sqlSession.selectOne("walkTrail.confirmName", trailVo);
+		
+		return selectCnt;
+	}
 }

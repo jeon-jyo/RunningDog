@@ -6,7 +6,8 @@
 <title>Insert title here</title>
 </head>
 <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=3tull6ku3q"></script>
-<script type="text/javascript" src="dogMap.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/dogMap.js"></script>
 <body>
 	맵 위에 선 그리기 (산책로)
 	<div id="map" style="width: 100%; height: 600px;"></div>

@@ -38,12 +38,13 @@
 				
 				<span>나의 산책일지 기록으로 마음에 드는 산책로를 만들어 보세요!</span>
 
-				<i class="fa-solid fa-pen-to-square"></i>
+				<i class="fa-solid fa-pen-to-square" id="trailAddFormGo"></i>
 				<button type="button" class="btn btn-primary">일지 보기</button>
 			</div>
 
 			<div class="main-content">
 				<div class="segments-sidebar walkLog" id="segments-sidebar">
+					<h6>나의 산책일지</h6>
 					<ul id="walkLogList"></ul>
 				</div>
 				<i class="fa-solid fa-angles-left" id="fa-angles"></i>
@@ -61,6 +62,18 @@
 		let address = $("#address").value;
 		console.log("address ", address);
 	}); */
+	
+	$("#trailAddFormGo").on("click", function() {
+		// console.log("trailAddFormGo click");
+		
+		if(overlayMarker.length == 0) {
+			alert("산책일지를 선택해주세요.");
+		} else {
+	        let seq = overlayMarker[0].get('seq');
+			
+	        window.location.href = "${pageContext.request.contextPath}/walkTrail/addForm?walkLogNo=" + seq;
+		}
+	});
 
 	/* map */
    	var map = new naver.maps.Map('map', {
@@ -203,7 +216,7 @@
 				overlayPolyline.length = 0;
 				overlayMarker.length = 0;
 				
-				mapRender(coords);
+				mapRender(coords, walkLogNo);
 			},
 			error : function(XHR, status, error) {
 				console.error(status + " : " + error);
@@ -212,8 +225,9 @@
 	}
 	
 	// coords list
-	function mapRender(coords) {
+	function mapRender(coords, walkLogNo) {
 		// console.log("mapRender()");
+		console.log("walkLogNo ", walkLogNo);
 		
 		let path = [];
 		for(let i = 0; i < coords.length; i++) {
@@ -239,7 +253,8 @@
 	            scaledSize: new naver.maps.Size(30, 30),
 	        }
 	    }); 
-		
+ 		marker.set('seq', walkLogNo);
+ 		
 		overlayPolyline.push(polyline);
 		overlayMarker.push(marker);
 
