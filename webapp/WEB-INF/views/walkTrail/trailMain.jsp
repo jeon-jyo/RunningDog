@@ -56,10 +56,6 @@
 								<button class="btn badge btn2">액티비티</button>
 								<button class="btn badge btn3 step2 limit">유동인구 많음</button>
 								<button class="btn badge btn3 step2 limit">유동인구 적음</button>
-								<div class="form-check step2">
-									<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-									<label class="form-check-label" for="flexCheckDefault">태그선택 취소</label>
-								</div>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>

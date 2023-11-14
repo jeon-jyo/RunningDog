@@ -39,20 +39,11 @@ public class TrailDao {
 		return locationVo;
 	}
 	
-	// 산책로 추천 / 등록 목록
+	// 산책로 목록
 	public List<TrailVo> trailList(Map<String, Object> fetchSet) {
 		System.out.println("TrailDao.trailList()");
 		
 		List<TrailVo> trailList =  sqlSession.selectList("walkTrail.trailList", fetchSet);
-		
-		return trailList;
-	}
-
-	// 산책로 찜 목록
-	public List<TrailVo> trailStarList(Map<String, Object> fetchSet) {
-		System.out.println("TrailDao.trailStarList()");
-		
-		List<TrailVo> trailList =  sqlSession.selectList("walkTrail.trailStarList", fetchSet);
 		
 		return trailList;
 	}

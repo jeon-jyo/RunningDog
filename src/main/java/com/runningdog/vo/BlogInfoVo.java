@@ -7,83 +7,70 @@ public class BlogInfoVo {
 	
 	private String userSavename;
 	private String  bannerSavename;
-	private String authId;
-	private String paramId;
+	private int authNo;
+	private int ownerNo;
+	private String paramCode;
 	
 	private int followerNum;
 	private int followingNum;
 	
 	private int followNo;
 	
+	private MonthlyStatsVo monthlyStatsThisMonth;
+	private MonthlyStatsVo monthlyStatsTotal;
+	
+	
 	public BlogInfoVo() {}
-	
-	
-	
-
-	
 
 
-	public BlogInfoVo(int no, String name, String userSavename, String bannerSavename, String authId, String paramId,
-			int followerNum, int followingNum, int followNo) {
+
+
+	public BlogInfoVo(int no, String name, String userSavename, String bannerSavename, int authNo, int ownerNo,
+			String paramCode, int followerNum, int followingNum, int followNo, MonthlyStatsVo monthlyStatsThisMonth,
+			MonthlyStatsVo monthlyStatsTotal) {
 		super();
 		this.no = no;
 		this.name = name;
 		this.userSavename = userSavename;
 		this.bannerSavename = bannerSavename;
-		this.authId = authId;
-		this.paramId = paramId;
+		this.authNo = authNo;
+		this.ownerNo = ownerNo;
+		this.paramCode = paramCode;
 		this.followerNum = followerNum;
 		this.followingNum = followingNum;
 		this.followNo = followNo;
+		this.monthlyStatsThisMonth = monthlyStatsThisMonth;
+		this.monthlyStatsTotal = monthlyStatsTotal;
 	}
 
 
 
 
-
-
-
-	public int getFollowNo() {
-		return followNo;
+	public MonthlyStatsVo getMonthlyStatsThisMonth() {
+		return monthlyStatsThisMonth;
 	}
 
 
 
 
-
-
-
-	public void setFollowNo(int followNo) {
-		this.followNo = followNo;
+	public void setMonthlyStatsThisMonth(MonthlyStatsVo monthlyStatsThisMonth) {
+		this.monthlyStatsThisMonth = monthlyStatsThisMonth;
 	}
 
 
 
 
-
-
-
-	public String getAuthId() {
-		return authId;
+	public MonthlyStatsVo getMonthlyStatsTotal() {
+		return monthlyStatsTotal;
 	}
 
 
 
-	public void setAuthId(String authId) {
-		this.authId = authId;
+
+	public void setMonthlyStatsTotal(MonthlyStatsVo monthlyStatsTotal) {
+		this.monthlyStatsTotal = monthlyStatsTotal;
 	}
 
-
-
-	public String getParamId() {
-		return paramId;
-	}
-
-
-
-	public void setParamId(String paramId) {
-		this.paramId = paramId;
-	}
 
 
 
@@ -91,58 +78,118 @@ public class BlogInfoVo {
 		return no;
 	}
 
+
 	public void setNo(int no) {
 		this.no = no;
 	}
+
 
 	public String getName() {
 		return name;
 	}
 
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 
 	public String getUserSavename() {
 		return userSavename;
 	}
 
+
 	public void setUserSavename(String userSavename) {
 		this.userSavename = userSavename;
 	}
+
 
 	public String getBannerSavename() {
 		return bannerSavename;
 	}
 
+
 	public void setBannerSavename(String bannerSavename) {
 		this.bannerSavename = bannerSavename;
 	}
+
+
+	public int getAuthNo() {
+		return authNo;
+	}
+
+
+	public void setAuthNo(int authNo) {
+		this.authNo = authNo;
+	}
+
+
+	public int getOwnerNo() {
+		return ownerNo;
+	}
+
+
+	public void setOwnerNo(int ownerNo) {
+		this.ownerNo = ownerNo;
+	}
+
+
+	public String getParamCode() {
+		return paramCode;
+	}
+
+
+	public void setParamCode(String paramCode) {
+		this.paramCode = paramCode;
+	}
+
 
 	public int getFollowerNum() {
 		return followerNum;
 	}
 
+
 	public void setFollowerNum(int followerNum) {
 		this.followerNum = followerNum;
 	}
 
+
 	public int getFollowingNum() {
 		return followingNum;
 	}
+
 
 	public void setFollowingNum(int followingNum) {
 		this.followingNum = followingNum;
 	}
 
 
+	public int getFollowNo() {
+		return followNo;
+	}
+
+
+	public void setFollowNo(int followNo) {
+		this.followNo = followNo;
+	}
+
 
 	@Override
 	public String toString() {
 		return "BlogInfoVo [no=" + no + ", name=" + name + ", userSavename=" + userSavename + ", bannerSavename="
-				+ bannerSavename + ", authId=" + authId + ", paramId=" + paramId + ", followerNum=" + followerNum
-				+ ", followingNum=" + followingNum + "]";
+				+ bannerSavename + ", authNo=" + authNo + ", ownerNo=" + ownerNo + ", paramCode=" + paramCode
+				+ ", followerNum=" + followerNum + ", followingNum=" + followingNum + ", followNo=" + followNo + "]";
 	}
+
+	
+
+
+
+
+	
+	
+	
+	
 
 	
 

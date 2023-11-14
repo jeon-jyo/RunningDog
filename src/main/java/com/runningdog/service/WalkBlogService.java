@@ -30,7 +30,7 @@ public class WalkBlogService {
 		
 		blogInfoVo.setName(walkBlogDao.selectBlogOwner(paramCode));
 		// blogInfoVo.setAuthId(authCode);
-		blogInfoVo.setParamId(paramCode);
+		// blogInfoVo.setParamId(paramCode);
 		
 		
 		blogInfoVo.setFollowerNum(walkBlogDao.selectfollowerNum(paramCode));

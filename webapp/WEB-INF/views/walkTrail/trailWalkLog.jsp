@@ -30,10 +30,9 @@
 				</div>
 				
 				<div class="btn-group" role="group" aria-label="Default button group">
-					<button type="button" class="btn btn-outline-dark">이용순</button>
-					<button type="button" class="btn btn-outline-dark">좋아요순</button>
 					<button type="button" class="btn btn-outline-dark">최신순</button>
 					<button type="button" class="btn btn-outline-dark">오래된순</button>
+					<button type="button" class="btn btn-outline-dark">좋아요순</button>
 				</div>
 				
 				<span>나의 산책일지 기록으로 마음에 드는 산책로를 만들어 보세요!</span>

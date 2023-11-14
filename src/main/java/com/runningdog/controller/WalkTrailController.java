@@ -121,7 +121,7 @@ public class WalkTrailController {
 			fetchSet.put("userNo", authUser.getUserNo());
 		} else {
 			// fetchSet.put("userNo", 0);
-			fetchSet.put("userNo", 99);
+			fetchSet.put("userNo", 2);
 		}
 		List<WalkLogVo> walkLogList = trailService.walkLogList(fetchSet);
 		

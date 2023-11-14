@@ -6,7 +6,7 @@ public class WalkLogVo {
 	private String regDate;
 	private String startTime;
 	private String endTime;
-	private String logTime;
+	private int logTime;
 	private int distance;
 	private String content;
 	private String security;
@@ -18,7 +18,7 @@ public class WalkLogVo {
 	
 	public WalkLogVo() {}
 
-	public WalkLogVo(int walkLogNo, String regDate, String startTime, String endTime, String logTime, int distance,
+	public WalkLogVo(int walkLogNo, String regDate, String startTime, String endTime, int logTime, int distance,
 			String content, String security, char status, UsersVo usersVo, MeetingVo meetingVo, LocationVo locationVo) {
 		super();
 		this.walkLogNo = walkLogNo;
@@ -67,11 +67,11 @@ public class WalkLogVo {
 		this.endTime = endTime;
 	}
 
-	public String getLogTime() {
+	public int getLogTime() {
 		return logTime;
 	}
 
-	public void setLogTime(String logTime) {
+	public void setLogTime(int logTime) {
 		this.logTime = logTime;
 	}
 
@@ -138,8 +138,5 @@ public class WalkLogVo {
 				+ endTime + ", logTime=" + logTime + ", distance=" + distance + ", content=" + content + ", security="
 				+ security + ", status=" + status + ", meetingVo=" + meetingVo + ", locationVo=" + locationVo + "]";
 	};
-	
-	
-	
 	
 }

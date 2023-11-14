@@ -2,23 +2,23 @@ package com.runningdog.vo;
 
 public class TrailUsedVo {
 	
-	private int trailUserdNo;
+	private int trailUsedNo;
 	private WalkLogVo walkLogVo;
 	private TrailVo trailVo;
 	
 	public TrailUsedVo() {}
 	
-	public TrailUsedVo(int trailUserdNo, WalkLogVo walkLogVo, TrailVo trailVo) {
-		this.trailUserdNo = trailUserdNo;
+	public TrailUsedVo(int trailUsedNo, WalkLogVo walkLogVo, TrailVo trailVo) {
+		this.trailUsedNo = trailUsedNo;
 		this.walkLogVo = walkLogVo;
 		this.trailVo = trailVo;
 	}
 	
-	public int getTrailUserdNo() {
-		return trailUserdNo;
+	public int gettrailUsedNo() {
+		return trailUsedNo;
 	}
-	public void setTrailUserdNo(int trailUserdNo) {
-		this.trailUserdNo = trailUserdNo;
+	public void settrailUsedNo(int trailUsedNo) {
+		this.trailUsedNo = trailUsedNo;
 	}
 	public WalkLogVo getWalkLogVo() {
 		return walkLogVo;
@@ -35,7 +35,7 @@ public class TrailUsedVo {
 
 	@Override
 	public String toString() {
-		return "TrailUsedVo [trailUserdNo=" + trailUserdNo + ", walkLogVo=" + walkLogVo + ", trailVo=" + trailVo + "]";
+		return "TrailUsedVo [trailUsedNo=" + trailUsedNo + ", walkLogVo=" + walkLogVo + ", trailVo=" + trailVo + "]";
 	}
 
 }

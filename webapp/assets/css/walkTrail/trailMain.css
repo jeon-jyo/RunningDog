@@ -80,11 +80,6 @@
 .modal .modal-dialog .modal-content .modal-body .step2 {
 	margin-top: 10px;
 }
-.modal .modal-dialog .modal-content .modal-body .form-check {
-	float: right;
-	text-align: right;
-	font-size: 14px;
-}
 .modal .modal-dialog .modal-content .modal-footer > button {
 	height: 34px;
 }

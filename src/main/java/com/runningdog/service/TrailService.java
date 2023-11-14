@@ -45,18 +45,10 @@ public class TrailService {
 		// Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
 		// ArrayList<String> tags = (ArrayList<String>) fetchSet.get("tags");
 		// int filter = (int) fetchSet.get("filter");
-		String listKey = (String) fetchSet.get("listKey");
+		// String listKey = (String) fetchSet.get("listKey");
 		
-		List<TrailVo> trailList = null;
-		if(listKey.equals("main") || listKey.equals("my")) {
-			// 산책로 추천 / 등록 목록
-			trailList = trailDao.trailList(fetchSet);
-		} else if(listKey.equals("star")) {
-			// 산책로 찜 목록
-			trailList = trailDao.trailStarList(fetchSet);
-		} else if(listKey.equals("add")) {
-			
-		}
+		// 산책로 목록
+		List<TrailVo> trailList = trailDao.trailList(fetchSet);
 		// System.out.println("trailList : " + trailList);
 		
 		// 산책로 좌표 목록

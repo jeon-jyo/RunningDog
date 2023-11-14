@@ -4,6 +4,7 @@
 <mapper namespace="walkTrail">
 
 	<resultMap id="LocationMap" type="com.runningdog.vo.LocationVo">
+		<result column="locationNo" property="locationNo"></result>
 		<result column="si" property="si"></result>
 		<result column="gu" property="gu"></result>
 		<result column="dong" property="dong"></result>
@@ -79,7 +80,7 @@
 		 ]]>
 	</select>
 
-	<!-- 산책로 추천 / 등록 목록 -->
+	<!-- 산책로 목록 -->
 	<select id="trailList" parameterType="java.util.Map" resultType="com.runningdog.vo.TrailVo">
 		<![CDATA[
 			SELECT ort.trailNo
@@ -99,50 +100,79 @@
 			                       ,t.eta
 			                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
 		]]>
-		<if test='filter == 0'>
+		<if test='listKey == "main" || listKey == "my"'>
 			<![CDATA[
-							  FROM trail t, coords c, ( SELECT COUNT(tt.walkLogNo) cnt
-			                                                   ,tt.trailNo
-			                                              FROM trailUsed tt, trailTag ta
-			                                             WHERE tt.trailNo = ta.trailNo
-			]]>
-		</if>		
-		<if test='filter == 1'>
-			<![CDATA[
-							  FROM trail t, coords c, ( SELECT COUNT(tt.userNo) cnt
-			                                                   ,tt.trailNo
-			                                              FROM trailStar tt, trailTag ta
-			                                             WHERE tt.trailNo = ta.trailNo
+				  			  FROM coords c, trail t
 			]]>
 		</if>
-		<if test='filter == 2'>
+		<if test='listKey == "star"'>
 			<![CDATA[
-				  			  FROM trail t, coords c, ( SELECT COUNT(tt.userNo) cnt
-			                                                   ,tt.trailNo
-			                                              FROM trailCmt tt, trailTag ta
-			                                             WHERE tt.trailNo = ta.trailNo
-			                                               AND tt.status = 'T'
-			]]>
-		</if>
-		<if test='filter == 3'>
-			<![CDATA[
-				  			  FROM trail t, coords c, ( SELECT tt.trailNo
-			                                              FROM trailTag tt
-			                                             WHERE tt.trailNo > 0
+				  			  FROM coords c, trailStar ts, trail t
 			]]>
 		</if>
 		<if test='tags.size != 0'>
 			<![CDATA[
-														   AND ta.tagName IN
+							  JOIN
+			]]>
+		</if>
+		<if test='tags.size == 0'>
+			<![CDATA[
+							  LEFT OUTER JOIN
+			]]>
+		</if>
+		<if test='filter == 0'>
+			<![CDATA[
+			                                  ( SELECT COUNT(tt.walkLogNo) cnt
+			                                           ,tt.trailNo
+			                                      FROM trailUsed tt, trailTag ta
+			                                     WHERE tt.trailNo = ta.trailNo
+			]]>
+		</if>		
+		<if test='filter == 1'>
+			<![CDATA[
+			                                  ( SELECT COUNT(tt.userNo) cnt
+			                                           ,tt.trailNo
+			                                      FROM trailStar tt, trailTag ta
+			                                     WHERE tt.trailNo = ta.trailNo
+			]]>
+		</if>
+		<if test='filter == 2'>
+			<![CDATA[
+			                                  ( SELECT COUNT(tt.userNo) cnt
+			                                           ,tt.trailNo
+			                                      FROM trailCmt tt, trailTag ta
+			                                     WHERE tt.trailNo = ta.trailNo
+			                                       AND tt.status = 'T'
+			]]>
+		</if>
+		<if test='filter == 3'>
+			<![CDATA[
+			                                  ( SELECT ta.trailNo
+			                                      FROM trailTag ta
+			                                     WHERE ta.trailNo > 0
+			]]>
+		</if>
+		<if test='tags.size != 0'>
+			<![CDATA[
+												   AND ta.tagName IN
 			]]>
 			<foreach collection="tags" item="item" index="index" separator="," open="(" close=")">
 				#{item}
 			</foreach>
 		</if>
+		<if test='filter == 0 || filter == 1 || filter == 2'>
+			<![CDATA[
+				  			 					 GROUP BY tt.trailNo ) gt
+			]]>
+		</if>
+		<if test='filter == 3'>
+			<![CDATA[
+				  								 GROUP BY ta.trailNo ) gt
+			]]>
+		</if>
 		<![CDATA[
-														 GROUP BY tt.trailNo ) gt
+								ON t.trailNo = gt.trailNo
 			                 WHERE t.trailNo = c.useNo
-			                   AND t.trailNo = gt.trailNo
 			                   AND c.type = 'trail'
 			                   AND c.coordorder = 1
 			                   AND c.lng BETWEEN #{coordsMap.swX} AND #{coordsMap.neX}
@@ -154,9 +184,15 @@
 				  			   AND t.userNo = #{userNo}
 			]]>
 		</if>
+		<if test='listKey == "star"'>
+			<![CDATA[
+							   AND t.trailNo = ts.trailNo
+				  			   AND ts.userNo = #{userNo}
+			]]>
+		</if>
 		<if test='filter == 0 || filter == 1 || filter == 2'>
 			<![CDATA[
-				  			 ORDER BY gt.cnt DESC
+				  			 ORDER BY gt.cnt DESC, regDate DESC
 			]]>
 		</if>
 		<if test='filter == 3'>
@@ -172,96 +208,6 @@
 		 ]]>
 	</select>
 
-	<!-- 산책로 찜 목록 -->
-	<select id="trailStarList" parameterType="java.util.Map" resultType="com.runningdog.vo.TrailVo">
-		<![CDATA[
-			SELECT ort.trailNo
-			       ,ort.name
-			       ,ort.distance
-			       ,ort.eta
-			       ,ort.regDate
-			  FROM (SELECT ROWNUM rn
-			               ,ot.trailNo
-			               ,ot.name
-			               ,ot.distance
-			               ,ot.eta
-			               ,ot.regDate
-			          FROM (SELECT t.trailNo
-			                       ,t.name
-			                       ,t.distance
-			                       ,t.eta
-			                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-		]]>
-		<if test='filter == 0'>
-			<![CDATA[
-							  FROM trail t, coords c, trailStar ts, ( SELECT COUNT(tt.walkLogNo) cnt
-						                                                     ,tt.trailNo
-						                                                FROM trailUsed tt, trailTag ta
-						                                               WHERE tt.trailNo = ta.trailNo
-			]]>
-		</if>
-		<if test='filter == 1'>
-			<![CDATA[
-							  FROM trail t, coords c, trailStar ts, ( SELECT COUNT(tt.userNo) cnt
-						                                                     ,tt.trailNo
-						                                                FROM trailStar tt, trailTag ta
-						                                               WHERE tt.trailNo = ta.trailNo
-			]]>
-		</if>
-		<if test='filter == 2'>
-			<![CDATA[
-				  			  FROM trail t, coords c, trailStar ts, ( SELECT COUNT(tt.userNo) cnt
-						                                                     ,tt.trailNo
-						                                                FROM trailCmt tt, trailTag ta
-						                                               WHERE tt.trailNo = ta.trailNo
-						                                                 AND tt.status = 'T'
-			]]>
-		</if>
-		<if test='filter == 3'>
-			<![CDATA[
-				  			  FROM trail t, coords c, trailStar ts, ( SELECT tt.trailNo
-						                                                FROM trailTag tt
-						                                               WHERE tt.trailNo > 0
-			]]>
-		</if>
-		<if test='tags.size != 0'>
-			<![CDATA[
-														  				 AND ta.tagName IN
-			]]>
-			<foreach collection="tags" item="item" index="index" separator="," open="(" close=")">
-				#{item}
-			</foreach>
-		</if>
-		<![CDATA[
-																	   GROUP BY tt.trailNo ) gt
-			                 WHERE t.trailNo = c.useNo
-			                   AND t.trailNo = gt.trailNo
-			                   AND c.type = 'trail'
-			                   AND c.coordorder = 1
-			                   AND c.lng BETWEEN #{coordsMap.swX} AND #{coordsMap.neX}
-			   				   AND c.lat BETWEEN #{coordsMap.swY} AND #{coordsMap.neY}
-			                   AND t.status = 'T'
-			                   AND t.trailNo = ts.trailNo
-                   			   AND ts.userNo = #{userNo}
-		]]>
-		<if test='filter == 0 || filter == 1 || filter == 2'>
-			<![CDATA[
-				  			 ORDER BY gt.cnt DESC
-			]]>
-		</if>
-		<if test='filter == 3'>
-			<![CDATA[
-				  			 ORDER BY t.regDate DESC
-			]]>
-		</if>
-		<![CDATA[
-			               ) ot
-			       ) ort
-			 WHERE ort.rn >= 1
-			   AND ort.rn <= 10
-		 ]]>
-	</select>
-	
 	<!-- 산책로 좌표 목록 -->
 	<select id="coordsList" parameterType="int" resultType="com.runningdog.vo.CoordsVo">
 		 <![CDATA[
@@ -335,19 +281,6 @@
 		 ]]>
 	</select>
 	
-	<!-- 산책로 선택태그 목록 -->
-	<select id="trailTagList" resultType="com.runningdog.vo.TrailVo">
-		 <![CDATA[
-			SELECT trailNo 
-			       ,name
-			       ,distance
-			       ,eta
-			  FROM trail
-			 WHERE locationNo = 1174010900
-			   AND status = 'T'
-		 ]]>
-	</select>
-	
 	<!-- 산책일지 목록 -->
 	<select id="walkLogList" parameterType="java.util.Map" resultType="com.runningdog.vo.WalkLogVo">
 		<![CDATA[
@@ -367,35 +300,20 @@
 			                       ,w.distance
 			                       ,w.logTime
 			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+			                  FROM coords c, walkLog w
 		]]>
-		<if test='filter == 0'>
+		<if test='filter == 2'>
 			<![CDATA[
-							  FROM walkLog w, coords c, ( SELECT COUNT(trailNo) cnt
-			                                                     ,walkLogNo
-			                                                FROM trailUsed
-			                                               GROUP BY walkLogNo ) gt
-			                 WHERE w.walkLogNo = c.useNo
-			                   AND w.walkLogNo = gt.walkLogNo
-			]]>
-		</if>
-		<if test='filter == 1'>
-			<![CDATA[
-							  FROM walkLog w, coords c, ( SELECT COUNT(userNo) cnt
-			                                                     ,useNo
-			                                                FROM userLike
-			                                               WHERE type = 'walkLog'
-			                                               GROUP BY useNo ) gt
-			                 WHERE w.walkLogNo = c.useNo
-			                   AND w.walkLogNo = gt.useNo
-			]]>
-		</if>
-		<if test='filter == 2 || filter == 3'>
-			<![CDATA[
-							  FROM walkLog w, coords c
-                 			 WHERE w.walkLogNo = c.useNo
+							  LEFT OUTER JOIN ( SELECT COUNT(userNo) cnt
+			                                           ,useNo
+			                                      FROM userLike
+			                                     WHERE type = 'walkLog'
+			                                     GROUP BY useNo ) gt
+			                    ON w.walkLogNo = gt.useNo
 			]]>
 		</if>
 		<![CDATA[
+			                 WHERE w.walkLogNo = c.useNo
 			                   AND c.type = 'walkLog'
 			                   AND c.coordorder = 1
 			                   AND c.lng BETWEEN #{coordsMap.swX} AND #{coordsMap.neX}
@@ -403,19 +321,19 @@
 			                   AND w.status = 'T'
 			                   AND w.userNo = #{userNo}
 		]]>
-		<if test='filter == 0 || filter == 1'>
-			<![CDATA[
-							 ORDER BY gt.cnt DESC
-			]]>
-		</if>
-		<if test='filter == 2'>
+		<if test='filter == 0'>
 			<![CDATA[
 							 ORDER BY regDate DESC
 			]]>
 		</if>
-		<if test='filter == 3'>
+		<if test='filter == 1'>
 			<![CDATA[
 							 ORDER BY regDate ASC
+			]]>
+		</if>
+		<if test='filter == 2'>
+			<![CDATA[
+							 ORDER BY gt.cnt DESC, regDate DESC
 			]]>
 		</if>
 		<![CDATA[
@@ -461,35 +379,20 @@
 			                       ,w.distance
 			                       ,w.logTime
 			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+			                  FROM coords c, walkLog w
 		]]>
-		<if test='filter == 0'>
+		<if test='filter == 2'>
 			<![CDATA[
-							  FROM walkLog w, coords c, ( SELECT COUNT(trailNo) cnt
-			                                                     ,walkLogNo
-			                                                FROM trailUsed
-			                                               GROUP BY walkLogNo ) gt
-			                 WHERE w.walkLogNo = c.useNo
-			                   AND w.walkLogNo = gt.walkLogNo
-			]]>
-		</if>
-		<if test='filter == 1'>
-			<![CDATA[
-							  FROM walkLog w, coords c, ( SELECT COUNT(userNo) cnt
-			                                                     ,useNo
-			                                                FROM userLike
-			                                               WHERE type = 'walkLog'
-			                                               GROUP BY useNo ) gt
-			                 WHERE w.walkLogNo = c.useNo
-			                   AND w.walkLogNo = gt.useNo
-			]]>
-		</if>
-		<if test='filter == 2 || filter == 3'>
-			<![CDATA[
-							  FROM walkLog w, coords c
-                 			 WHERE w.walkLogNo = c.useNo
+							  LEFT OUTER JOIN ( SELECT COUNT(userNo) cnt
+			                                           ,useNo
+			                                      FROM userLike
+			                                     WHERE type = 'walkLog'
+			                                     GROUP BY useNo ) gt
+			                    ON w.walkLogNo = gt.useNo
 			]]>
 		</if>
 		<![CDATA[
+			                 WHERE w.walkLogNo = c.useNo
 			                   AND c.type = 'walkLog'
 			                   AND c.coordorder = 1
 			                   AND c.lng BETWEEN #{coordsMap.swX} AND #{coordsMap.neX}
@@ -497,19 +400,19 @@
 			                   AND w.status = 'T'
 			                   AND w.userNo = #{userNo}
 		]]>
-		<if test='filter == 0 || filter == 1'>
-			<![CDATA[
-							 ORDER BY gt.cnt DESC
-			]]>
-		</if>
-		<if test='filter == 2'>
+		<if test='filter == 0'>
 			<![CDATA[
 							 ORDER BY regDate DESC
 			]]>
 		</if>
-		<if test='filter == 3'>
+		<if test='filter == 1'>
 			<![CDATA[
 							 ORDER BY regDate ASC
+			]]>
+		</if>
+		<if test='filter == 2'>
+			<![CDATA[
+							 ORDER BY gt.cnt DESC, regDate DESC
 			]]>
 		</if>
 		<![CDATA[
