@@ -27,6 +27,7 @@
 	margin: 0px 10px;
 	color: #0d6efd;
 	font-size: 34px;
+	cursor: pointer;
 }
 .segment-map-info .fa-circle-check:hover {
 	color: rgb(1, 48, 118);
@@ -85,8 +86,11 @@
 .input-group > button.btn {
 	--bs-btn-border-color: #dee2e6;
 }
+.input-group > button.true {
+	background-color: #0d6efd;
+}
 .input-group > button > i.true {
-	color: #0d6efd;
+	color: white;
 }
 
 /* tag */

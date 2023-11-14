@@ -101,9 +101,6 @@ public class TrailService {
 	// 산책일지 목록 ajax
 	public List<WalkLogVo> walkLogList(Map<String, Object> fetchSet) {
 		System.out.println("TrailService.walkLogList()");
-
-		// Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
-		// int filter = (int) fetchSet.get("filter");
 		
 		List<WalkLogVo> walkLogList = trailDao.walkLogList(fetchSet);
 		// System.out.println("walkLogList : " + walkLogList);

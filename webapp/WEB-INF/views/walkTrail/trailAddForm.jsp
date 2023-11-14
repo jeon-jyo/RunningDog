@@ -47,23 +47,23 @@
 					
 					<h6 class="infoName">주차장</h6>
 					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-						<label class="form-check-label" for="flexSwitchCheckDefault"></label>
-						<button type="button" class="btn badge btn-secondary">위치 설정</button>
+						<input class="form-check-input" type="checkbox" role="switch" id="switchCheck1">
+						<label class="form-check-label" for="switchCheck1"></label>
+						<button type="button" class="btn badge btn-secondary new-draw">위치 설정</button>
 					</div>
 					
 					<h6>화장실</h6>
 					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-						<label class="form-check-label" for="flexSwitchCheckDefault"></label>
-						<button type="button" class="btn badge btn-secondary">위치 설정</button>
+						<input class="form-check-input" type="checkbox" role="switch" id="switchCheck2">
+						<label class="form-check-label" for="switchCheck2"></label>
+						<button type="button" class="btn badge btn-secondary new-draw">위치 설정</button>
 					</div>
 					
 					<h6>쓰레기통</h6>
 					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-						<label class="form-check-label" for="flexSwitchCheckDefault"></label>
-						<button type="button" class="btn badge btn-secondary">위치 설정</button>
+						<input class="form-check-input" type="checkbox" role="switch" id="switchCheck3">
+						<label class="form-check-label" for="switchCheck3"></label>
+						<button type="button" class="btn badge btn-secondary new-draw">위치 설정</button>
 					</div>
 					
 					<h6 class="infoName">설명</h6>
@@ -98,7 +98,6 @@
 	var matchRate = 70;		// 몇퍼센트 이상 일치해야 하는지 (일치율)
 	// var distanceRatio = 90;	// 거리
 	
-	let overlayPolyline = [];
 	let overlayMarker = [];
 	let overlayInfoMarker = [];
 	
@@ -246,28 +245,17 @@
 			btn.innerText = "다시 그리기";
 			btn.classList.add('new-draw');
 			
-			overlayPolyline.push(polyline2);
-			
 			// getAddress();
-			
 		} else {
 			chk = true;
 			
 			btn.innerText = "그리기 완료";
 			btn.classList.remove('new-draw');
 			
-			overlayPolyline[0].setMap(null);
+			// console.log(polyline2.getPath()._array);
+			polyline2.getPath().clear();
 			overlayMarker[0].setMap(null);
-			overlayPolyline.length = 0;
 			overlayMarker.length = 0;
-			
-			// let path = polyline2.getPath();
-			// console.log("path ", path);
-			
-			// let newPath = [];
-			
-			// polyline2.setMap(null);
-			// polyline2.setPath(newPath);
 		}
 	})
 
@@ -314,20 +302,50 @@
 	    });
 	}
 	
-	/* info marker */
-	const infoGroup = document.querySelectorAll(".form-check button");
- 	
- 	infoGroup.forEach(function (item, index) {
+	/* trail Add */
+	let addBtn = document.querySelector(".fa-circle-check");
+	
+	addBtn.addEventListener("click", function() {
+		console.log("addBtn click");
+		
+		if(hiddenName.value == '0') {
+			alert("산책로 이름을 확인해주세요.");
+		} else {
+			console.log("trailName ", trailName.value);
+			console.log("tagArr ", tagArr);
+			// info check
+			// info marker
+			// 설명
+			// coords
+			// 위치
+			// 거리
+			// 소요시간
+		}
+	})
+	
+	/* info check */
+	const switchCheck1 = document.querySelector('#switchCheck1');
+	const switchCheck2 = document.querySelector('#switchCheck2');
+	const switchCheck3 = document.querySelector('#switchCheck3');
+	
+	const infoChkGroup = document.querySelectorAll(".form-check input");
+	
+	infoChkGroup.forEach(function (item, index) {
         item.addEventListener("click", function () {
-        	console.log("info marker click", index);
+        	console.log("infoChkGroup click", index);
         	
-        	if(chk) {
-        		alert("산책로 그리기 완료 후 설정해주세요.");
+        	let $this = $(this);
+        	let itemChecked = item.checked;
+        	
+        	console.log("infoGroup[index]", infoGroup[index]);
+        	
+        	if(itemChecked) {
+        		infoGroup[index].classList.remove("new-draw");
+        		infoGroup[index].innerText = "위치 설정";
+        		
         	} else {
-        		let $this = $(this);
-        		let infoChk = true;
-        		$this.removeClass("new-draw");
-        		item.innerText = "설정 중";
+        		infoGroup[index].classList.add("new-draw");
+        		infoGroup[index].innerText = "위치 설정";
         		
         		if(overlayInfoMarker.length != 0) {
 					for(let i = 0; i < overlayInfoMarker.length; i++) {
@@ -340,42 +358,75 @@
 						}
 					}
 				}
+        	}
+        })
+    });
+	
+	/* info marker */
+	const infoGroup = document.querySelectorAll(".form-check button");
+ 	
+ 	infoGroup.forEach(function (item, index) {
+        item.addEventListener("click", function () {
+        	console.log("infoGroup click", index);
+        	
+        	let $this = $(this);
+        	
+        	if($this.hasClass("new-draw") === false || item.innerText == "다시 설정") {
         		
-        		naver.maps.Event.addListener(map, 'click', function(e) {
-        			if (infoChk) {
-        				console.log("infoChk");
-        				
-        				var marker = new naver.maps.Marker({
-            				map : map,
-            				position : e.latlng,
-            				icon: {
-            					url: '${pageContext.request.contextPath}/assets/images/walkTrail/marker' + index + '.png',
-            				    size: new naver.maps.Size(30, 30),
-            				    scaledSize: new naver.maps.Size(30, 30),
-            		       }
-            			});
-        				
-        				marker.set('seq', index);
-                		overlayInfoMarker.push(marker);
-                		
-                		$this.addClass("new-draw");
-                		item.innerText = "다시 설정";
-                		
-                		infoChk = false;
-        			}
-        		});
+        		if(chk) {
+            		alert("산책로 그리기 완료 후 설정해주세요.");
+            	} else {
+            		let infoChk = true;
+            		$this.removeClass("new-draw");
+            		item.innerText = "설정 중";
+            		
+            		if(overlayInfoMarker.length != 0) {
+    					for(let i = 0; i < overlayInfoMarker.length; i++) {
+    						
+    						let seq = overlayInfoMarker[i].get('seq');
+    						console.log("seq ", seq);
+    						if(seq == index) {
+    							overlayInfoMarker[i].setMap(null);
+    							overlayInfoMarker.splice(i, 1);
+    						}
+    					}
+    				}
+            		
+            		naver.maps.Event.addListener(map, 'click', function(e) {
+            			if (infoChk) {
+            				console.log("infoChk");
+            				
+            				var marker = new naver.maps.Marker({
+                				map : map,
+                				position : e.latlng,
+                				icon: {
+                					url: '${pageContext.request.contextPath}/assets/images/walkTrail/marker' + index + '.png',
+                				    size: new naver.maps.Size(30, 30),
+                				    scaledSize: new naver.maps.Size(30, 30),
+                		       }
+                			});
+            				
+            				marker.set('seq', index);
+                    		overlayInfoMarker.push(marker);
+                    		
+                    		$this.addClass("new-draw");
+                    		item.innerText = "다시 설정";
+                    		
+                    		infoChk = false;
+            			}
+            		});
+            	}
         	}
         })
     });
  	
  	/* name chk */
-	var nameChkBtn = document.querySelector("#button-addon2");
-	var hiddenName = document.querySelector("#hidden-name");
-	var nameChk = document.querySelector("#nameChk");
+	let nameChkBtn = document.querySelector("#button-addon2");
+	let trailName = document.querySelector("#trail-name");
+	let hiddenName = document.querySelector("#hidden-name");
+	let nameChk = document.querySelector("#nameChk");
 	
 	nameChkBtn.addEventListener("click", function() {
-		
-		let trailName = document.querySelector("#trail-name");
 		
 		if (!trailName.value) {
 			alert("산책로 이름을 입력해주세요.");
@@ -389,16 +440,11 @@
 				dataType : "json",
 				success : function(result) {
 					if(result) {
-						console.log("1");
-						// nameChk.innerText = "no";
-						// Chek.classList.remove('true');
+						nameChkBtn.classList.remove('true');
 						nameChk.classList.remove('true');
 						hiddenName.value = 0;
 					} else {
-						console.log("0");
-						// nameChk.innerText = "ok";
-						// $(".Chek").text("사용 가능한 이름입니다.");
-						// Chek.classList.add('true');
+						nameChkBtn.classList.add('true');
 						nameChk.classList.add('true');
 						hiddenName.value = 1;
 					}
@@ -409,6 +455,12 @@
 			});
 		}
 	})
+	
+	$('#trail-name').change(function() {
+		nameChkBtn.classList.remove('true');
+		nameChk.classList.remove('true');
+		hiddenName.value = 0;
+	});
 	
 	/* tag */
  	const tagGroup = document.querySelectorAll(".tag-btn button");
@@ -444,7 +496,7 @@
             		}
         		}
         	}
-        	console.log("tagArr ", tagArr);
+        	// console.log("tagArr ", tagArr);
         })
     });
 	

@@ -449,6 +449,13 @@ SELECT COUNT(*)
   FROM trailCmt
  WHERE trailNo = 1;
 
+-- 산책로 등록
+
+-- 산책로 이름 중복 확인
+SELECT COUNT(*)
+  FROM trail
+ WHERE name = #{id}
+
 ---------------------------------------------------------------------------------------
 
 SELECT COUNT(*)

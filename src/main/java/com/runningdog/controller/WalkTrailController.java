@@ -167,6 +167,19 @@ public class WalkTrailController {
 		return selectCnt;
 	}
 	
+	// 산책로 등록 ajax
+	@ResponseBody
+	@RequestMapping(value = "/trailAdd", method= { RequestMethod.GET, RequestMethod.POST})
+	public Map<String, Object> trailAdd(@RequestBody Map<String, Object> fetchSet) {
+		System.out.println("WalkTrailController.trailAdd()");
+		
+		// Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
+		// ArrayList<String> tags = (ArrayList<String>) fetchSet.get("tags");
+		// int filter = (int) fetchSet.get("filter");
+		
+		return fetchSet;
+	}
+	
 	@RequestMapping(value = "/modifyForm", method= { RequestMethod.GET, RequestMethod.POST})
 	public String trailModifyForm() {
 		System.out.println("WalkTrailController.trailModifyForm()");
