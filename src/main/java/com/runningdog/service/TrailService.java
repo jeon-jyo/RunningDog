@@ -14,7 +14,9 @@ import com.runningdog.dao.TrailDao;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
+import com.runningdog.vo.TrailTagVo;
 import com.runningdog.vo.TrailVo;
+import com.runningdog.vo.UsersVo;
 import com.runningdog.vo.WalkLogVo;
 
 @Service
@@ -131,6 +133,144 @@ public class TrailService {
 		int selectCnt = trailDao.confirmName(trailVo);
 		
 		return selectCnt;
+	}
+
+	// 산책로 등록 ajax
+	public int trailAdd(Map<String, Object> fetchSet) {
+		System.out.println("TrailService.trailAdd()");
+		
+		int insertCnt = 0;
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		TrailVo trailVo = mapper.convertValue(fetchSet.get("trailVo"), TrailVo.class);
+		Map<String, Boolean> infoCheck = (Map<String, Boolean>) fetchSet.get("infoCheck");
+		Map<String, Map<String, Object>> infoMarker = (Map<String, Map<String, Object>>) fetchSet.get("infoMarker");
+		ArrayList<Map<String, Object>> coordsList = (ArrayList<Map<String, Object>>) fetchSet.get("coordsList");
+		ArrayList<String> tagArr = (ArrayList<String>) fetchSet.get("tagArr");
+		int userNo = (int) fetchSet.get("userNo");
+		UsersVo usersVo = new UsersVo();
+		usersVo.setUserNo(userNo);
+		trailVo.setUsersVo(usersVo);
+		
+		if(infoCheck.get("parking") == true) {
+			trailVo.setParking('T');
+		} else {
+			trailVo.setParking('F');
+		}
+		if(infoCheck.get("restroom") == true) {
+			trailVo.setRestroom('T');
+		} else {
+			trailVo.setRestroom('F');
+		}
+		if(infoCheck.get("trashCan") == true) {
+			trailVo.setTrashCan('T');
+		} else {
+			trailVo.setTrashCan('F');
+		}
+		
+		// 산책로 등록
+		int trailInsertCnt = trailDao.trailInsert(trailVo);
+		if(trailInsertCnt != 0) {
+			// System.out.println("산책로 등록 성공");
+			
+			if(tagArr.size() != 0) {
+				for (String tag : tagArr) {
+					TrailTagVo trailTagVo = new TrailTagVo();
+					trailTagVo.setTrailVo(trailVo);
+					trailTagVo.setTagName(tag);
+					
+					// 산책로 태그 등록
+					if(trailDao.trailTagInsert(trailTagVo) == 1) {
+						// System.out.println("산책로 태그 등록 성공");
+					} else {
+						// System.out.println("산책로 태그 등록 실패");
+					}
+				}
+			}
+			
+			for (Map<String, Object> coordsMap : coordsList) {
+				
+				CoordsVo coordsVo = new CoordsVo();
+				coordsVo.setType("trail");
+				coordsVo.setUseNo(trailVo.getTrailNo());
+				coordsVo.setCoordOrder((int) coordsMap.get("coordOrder"));
+				coordsVo.setLat((double) coordsMap.get("y"));
+				coordsVo.setLng((double) coordsMap.get("x"));
+
+				// 산책로 좌표 등록
+				if(trailDao.trailCoordsInsert(coordsVo) == 1) {
+					// System.out.println("산책로 좌표 등록 성공");
+				} else {
+					// System.out.println("산책로 좌표 등록 실패");
+				}
+			}
+			
+			if(infoMarker.get("parking") != null) {
+				// System.out.println("parking o : " + infoMarker.get("parking"));
+				
+				CoordsVo coordsVo = new CoordsVo();
+				coordsVo.setType("trailParking");
+				coordsVo.setUseNo(trailVo.getTrailNo());
+				coordsVo.setCoordOrder(1);
+				coordsVo.setLat((double) infoMarker.get("parking").get("y"));
+				coordsVo.setLng((double) infoMarker.get("parking").get("x"));
+				
+				// 정보 좌표 등록
+				if(trailDao.trailCoordsInsert(coordsVo) == 1) {
+					// System.out.println("parking 좌표 등록 성공");
+				} else {
+					// System.out.println("parking 좌표 등록 실패");
+				}
+			} else if(infoMarker.get("restroom") != null) {
+				// System.out.println("restroom o : " + infoMarker.get("restroom"));
+				
+				CoordsVo coordsVo = new CoordsVo();
+				coordsVo.setType("restroom");
+				coordsVo.setUseNo(trailVo.getTrailNo());
+				coordsVo.setCoordOrder(1);
+				coordsVo.setLat((double) infoMarker.get("restroom").get("y"));
+				coordsVo.setLng((double) infoMarker.get("restroom").get("x"));
+				
+				// 정보 좌표 등록
+				if(trailDao.trailCoordsInsert(coordsVo) == 1) {
+					// System.out.println("restroom 좌표 등록 성공");
+				} else {
+					// System.out.println("restroom 좌표 등록 실패");
+				}
+			} else if(infoMarker.get("trashCan") != null) {
+				System.out.println("trashCan o : " + infoMarker.get("trashCan"));
+				
+				CoordsVo coordsVo = new CoordsVo();
+				coordsVo.setType("trashCan");
+				coordsVo.setUseNo(trailVo.getTrailNo());
+				coordsVo.setCoordOrder(1);
+				coordsVo.setLat((double) infoMarker.get("trashCan").get("y"));
+				coordsVo.setLng((double) infoMarker.get("trashCan").get("x"));
+				
+				// 정보 좌표 등록
+				if(trailDao.trailCoordsInsert(coordsVo) == 1) {
+					// System.out.println("trashCan 좌표 등록 성공");
+				} else {
+					// System.out.println("trashCan 좌표 등록 실패");
+				}
+			}
+			insertCnt = 1;
+		} else {
+			// System.out.println("산책로 등록 실패");
+		}
+		
+		/*
+		System.out.println("fetchSet : " + fetchSet);
+		System.out.println("trailVo : " + trailVo);
+		System.out.println("infoCheck : " + infoCheck);
+		System.out.println("infoMarker : " + infoMarker);
+		System.out.println("coordsList : " + coordsList);
+		System.out.println("tagArr : " + tagArr);
+		System.out.println("userNo : " + userNo);
+		*/
+		
+		return insertCnt;
 	}
 	
 }

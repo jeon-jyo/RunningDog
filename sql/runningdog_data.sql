@@ -39,15 +39,24 @@ VALUES (3,    -- 회원번호 usersNo
         );
 
 ---------------------------------------------------------------------------------------------
+
 --강아지 
 INSERT INTO dog
 VALUES (1, 1, '릴파', sysdate, 'male', 10.6, '리트리버', 'T', '사람을 만나면 신나요', 'T', '#c7dfff', 'T');
+
+INSERT INTO dog
+VALUES (5, 1, '고세구', sysdate, ' female', 10.6, '리트리버', 'T', '사람을 만나면 신나요', 'T', '#c7dfff', 'T');
+
+INSERT INTO dog
+VALUES (6, 1, '아이네', sysdate, 'male', 6.2, '푸들', 'T', '노견이라 체력이 약해요', 'T', '#e1c8f7', 'T');
 
 INSERT INTO dog
 VALUES (2, 2, '아이네', sysdate, 'male', 6.2, '푸들', 'T', '노견이라 체력이 약해요', 'T', '#e1c8f7', 'T');
 
 INSERT INTO dog
 VALUES (3, 3, '주르르', sysdate, 'male', 8, '도베르만', 'T', '여우 같아요', 'T', '#ffc7ed', 'T');
+
+
 
 -----------------------------------------------------------------------
 --산책일지 + 산책좌표
@@ -68,12 +77,13 @@ VALUES (99,    -- 회원번호 userNo
 INSERT INTO walkLog
 VALUES (1,    -- 산책일지번호 walkLogNo
         99,     -- 회원번호 userNo
-        111,    -- 동네번호 locationNo
-        11111, -- 모임번호 meetingNo
+        1174010900,    -- 동네번호 locationNo
+        null, -- 모임번호 meetingNo
+        '제목',
         SYSDATE, -- 작성시간 regDate
-        SYSDATE, -- 시작시간 startTime
-        SYSDATE, -- 종료시간 endTime
-        SYSDATE, -- 소요시간 logTime
+        to_date('2023-11-04 03:28','YYYY/MM/DD HH:MI'), -- 시작시간 startTime 2023-11-14T03:28
+        to_date('2023-11-05 03:28','YYYY/MM/DD HH:MI'), -- 종료시간 endTime
+        3560, -- 소요시간 logTime
         15, -- 거리 distance
         '내용을 적어주세요', -- 내용 content
         '공개', -- 공개여부 security
@@ -83,12 +93,13 @@ VALUES (1,    -- 산책일지번호 walkLogNo
 INSERT INTO walkLog
 VALUES (2,    -- 산책일지번호 walkLogNo
         99,     -- 회원번호 userNo
-        111,    -- 동네번호 locationNo
+        1174010900,    -- 동네번호 locationNo
         11111, -- 모임번호 meetingNo
+        '제목',
         SYSDATE, -- 작성시간 regDate
-        SYSDATE, -- 시작시간 startTime
-        SYSDATE, -- 종료시간 endTime
-        SYSDATE, -- 소요시간 logTime
+        to_date('2023-11-04 03:28','YYYY/MM/DD HH:MI'), -- 시작시간 startTime 2023-11-14T03:28
+        to_date('2023-11-05 03:28','YYYY/MM/DD HH:MI'), -- 종료시간 endTime
+        3560, -- 소요시간 logTime
         15, -- 거리 distance
         '내용을 적어주세요', -- 내용 content
         '공개', -- 공개여부 security
@@ -98,12 +109,13 @@ VALUES (2,    -- 산책일지번호 walkLogNo
 INSERT INTO walkLog
 VALUES (3,    -- 산책일지번호 walkLogNo
         99,     -- 회원번호 userNo
-        111,    -- 동네번호 locationNo
+        1174010900,    -- 동네번호 locationNo
         11111, -- 모임번호 meetingNo
+        '제목',
         SYSDATE, -- 작성시간 regDate
-        SYSDATE, -- 시작시간 startTime
-        SYSDATE, -- 종료시간 endTime
-        SYSDATE, -- 소요시간 logTime
+        to_date('2023-11-04 03:28','YYYY/MM/DD HH:MI'), -- 시작시간 startTime 2023-11-14T03:28
+        to_date('2023-11-05 03:28','YYYY/MM/DD HH:MI'), -- 종료시간 endTime
+        3560, -- 소요시간 logTime
         15, -- 거리 distance
         '내용을 적어주세요', -- 내용 content
         '공개', -- 공개여부 security
@@ -145,6 +157,7 @@ VALUES (6,    -- 산책한강아지번호 walkedDogNo
         3,     -- 산책일지번호 walkLogNo
         1    -- 강아지번호 dogNo       
         );       
+        
         
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 1, 'walkLog', 1, 127.1252811, 37.5436749);
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 2, 'walkLog', 1, 127.1254717, 37.54419228);
@@ -199,15 +212,15 @@ INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coor
 --산책로 + 산책좌표 
 INSERT INTO trail
 VALUES (1, 1, 1174010900, '천호공원 한바퀴', '서울 강동구 올림픽로 702 해공도서관',
-'694m', '50분', 'T', 'F', 'F', '저녁에 사람이 많다. 공기가 좋다', sysdate, sysdate, 'T');
+800, 800, 'T', 'F', 'F', '저녁에 사람이 많다. 공기가 좋다', sysdate, sysdate, 'T');
 
 INSERT INTO trail
 VALUES (2, 2, 1174010900, '광나루한강공원', '서울 강동구 천호동 351-1',
-'164m', '17분', 'F', 'T', 'F', '강아지들과 운동하기 좋음', sysdate, sysdate, 'T');
+1000, 1000, 'F', 'T', 'F', '강아지들과 운동하기 좋음', sysdate, sysdate, 'T');
 
 INSERT INTO trail
 VALUES (3, 3, 1174010900, '광나루자전거공원', '서울 강동구 선사로 83-19',
-'563m', '30분', 'F', 'F', 'T', '산책길이 잘 되어 있음', sysdate, sysdate, 'T');
+1105, 1105, 'F', 'F', 'T', '산책길이 잘 되어 있음', sysdate, sysdate, 'T');
 
 INSERT INTO trailTag
 VALUES (1, 1, '공원 근처');
@@ -275,10 +288,6 @@ INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coor
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 17, 'trail', 3, 127.1175996, 37.5442685);
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 18, 'trail', 3, 127.1173743, 37.5441451);
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 19, 'trail', 3, 127.1172294, 37.5437666);
-
-
-
-
 
 -----------------------------------------------------------------------------------------------
 ---동아리 

@@ -195,7 +195,7 @@
 		})
 	}
 	
-	// map list
+	// coords map list
 	function fetchMapList(walkLogNo) {
 		// console.log("fetchMapList()");
 		

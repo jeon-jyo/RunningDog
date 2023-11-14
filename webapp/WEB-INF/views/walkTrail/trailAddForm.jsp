@@ -7,7 +7,6 @@
 <link href="${pageContext.request.contextPath}/assets/css/walkTrail/trailForm.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script>
-<!-- <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script> -->
 </head>
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
@@ -17,9 +16,9 @@
 		<div class="explorer">
 			<div class="segment-map-info">
 				<i class="fa-solid fa-circle-check"></i>
-				<div class="addInfo">예상 소요시간 : <strong id="trail-eta">30분</strong></div>
-				<div class="addInfo">거리 : <strong id="trail-distance">1.8km</strong></div>
-				<div class="addInfo" id="trail-address">서울 강동구 올림픽로 702 해공도서관</div>
+				<div class="addInfo">예상 소요시간 : <strong id="trail-eta"></strong></div>
+				<div class="addInfo">거리 : <strong id="trail-distance"></strong></div>
+				<div class="addInfo" id="trail-address"></div>
 				<i class="fa-solid fa-location-dot selected-maker"></i>
 			</div>
 
@@ -97,7 +96,7 @@
 	
 	var errorRange = 20;	// 오차 범위 (미터단위)
 	var matchRate = 70;		// 몇퍼센트 이상 일치해야 하는지 (일치율)
-	// var distanceRatio = 90;	// 거리
+	var maxDistance;		// 최대 거리
 	
 	let overlayMarker = [];
 	let overlayInfoMarker = [];
@@ -139,29 +138,22 @@
 	
 	naver.maps.Event.addListener(map, 'click', function(e) {
 		if (chk) {
-			console.log("chk");
+			// console.log("chk");
 			drawLine(e.coord, polyline2);
 		}
 	});
 	
-	/*
-		drawLine(map, point, line) = 두 점 사이에 비교군인 점을 추가로 찍어주는 함수
-		map = 사용하는 네이버 맵 객체
-		point = 방금 찍은 좌표
-		line = 그리는 polyline 객체
-	*/
+	// 두 점 사이에 비교군인 점을 추가로 찍어주는 함수
 	function drawLine(point, line) {
-		console.log("drawLine");
+		// console.log("drawLine");
 		
 		let path = line.getPath();
 		// 최초로 찍은 점이 아닐때만 
 		if(path.length != 0) {
 			var projection = map.getProjection();
-			// 방금 찍은 점의 전 포인트를 갖고온다
-			var prevCoord = path._array[path.length-1];
-			// 두 점의 각도를 계산해서 갖고온다
-			var degree = getAngle(prevCoord, point);
-		    var distance = projection.getDistance(prevCoord, point); // 두 점 사이의 거리 반환
+			var prevCoord = path._array[path.length-1];		// 방금 찍은 점의 전 포인트
+			var degree = getAngle(prevCoord, point);		// 두 점의 각도를 계산
+		    var distance = projection.getDistance(prevCoord, point);	// 두 점 사이의 거리 반환
 			var spotCount = distance / (errorRange * 2);
 			for(var i = 0; i <= spotCount; i++) {
 				var newPoint = projection.getDestinationCoord(prevCoord, degree, errorRange * 2 * i);
@@ -182,11 +174,7 @@
 		path.push(point);
 	}
 	
-	/*
-		getAngle(prevCoord, coord) = 두 점의 각도를 반환하는 함수
-		prevCoord = 바로 이전에 찍은 점 좌표
-		coord = 방금 찍은 좌표
-	*/
+	// 두 점의 각도를 반환하는 함수
 	function getAngle(prevCoord, coord) {
 		var lat1 = prevCoord.y * Math.PI / 180;
 		var lat2 = coord.y * Math.PI / 180;
@@ -194,26 +182,24 @@
 		var lng2 = coord.x * Math.PI / 180;
 		var y = Math.sin(lng2 - lng1) * Math.cos(lat2);
 		var x = Math.cos(lat1) * Math.sin(lat2) -
-	      	     Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
+				Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
 		var radian = Math.atan2(y,x);
 		var degree = (radian * 180 / Math.PI + 360) % 360;
 		return degree;
 	}
 	
 	/*
-		getMatchLine(map, line, compareLine) = 두 선을 비교해 일치하면 true 아니면 false 반환하는 함수
-		map = 사용하는 네이버 맵 객체
+		두 선을 비교해 일치하면 true 아니면 false 반환하는 함수
 		line = 방금 그린 선
-		compareLine = 비교할 선 하나
+		compareLine = 비교할 선
 	*/
-	function getMatchLine(map, line, compareLine) {
+	function getMatchLine(line, compareLine) {
 		var paths = line.getPath()._array;
 		var comparePaths = compareLine.getPath()._array;
 		var projection = map.getProjection();
 		var cnt = 0;
 		for (var i = 0; i < comparePaths.length; i++) {
 			for (var j = 0; j < paths.length; j++) {
-				// 두 점사이의 거리를 계산
 				var distance = projection.getDistance(paths[j], comparePaths[i]) // 두 좌표 사이의 거리를 반환하는 함수
 				// 해당 거리가 오차범위보다 낮다면
 				if (distance <= errorRange) {
@@ -232,21 +218,21 @@
 		}
 	}
 	
-	/* draw btn */
+	/* draw start end btn */
 	btn.addEventListener("click", function() {
-		
 		if(chk) {
 			chk = false;
-			let check = getMatchLine(map, polyline2, polyline);
+			let check = getMatchLine(polyline2, polyline);
 			if(check) {
+				console.log("산책로 그리기 성공");
+				
 				btn.innerText = "다시 그리기";
 				btn.classList.add('new-draw');
 				
-				console.log("산책로 그리기 성공");
-				
 				getAddress();
+				setNewTrailInfo();
 			} else {
-				chk = true;
+				alert("산책로를 다시 그려주세요.");
 				
 				btn.innerText = "그리기 완료";
 				btn.classList.remove('new-draw');
@@ -254,30 +240,34 @@
 				polyline2.getPath().clear();
 				overlayMarker[0].setMap(null);
 				overlayMarker.length = 0;
-				
-				alert("산책로를 다시 그려주세요.");
+				chk = true;
+				addressInfo.innerText = "";
+				distanceInfo.innerText = "";
+				etaInfo.innerText = "";
 			}
 		} else {
-			chk = true;
-			
 			btn.innerText = "그리기 완료";
 			btn.classList.remove('new-draw');
 			
 			polyline2.getPath().clear();
 			overlayMarker[0].setMap(null);
 			overlayMarker.length = 0;
+			chk = true;
+			addressInfo.innerText = "";
+			distanceInfo.innerText = "";
+			etaInfo.innerText = "";
 		}
 	})
 	
 	/* coords to address */
-	
 	let addressInfo = document.querySelector("#trail-address");
 	let distanceInfo = document.querySelector("#trail-distance");
 	let etaInfo = document.querySelector("#trail-eta");
 	let locationInfo;
+	let infoNum;
 	
 	function getAddress() {
-		console.log("getAddress()");
+		// console.log("getAddress()");
 		
 		let path = polyline2.getPath()._array;
 		
@@ -295,68 +285,199 @@
 	        
 	        var results = response.v2.results,
             address = response.v2.address.jibunAddress,
-            location = response.v2.results[0].code.id,
-            distance = Math.floor(polyline2.getDistance());
+            location = response.v2.results[0].code.id;
 
-	        console.log("address ", address);
-	        console.log("location ", location);
-	        console.log("distance ", distance);
+	        // console.log("address ", address);
+	        // console.log("location ", location);
 
 	        addressInfo.innerText = address;
 	        locationInfo = location;
-	        
-	        if(distance/1000 > 1) {
-	        	console.log("distance ", distance);
-	        } else {
-	        	console.log("distance ", distance + "m");
-	        	distanceInfo.innerText = distance + "m";
-	        }
-	        
-
 	    });
+	}
+	
+	function setNewTrailInfo() {
+		console.log("setNewTrailInfo()");
+		
+		let distance = Math.floor(polyline2.getDistance());
+		infoNum = distance;
+		
+        // distance = 3800;
+        if(distance >= 1000) {
+        	distanceInfo.innerText = (distance / 1000).toFixed(2) + "km";
+        	console.log("distanceInfo ", (distance / 1000).toFixed(2) + "km");
+        } else {
+        	distanceInfo.innerText = distance + "m";
+        	console.log("distanceInfo ", distance + "m");
+        }
+        
+        etaInfo.innerText = infoNum;
 	}
 	
 	/* trail Add */
 	let addBtn = document.querySelector(".fa-circle-check");
+	let switchCheck1 = document.querySelector("#switchCheck1");
+	let switchCheck2 = document.querySelector("#switchCheck2");
+	let switchCheck3 = document.querySelector("#switchCheck3");
+	let contentInfo = document.querySelector("#exampleFormControlTextarea1");
+	let parkingSpot;
+	let restroomSpot;
+	let trashCanSpot;
 	
 	addBtn.addEventListener("click", function() {
-		console.log("addBtn click");
+		console.log("==========addBtn click==========");
 		
 		if(hiddenName.value == '0') {
 			alert("산책로 이름을 확인해주세요.");
+		} else if(addressInfo.innerText == "") {
+			alert("산책로를 그려주세요.");
 		} else {
-			console.log("trailName ", trailName.value);
-			console.log("tagArr ", tagArr);
-			// info check
-			// info marker
-			// 설명
-			// coords
-			// 위치
-			// 거리
-			// 소요시간
+			
+			if(overlayInfoMarker.length != 0) {
+				for(let i = 0; i < overlayInfoMarker.length; i++) {
+					
+					let seq = overlayInfoMarker[i].get('seq');
+					let position = overlayInfoMarker[i].getPosition();
+					
+					if(seq == 0) {
+						parkingSpot = overlayInfoMarker[i].getPosition();
+						console.log("parkingSpot ", parkingSpot);
+					} else if(seq == 1) {
+						restroomSpot = overlayInfoMarker[i].getPosition();
+						console.log("restroomSpot ", restroomSpot);
+					} else if(seq == 2) {
+						trashCanSpot = overlayInfoMarker[i].getPosition();
+						console.log("trashCanSpot ", trashCanSpot);
+					}
+				}
+			}
+			
+			let locationVo = {
+				locationNo : locationInfo
+			}
+			console.log("locationVo ", locationVo);
+			
+			let trailVo = {
+				locationVo : locationVo,
+				name : trailName.value,
+				spot : addressInfo.innerText,
+				distance : infoNum,
+				eta : infoNum,
+				explanation : contentInfo.value
+			}
+			console.log("trailVo ", trailVo);
+			
+			let infoCheck = {
+				parking : switchCheck1.checked,
+				restroom : switchCheck2.checked,
+				trashCan : switchCheck3.checked
+			}
+			console.log("infoCheck ", infoCheck);
+
+			let infoMarker = {
+				parking : parkingSpot,
+				restroom : restroomSpot,
+				trashCan : trashCanSpot
+			}
+			console.log("infoMarker ", infoMarker);
+			
+			let paths = polyline2.getPath()._array;
+			let coordsList = [];
+			for(let i = 0; i < paths.length; i++) {
+				let coordsMap = {
+					x : paths[i]._lng,
+					y : paths[i]._lat,
+					coordOrder : i+1,
+				}
+				coordsList.push(coordsMap);
+			}
+			console.log("coordsList ", coordsList);
+			
+			let fetchSet = {
+				"trailVo" : trailVo,
+				"infoCheck" : infoCheck,
+				"infoMarker" : infoMarker,
+				"coordsList" : coordsList,
+				"tagArr" : tagArr
+			}
+			console.log("fetchSet ", fetchSet);
+			
+			
+ 			$.ajax({
+				url : "${pageContext.request.contextPath}/walkTrail/trailAdd",
+				type : "post",
+				contentType : "application/json",
+				data : JSON.stringify(fetchSet),
+				
+				dataType : "json",
+				success : function(insertCnt) {
+					console.log("insertCnt ", insertCnt);
+					
+					if(insertCnt ==1) {
+						window.location.href = "${pageContext.request.contextPath}/walkTrail/main?listKey=my";
+					}
+				},
+				error : function(XHR, status, error) {
+					console.error(status + " : " + error);
+				}
+			});
 		}
+		
+/* 		// name
+		console.log("trailName ", trailName.value);
+		// tag
+		console.log("tagArr ", tagArr);
+		// info check
+		console.log("switchCheck1 ", switchCheck1.checked);
+		console.log("switchCheck2 ", switchCheck2.checked);
+		console.log("switchCheck3 ", switchCheck3.checked);
+		// info marker
+		if(overlayInfoMarker.length != 0) {
+			for(let i = 0; i < overlayInfoMarker.length; i++) {
+				
+				let seq = overlayInfoMarker[i].get('seq');
+				let position = overlayInfoMarker[i].getPosition();
+				
+				if(seq == 0) {
+					parkingSpot = overlayInfoMarker[i].getPosition();
+					console.log("parkingSpot ", parkingSpot);
+				} else if(seq == 1) {
+					restroomSpot = overlayInfoMarker[i].getPosition();
+					console.log("restroomSpot ", restroomSpot);
+				} else if(seq == 2) {
+					trashCanSpot = overlayInfoMarker[i].getPosition();
+					console.log("trashCanSpot ", trashCanSpot);
+				}
+			}
+		}
+		// content
+		console.log("content ", contentInfo.value);
+		// coords
+		let paths = polyline2.getPath()._array;
+		console.log("coords ", paths);
+		console.log("coords ", paths[0]._lat);
+		// location
+		console.log("location ", locationInfo);
+		// address
+		console.log("address ", addressInfo.innerText);
+		// distance
+		console.log("distance ", infoNum);
+		// eta
+		console.log("eta ", infoNum); */
 	})
 	
 	/* info check */
-	const switchCheck1 = document.querySelector('#switchCheck1');
-	const switchCheck2 = document.querySelector('#switchCheck2');
-	const switchCheck3 = document.querySelector('#switchCheck3');
-	
 	const infoChkGroup = document.querySelectorAll(".form-check input");
 	
 	infoChkGroup.forEach(function (item, index) {
         item.addEventListener("click", function () {
-        	console.log("infoChkGroup click", index);
+        	// console.log("infoChkGroup click", index);
         	
         	let $this = $(this);
         	let itemChecked = item.checked;
         	
-        	console.log("infoGroup[index]", infoGroup[index]);
-        	
         	if(itemChecked) {
         		infoGroup[index].classList.remove("new-draw");
         		infoGroup[index].innerText = "위치 설정";
-        		
         	} else {
         		infoGroup[index].classList.add("new-draw");
         		infoGroup[index].innerText = "위치 설정";
@@ -365,7 +486,6 @@
 					for(let i = 0; i < overlayInfoMarker.length; i++) {
 						
 						let seq = overlayInfoMarker[i].get('seq');
-						console.log("seq ", seq);
 						if(seq == index) {
 							overlayInfoMarker[i].setMap(null);
 							overlayInfoMarker.splice(i, 1);
@@ -381,24 +501,21 @@
  	
  	infoGroup.forEach(function (item, index) {
         item.addEventListener("click", function () {
-        	console.log("infoGroup click", index);
+        	// console.log("infoGroup click", index);
         	
         	let $this = $(this);
         	
         	if($this.hasClass("new-draw") === false || item.innerText == "다시 설정") {
-        		
         		if(chk) {
             		alert("산책로 그리기 완료 후 설정해주세요.");
             	} else {
-            		let infoChk = true;
+            		let markerChk = true;
             		$this.removeClass("new-draw");
             		item.innerText = "설정 중";
             		
             		if(overlayInfoMarker.length != 0) {
     					for(let i = 0; i < overlayInfoMarker.length; i++) {
-    						
     						let seq = overlayInfoMarker[i].get('seq');
-    						console.log("seq ", seq);
     						if(seq == index) {
     							overlayInfoMarker[i].setMap(null);
     							overlayInfoMarker.splice(i, 1);
@@ -407,9 +524,7 @@
     				}
             		
             		naver.maps.Event.addListener(map, 'click', function(e) {
-            			if (infoChk) {
-            				console.log("infoChk");
-            				
+            			if (markerChk) {
             				var marker = new naver.maps.Marker({
                 				map : map,
                 				position : e.latlng,
@@ -425,8 +540,7 @@
                     		
                     		$this.addClass("new-draw");
                     		item.innerText = "다시 설정";
-                    		
-                    		infoChk = false;
+                    		markerChk = false;
             			}
             		});
             	}
@@ -434,14 +548,13 @@
         })
     });
  	
- 	/* name chk */
+ 	/* confirm name */
 	let nameChkBtn = document.querySelector("#button-addon2");
 	let trailName = document.querySelector("#trail-name");
 	let hiddenName = document.querySelector("#hidden-name");
 	let nameChk = document.querySelector("#nameChk");
 	
 	nameChkBtn.addEventListener("click", function() {
-		
 		if (!trailName.value) {
 			alert("산책로 이름을 입력해주세요.");
 			trailName.focus();
@@ -495,6 +608,7 @@
             		
         			let tagArrIndex = tagArr.indexOf(item);
         			tagArr.splice(tagArrIndex, 1);
+        			console.log("tagArr - ", tagArr);
         		}
         	} else {
         		if(tagArr.length < 2) {
@@ -503,14 +617,16 @@
             				tagActive = true;
             				$this.addClass("selected-tag");
             				tagArr.push(item.innerText);
+            				console.log("tagArr + ", tagArr);
             			}
             		} else {
             			$this.addClass("selected-tag");
             			tagArr.push(item.innerText);
+            			console.log("tagArr + ", tagArr);
             		}
         		}
         	}
-        	// console.log("tagArr ", tagArr);
+        	console.log("tagArr ", tagArr);
         })
     });
 	

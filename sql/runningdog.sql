@@ -4,12 +4,15 @@ SELECT * FROM user_sequences;
 SELECT * FROM trail;
 SELECT * FROM trailTag;
 SELECT * FROM coords;
+SELECT * FROM trailUsed;
+SELECT * FROM walkLog;
 
 -- DELETE FROM trail;
 -- DELETE FROM trailTag;
 -- DELETE FROM coords;
 
 COMMIT;
+ROLLBACK;
 
 ---------------------------------------------------------------------------------------
 
@@ -30,7 +33,7 @@ SELECT locationNo
        ,gu
        ,dong
   FROM location
- WHERE l.gu LIKE '%전체%';
+ WHERE gu LIKE '%전체%';
 
 -- 산책로 목록
 -- 이용자순
@@ -50,19 +53,58 @@ SELECT ort.trailNo
                        ,t.distance
                        ,t.eta
                        ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM trail t, coords c, ( SELECT COUNT(tt.walkLogNo) cnt
-                                                   ,tt.trailNo
-                                              FROM trailUsed tt, trailTag ta
-                                             WHERE tt.trailNo = ta.trailNo
-                                             GROUP BY tt.trailNo ) gt
+                  FROM coords c, trail t
+                  LEFT OUTER JOIN ( SELECT COUNT(tt.walkLogNo) cnt
+                                           ,tt.trailNo
+                                      FROM trailUsed tt, trailTag ta
+                                     WHERE tt.trailNo = ta.trailNo
+                                       AND ta.tagName = '액티비티'
+                                     GROUP BY tt.trailNo ) gt
+                    ON t.trailNo = gt.trailNo
                  WHERE t.trailNo = c.useNo
-                   AND t.trailNo = gt.trailNo
                    AND c.type = 'trail'
                    AND c.coordorder = 1
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
-                 ORDER BY gt.cnt DESC
+                 ORDER BY gt.cnt DESC, regDate DESC
+               ) ot
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 10;
+
+SELECT ort.trailNo
+       ,ort.name
+       ,ort.distance
+       ,ort.eta
+       ,ort.regDate
+  FROM (SELECT ROWNUM rn
+               ,ot.trailNo
+               ,ot.name
+               ,ot.distance
+               ,ot.eta
+               ,ot.regDate
+          FROM (SELECT t.trailNo
+                       ,t.name
+                       ,t.distance
+                       ,t.eta
+                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+                  FROM coords c, trail t
+                  JOIN
+                  ( SELECT COUNT(tt.walkLogNo) cnt
+                                           ,tt.trailNo
+                                      FROM trailUsed tt, trailTag ta
+                                     WHERE tt.trailNo = ta.trailNo
+                                       AND ta.tagName = '공원 근처'
+                                     GROUP BY tt.trailNo ) gt
+                    ON t.trailNo = gt.trailNo
+                 WHERE t.trailNo = c.useNo
+                   AND c.type = 'trail'
+                   AND c.coordorder = 1
+                   AND c.lng BETWEEN 127.1162072 AND 127.157406
+                   AND c.lat BETWEEN 37.5342968 AND 37.5557335
+                   AND t.status = 'T'
+                 ORDER BY gt.cnt DESC, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -85,19 +127,20 @@ SELECT ort.trailNo
                        ,t.distance
                        ,t.eta
                        ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM trail t, coords c, ( SELECT COUNT(tt.userNo) cnt
-                                                   ,tt.trailNo
-                                              FROM trailStar tt, trailTag ta
-                                             WHERE tt.trailNo = ta.trailNo
-                                             GROUP BY tt.trailNo ) gt
+                  FROM coords c, trail t
+                  LEFT OUTER JOIN ( SELECT COUNT(tt.userNo) cnt
+                                           ,tt.trailNo
+                                      FROM trailStar tt, trailTag ta
+                                     WHERE tt.trailNo = ta.trailNo
+                                     GROUP BY tt.trailNo ) gt
+                    ON t.trailNo = gt.trailNo
                  WHERE t.trailNo = c.useNo
-                   AND t.trailNo = gt.trailNo
                    AND c.type = 'trail'
                    AND c.coordorder = 1
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
-                 ORDER BY gt.cnt DESC
+                 ORDER BY gt.cnt DESC, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -120,20 +163,21 @@ SELECT ort.trailNo
                        ,t.distance
                        ,t.eta
                        ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM trail t, coords c, ( SELECT COUNT(tt.userNo) cnt
-                                                   ,tt.trailNo
-                                              FROM trailCmt tt, trailTag ta
-                                             WHERE tt.trailNo = ta.trailNo
-                                               AND tt.status = 'T'
-                                             GROUP BY tt.trailNo ) gt
+                  FROM coords c, trail t
+                  LEFT OUTER JOIN ( SELECT COUNT(tt.userNo) cnt
+                                           ,tt.trailNo
+                                      FROM trailCmt tt, trailTag ta
+                                     WHERE tt.trailNo = ta.trailNo
+                                       AND tt.status = 'T'
+                                     GROUP BY tt.trailNo ) gt
+                    ON t.trailNo = gt.trailNo
                  WHERE t.trailNo = c.useNo
-                   AND t.trailNo = gt.trailNo
                    AND c.type = 'trail'
                    AND c.coordorder = 1
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
-                 ORDER BY gt.cnt DESC
+                 ORDER BY gt.cnt DESC, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -156,12 +200,14 @@ SELECT ort.trailNo
                        ,t.distance
                        ,t.eta
                        ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM trail t, coords c, ( SELECT tt.trailNo
-                                              FROM trailTag tt
-                                             WHERE tt.trailNo > 0
-                                             GROUP BY tt.trailNo ) gt
+                  FROM coords c, trail t
+                  LEFT OUTER JOIN ( SELECT ta.trailNo
+                                      FROM trailTag ta
+                                     WHERE ta.trailNo > 0
+                                       AND ta.tagName = '공원 근처'
+                                     GROUP BY ta.trailNo ) gt
+                    ON t.trailNo = gt.trailNo
                  WHERE t.trailNo = c.useNo
-                   AND t.trailNo = gt.trailNo
                    AND c.type = 'trail'
                    AND c.coordorder = 1
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
@@ -190,20 +236,21 @@ SELECT ort.trailNo
                        ,t.distance
                        ,t.eta
                        ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM trail t, coords c, ( SELECT COUNT(tt.walkLogNo) cnt
-                                                   ,tt.trailNo
-                                              FROM trailUsed tt, trailTag ta
-                                             WHERE tt.trailNo = ta.trailNo
-                                             GROUP BY tt.trailNo ) gt
+                  FROM coords c, trail t
+                  LEFT OUTER JOIN ( SELECT COUNT(tt.walkLogNo) cnt
+                                           ,tt.trailNo
+                                      FROM trailUsed tt, trailTag ta
+                                     WHERE tt.trailNo = ta.trailNo
+                                     GROUP BY tt.trailNo ) gt
+                    ON t.trailNo = gt.trailNo
                  WHERE t.trailNo = c.useNo
-                   AND t.trailNo = gt.trailNo
                    AND c.type = 'trail'
                    AND c.coordorder = 1
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
-                   AND t.userNo = '1'
-                 ORDER BY gt.cnt DESC
+                   AND t.userNo = '2'
+                 ORDER BY gt.cnt DESC, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -226,21 +273,22 @@ SELECT ort.trailNo
                        ,t.distance
                        ,t.eta
                        ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM trail t, coords c, trailStar ts, ( SELECT COUNT(tt.walkLogNo) cnt
-                                                   ,tt.trailNo
-                                              FROM trailUsed tt, trailTag ta
-                                             WHERE tt.trailNo = ta.trailNo
-                                             GROUP BY tt.trailNo ) gt
+                  FROM coords c, trailStar ts, trail t
+                  LEFT OUTER JOIN ( SELECT COUNT(tt.walkLogNo) cnt
+                                           ,tt.trailNo
+                                      FROM trailUsed tt, trailTag ta
+                                     WHERE tt.trailNo = ta.trailNo
+                                     GROUP BY tt.trailNo ) gt
+                    ON t.trailNo = gt.trailNo
                  WHERE t.trailNo = c.useNo
-                   AND t.trailNo = gt.trailNo
                    AND c.type = 'trail'
                    AND c.coordorder = 1
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
                    AND t.trailNo = ts.trailNo
-                   AND ts.userNo = '1'
-                 ORDER BY gt.cnt DESC
+                   AND ts.userNo = '2'
+                 ORDER BY gt.cnt DESC, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -259,77 +307,6 @@ SELECT COUNT(tt.walkLogNo) cnt
    AND ta.tagname IN ('넓은 공간', '공원 근처')
  GROUP BY tt.trailNo;
 
--- 산책일지 이용순
-SELECT ort.walkLogNo
-       ,ort.userNo
-       ,ort.distance
-       ,ort.logTime
-       ,ort.regDate
-  FROM (SELECT ROWNUM rn
-               ,ot.walkLogNo
-               ,ot.userNo
-               ,ot.distance
-               ,ot.logTime
-               ,ot.regDate
-          FROM (SELECT w.walkLogNo
-                       ,w.userNo
-                       ,w.distance
-                       ,w.logTime
-                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM walkLog w, coords c, ( SELECT COUNT(trailNo) cnt
-                                                     ,walkLogNo
-                                                FROM trailUsed
-                                               GROUP BY walkLogNo ) gt
-                 WHERE w.walkLogNo = c.useNo
-                   AND w.walkLogNo = gt.walkLogNo
-                   AND c.type = 'walkLog'
-                   AND c.coordorder = 1
-                   AND c.lng BETWEEN 127.1162072 AND 127.157406
-                   AND c.lat BETWEEN 37.5342968 AND 37.5557335
-                   AND w.status = 'T'
-                   AND w.userNo = '99'
-                 ORDER BY gt.cnt DESC
-               ) ot
-       ) ort
- WHERE ort.rn >= 1
-   AND ort.rn <= 10;
-
--- 산책일지 좋아요순
-SELECT ort.walkLogNo
-       ,ort.userNo
-       ,ort.distance
-       ,ort.logTime
-       ,ort.regDate
-  FROM (SELECT ROWNUM rn
-               ,ot.walkLogNo
-               ,ot.userNo
-               ,ot.distance
-               ,ot.logTime
-               ,ot.regDate
-          FROM (SELECT w.walkLogNo
-                       ,w.userNo
-                       ,w.distance
-                       ,w.logTime
-                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM walkLog w, coords c, ( SELECT COUNT(userNo) cnt
-                                                     ,useNo
-                                                FROM userLike
-                                               WHERE type = 'walkLog'
-                                               GROUP BY useNo ) gt
-                 WHERE w.walkLogNo = c.useNo
-                   AND w.walkLogNo = gt.useNo
-                   AND c.type = 'walkLog'
-                   AND c.coordorder = 1
-                   AND c.lng BETWEEN 127.1162072 AND 127.157406
-                   AND c.lat BETWEEN 37.5342968 AND 37.5557335
-                   AND w.status = 'T'
-                   AND w.userNo = '99'
-                 ORDER BY gt.cnt DESC
-               ) ot
-       ) ort
- WHERE ort.rn >= 1
-   AND ort.rn <= 10;
-
 -- 산책일지 최신순
 SELECT ort.walkLogNo
        ,ort.userNo
@@ -347,14 +324,14 @@ SELECT ort.walkLogNo
                        ,w.distance
                        ,w.logTime
                        ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM walkLog w, coords c
+                  FROM coords c, walkLog w
                  WHERE w.walkLogNo = c.useNo
                    AND c.type = 'walkLog'
                    AND c.coordorder = 1
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND w.status = 'T'
-                   AND w.userNo = '99'
+                   AND w.userNo = '2'
                  ORDER BY regDate DESC
                ) ot
        ) ort
@@ -378,15 +355,52 @@ SELECT ort.walkLogNo
                        ,w.distance
                        ,w.logTime
                        ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM walkLog w, coords c
+                  FROM coords c, walkLog w
                  WHERE w.walkLogNo = c.useNo
                    AND c.type = 'walkLog'
                    AND c.coordorder = 1
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND w.status = 'T'
-                   AND w.userNo = '99'
+                   AND w.userNo = '2'
                  ORDER BY regDate ASC
+               ) ot
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 10;
+
+-- 산책일지 좋아요순
+SELECT ort.walkLogNo
+       ,ort.userNo
+       ,ort.distance
+       ,ort.logTime
+       ,ort.regDate
+  FROM (SELECT ROWNUM rn
+               ,ot.walkLogNo
+               ,ot.userNo
+               ,ot.distance
+               ,ot.logTime
+               ,ot.regDate
+          FROM (SELECT w.walkLogNo
+                       ,w.userNo
+                       ,w.distance
+                       ,w.logTime
+                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+                  FROM coords c, walkLog w
+                  LEFT OUTER JOIN ( SELECT COUNT(userNo) cnt
+                                           ,useNo
+                                      FROM userLike
+                                     WHERE type = 'walkLog'
+                                     GROUP BY useNo ) gt
+                    ON w.walkLogNo = gt.useNo
+                 WHERE w.walkLogNo = c.useNo
+                   AND c.type = 'walkLog'
+                   AND c.coordorder = 1
+                   AND c.lng BETWEEN 127.1162072 AND 127.157406
+                   AND c.lat BETWEEN 37.5342968 AND 37.5557335
+                   AND w.status = 'T'
+                   AND w.userNo = '2'
+                 ORDER BY gt.cnt DESC, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -454,44 +468,42 @@ SELECT COUNT(*)
 -- 산책로 이름 중복 확인
 SELECT COUNT(*)
   FROM trail
- WHERE name = #{id}
+ WHERE name = '천호공원 한바퀴';
+
+-- 산책로 등록
+INSERT INTO trail
+VALUES(seq_trail_no.NEXTVAL, 2, 1174010900, '천호', '강동구 천호동', 150, 150, 'T', 'T', 'F', '굿', SYSDATE, SYSDATE, 'T');
+
+-- 태그 등록
+INSERT INTO trailTag
+VALUES(seq_trailtag_no.NEXTVAL, 4, '산 근처');
+
+-- 산책로 좌표 등록
+INSERT INTO coords
+VALUES (seq_coords_no.NEXTVAL, 'trail', 4, 1, 37.5436749, 127.1252811);
+
+-- 산책로 정보 좌표 등록
+INSERT INTO coords
+VALUES (seq_coords_no.NEXTVAL, 'trailParking', 4, 1, 37.5436747, 127.1252813);
 
 ---------------------------------------------------------------------------------------
-
-SELECT COUNT(*)
-  FROM walkLog
- WHERE userNo = 2;
 
 SELECT walkLogNo
   FROM walkLog;
 
-SELECT useNo
+SELECT *
   FROM coords
  WHERE type = 'walkLog';
 
+INSERT INTO walkLog
+VALUES (seq_walklog_no.NEXTVAL, 2, 1174010900, null, '제목', SYSDATE, to_date('2023-11-04 03:28','YYYY/MM/DD HH:MI'), to_date('2023-11-05 03:28','YYYY/MM/DD HH:MI'), 3560, 15, '내용을 적어주세요', '공개', 'T');
+
+INSERT INTO coords
+VALUES (seq_coords_no.NEXTVAL, 'walkLog', seq_walklog_no.CURRVAL, 1, 37.5436749, 127.1252811);
+
 UPDATE walkLog
-   SET userNo = 99
- WHERE userNo = 2;
-
-INSERT INTO walkLog
-VALUES (seq_walklog_no.NEXTVAL, 2, 1174010900, 11, SYSDATE, SYSDATE, SYSDATE, SYSDATE, 15, '내용을 적어주세요', '공개', 'T');
-
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 1, 'walkLog', 28, 127.1252811, 37.5436749);
-
-INSERT INTO walkLog
-VALUES (1,    -- 산책일지번호 walkLogNo
-        99,     -- 회원번호 userNo
-        111,    -- 동네번호 locationNo
-        11111, -- 모임번호 meetingNo
-        SYSDATE, -- 작성시간 regDate
-        SYSDATE, -- 시작시간 startTime
-        SYSDATE, -- 종료시간 endTime
-        SYSDATE, -- 소요시간 logTime
-        15, -- 거리 distance
-        '내용을 적어주세요', -- 내용 content
-        '공개', -- 공개여부 security
-        'T' -- 상태 status
-        ); 
+   SET userNo = '2'
+ WHERE userNo = '99';
 
 UPDATE walkLog
    SET regDate = sysdate
@@ -517,18 +529,28 @@ VALUES(seq_trailused_no.NEXTVAL, 2, 1);
 INSERT INTO trailUsed
 VALUES(seq_trailused_no.NEXTVAL, 2, 2);
 INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 3, 2);
+INSERT INTO trailUsed
 VALUES(seq_trailused_no.NEXTVAL, 1, 3);
 INSERT INTO trailUsed
 VALUES(seq_trailused_no.NEXTVAL, 2, 3);
 INSERT INTO trailUsed
 VALUES(seq_trailused_no.NEXTVAL, 3, 3);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 16, 3);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 17, 3);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 18, 1);
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, 19, 1);
+
+select * from trailUsed;
 
 INSERT INTO trailCmt
 VALUES(seq_trailcmt_no.NEXTVAL, 1, 1, sysdate, '산책로 좋아요', 'T');
 INSERT INTO trailCmt
 VALUES(seq_trailcmt_no.NEXTVAL, 1, 2, sysdate, '굿', 'T');
-INSERT INTO trailCmt
-VALUES(seq_trailcmt_no.NEXTVAL, 1, 3, sysdate, '짱', 'T');
 INSERT INTO trailCmt
 VALUES(seq_trailcmt_no.NEXTVAL, 2, 1, sysdate, '산책로 좋아요', 'T');
 INSERT INTO trailCmt
@@ -558,84 +580,3 @@ UPDATE trail
 UPDATE trailTag
    SET tagName = '넓은 공간'
  WHERE trailTagNo = 5;
-
----------------------------------------------------------------------------------------
-
-INSERT INTO trail
-VALUES (1, 1, 1174010900, '천호공원 한바퀴', '서울 강동구 올림픽로 702 해공도서관',
-'694m', '50분', 'T', 'F', 'F', '저녁에 사람이 많다. 공기가 좋다', sysdate, sysdate, 'T');
-
-INSERT INTO trail
-VALUES (2, 2, 1174010900, '광나루한강공원', '서울 강동구 천호동 351-1',
-'164m', '17분', 'F', 'T', 'F', '강아지들과 운동하기 좋음', sysdate, sysdate, 'T');
-
-INSERT INTO trail
-VALUES (3, 3, 1174010900, '광나루자전거공원', '서울 강동구 선사로 83-19',
-'563m', '30분', 'F', 'F', 'T', '산책길이 잘 되어 있음', sysdate, sysdate, 'T');
-
-INSERT INTO trailTag
-VALUES (1, 1, '공원 근처');
-INSERT INTO trailTag
-VALUES (2, 1, '유동인구 많음');
-INSERT INTO trailTag
-VALUES (3, 2, '공원 근처');
-INSERT INTO trailTag
-VALUES (4, 2, '넓은 공간');
-INSERT INTO trailTag
-VALUES (5, 3, '공원 근처');
-
-INSERT INTO coords
-VALUES (seq_coords_no.NEXTVAL, 'trailParking', 1, 1, 37.544770, 127.126219);
-INSERT INTO coords
-VALUES (seq_coords_no.NEXTVAL, 'trailRestroom', 2, 1, 37.548796, 127.119965);
-INSERT INTO coords
-VALUES (seq_coords_no.NEXTVAL, 'trailTrashCan', 3, 1, 37.545122, 127.119196);
-
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 1, 'trail', 1, 127.1252811, 37.5436749);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 2, 'trail', 1, 127.1254717, 37.54419228);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 3, 'trail', 1, 127.1256622, 37.54470965);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 4, 'trail', 1, 127.1258528, 37.54522703);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 5, 'trail', 1, 127.1259195, 37.5454081);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 6, 'trail', 1, 127.1265874, 37.54530779);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 7, 'trail', 1, 127.1272553, 37.54520748);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 8, 'trail', 1, 127.1274483, 37.5451785);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 9, 'trail', 1, 127.1272841, 37.54465546);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 10, 'trail', 1, 127.12712, 37.54413243);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 11, 'trail', 1, 127.1269558, 37.54360939);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 12, 'trail', 1, 127.1268609, 37.543307);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 13, 'trail', 1, 127.1262086, 37.54345857);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 14, 'trail', 1, 127.1255562, 37.54361014);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 15, 'trail', 1, 127.1252865, 37.5436728);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 1, 'trail', 2, 127.1190346, 37.5460517);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 2, 'trail', 2, 127.118883, 37.5459092);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 3, 'trail', 2, 127.1187422, 37.5458794);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 4, 'trail', 2, 127.1187046, 37.5459432);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 5, 'trail', 2, 127.1187073, 37.546091);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 6, 'trail', 2, 127.1187489, 37.5461973);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 7, 'trail', 2, 127.1188803, 37.5462973);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 8, 'trail', 2, 127.1190413, 37.5463537);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 9, 'trail', 2, 127.1192263, 37.5463494);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 10, 'trail', 2, 127.1192304, 37.546309);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 11, 'trail', 2, 127.1191405, 37.5462771);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 12, 'trail', 2, 127.1189769, 37.5462292);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 13, 'trail', 2, 127.1189836, 37.5461867);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 14, 'trail', 2, 127.1190386, 37.5460421);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 1, 'trail', 3, 127.119225, 37.5441239);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 2, 'trail', 3, 127.1193088, 37.54465878);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 3, 'trail', 3, 127.1193323, 37.5448086);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 4, 'trail', 3, 127.1196006, 37.54530383);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 5, 'trail', 3, 127.1196434, 37.5453828);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 6, 'trail', 3, 127.1198848, 37.5455317);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 7, 'trail', 3, 127.1196541, 37.5456678);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 8, 'trail', 3, 127.1193162, 37.5457444);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 9, 'trail', 3, 127.1188817, 37.5457274);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 10, 'trail', 3, 127.1187261, 37.5457189);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 11, 'trail', 3, 127.1186188, 37.5457316);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 12, 'trail', 3, 127.118646, 37.54519304);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 13, 'trail', 3, 127.118651, 37.5450936);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 14, 'trail', 3, 127.1182563, 37.54465477);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 15, 'trail', 3, 127.1182379, 37.5446343);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 16, 'trail', 3, 127.117687, 37.54431856);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 17, 'trail', 3, 127.1175996, 37.5442685);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 18, 'trail', 3, 127.1173743, 37.5441451);
-INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 19, 'trail', 3, 127.1172294, 37.5437666);

@@ -159,10 +159,8 @@ public class WalkTrailController {
 	@RequestMapping(value = "/confirmName", method= { RequestMethod.GET, RequestMethod.POST})
 	public int confirmName(@ModelAttribute TrailVo trailVo) {
 		System.out.println("WalkTrailController.confirmName()");
-		System.out.println("trailVo : " + trailVo);
 		
 		int selectCnt = trailService.confirmName(trailVo);
-		System.out.println("selectCnt : " + selectCnt);
 		
 		return selectCnt;
 	}
@@ -170,14 +168,20 @@ public class WalkTrailController {
 	// 산책로 등록 ajax
 	@ResponseBody
 	@RequestMapping(value = "/trailAdd", method= { RequestMethod.GET, RequestMethod.POST})
-	public Map<String, Object> trailAdd(@RequestBody Map<String, Object> fetchSet) {
+	public int trailAdd(@RequestBody Map<String, Object> fetchSet, HttpSession session) {
 		System.out.println("WalkTrailController.trailAdd()");
 		
-		// Map<String, Object> coordsMap = (Map<String, Object>) fetchSet.get("coordsMap");
-		// ArrayList<String> tags = (ArrayList<String>) fetchSet.get("tags");
-		// int filter = (int) fetchSet.get("filter");
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser != null) {
+			fetchSet.put("userNo", authUser.getUserNo());
+		} else {
+			// fetchSet.put("userNo", 0);
+			fetchSet.put("userNo", 2);
+		}
 		
-		return fetchSet;
+		int insertCnt = trailService.trailAdd(fetchSet);
+		
+		return insertCnt;
 	}
 	
 	@RequestMapping(value = "/modifyForm", method= { RequestMethod.GET, RequestMethod.POST})

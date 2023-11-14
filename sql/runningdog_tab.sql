@@ -76,10 +76,11 @@ CREATE TABLE walkLog (
 	userNo	NUMBER	NOT NULL,
 	locationNo	NUMBER	NOT NULL,
 	meetingNo	NUMBER	NULL,
+    title	varchar2(50)  NULL,
 	regDate	date	NOT NULL,
 	startTime	date	NOT NULL,
 	endTime	date	NOT NULL,
-	logTime	date	NOT NULL,
+	logTime	NUMBER	NOT NULL,
 	distance	NUMBER	NOT NULL,
 	content	varchar2(2000)	NULL,
 	security	varchar2(10)	NOT NULL,
@@ -181,27 +182,28 @@ CREATE TABLE walkedDog (
 );
 
 CREATE TABLE trail (
-	trailNo	NUMBER	NOT NULL,
-	userNo	NUMBER	NOT NULL,
-	locationNo	NUMBER	NOT NULL,
-	name	varchar2(50)	NOT NULL,
-	spot	varchar2(500)	NOT NULL,
-	distance	NUMBER	NOT NULL,
-	eta	NUMBER	NOT NULL,
-	parking	char	NOT NULL,
-	restroom	char	NOT NULL,
-	trashCan	char	NOT NULL,
-	explanation	varchar2(1000)	NULL,
-	regDate	date	NOT NULL,
-	updateDate	date	NULL,
-	status	char	NOT NULL
+    trailNo    NUMBER    NOT NULL,
+    userNo    NUMBER    NOT NULL,
+    locationNo    NUMBER    NOT NULL,
+    name    varchar2(50)    NOT NULL,
+    spot    varchar2(500)    NOT NULL,
+    distance    NUMBER    NOT NULL,
+    eta    NUMBER    NOT NULL,
+    parking    char    NOT NULL,
+    restroom    char    NOT NULL,
+    trashCan    char    NOT NULL,
+    explanation    varchar2(1000)    NULL,
+    regDate    date    NOT NULL,
+    updateDate    date    NULL,
+    status    char    NOT NULL
 );
 
 CREATE TABLE trailUsed (
-	trailUserdNo	NUMBER	NOT NULL,
+	trailUsedNo	NUMBER	NOT NULL,
 	walkLogNo	NUMBER	NOT NULL,
 	trailNo	NUMBER	NOT NULL
 );
+ALTER TABLE trailUsed RENAME COLUMN trailUserdNo TO trailUsedNo;
 
 CREATE TABLE trailStar (
 	trailStarNo	NUMBER	NOT NULL,
@@ -230,7 +232,7 @@ CREATE TABLE walkLogCmt (
 	walkLogNo	NUMBER	NOT NULL,
 	userNo	NUMBER	NOT NULL,
 	content	varchar2(1000)	NOT NULL,
-	regDate	NUMBER	NOT NULL,
+	regDate	date	NOT NULL,
 	status	char	NOT NULL
 );
 
@@ -443,10 +445,10 @@ INCREMENT BY 1
 START WITH 1                   
 nocache; 
 
-CREATE SEQUENCE seq_walkdog_no
+CREATE SEQUENCE seq_walklog_no
 INCREMENT BY 1                 
-START WITH 1                   
-nocache; 
+START WITH 4           
+nocache;
 
 CREATE SEQUENCE seq_coords_no
 INCREMENT BY 1                 
@@ -495,8 +497,8 @@ nocache;
 
 CREATE SEQUENCE seq_trail_no
 INCREMENT BY 1                 
-START WITH 1                   
-nocache; 
+START WITH 4              
+nocache;
 
 CREATE SEQUENCE seq_trailused_no
 INCREMENT BY 1                 
@@ -570,12 +572,8 @@ INCREMENT BY 1
 START WITH 1                   
 nocache; 
 
+
 CREATE SEQUENCE seq_userlike_no
 INCREMENT BY 1                 
 START WITH 1                   
-nocache;
-
-CREATE SEQUENCE seq_walklog_no
-INCREMENT BY 1                 
-START WITH 4                 
 nocache;

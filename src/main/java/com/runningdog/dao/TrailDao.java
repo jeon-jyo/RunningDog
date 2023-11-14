@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
+import com.runningdog.vo.TrailTagVo;
 import com.runningdog.vo.TrailVo;
 import com.runningdog.vo.WalkLogVo;
 
@@ -129,5 +130,32 @@ public class TrailDao {
 		int selectCnt = sqlSession.selectOne("walkTrail.confirmName", trailVo);
 		
 		return selectCnt;
+	}
+
+	// 산책로 등록
+	public int trailInsert(TrailVo trailVo) {
+		System.out.println("TrailDao.trailInsert()");
+		
+		int insertCnt = sqlSession.insert("walkTrail.trailInsert", trailVo);
+		
+		return insertCnt;
+	}
+
+	// 산책로 태그 등록
+	public int trailTagInsert(TrailTagVo trailTagVo) {
+		System.out.println("TrailDao.trailTagInsert()");
+		
+		int insertCnt = sqlSession.insert("walkTrail.trailTagInsert", trailTagVo);
+		
+		return insertCnt;
+	}
+
+	// 산책로 좌표 등록
+	public int trailCoordsInsert(CoordsVo coordsVo) {
+		System.out.println("TrailDao.trailCoordsInsert()");
+		
+		int insertCnt = sqlSession.insert("walkTrail.trailCoordsInsert", coordsVo);
+		
+		return insertCnt;
 	}
 }

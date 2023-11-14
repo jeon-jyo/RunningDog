@@ -20,6 +20,9 @@
 	height: 80px;
 	width: 100%;
 }
+.segment-map-info #trail-address {
+	width: 300px;
+}
 
 /* 등록 버튼 추가 */
 .segment-map-info .fa-circle-check {
