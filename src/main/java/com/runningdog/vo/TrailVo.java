@@ -7,8 +7,8 @@ public class TrailVo {
 	private LocationVo locationVo;
 	private String name;
 	private String spot;
-	private String distance;
-	private String eta;
+	private int distance;
+	private int eta;
 	private char parking;
 	private char restroom;
 	private char trashCan;
@@ -19,9 +19,9 @@ public class TrailVo {
 	
 	public TrailVo() {}
 	
-	public TrailVo(int trailNo, UsersVo usersVo, LocationVo locationVo, String name, String spot, String distance,
-			String eta, char parking, char restroom, char trashCan, String explanation, String regDate,
-			String updateDate, char status) {
+	public TrailVo(int trailNo, UsersVo usersVo, LocationVo locationVo, String name, String spot, int distance, int eta,
+			char parking, char restroom, char trashCan, String explanation, String regDate, String updateDate,
+			char status) {
 		this.trailNo = trailNo;
 		this.usersVo = usersVo;
 		this.locationVo = locationVo;
@@ -68,16 +68,16 @@ public class TrailVo {
 	public void setSpot(String spot) {
 		this.spot = spot;
 	}
-	public String getDistance() {
+	public int getDistance() {
 		return distance;
 	}
-	public void setDistance(String distance) {
+	public void setDistance(int distance) {
 		this.distance = distance;
 	}
-	public String getEta() {
+	public int getEta() {
 		return eta;
 	}
-	public void setEta(String eta) {
+	public void setEta(int eta) {
 		this.eta = eta;
 	}
 	public char getParking() {

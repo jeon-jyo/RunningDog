@@ -7,6 +7,7 @@
 <link href="${pageContext.request.contextPath}/assets/css/walkTrail/trailForm.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script>
+<!-- <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script> -->
 </head>
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
@@ -16,9 +17,9 @@
 		<div class="explorer">
 			<div class="segment-map-info">
 				<i class="fa-solid fa-circle-check"></i>
-				<div class="addInfo">예상 소요시간 : <strong>30분</strong></div>
-				<div class="addInfo">거리 : <strong>1.8km</strong></div>
-				<div class="addInfo">서울 강동구 올림픽로 702 해공도서관</div>
+				<div class="addInfo">예상 소요시간 : <strong id="trail-eta">30분</strong></div>
+				<div class="addInfo">거리 : <strong id="trail-distance">1.8km</strong></div>
+				<div class="addInfo" id="trail-address">서울 강동구 올림픽로 702 해공도서관</div>
 				<i class="fa-solid fa-location-dot selected-maker"></i>
 			</div>
 
@@ -238,36 +239,50 @@
 			chk = false;
 			let check = getMatchLine(map, polyline2, polyline);
 			if(check) {
-				console.log("그리기 성공!")
+				btn.innerText = "다시 그리기";
+				btn.classList.add('new-draw');
+				
+				console.log("산책로 그리기 성공");
+				
+				getAddress();
+			} else {
+				chk = true;
+				
+				btn.innerText = "그리기 완료";
+				btn.classList.remove('new-draw');
+				
+				polyline2.getPath().clear();
+				overlayMarker[0].setMap(null);
+				overlayMarker.length = 0;
+				
+				alert("산책로를 다시 그려주세요.");
 			}
-			console.log(polyline2.getDistance());
-			
-			btn.innerText = "다시 그리기";
-			btn.classList.add('new-draw');
-			
-			// getAddress();
 		} else {
 			chk = true;
 			
 			btn.innerText = "그리기 완료";
 			btn.classList.remove('new-draw');
 			
-			// console.log(polyline2.getPath()._array);
 			polyline2.getPath().clear();
 			overlayMarker[0].setMap(null);
 			overlayMarker.length = 0;
 		}
 	})
-
+	
 	/* coords to address */
+	
+	let addressInfo = document.querySelector("#trail-address");
+	let distanceInfo = document.querySelector("#trail-distance");
+	let etaInfo = document.querySelector("#trail-eta");
+	let locationInfo;
+	
 	function getAddress() {
 		console.log("getAddress()");
 		
-		let path = polyline2.getPath();
-		console.log("path ", path);
+		let path = polyline2.getPath()._array;
 		
-		naver.maps.Service.reverseGeocode({
-	        coords: path[0],
+ 		naver.maps.Service.reverseGeocode({
+	        coords: new naver.maps.Point(path[0].x, path[0].y),
 	        orders: [
 	            naver.maps.Service.OrderType.ADDR,
 	            naver.maps.Service.OrderType.ROAD_ADDR
@@ -276,29 +291,28 @@
 	        if (status === naver.maps.Service.Status.ERROR) {
 	            return alert('Something Wrong!');
 	        }
-	
-	        var items = response.v2.results,
-	            address = '',
-	            htmlAddresses = [];
-	
-	        for (var i=0, ii=items.length, item, addrType; i<ii; i++) {
-	            item = items[i];
-	            address = makeAddress(item) || '';
-	            addrType = item.name === 'roadaddr' ? '[도로명 주소]' : '[지번 주소]';
-	
-	            htmlAddresses.push((i+1) +'. '+ addrType +' '+ address);
-	        }
-				
-	        console.log("htmlAddresses ", htmlAddresses);
+	        // console.log("response ", response);
 	        
-	        /* infoWindow.setContent([
-	            '<div style="padding:10px;min-width:200px;line-height:150%;">',
-	            '<h4 style="margin-top:5px;">검색 좌표</h4><br />',
-	            htmlAddresses.join('<br />'),
-	            '</div>'
-	        ].join('\n'));
-	
-	        infoWindow.open(map, latlng); */
+	        var results = response.v2.results,
+            address = response.v2.address.jibunAddress,
+            location = response.v2.results[0].code.id,
+            distance = Math.floor(polyline2.getDistance());
+
+	        console.log("address ", address);
+	        console.log("location ", location);
+	        console.log("distance ", distance);
+
+	        addressInfo.innerText = address;
+	        locationInfo = location;
+	        
+	        if(distance/1000 > 1) {
+	        	console.log("distance ", distance);
+	        } else {
+	        	console.log("distance ", distance + "m");
+	        	distanceInfo.innerText = distance + "m";
+	        }
+	        
+
 	    });
 	}
 	
