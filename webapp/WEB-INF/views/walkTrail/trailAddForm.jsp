@@ -224,13 +224,26 @@
 			chk = false;
 			let check = getMatchLine(polyline2, polyline);
 			if(check) {
-				console.log("산책로 그리기 성공");
-				
-				btn.innerText = "다시 그리기";
-				btn.classList.add('new-draw');
-				
-				getAddress();
-				setNewTrailInfo();
+				let checkInfo = setNewTrailInfo();
+				if(checkInfo) {
+					btn.innerText = "다시 그리기";
+					btn.classList.add('new-draw');
+					
+					getAddress();
+				} else {
+					alert("산책로를 다시 그려주세요.");
+					
+					btn.innerText = "그리기 완료";
+					btn.classList.remove('new-draw');
+					
+					polyline2.getPath().clear();
+					overlayMarker[0].setMap(null);
+					overlayMarker.length = 0;
+					chk = true;
+					addressInfo.innerText = "";
+					distanceInfo.innerText = "";
+					etaInfo.innerText = "";
+				}
 			} else {
 				alert("산책로를 다시 그려주세요.");
 				
@@ -298,19 +311,35 @@
 	function setNewTrailInfo() {
 		console.log("setNewTrailInfo()");
 		
+		let logDistance = Math.floor(polyline.getDistance());
 		let distance = Math.floor(polyline2.getDistance());
-		infoNum = distance;
+		console.log("logDistance ", logDistance);
+		console.log("distance ", distance);
 		
-        // distance = 3800;
-        if(distance >= 1000) {
-        	distanceInfo.innerText = (distance / 1000).toFixed(2) + "km";
-        	console.log("distanceInfo ", (distance / 1000).toFixed(2) + "km");
-        } else {
-        	distanceInfo.innerText = distance + "m";
-        	console.log("distanceInfo ", distance + "m");
-        }
-        
-        etaInfo.innerText = infoNum;
+		if(logDistance < distance) {
+			return false;
+		} else {
+			infoNum = distance;
+			
+	        // distance = 3800;
+	        if(distance >= 1000) {
+	        	distanceInfo.innerText = (distance / 1000).toFixed(2) + "km";
+	        	// console.log("distanceInfo ", (distance / 1000).toFixed(2) + "km");
+	        } else {
+	        	distanceInfo.innerText = distance + "m";
+	        	// console.log("distanceInfo ", distance + "m");
+	        }
+	        
+	        let second = infoNum;
+	        let minute = Math.floor(second / 60);
+	        let hour = minute / 60;
+	        second = second % 60;
+	        console.log(hour, "초 ", minute, "분 ");
+	        
+	        etaInfo.innerText = infoNum + "초";
+			
+			return true;
+		}
 	}
 	
 	/* trail Add */

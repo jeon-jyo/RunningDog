@@ -73,43 +73,6 @@ SELECT ort.trailNo
  WHERE ort.rn >= 1
    AND ort.rn <= 10;
 
-SELECT ort.trailNo
-       ,ort.name
-       ,ort.distance
-       ,ort.eta
-       ,ort.regDate
-  FROM (SELECT ROWNUM rn
-               ,ot.trailNo
-               ,ot.name
-               ,ot.distance
-               ,ot.eta
-               ,ot.regDate
-          FROM (SELECT t.trailNo
-                       ,t.name
-                       ,t.distance
-                       ,t.eta
-                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-                  FROM coords c, trail t
-                  JOIN
-                  ( SELECT COUNT(tt.walkLogNo) cnt
-                                           ,tt.trailNo
-                                      FROM trailUsed tt, trailTag ta
-                                     WHERE tt.trailNo = ta.trailNo
-                                       AND ta.tagName = '공원 근처'
-                                     GROUP BY tt.trailNo ) gt
-                    ON t.trailNo = gt.trailNo
-                 WHERE t.trailNo = c.useNo
-                   AND c.type = 'trail'
-                   AND c.coordorder = 1
-                   AND c.lng BETWEEN 127.1162072 AND 127.157406
-                   AND c.lat BETWEEN 37.5342968 AND 37.5557335
-                   AND t.status = 'T'
-                 ORDER BY gt.cnt DESC, regDate DESC
-               ) ot
-       ) ort
- WHERE ort.rn >= 1
-   AND ort.rn <= 10;
-
 -- 인기순
 SELECT ort.trailNo
        ,ort.name
