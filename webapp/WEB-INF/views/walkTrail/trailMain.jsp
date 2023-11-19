@@ -194,10 +194,14 @@
 				overlayInfo.length = 0;
 				$("#trailList").empty();
 				
-  				for(let i = 0; i < listMap.trailList.length; i++) {
-					let trailNo = listMap.trailList[i].trailNo;
-					mapRender(listMap.coordsList[i], i, trailNo);
-					listRender(listMap.trailList[i], i);
+				if(listMap.trailList.length == 0) {
+					nonListRender();
+				} else {
+					for(let i = 0; i < listMap.trailList.length; i++) {
+						let trailNo = listMap.trailList[i].trailNo;
+						mapRender(listMap.coordsList[i], i, trailNo);
+						listRender(listMap.trailList[i], i);
+					}
 				}
 			},
 			error : function(XHR, status, error) {
@@ -282,17 +286,17 @@
 			async : false,
 			success : function(infoMap) {
 				// console.log("infoMap ", infoMap);
-				
+		        
 				tooltipInfo = [
 				    '<div class="iw_inner trail-tootip">',
 				    '   <h5>' + infoMap.trailVo.name + '</h5>',
 				    '	<div class="trailInfo">',
 				    '		<div class="info">',
-				    '			<span class="detail-text">' + infoMap.trailVo.distance + '</span>',
+				    '			<span class="detail-text">' + infoMap.info[0] + '</span>',
 				    '			<span class="detail-info">거리</span>',
 				    '		</div>',
 				    '		<div class="info">',
-				    '			<span class="detail-text">' + infoMap.trailVo.eta + '</span>',
+				    '			<span class="detail-text">' + infoMap.info[1] + '</span>',
 				    '			<span class="detail-info">소요시간</span>',
 				    '		</div>',
 				    '		<div class="vr"></div>',
@@ -313,7 +317,7 @@
 				    '		<div class="info userDetail">'
 				];
 				
-				if(infoMap.imagesVo != null) {
+				if(infoMap.userImg != null) {
 					tooltipInfo.push(
 					    '       <img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg" />',
 					);
@@ -329,7 +333,7 @@
 				 	'       		<span class="detail-info">' + infoMap.trailVo.regDate + '</span>',
 				    '       	</div>',
 				    '		</div>',
-				    '		<div class="info userBtn">상세보기</div>',
+				    '		<a class="info userBtn" href="${pageContext.request.contextPath}/walkTrail/detail?trailNo=' + infoMap.trailVo.trailNo + '">상세보기</a>',
 				    '	</div>',
 				    '</div>'
 				);
@@ -344,13 +348,30 @@
 	function listRender(trailVo, index) {
 		// console.log("listRender()");
 		
-		let str = '';
+		let distanceInfo = "";
+		let etaInfo = "";
+		
+        if(trailVo.distance >= 1000) {
+        	distanceInfo = Math.floor(trailVo.distance / 1000) + "." + Math.floor((trailVo.distance % 1000) / 10) + "km";
+        } else {
+        	distanceInfo = trailVo.distance + "m";
+        }
+        
+        let minute = Math.floor(trailVo.distance / 60);
+        if(60 <= minute) {
+        	let hour = Math.floor(minute / 60);
+        	minute -= hour * 60;
+        	etaInfo +=  hour +  "시간 ";
+        }
+        etaInfo += minute + "분";
+
+        let str = '';
 		str += '<li>';
 		str += '	<img calss="markerImg" src="${pageContext.request.contextPath}/assets/images/walkTrail/marker' + index + '.png"/>';
 		str += '	<div>';
 		str += '		<span class="sideBar-title">' + trailVo.name + '</span><br>';
-		str += '		<span>' + trailVo.distance + '</span>';
-		str += '		<span>' + trailVo.eta + '</span>';
+		str += '		<span>' + distanceInfo + '</span>';
+		str += '		<span>' + etaInfo + '</span>';
 		str += '	</div>'
 		str += '</li>';
 		
@@ -378,6 +399,19 @@
 			 	overlayInfo[index].open(map, overlayMarker[index]);
 			 }
 		})
+	}
+	
+	function nonListRender() {
+		// console.log("nonListRender()");
+		
+		let str = '';
+		str += '<li class="nonList">';
+		str += '	<div>';
+		str += '		<span class="sideBar-title">목록이 없습니다.</span><br>';
+		str += '	</div>'
+		str += '</li>';
+		
+		$("#trailList").append(str);
 	}
 	
 	/* Non-list */

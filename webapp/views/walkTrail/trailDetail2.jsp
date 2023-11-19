@@ -7,13 +7,10 @@
 <meta charset="UTF-8">
 <title>trailDetail</title>
 <link href="${pageContext.request.contextPath}/assets/css/walkTrail/trailDetail.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css"/>
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script>
-<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
 </head>
 <body>
-	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
 		<h1>
 			<i class="fa-regular fa-star"></i>
@@ -43,7 +40,7 @@
 				<span class="stat-subtext">후기</span>
 				<span class="stat-text">${detailMap.trailCmtCnt }</span>
 			</div>
-			<!-- <div class="stat2">이번주 이 산책로를 이용한 메이트수 <strong>200</strong></div> -->
+			<div class="stat2">이번주 이 산책로를 이용한 메이트수 <strong>200</strong></div>
 		</div>
 		
 		<div class="map-container">
@@ -88,10 +85,8 @@
 							</c:if>
 						</div>
 						<div class="user-modify">
-							<c:if test="${authUser.userNo == detailMap.trailVo.usersVo.userNo }">
-								<i class="fa-solid fa-pen"></i>
-								<i class="fa-solid fa-trash"></i>
-							</c:if>
+							<i class="fa-solid fa-pen"></i>
+							<i class="fa-solid fa-trash"></i>
 						</div>
 					</div>
 					
@@ -104,7 +99,6 @@
 						<div class="detail-chart">chart</div>
 					</div>
 					
-					<!-- 
 					<div class="map-detail-meeting">
 						<h2><i class="fa-solid fa-user-group"></i>&nbsp;&nbsp;&nbsp;오늘의 산책모임</h2>
 						<div class="detail-meeting">
@@ -134,7 +128,6 @@
 							<i class="fa-solid fa-chevron-right"></i>
 						</div>
 					</div>
-					 -->
 				</div>
 			</div>
 			
@@ -235,37 +228,21 @@
 		
 		<div class="segment-comments">
 			<div class="comment-nav">
-				<div>후기</div>
+				<div class="selected">후기</div>
 				<div>산책일지</div>
-				<!-- <div>모임일지</div> -->
+				<div>모임일지</div>
 				<i class="fa-solid fa-caret-up"></i>
 			</div>
 			
 			<div class="comment-container">
 				<div class="comment-bar">
-					<div class="comment-number"><i class="fa-regular fa-comment-dots"></i>&nbsp;<span>1k</span></div>
+					<div class="comment-number"><i class="fa-regular fa-comment-dots"></i>&nbsp;1k</div>
 					
 					<!-- Button trigger modal -->
-					<!--
-					<c:if test="${!empty authUser }">
-						<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal">
-							후기 작성하기&nbsp;&nbsp;&nbsp;
-							<i class="fa-regular fa-images"></i>
-						</button>
-					</c:if>
-					<c:if test="${empty authUser }">
-						<button type="button" class="btn btn-secondary">
-							후기 작성하기&nbsp;&nbsp;&nbsp;
-							<i class="fa-regular fa-images"></i>
-						</button>
-					</c:if>
-					-->
-					
 					<button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#addModal">
 						후기 작성하기&nbsp;&nbsp;&nbsp;
 						<i class="fa-regular fa-images"></i>
 					</button>
-					
 					<!-- addModal -->
 					<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						<div class="modal-dialog">
@@ -278,94 +255,182 @@
 									<div>
 										<div class="mb-3">
 											<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
-											<textarea class="form-control modal-input" name="content" id="exampleFormControlTextarea1" rows="3"></textarea>
+											<textarea class="form-control modal-input" id="exampleFormControlTextarea1" rows="3"></textarea>
 										</div>
 										<div class="mb-3">
-											<!-- <label for="formFileMultipleAdd" class="form-label" hidden></label>
-											<input class="form-control" type="file" name="file" id="formFileMultipleAdd" multiple> -->
-											<div class="dropzone"></div>
+											<label for="formFileMultipleAdd" class="form-label" hidden></label>
+											<input class="form-control" type="file" id="formFileMultipleAdd" multiple>
 										</div>
 									</div>
-									<div class="preview-list">
-										<div class="dz-preview dz-file-preview" id="template">
-									        <img data-dz-thumbnail />
-										    <button data-dz-remove="data-dz-remove" class="btn btn-sm btn-danger">Delete</button>
-										</div>
-									</div>
-									<%-- <div class="img-content">
+									<div class="img-content">
 										<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
 										<div class="imgCount">3</div>
-									</div> --%>
+									</div>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-									<button type="submit" class="btn btn-secondary" id="cmtAddBtn">작성</button>
+									<button type="button" class="btn btn-secondary">작성</button>
 								</div>
 							</div>
 						</div>
 					</div>
 					
-					<!-- <div class="form-check">
+					<div class="form-check">
 						<input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
 						<label class="form-check-label" for="flexCheckDefault">내 후기만 보기</label>
-					</div> -->
+					</div>
 					
-					<div class="btn-group" role="group" aria-label="Default button group" id="cmt-list-nav">
+					<div class="btn-group" role="group" aria-label="Default button group">
+						<button type="button" class="btn btn-outline-dark">인기순</button>
+						<button type="button" class="btn btn-outline-dark">최신순</button>
+					</div>
+					
+					<div class="btn-group" role="group" aria-label="Default button group">
 						<button type="button" class="btn btn-outline-dark">목록</button>
 						<button type="button" class="btn btn-outline-dark">갤러리</button>
 					</div>
-					
-					<div class="btn-group" role="group" aria-label="Default button group" id="cmt-order-nav">
-						<button type="button" class="btn btn-outline-dark">최신순</button>
-						<button type="button" class="btn btn-outline-dark">인기순</button>
-					</div>
-					
 				</div>
 				<!-- // comment-bar -->
 				
-				<div class="comment-list"></div>
+				<div class="comment-list">
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg">
+							<div class="imgCount">3</div>
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify modify-modal">
+								<!-- Button trigger modal -->
+								<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modifyModal">
+									<i class="fa-solid fa-pen"></i>
+								</button>
+								<!-- modifyModal -->
+								<div class="modal fade" id="modifyModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h1 class="modal-title fs-5" id="exampleModalLabel">후기 수정</h1>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<div>
+													<div class="mb-3">
+														<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
+														<textarea class="form-control modal-input" id="exampleFormControlTextarea1" rows="3"></textarea>
+													</div>
+													<div class="mb-3">
+														<label for="formFileMultipleModi" class="form-label" hidden></label>
+														<input class="form-control" type="file" id="formFileMultipleModi" multiple>
+													</div>
+												</div>
+												<div class="img-content">
+													<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+													<div class="imgCount">3</div>
+												</div>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+												<button type="button" class="btn btn-secondary">수정</button>
+											</div>
+										</div>
+									</div>
+								</div>
+									
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang2.jpg">
+						</div>
+						<div class="comment-content">
+							<div></div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+						</div>
+					</div>
+					<div class="comment-detail">
+						<div class="comment-img">
+							<%-- <img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg"> --%>
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify">
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang4.jpg">
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify">
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+					<div class="comment-detail">
+						<div class="comment-img">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang5.jpg">
+						</div>
+						<div class="comment-content">
+							<div>사람이 많아도 조용해요</div>
+							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
+						</div>
+						<div class="comment-info">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+							<div class="detail-text">
+								<span>닉네임</span>
+								<span>2023/10/11</span>
+							</div>
+							<div class="user-modify">
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
+							</div>
+						</div>
+					</div>
+				</div>
 				<!-- // comment-list -->
 			</div>
 			<!-- // comment-container -->
 		</div>
 		<!-- // map-container -->
-	</div>
-	
-	<!-- Button trigger modal -->
-	<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modifyModal">
-		<i class="fa-solid fa-pen"></i>
-	</button>
-	
-	<!-- modifyModal -->
-	<div class="modal fade" id="modifyModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h1 class="modal-title fs-5" id="exampleModalLabel">후기 수정</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<div>
-						<div class="mb-3">
-							<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
-							<textarea class="form-control modal-input" id="exampleFormControlTextarea1" rows="3"></textarea>
-						</div>
-						<div class="mb-3">
-							<label for="formFileMultipleModi" class="form-label" hidden></label>
-							<input class="form-control" type="file" id="formFileMultipleModi" multiple>
-						</div>
-					</div>
-					<div class="img-content">
-						<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
-						<div class="imgCount">3</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
-					<button type="button" class="btn btn-secondary">수정</button>
-				</div>
-			</div>
-		</div>
 	</div>
 	
 	<!-- detailModal -->
@@ -402,16 +467,8 @@
 			</div>
 		</div>
 	</div>
-	
 </body>
 <script type="text/javascript">
-
-	let trailNo = ${detailMap.trailVo.trailNo };
-	let authUserNo = (${userMap.usersVo.userNo} == null) ? 0 : ${userMap.usersVo.userNo};
-	
-	$(document).ready(function() {
-		fetchList(trailNo);
-	})
 
 	/* map */
 	let coords = ${detailMap.coordsJson };
@@ -483,161 +540,14 @@
 		}
 	}
 	
-	/* cmt */
- 	/* $('#addModal').on('show.bs.modal', function (e) {}); */
- 	var previewNode = document.querySelector("#template");
- 	previewNode.id = "";
- 	
- 	var previewTemplate = previewNode.parentNode.innerHTML;
- 	previewNode.parentNode.removeChild(previewNode);
- 	Dropzone.autoDiscover = false;
- 	const dropzone = new Dropzone("div.dropzone", { url: "/file/post",
-											 		 autoProcessQueue: false,
-											 		 previewTemplate: previewTemplate,
-											 		 previewsContainer: ".preview-list",});
-    // Dropzone has been added as a global variable.
 	
-	$("#cmtAddBtn").on("click", function() {
-		console.log("cmtAddBtn");
-		
-		if(dropzone.files.length > 10) {
-			alert("후기 사진은 10개 까지 가능합니다.");
-		} else {
-			console.log("dropzone.files ", dropzone.files);
-			
-			let content = $('textarea[name=content]').val();
-			console.log("content ", content);
-		}
+	
+	
+	
+	
+	
 
-		/*
-		let categoryVo = {
-			cateName: name,
-			description: desc
-		}
-		
-		if(name == "") {
-			alert("카테고리명을 입력해주세요.");
-		} else {
-			$.ajax({
-				url : "${pageContext.request.contextPath}/admin/categoryAdd/",
-				type : "post",
-				data: categoryVo,
-				
-				dataType : "json",
-				success : function(jsonResult) {
-					if(jsonResult.result  == "success") {
-						console.log("success");
-						
-						render(jsonResult.data, "up");
-						
-					} else if(jsonResult.result  == "fail") {
-						console.log("fail");
-						console.log("failMsg : " + jsonResult.data);
-					}
-					$('input[name=name]').val("");
-					$('input[name=desc]').val("");
-				},
-				error : function(XHR, status, error) {
-					console.error(status + " : " + error);
-				}
-			});
-		}
-		*/
-	})
-	
-	function fetchList(trailNo) {
-		console.log("fetchList()");
-		
-		let fetchSet = {
-			"trailNo" : trailNo,
-			"cmtNav" : cmtIndex,
-			"cmtListNav" : cmtListIndex,
-			"cmtOrderNav" : cmtOrderIndex,
-		}
-		console.log("fetchSet ", fetchSet);
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/walkTrail/cmtListMap",
-			type : "post",
-			contentType : "application/json",
-			data : JSON.stringify(fetchSet),
-			
-			dataType : "json",
-			success : function(listMap) {
-				console.log("listMap ", listMap);
-				
-				$(".comment-list").empty();
-				
-				if(cmtIndex == 0) {
-					if(cmtListIndex == 0) {
-						console.log("후기 목록");
-						
-						if(listMap.cmtList.length == 0) {
-							// nonListRender();
-						} else {
-							for(let i = 0; i < listMap.cmtList.length; i++) {
-								listRender(listMap, i, "down");
-							}
-						}
-					} else if(cmtListIndex == 1) {
-						console.log("후기 갤러리");
-					}
-				} else if(cmtIndex == 1) {
-					console.log("산책일지 목록");
-				}
-			},
-			error : function(XHR, status, error) {
-				console.error(status + " : " + error);
-			}
-		});
-	}
-	
-	// cmt list
-	function listRender(listMap, index, dir) {
-		console.log("listRender()");
-		
-		let content = (listMap.cmtList[index].content == null) ? "" : listMap.cmtList[index].content;
-		
-		let str = '';
-		str += '<div class="comment-detail">';
-		str += '	<div class="comment-img">';
-		if(listMap.cmtImgList[index].filePath != null) {
-			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">';
-		}
-		str += '	</div>';
-		str += '	<div class="comment-content">';
-		str += '		<div>' + content + '</div>';
-		str += '		<span><i class="fa-regular fa-heart"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
-		str += '	</div>';
-		str += '	<div class="comment-info">';
-		if(listMap.userImgList[index] != null) {
-			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">';
-		} else {
-			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg">';
-		}
-		str += '		<div class="detail-text">';
-		str += '			<span>' + listMap.cmtList[index].usersVo.name + '</span>';
-		str += '			<span>' + listMap.cmtList[index].regDate + '</span>';
-		str += '		</div>';
-		str += '		<div class="user-modify">';
-		if(authUserNo == listMap.cmtList[index].usersVo.userNo) {
-			str += '			<i class="fa-solid fa-pen"></i>';
-			str += '			<i class="fa-solid fa-trash"></i>';
-		}
-		str += '		</div>';
-		str += '	</div>';
-		str += '</div>';
-		
- 		if(dir == "up") {
-			$(".comment-list").prepend(str);
-		} else if(dir == "down") {
-			$(".comment-list").append(str);
-		} else {
-			console.log("잘못입력");
-		}
-	}
-	
-	/* cmt detail modify modal */
+	/* cmt modal */
 	$(".comment-img").on("click", function() {
 		$('#detailModal').modal("show");
 	});
@@ -649,68 +559,5 @@
 		modifyModal.focus();
 	});
 	
-	
-	
-	
-	/* comment-nav filter */
- 	const cmtGroup = document.querySelectorAll(".comment-nav div");
- 	let cmtIndex = 0;
- 	
- 	cmtGroup[cmtIndex].classList.add("selected");
- 	
- 	cmtGroup.forEach(function (item, index) {
-        item.addEventListener("click", function () {
-        	cmtGroup[cmtIndex].classList.remove("selected");
-        	cmtIndex = index;
-        	cmtGroup[cmtIndex].classList.add("selected");
-        	
-        	if(cmtIndex == 0) {
-        		console.log("후기 선택");
-        		
-        		cmtListGroup[0].classList.remove("nonList");
-        		cmtListGroup[1].classList.remove("nonList");
-        	} else {
-        		console.log("산책일지 선택");
-        		
-        		cmtListGroup[0].classList.add("nonList");
-        		cmtListGroup[1].classList.add("nonList");
-        	}
-        	
-        	fetchList(trailNo);
-        })
-    });
- 	
- 	/* cmt-list-nav filter */
- 	const cmtListGroup = document.querySelectorAll("#cmt-list-nav button");
- 	let cmtListIndex = 0;
- 	
- 	cmtListGroup[cmtListIndex].classList.add("selected-order");
- 	
- 	cmtListGroup.forEach(function (item, index) {
-        item.addEventListener("click", function () {
-        	cmtListGroup[cmtListIndex].classList.remove("selected-order");
-        	cmtListIndex = index;
-        	cmtListGroup[cmtListIndex].classList.add("selected-order");
-        	
-        	fetchList(trailNo);
-        })
-    });
- 	
- 	/* cmt-order-nav filter */
- 	const cmtOrderGroup = document.querySelectorAll("#cmt-order-nav button");
- 	let cmtOrderIndex = 0;
- 	
- 	cmtOrderGroup[cmtOrderIndex].classList.add("selected-order");
- 	
- 	cmtOrderGroup.forEach(function (item, index) {
-        item.addEventListener("click", function () {
-        	cmtOrderGroup[cmtOrderIndex].classList.remove("selected-order");
-        	cmtOrderIndex = index;
-        	cmtOrderGroup[cmtOrderIndex].classList.add("selected-order");
-        	
-        	fetchList(trailNo);
-        })
-    });
- 	
 </script>
 </html>

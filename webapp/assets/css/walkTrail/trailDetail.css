@@ -12,7 +12,7 @@
 
 .section {
 	height: 155px;
-	width: 790px;
+	width: 820px;
 	padding: 0px 32px;
 }
 .section > div.location {
@@ -30,6 +30,10 @@
 	font-size: 12px;
 	color: #494950;
 }
+.section > div.stat-margin,
+.section > div.stat span.stat-margin {
+	width: 180px;
+}
 .section > div.stat .stat-subtext {
 	height: 15px;
 	width: 94px;
@@ -46,7 +50,8 @@
 
 /* map-container main */
 .map-container {
-	height: 1425px;
+	/*height: 1425px;*/
+	height: 1150px;
 	width: 100%;
 	border-bottom: 1px solid #dee2e6;
 }
@@ -82,9 +87,11 @@
     border: 1px solid #dee2e6;
     border-radius: 5px;
     margin-right: 10px;
-    color: #fc5200;
     padding: 3px;
     font-size: 14px;
+}
+.check-info > span.true {
+    color: #fc5200;
 }
 
 /* map-detail-info */
@@ -127,6 +134,7 @@
     border: 1px solid #dee2e6;
     border-radius: 5px;
     margin: 8px 6px;
+    padding: 5px;
 }
 
 /* map-detail-chart */
@@ -142,9 +150,9 @@
     background-color: lightgray;
     margin-left: 60px;
 }
-.detail-border {
+/*.detail-border {
 	margin-top: 50px;
-}
+}*/
 
 /* map-detail-meeting */
 .detail-meeting {
@@ -194,6 +202,7 @@
 	display: flex;
 	padding-bottom: 20px;
 	border-bottom: 1px solid #dfdfe8;
+	height: 86px;
 }
 .map-sidebar > div.detail-bar > img,
 .map-sidebar > div.ranking-detail-bar > img {
@@ -334,7 +343,7 @@
     padding: 10px 100px;
     border-bottom: 1px solid darkgray;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 }
 .comment-bar > div.comment-number,
@@ -343,6 +352,10 @@
 }
 .comment-bar > div.btn-group {
 	margin-right: 10px;
+}
+.comment-bar > div.btn-group > button.selected-order {
+	background-color: var(--bs-body-color);
+    color: white;
 }
 
 /* 후기 등록 modal */
@@ -364,20 +377,25 @@
 .modal .modal-dialog .modal-content .modal-footer {
 	padding: 5px 25px;
 }
+.modal .modal-dialog .modal-content {
+	width: 600px;
+	min-height: 520px;
+}
 .modal .modal-dialog {
-	margin: 400px auto;
+	margin: 100px auto;
 }
 .modal .modal-dialog .modal-content .modal-footer > button {
 	height: 34px;
 }
 
 /* modal-body */
-.modal-body {
+/*.modal-body {
 	display: flex;
-}
+}*/
 .mb-3 .form-control {
-	width: 350px;
-	margin-left: 10px;
+	width: 547px;
+    height: 150px;
+    margin: 0 10px;
 }
 .modal-input {
 	height: 200px;
@@ -435,6 +453,42 @@
 	font-size: 14px;
 }
 
+/* 이미지 preview-list */
+.preview-list {
+	display: flex;
+	flex-wrap: wrap;
+}
+.preview-list > div {
+    height: 100px;
+    width: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 6.5px;
+}
+.preview-list > div img {
+    height:100%;
+    width:100%;
+    object-fit:cover;
+}
+.preview-list > div button {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%,-50%);
+	display: none;
+}
+.preview-list > div:hover button {
+	display: block;
+}
+.preview-list > div:hover img {
+	filter: blur(10px);
+	-webkit-filter: blur(10px);
+}
+.mb-3 .dropzone {
+	min-height: 130px;
+}
+
 /* filter button */
 .comment-bar .btn-group {
 	height: 34px;
@@ -446,6 +500,9 @@
 .btn-group > button.selected-filter {
 	background-color: var(--bs-body-color);
 	color: white;
+}
+#cmt-list-nav > button.nonList {
+	display: none;
 }
 
 /* comment-list main */

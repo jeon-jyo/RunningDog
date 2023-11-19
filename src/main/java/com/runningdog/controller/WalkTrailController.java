@@ -1,5 +1,6 @@
 package com.runningdog.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,13 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.runningdog.service.TrailService;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.LocationVo;
+import com.runningdog.vo.TrailCmtVo;
 import com.runningdog.vo.TrailVo;
 import com.runningdog.vo.UserVo;
+import com.runningdog.vo.UsersVo;
 import com.runningdog.vo.WalkLogVo;
 
 @Controller
@@ -31,14 +35,6 @@ public class WalkTrailController {
 	private TrailService trailService;
 	
 	// trailMain //////////////////////////////
-	
-	// dogMapExample
-	@RequestMapping(value = "/ex", method= { RequestMethod.GET, RequestMethod.POST})
-	public String dogMapExample(HttpSession session, Model model) {
-		System.out.println("WalkTrailController.dogMapExample()");
-		
-		return "global/dogMapExample";
-	}
 	
 	// 산책로 메인 - 추천 / 등록 / 찜 목록
 	@RequestMapping(value = "/main", method= { RequestMethod.GET, RequestMethod.POST})
@@ -190,32 +186,127 @@ public class WalkTrailController {
 		return "walkTrail/trailModifyForm";
 	}
 	
-	// trailMyList //////////////////////////////
-	
-	@RequestMapping(value = "/my", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailMyList() {
-		System.out.println("WalkTrailController.trailMyList()");
-		return "walkTrail/trailMyList";
-	}
-	
-	@RequestMapping(value = "/my/starList", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailMyStarList() {
-		System.out.println("WalkTrailController.trailMyStarList()");
-		return "walkTrail/trailMyStarList";
-	}
-	
-	@RequestMapping(value = "/my/commentList", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailMyCommentList() {
-		System.out.println("WalkTrailController.trailMyCommentList()");
-		return "walkTrail/trailMyCommentList";
-	}
-	
 	// trailDetail //////////////////////////////
 	
+	// 산책로 상세
 	@RequestMapping(value = "/detail", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailDetail() {
+	public String trailDetail(@ModelAttribute TrailVo trailVo,
+			Model model, HttpSession session) throws JsonProcessingException {
 		System.out.println("WalkTrailController.trailDetail()");
+		
+		// 산책로 상세
+		Map<String, Object> detailMap = trailService.trailDetail(trailVo);
+		
+		// 유저 상세
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		Map<String, Object> userMap = new HashMap<String, Object>();
+		if(authUser != null) {
+			System.out.println("authUser.getUserNo() " + authUser.getUserNo());
+			System.out.println("authUser.getUserNo() " + authUser);
+			
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(authUser.getUserNo());
+			trailVo.setUsersVo(usersVo);
+			userMap = trailService.userDetail(trailVo);
+		} else {
+			/*
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(2);
+			trailVo.setUsersVo(usersVo);
+			userMap = trailService.userDetail(trailVo);
+			*/
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(0);
+			userMap.put("usersVo", usersVo);
+		}
+		System.out.println("userMap " + userMap);
+		
+		// 산책로 이용 랭킹
+		Map<String, Object> userUsedMap = trailService.trailUserUsed(trailVo);
+		
+		model.addAttribute("detailMap", detailMap);
+		model.addAttribute("userMap", userMap);
+		model.addAttribute("userUsedMap", userUsedMap);
+		
 		return "walkTrail/trailDetail";
+	}
+	
+	// 산책로 후기 목록 ajax
+	@ResponseBody
+	@RequestMapping(value = "/cmtListMap", method= { RequestMethod.GET, RequestMethod.POST})
+	public Map<String, Object> cmtListMap(@RequestBody Map<String, Object> fetchSet,
+			HttpSession session) {
+		System.out.println("WalkTrailController.cmtListMap()");
+		System.out.println("fetchSet " + fetchSet);
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser != null) {
+			fetchSet.put("userNo", authUser.getUserNo());
+		} else {
+			fetchSet.put("userNo", 0);
+			// fetchSet.put("userNo", 2);
+		}
+		
+		Map<String, Object> listMap = new HashMap<String, Object>();
+		
+		int cmtNav = (int) fetchSet.get("cmtNav");
+		int cmtListNav = (int) fetchSet.get("cmtListNav");
+		if(cmtNav == 0) {
+			if(cmtListNav == 0) {
+				// 후기 목록
+				listMap = trailService.cmtListMap(fetchSet);
+			} else if(cmtListNav == 1) {
+				// 후기 갤러리
+			}
+		} else if(cmtNav == 1) {
+			// 산책일지
+		}
+		
+		return listMap;
+	}
+	
+	// 산책로 후기 작성
+	@RequestMapping(value = "/cmtAdd", method= { RequestMethod.GET, RequestMethod.POST})
+	public String trailCmtAdd(@ModelAttribute TrailVo trailVo,
+			@RequestParam(value="file") MultipartFile file, @RequestParam(value="content") String content, HttpSession session) {
+		System.out.println("WalkTrailController.trailCmtAdd()");
+		System.out.println("trailVo : " + trailVo);
+		System.out.println("content : " + content);
+		
+		System.out.println("file.isEmpty() : " + file.isEmpty() + " " + file.getOriginalFilename());
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		Map<String, Object> userMap = null;
+		if(authUser != null) {
+
+		} else {
+
+		}
+		
+		return "walkTrail/trailDetail";
+	}
+	
+	// 산책로 후기 작성2
+	@RequestMapping(value = "/cmtAdd2", method= { RequestMethod.GET, RequestMethod.POST})
+	public Map<String, Object> trailCmtAdd2(@ModelAttribute TrailCmtVo trailCmtVo,
+			@RequestParam(value="trailNo") int trailNo,
+			@RequestParam(value="file") MultipartFile file, HttpSession session) {
+		System.out.println("WalkTrailController.trailCmtAdd2()");
+		System.out.println("trailCmtVo : " + trailCmtVo);
+		System.out.println("trailNo : " + trailNo);
+		
+		System.out.println("file.isEmpty() : " + file.isEmpty() + " " + file.getOriginalFilename());
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		Map<String, Object> userMap = null;
+		if(authUser != null) {
+
+		} else {
+
+		}
+		Map<String, Object> listMap = new HashMap<String, Object>();
+		
+		return listMap;
 	}
 	
 	@RequestMapping(value = "/detail/deleted", method= { RequestMethod.GET, RequestMethod.POST})
@@ -246,6 +337,26 @@ public class WalkTrailController {
 	public String trailDetailWalkLog() {
 		System.out.println("WalkTrailController.trailDetailWalkLog()");
 		return "walkTrail/trailDetailWalkLog";
+	}
+	
+	// trailMyList //////////////////////////////
+	
+	@RequestMapping(value = "/my", method= { RequestMethod.GET, RequestMethod.POST})
+	public String trailMyList() {
+		System.out.println("WalkTrailController.trailMyList()");
+		return "walkTrail/trailMyList";
+	}
+	
+	@RequestMapping(value = "/my/starList", method= { RequestMethod.GET, RequestMethod.POST})
+	public String trailMyStarList() {
+		System.out.println("WalkTrailController.trailMyStarList()");
+		return "walkTrail/trailMyStarList";
+	}
+	
+	@RequestMapping(value = "/my/commentList", method= { RequestMethod.GET, RequestMethod.POST})
+	public String trailMyCommentList() {
+		System.out.println("WalkTrailController.trailMyCommentList()");
+		return "walkTrail/trailMyCommentList";
 	}
 	
 }

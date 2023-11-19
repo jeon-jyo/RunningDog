@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%> 
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,7 +98,6 @@
 	
 	var errorRange = 20;	// 오차 범위 (미터단위)
 	var matchRate = 70;		// 몇퍼센트 이상 일치해야 하는지 (일치율)
-	var maxDistance;		// 최대 거리
 	
 	let overlayMarker = [];
 	let overlayInfoMarker = [];
@@ -320,23 +321,20 @@
 			return false;
 		} else {
 			infoNum = distance;
-			
-	        // distance = 3800;
+
 	        if(distance >= 1000) {
-	        	distanceInfo.innerText = (distance / 1000).toFixed(2) + "km";
-	        	// console.log("distanceInfo ", (distance / 1000).toFixed(2) + "km");
+	        	distanceInfo.innerText = Math.floor(distance / 1000) + "." + Math.floor((distance % 1000) / 10) + "km";
 	        } else {
 	        	distanceInfo.innerText = distance + "m";
-	        	// console.log("distanceInfo ", distance + "m");
 	        }
 	        
-	        let second = infoNum;
-	        let minute = Math.floor(second / 60);
-	        let hour = minute / 60;
-	        second = second % 60;
-	        console.log(hour, "초 ", minute, "분 ");
-	        
-	        etaInfo.innerText = infoNum + "초";
+	        let minute = Math.floor(distance / 60);
+	        if(60 <= minute) {
+	        	let hour = Math.floor(minute / 60);
+	        	minute -= hour * 60;
+	        	etaInfo.innerHTML +=  hour +  "시간&nbsp;";
+	        }
+	        etaInfo.innerHTML +=  minute + "분";
 			
 			return true;
 		}
@@ -369,13 +367,13 @@
 					
 					if(seq == 0) {
 						parkingSpot = overlayInfoMarker[i].getPosition();
-						console.log("parkingSpot ", parkingSpot);
+						// console.log("parkingSpot ", parkingSpot);
 					} else if(seq == 1) {
 						restroomSpot = overlayInfoMarker[i].getPosition();
-						console.log("restroomSpot ", restroomSpot);
+						// console.log("restroomSpot ", restroomSpot);
 					} else if(seq == 2) {
 						trashCanSpot = overlayInfoMarker[i].getPosition();
-						console.log("trashCanSpot ", trashCanSpot);
+						// console.log("trashCanSpot ", trashCanSpot);
 					}
 				}
 			}
@@ -383,7 +381,7 @@
 			let locationVo = {
 				locationNo : locationInfo
 			}
-			console.log("locationVo ", locationVo);
+			// console.log("locationVo ", locationVo);
 			
 			let trailVo = {
 				locationVo : locationVo,
@@ -393,21 +391,21 @@
 				eta : infoNum,
 				explanation : contentInfo.value
 			}
-			console.log("trailVo ", trailVo);
+			// console.log("trailVo ", trailVo);
 			
 			let infoCheck = {
 				parking : switchCheck1.checked,
 				restroom : switchCheck2.checked,
 				trashCan : switchCheck3.checked
 			}
-			console.log("infoCheck ", infoCheck);
+			// console.log("infoCheck ", infoCheck);
 
 			let infoMarker = {
 				parking : parkingSpot,
 				restroom : restroomSpot,
 				trashCan : trashCanSpot
 			}
-			console.log("infoMarker ", infoMarker);
+			// console.log("infoMarker ", infoMarker);
 			
 			let paths = polyline2.getPath()._array;
 			let coordsList = [];
@@ -419,7 +417,7 @@
 				}
 				coordsList.push(coordsMap);
 			}
-			console.log("coordsList ", coordsList);
+			// console.log("coordsList ", coordsList);
 			
 			let fetchSet = {
 				"trailVo" : trailVo,
@@ -429,7 +427,6 @@
 				"tagArr" : tagArr
 			}
 			console.log("fetchSet ", fetchSet);
-			
 			
  			$.ajax({
 				url : "${pageContext.request.contextPath}/walkTrail/trailAdd",
@@ -450,48 +447,6 @@
 				}
 			});
 		}
-		
-/* 		// name
-		console.log("trailName ", trailName.value);
-		// tag
-		console.log("tagArr ", tagArr);
-		// info check
-		console.log("switchCheck1 ", switchCheck1.checked);
-		console.log("switchCheck2 ", switchCheck2.checked);
-		console.log("switchCheck3 ", switchCheck3.checked);
-		// info marker
-		if(overlayInfoMarker.length != 0) {
-			for(let i = 0; i < overlayInfoMarker.length; i++) {
-				
-				let seq = overlayInfoMarker[i].get('seq');
-				let position = overlayInfoMarker[i].getPosition();
-				
-				if(seq == 0) {
-					parkingSpot = overlayInfoMarker[i].getPosition();
-					console.log("parkingSpot ", parkingSpot);
-				} else if(seq == 1) {
-					restroomSpot = overlayInfoMarker[i].getPosition();
-					console.log("restroomSpot ", restroomSpot);
-				} else if(seq == 2) {
-					trashCanSpot = overlayInfoMarker[i].getPosition();
-					console.log("trashCanSpot ", trashCanSpot);
-				}
-			}
-		}
-		// content
-		console.log("content ", contentInfo.value);
-		// coords
-		let paths = polyline2.getPath()._array;
-		console.log("coords ", paths);
-		console.log("coords ", paths[0]._lat);
-		// location
-		console.log("location ", locationInfo);
-		// address
-		console.log("address ", addressInfo.innerText);
-		// distance
-		console.log("distance ", infoNum);
-		// eta
-		console.log("eta ", infoNum); */
 	})
 	
 	/* info check */

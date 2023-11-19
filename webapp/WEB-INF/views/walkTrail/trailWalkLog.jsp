@@ -157,8 +157,12 @@
 				overlayMarker.length = 0;
 				$("#walkLogList").empty();
 				
-  				for(let i = 0; i < walkLogList.length; i++) {
-					listRender(walkLogList[i]);
+				if(walkLogList.length == 0) {
+					nonListRender();
+				} else {
+					for(let i = 0; i < walkLogList.length; i++) {
+						listRender(walkLogList[i]);
+					}
 				}
 			},
 			error : function(XHR, status, error) {
@@ -171,14 +175,30 @@
 	function listRender(walkLogVo) {
 		// console.log("listRender()");
 		let walkLogNo = walkLogVo.walkLogNo;
+		let distanceInfo = "";
+		let etaInfo = "";
+		
+        if(walkLogVo.distance >= 1000) {
+        	distanceInfo = Math.floor(walkLogVo.distance / 1000) + "." + Math.floor((walkLogVo.distance % 1000) / 10) + "km";
+        } else {
+        	distanceInfo = walkLogVo.distance + "m";
+        }
+        
+        let minute = Math.floor(walkLogVo.logTime / 60);
+        if(60 <= minute) {
+        	let hour = Math.floor(minute / 60);
+        	minute -= hour * 60;
+        	etaInfo +=  hour +  "시간 ";
+        }
+        etaInfo += minute + "분";
 		
 		let str = '';
 		str += '<li>';
 		str += '	<img calss="markerImg" src="${pageContext.request.contextPath}/assets/images/walkTrail/marker.png"/>';
 		str += '	<div>';
 		str += '		<span class="sideBar-title">' + walkLogVo.walkLogNo + " / " + walkLogVo.regDate + '</span><br>';
-		str += '		<span>' + walkLogVo.distance + '</span>';
-		str += '		<span>' + walkLogVo.logTime + '</span>';
+		str += '		<span>' + distanceInfo + '</span>';
+		str += '		<span>' + etaInfo + '</span>';
 		str += '	</div>'
 		str += '</li>';
 		
@@ -193,6 +213,19 @@
 		$("#walkLogList").children().last().on("click", function() {
 			fetchMapList(walkLogNo);
 		})
+	}
+	
+	function nonListRender() {
+		console.log("nonListRender()");
+		
+		let str = '';
+		str += '<li class="nonList">';
+		str += '	<div>';
+		str += '		<span class="sideBar-title">목록이 없습니다.</span><br>';
+		str += '	</div>'
+		str += '</li>';
+		
+		$("#walkLogList").append(str);
 	}
 	
 	// coords map list

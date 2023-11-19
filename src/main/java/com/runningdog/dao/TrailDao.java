@@ -10,8 +10,10 @@ import org.springframework.stereotype.Repository;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
+import com.runningdog.vo.TrailCmtVo;
 import com.runningdog.vo.TrailTagVo;
 import com.runningdog.vo.TrailVo;
+import com.runningdog.vo.UsersVo;
 import com.runningdog.vo.WalkLogVo;
 
 @Repository
@@ -59,19 +61,19 @@ public class TrailDao {
 	}
 
 	// 산책로 정보
-	public TrailVo trailInfo(int trailNo) {
-		// System.out.println("TrailDao.trailInfo()");
+	public TrailVo trailDetail(int trailNo) {
+		// System.out.println("TrailDao.trailDetail()");
 		
-		TrailVo trailVo = sqlSession.selectOne("walkTrail.trailInfo", trailNo);
+		TrailVo trailVo = sqlSession.selectOne("walkTrail.trailDetail", trailNo);
 		
 		return trailVo;
 	}
 	
-	// 산책로 유저 프로필
-	public ImagesVo trailUserImg(int userNo) {
-		// System.out.println("TrailDao.trailUserImg()");
+	// 유저 프로필
+	public ImagesVo userImg(int userNo) {
+		// System.out.println("TrailDao.userImg()");
 		
-		ImagesVo imagesVo = sqlSession.selectOne("walkTrail.trailUserImg", userNo);
+		ImagesVo imagesVo = sqlSession.selectOne("walkTrail.userImg", userNo);
 		
 		return imagesVo;
 	}
@@ -113,10 +115,10 @@ public class TrailDao {
 	}
 
 	// 산책일지 좌표
-	public List<CoordsVo> coords(int walkLogNo) {
-		System.out.println("TrailDao.coords()");
+	public List<CoordsVo> walkLogCoords(int walkLogNo) {
+		System.out.println("TrailDao.walkLogCoords()");
 		
-		List<CoordsVo> coords = sqlSession.selectList("walkTrail.coords", walkLogNo);
+		List<CoordsVo> coords = sqlSession.selectList("walkTrail.walkLogCoords", walkLogNo);
 		
 		return coords;
 	}
@@ -158,4 +160,88 @@ public class TrailDao {
 		
 		return insertCnt;
 	}
+	
+	// trailDetail //////////////////////////////
+	
+	// 산책로 태그
+	public List<TrailTagVo> tagList(int trailNo) {
+		System.out.println("TrailDao.tagList()");
+		
+		List<TrailTagVo> tagList = sqlSession.selectList("walkTrail.tagList", trailNo);
+		
+		return tagList;
+	}
+
+	// 산책로 정보 좌표
+	public CoordsVo markerCoords(CoordsVo coordsVo) {
+		// System.out.println("TrailDao.markerCoords()");
+		
+		CoordsVo vo = sqlSession.selectOne("walkTrail.markerCoords", coordsVo);
+		
+		return vo;
+	}
+
+	// 유저 이용수
+	public int userUsedCnt(TrailVo trailVo) {
+		System.out.println("TrailDao.userUsedCnt()");
+		
+		int userUsedCnt = sqlSession.selectOne("walkTrail.userUsedCnt", trailVo);
+		
+		return userUsedCnt;
+	}
+	
+	// 유저 상세
+	public UsersVo userDetail(int userNo) {
+		System.out.println("TrailDao.userDetail()");
+		
+		UsersVo usersVo = sqlSession.selectOne("walkTrail.userDetail", userNo);
+		
+		return usersVo;
+	}
+
+	// 최근 산책일지 목록
+	public List<WalkLogVo> userwalkLogList(TrailVo trailVo) {
+		System.out.println("TrailDao.userwalkLogList()");
+		
+		List<WalkLogVo> walkLogList =  sqlSession.selectList("walkTrail.userwalkLogList", trailVo);
+		
+		return walkLogList;
+	}
+
+	// 유저 상세 목록
+	public List<UsersVo> userDetailList(int trailNo) {
+		System.out.println("TrailDao.userDetailList()");
+		
+		List<UsersVo> userList =  sqlSession.selectList("walkTrail.userDetailList", trailNo);
+		
+		return userList;
+	}
+
+	// 후기 목록
+	public List<TrailCmtVo> cmtList(Map<String, Object> fetchSet) {
+		System.out.println("TrailDao.cmtList()");
+		
+		List<TrailCmtVo> cmtList = sqlSession.selectList("walkTrail.cmtList", fetchSet);
+		
+		return cmtList;
+	}
+
+	// 후기 이미지 목록
+	public List<ImagesVo> cmtImages(int trailCmtNo) {
+		System.out.println("TrailDao.cmtImages()");
+		
+		List<ImagesVo> images = sqlSession.selectList("walkTrail.cmtImages", trailCmtNo);
+		
+		return images;
+	}
+
+	// 후기 좋아요수
+	public int cmtLikeCnt(int trailCmtNo) {
+		System.out.println("TrailDao.cmtLikeCnt()");
+		
+		int cmtLikeCnt = sqlSession.selectOne("walkTrail.cmtLikeCnt", trailCmtNo);
+		
+		return cmtLikeCnt;
+	}
+
 }

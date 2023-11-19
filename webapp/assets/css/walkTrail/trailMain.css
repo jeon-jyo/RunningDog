@@ -144,6 +144,9 @@
 .segments-sidebar > ul > li:hover {
 	background-color: rgb(255, 215, 196);
 }
+.segments-sidebar > ul > li.nonList:hover {
+	background-color: white;
+}
 .segments-sidebar > ul > li > img {
 	height: 30px;
 	width: 30px;
@@ -159,6 +162,7 @@
 	color: #494950;
 	font-size: 14px;
 	text-align: right;
+	margin-right: 10px;
 }
 .segments-sidebar > ul > li > div > span.sideBar-title {
 	font-weight: bold;
@@ -249,6 +253,7 @@
     font-weight: bold;
     border: 1px solid #fc5200;
     border-radius: 5%;
+    text-decoration: none;
 }
 .userInfo .userBtn:hover {
 	border-color: rgb(255, 215, 196);
