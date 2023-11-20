@@ -35,16 +35,17 @@
    <!-- 내 강아지 가져오기 -->   
    <select id="dogSelect"  parameterType="int" resultType="com.runningdog.vo.MoDogVo">
       <![CDATA[
-         SELECT  us.userno as userNo 
-		         ,us.name as userName
+         SELECT  us.userno as userNo
+		         ,us.name  as userName
 		         ,do.dogno as dogNo
 		         ,do.name as dogName
-	     FROM users us,dog do
-	     where us.userno = #{userno}
-	     and us.userno = do.userno
+		         ,im.orgname as orgName
+		 FROM users us,dog do, images im
+	 	 where us.userno = #{userno}
+	 	 and us.userno = do.userno
+		 and do.dogno = im.useno
       ]]>
-   </select>
-   
+   </select>     
    
    <!-- 산책기록 저장하기 -->
    <insert id="walkLogInsert"  parameterType="com.runningdog.vo.MoWalkLogVo" >
@@ -98,6 +99,21 @@
       ]]>
    </insert>
    
+   <insert id="imgsSave" parameterType="com.runningdog.vo.ImagesVo">  
+		 <![CDATA[
+		 INSERT INTO images
+		 VALUES (seq_images_no.nextval
+                      ,#{orgName}
+                      ,#{saveName}
+                      ,#{filePath}
+                      ,#{fileSize}
+                      ,'walkLogCon'
+                      ,#{userNo}
+                      ,#{imageOrder}
+                      )
+		 ]]>
+	</insert>
+   
    <!-- 좌표값 가져오기 (캡쳐용) -->   
    <select id="mapSelect"  parameterType="int" resultType="com.runningdog.vo.CoordsVo">
       <![CDATA[
@@ -110,10 +126,6 @@
 		ORDER BY coordorder asc
       ]]>
    </select>
-   
-   
-   
-   
      
    <!-- 산책로 가져오기 -->   
    <select id="trailSelect"  parameterType="int" resultType="com.runningdog.vo.MoTrailVo">

@@ -23,7 +23,10 @@
 	<link href="${pageContext.request.contextPath}/assets/css/mobileWeb/walkStart.css" rel="stylesheet" type="text/css">		
 				
 	<!-- Slick 슬라이더 스타일 시트 추가 -->
+	<!-- 
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+	 -->
+	<link href="${pageContext.request.contextPath}/assets/css/mobileWeb/slick.css" rel="stylesheet" type="text/css">	
 		
 	<!-- Slick 슬라이더 스크립트 추가 -->
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -39,27 +42,12 @@
 		<!-- 상단 좌측부터는 반복문으로 강아지프로필 이미지 띄우는곳 (5개 이상이면 슬릿) -->
 		<div class="profile-container">
 			<div class="profile-circles" >
-		        <div id="pSelect" class="profile-circle">
-		            <img src="${pageContext.request.contextPath}/assets/images/123.jpg" alt="Profile Image 1">
-		        </div>
-		        <div id="pSelect" class="profile-circle">
-		            <img src="${pageContext.request.contextPath}/assets/images/234.jpg" alt="Profile Image 2">
-		        </div>
-		        <div class="profile-circle">
-		            <img src="${pageContext.request.contextPath}/assets/images/345.jpg" alt="Profile Image 3">
-		        </div>
-		        <div class="profile-circle">
-		            <img src="${pageContext.request.contextPath}/assets/images/123.jpg" alt="Profile Image 1">
-		        </div>
-		        <div class="profile-circle">
-		            <img src="${pageContext.request.contextPath}/assets/images/234.jpg" alt="Profile Image 2">
-		        </div>    
-		        <div class="profile-circle">
-		            <img src="${pageContext.request.contextPath}/assets/images/234.jpg" alt="Profile Image 2">
-		        </div>   
-		        <div class="profile-circle">
-		            <img src="${pageContext.request.contextPath}/assets/images/234.jpg" alt="Profile Image 2">
-		        </div>             
+				<c:forEach items="${dogList}" var="MoDogVo">
+			        <div class="profile-circle choiceRed" >
+			            <img src="${pageContext.request.contextPath}/assets/images/${MoDogVo.orgName}" alt="Profile Image 1">
+			            <input type="hidden" name="dogNo" class="dogDate" value="${MoDogVo.dogNo}">
+			        </div>
+		        </c:forEach>            
 		    </div>
 		</div>
 		
@@ -131,15 +119,17 @@
 	<!-- form으로 컨트롤러 보내기 -->
 	<form id="dataForm" action="${pageContext.request.contextPath}/m/wif" method="post">
 		<!-- 좌표데이터 -->
-	    <input type="hidden" name="line" id="lineDataInput" value="">
+	    <input type="hidden" name="line" id="lineDataInput" value="">	    
+	    <!-- 강아지데이터 -->
+	    <input type="hidden" name="dogList" id="dogDataInput" value="">	    
 	    <!-- 거리데이터 -->
 	    <input type="hidden" name="distance" id="distanceDataInput" value="">
 	    <!-- 소요시간데이터 -->
-	    <input type="hidden" name="time" id="timeDataInput" value="">
+	    <input type="hidden" name="logTime" id="timeDataInput" value="">
 	    <!-- 시작시간데이터 -->
-	    <input type="hidden" name="sTime" id="sTimeDataInput" value="">
+	    <input type="hidden" name="startTime" id="sTimeDataInput" value="">
 	    <!-- 종료시간데이터 -->
-	    <input type="hidden" name="eTime" id="eTimeDataInput" value="">
+	    <input type="hidden" name="endTime" id="eTimeDataInput" value="">	    
 	</form>
       
     <!-- js 설정 -->
@@ -150,5 +140,8 @@
         naver.maps.onJSContentLoaded = initMap;        
         
     </script>
+    
+   
+    
 </body>
 </html>

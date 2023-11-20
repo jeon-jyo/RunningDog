@@ -5,8 +5,10 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.runningdog.vo.CoordsVo;
+import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.MoDogVo;
 import com.runningdog.vo.MoTrailVo;
 import com.runningdog.vo.MoWalkLogVo;
@@ -74,10 +76,20 @@ public class MoWebDao {
 		System.out.println("다오 캡쳐용 좌표값 불러오기");			
 		return  sqlSession.selectList("walkLog.mapSelect", walkLogNo);
 	}
+	
+	// 첨부이미지 저장하기
+	public void imgsSave(ImagesVo imagesVo){
+		System.out.println("다오 첨부이미지 저장하기");	
+		System.out.println(imagesVo);
+		sqlSession.insert("walkLog.imgsSave", imagesVo);
+	}
 		
-	
-	
-	
+	// 맵이미지 저장하기
+	public String mapImgSave(ImagesVo imagesVo){
+		System.out.println("다오 맵이미지 저장하기");	
+		
+		return  "";
+	}	
 	
 	// (0) 유사한 산책로 불러오기 (현재는 더미데이터 3개 불러오기)
 	public List<MoTrailVo> trailSelect(int locationNo){

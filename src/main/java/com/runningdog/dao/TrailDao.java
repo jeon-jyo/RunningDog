@@ -213,7 +213,7 @@ public class TrailDao {
 		System.out.println("TrailDao.userDetailList()");
 		
 		List<UsersVo> userList =  sqlSession.selectList("walkTrail.userDetailList", trailNo);
-		
+		System.out.println("userList : " + userList);
 		return userList;
 	}
 

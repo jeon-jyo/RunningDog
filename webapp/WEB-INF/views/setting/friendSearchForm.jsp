@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>친구 목록</title>
+<title>친구 신청</title>
 <link href="${pageContext.request.contextPath}/assets/css/global/reset.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/assets/css/setting/setting.css" rel="stylesheet" type="text/css">
 
@@ -24,13 +24,13 @@
 	<div id="friendProfile">
 
 		<div class="firstElement">
-			<h1>친구 목록</h1>
+			<h1>친구 신청</h1>
 			<div>#${sessionScope.authUser.code}</div>
 		</div>
 		
 		<div class="listBox">
 		
-			<form action="${pageContext.request.contextPath}/setting/friendList?crtPage=1" method="post" id="searchUser">
+			<form action="${pageContext.request.contextPath}/setting/friendSearchForm?crtPage=1" method="post" id="searchUser">
 				<div class="searchBox">
 					<select name="what" id="searchUser">
 						<option value="name">닉네임</option>
@@ -56,11 +56,11 @@
 		            <th>나이</th>
 		            <th>성별</th>
 		            <th>동네</th>
-		            <th>친구 삭제</th>
+		            <th>신청하기</th>
 		        </tr>
-		        
-		        <c:forEach items="${requestScope.friendMap.friendList}" var="friendsVo">
-			        <tr id="t${friendsVo.friendNo}">
+
+		        <c:forEach items="${requestScope.friendMap.userList}" var="friendsVo">
+			        <tr>
 						<td><img src="${pageContext.request.contextPath}/rdimg/userProfile/${friendsVo.saveName}"></td>
 						<td>${friendsVo.name}(#${friendsVo.code})</td>
 						<c:choose>
@@ -90,38 +90,47 @@
 						    	<td>${friendsVo.si}&nbsp;&nbsp;${friendsVo.gu}&nbsp;&nbsp;${friendsVo.dong}</td>
 						    </c:otherwise>
 						</c:choose>
-						<td><button data-friendno="${friendsVo.friendNo}" class="deleteBtn">친구 삭제</button></td>
+						<td  id="t${friendsVo.userNo}"><button id="btn${friendsVo.userNo}" data-userno="${friendsVo.userNo}" class="deleteBtn okBtn">친구 신청</button></td>
 						<!-- delete?no=${GuestVo.no} -->
 					</tr>
 		        </c:forEach>
 		        
 			</table>
 			
-			<div id="paging">
-				<ul>
-					<c:if test="${friendMap.prev}">
-						<li><a href="${pageContext.request.contextPath}/setting/friendList?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${friendMap.startPageBtnNo-1}">◀</a></li>
-					</c:if>
-					
-					<c:forEach begin="${friendMap.startPageBtnNo}" end="${friendMap.endPageBtnNo}" step="1" var="page">
-						<c:choose>
-							<c:when test="${param.crtPage == page}">
-								<li class="active"><a href="${pageContext.request.contextPath}/setting/friendList?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${page}">${page}</a></li>										
-							</c:when>
-							<c:otherwise>
-								<li><a href="${pageContext.request.contextPath}/setting/friendList?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${page}">${page}</a></li>
-							</c:otherwise>
-						</c:choose>
-						
-					</c:forEach>
-					
-					<c:if test="${friendMap.next}">
-						<li><a href="${pageContext.request.contextPath}/setting/friendList?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${friendMap.endPageBtnNo+1}">▶</a></li>
-					</c:if>
-
-				</ul>
-			</div>
+			<c:if test="${param.crtPage == '0'}">
+		        <div class="dummyTable">강아지를 공유하고 싶은 회원을 검색해주세요</div>
+			</c:if>
 			
+			
+				<div id="paging" 
+					<c:if test="${param.crtPage == '0'}">
+						class="hidePaging"
+					</c:if>
+				>
+					<ul>
+						<c:if test="${friendMap.prev}">
+							<li><a href="${pageContext.request.contextPath}/setting/friendSearchForm?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${friendMap.startPageBtnNo-1}">◀</a></li>
+						</c:if>
+						
+						<c:forEach begin="${friendMap.startPageBtnNo}" end="${friendMap.endPageBtnNo}" step="1" var="page">
+							<c:choose>
+								<c:when test="${param.crtPage == page}">
+									<li class="active"><a href="${pageContext.request.contextPath}/setting/friendSearchForm?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${page}">${page}</a></li>										
+								</c:when>
+								<c:otherwise>
+									<li><a href="${pageContext.request.contextPath}/setting/friendSearchForm?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${page}">${page}</a></li>
+								</c:otherwise>
+							</c:choose>
+							
+						</c:forEach>
+						
+						<c:if test="${friendMap.next}">
+							<li><a href="${pageContext.request.contextPath}/setting/friendSearchForm?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${friendMap.endPageBtnNo+1}">▶</a></li>
+						</c:if>
+	
+					</ul>
+				</div> <!-- paging -->
+
 		</div>
 	</div>
 	
@@ -132,29 +141,29 @@
 
 <script type="text/javascript">
 
-//친구 삭제 (ajax)
-$(".deleteBtn").on("click", function(){
+//친구 추가 (ajax)
+$(".okBtn").on("click", function(){
 	
 	let $this = $(this);
-	let friendNo = parseInt($this.data("friendno"));
+	let userNo = parseInt($this.data("userno"));
 	
 	$.ajax({
-		url : "${pageContext.request.contextPath}/setting/deleteFriend",
+		url : "${pageContext.request.contextPath}/setting/insertFriend",
 		type : "post",
 		//보낼 때
 		/* contentType : "application/json", */
-		data : {friendNo: friendNo},
+		data : {userNo: userNo},
 
 		//받을 때
 		dataType : "text",
 		success : function(count){
 			
 			if(count == "1"){
-				alert("삭제 성공");
-				//$("#t"+friendNo).remove();
-				location.reload(true);
+				alert("친구 신청 성공");
+ 				$("#btn"+userNo).remove();
+				$("#t"+userNo).text("진행 중");
 			}else{
-				alert("삭제 실패");
+				alert("친구 신청 실패");
 			}
 
 		},
@@ -164,14 +173,12 @@ $(".deleteBtn").on("click", function(){
 		}
 	});
 
-	
 });
 
 
 
-
-
 </script>
+
 
 
 

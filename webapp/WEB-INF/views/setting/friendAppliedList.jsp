@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>친구 목록</title>
+<title>내가 받은 신청</title>
 <link href="${pageContext.request.contextPath}/assets/css/global/reset.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/assets/css/setting/setting.css" rel="stylesheet" type="text/css">
 
@@ -24,23 +24,15 @@
 	<div id="friendProfile">
 
 		<div class="firstElement">
-			<h1>친구 목록</h1>
+			<h1>내가 받은 신청</h1>
 			<div>#${sessionScope.authUser.code}</div>
 		</div>
 		
 		<div class="listBox">
 		
-			<form action="${pageContext.request.contextPath}/setting/friendList?crtPage=1" method="post" id="searchUser">
-				<div class="searchBox">
-					<select name="what" id="searchUser">
-						<option value="name">닉네임</option>
-						<option value="code">회원코드</option>
-					</select>
-					<input type="text" name="keyword">
-					<button type="submit" class="button" id="searchBtn">검색</button>
-				</div>
-			</form>
-			
+
+			<div class="borderBottom"></div>
+
 			<table class="friendList">
 				<colgroup>
 					<col style="width: 15%;" />
@@ -48,7 +40,8 @@
 	    			<col style="width: 10%;" />
 					<col style="width: 10%;" />
 					<col style="width: 30%;" />
-					<col style="width: 15%;" />
+					<col style="width: 7%;" />
+					<col style="width: 8%;" />
 				</colgroup>
 				<tr>
 		            <th>프로필</th>
@@ -56,10 +49,11 @@
 		            <th>나이</th>
 		            <th>성별</th>
 		            <th>동네</th>
-		            <th>친구 삭제</th>
+		            <th>수락</th>
+		            <th>거절</th>
 		        </tr>
 		        
-		        <c:forEach items="${requestScope.friendMap.friendList}" var="friendsVo">
+		        <c:forEach items="${requestScope.friendMap.appliedList}" var="friendsVo">
 			        <tr id="t${friendsVo.friendNo}">
 						<td><img src="${pageContext.request.contextPath}/rdimg/userProfile/${friendsVo.saveName}"></td>
 						<td>${friendsVo.name}(#${friendsVo.code})</td>
@@ -90,35 +84,35 @@
 						    	<td>${friendsVo.si}&nbsp;&nbsp;${friendsVo.gu}&nbsp;&nbsp;${friendsVo.dong}</td>
 						    </c:otherwise>
 						</c:choose>
-						<td><button data-friendno="${friendsVo.friendNo}" class="deleteBtn">친구 삭제</button></td>
+						<td><button data-friendno="${friendsVo.friendNo}" class="deleteBtn okBtn">수락</button></td>
+						<td><button data-friendno="${friendsVo.friendNo}" class="deleteBtn noBtn">거절</button></td>
 						<!-- delete?no=${GuestVo.no} -->
 					</tr>
 		        </c:forEach>
-		        
+
 			</table>
 			
 			<div id="paging">
 				<ul>
 					<c:if test="${friendMap.prev}">
-						<li><a href="${pageContext.request.contextPath}/setting/friendList?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${friendMap.startPageBtnNo-1}">◀</a></li>
+						<li><a href="${pageContext.request.contextPath}/setting/friendAppliedList?crtPage=${friendMap.startPageBtnNo-1}">◀</a></li>
 					</c:if>
 					
 					<c:forEach begin="${friendMap.startPageBtnNo}" end="${friendMap.endPageBtnNo}" step="1" var="page">
 						<c:choose>
 							<c:when test="${param.crtPage == page}">
-								<li class="active"><a href="${pageContext.request.contextPath}/setting/friendList?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${page}">${page}</a></li>										
+								<li class="active"><a href="${pageContext.request.contextPath}/setting/friendAppliedList?crtPage=${page}">${page}</a></li>										
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.request.contextPath}/setting/friendList?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${page}">${page}</a></li>
+								<li><a href="${pageContext.request.contextPath}/setting/friendAppliedList?crtPage=${page}">${page}</a></li>
 							</c:otherwise>
 						</c:choose>
 						
 					</c:forEach>
 					
 					<c:if test="${friendMap.next}">
-						<li><a href="${pageContext.request.contextPath}/setting/friendList?what=${friendMap.what}&keyword=${friendMap.keyword}&crtPage=${friendMap.endPageBtnNo+1}">▶</a></li>
+						<li><a href="${pageContext.request.contextPath}/setting/friendAppliedList?crtPage=${friendMap.endPageBtnNo+1}">▶</a></li>
 					</c:if>
-
 				</ul>
 			</div>
 			
@@ -130,10 +124,11 @@
 
 
 
+
 <script type="text/javascript">
 
 //친구 삭제 (ajax)
-$(".deleteBtn").on("click", function(){
+$(".noBtn").on("click", function(){
 	
 	let $this = $(this);
 	let friendNo = parseInt($this.data("friendno"));
@@ -163,15 +158,48 @@ $(".deleteBtn").on("click", function(){
 			console.error(status + " : " + error);
 		}
 	});
-
 	
 });
 
 
+//친구 수락 (ajax)
+$(".okBtn").on("click", function(){
+	
+	let $this = $(this);
+	let friendNo = parseInt($this.data("friendno"));
+	
+	$.ajax({
+		url : "${pageContext.request.contextPath}/setting/acceptFriend",
+		type : "post",
+		//보낼 때
+		/* contentType : "application/json", */
+		data : {friendNo: friendNo},
 
+		//받을 때
+		dataType : "text",
+		success : function(count){
+			
+			if(count == "1"){
+				alert("친구 추가 성공");
+				$("#t"+friendNo).remove();
+			}else{
+				alert("친구 추가 실패");
+			}
+
+		},
+     
+		error : function(XHR, status, error) {
+			console.error(status + " : " + error);
+		}
+	});
+
+});
 
 
 </script>
+
+
+
 
 
 

@@ -454,21 +454,16 @@ public class TrailService {
 				int cmtLikeCnt = trailDao.cmtLikeCnt(trailCmtVo.getTrailCmtNo());
 				
 				if(CollectionUtils.isEmpty(images)) {
-					System.out.println("==============noImg==============");
 					ImagesVo vo = new ImagesVo();
 					vo.setSaveName("noImg");
 					vo.setImageOrder(0);
 					images.add(vo);
-				} else {
-					System.out.println("==img==");
 				}
-				System.out.println("images " + images);
-				
 				cmtImgList.add(images);
 				userImgList.add(userImg);
 				likeCntList.add(cmtLikeCnt);
 			}
-			System.out.println("cmtImgList : " + cmtImgList);
+			// System.out.println("cmtImgList : " + cmtImgList);
 			// System.out.println("userImgList : " + userImgList);
 			// System.out.println("likeCntList : " + likeCntList);
 			

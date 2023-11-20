@@ -30,9 +30,9 @@
 		<div id="idLoginMessage">아이디로 로그인</div>
 		
 		<div class="">
-			<input type="text" name="id" id="id" class="rm formEliments" placeholder="아이디">
+			<input type="text" name="id" id="id" class="rm formEliments" placeholder="아이디" value="">
 		
-			<input type="password" name="password" id="password" class="rm formEliments" placeholder="비밀번호">
+			<input type="password" name="password" id="password" class="rm formEliments" placeholder="비밀번호" value="">
 		</div>
 		
 		<button type="submit" id="loginBtn" class="rm formEliments">로그인</button>
