@@ -1,0 +1,755 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="setting">
+
+	<!-- 유저 1명 가져오기 (이미지 제외) -->
+	<select id="selectUser" parameterType="int" resultType="com.runningdog.vo.UserVo">
+		<![CDATA[
+			select  u.name name,
+					u.id id,
+			        u.code code,
+			        to_char(u.birth, 'YYYY-MM-DD') birth,
+			        u.gender gender,
+			        u.locationNo locationNo,
+			        l.si si,
+			        l.gu gu,
+			        l.dong dong,
+			        u.status status
+			from users u, location l
+			where u.userNo = #{userNo}
+			and u.locationNo = l.locationNo
+		]]>
+	</select>
+
+	<!-- id로 no 찾기 -->
+	<select id="selectUserNoWithId" parameterType="String" resultType="int">
+		<![CDATA[
+			select userNo
+			from users
+			where id = #{id}
+		]]>
+	</select>
+
+
+	<!-- 사진 한 장 가져오기 -->
+	<select id="selectImg" parameterType="com.runningdog.vo.MainImageVo" resultType="String">
+		<![CDATA[
+			select saveName
+			from images
+			where type = #{type}
+			and useNo = #{useNo}
+		]]>
+	</select>
+
+	<!-- 프로필 새로 등록 시 기존 사진 row 지우기 -->
+	<delete id="deleteImg" parameterType="com.runningdog.vo.MainImageVo">
+		<![CDATA[
+			delete from images
+			where useNo = #{useNo}
+			and type = #{type}
+		]]>
+	</delete>
+
+	<!-- 이미지 저장 -->
+	<insert id="insertImg" parameterType="com.runningdog.vo.MainImageVo">
+		<![CDATA[
+			insert into images
+			values(seq_images_no.nextval, #{orgName}, #{saveName}, #{filePath}, #{fileSize}, #{type}, #{useNo}, 0)
+		]]>
+	</insert>
+
+	<!-- 회원 정보 수정 -->
+	<update id="updateUser" parameterType="com.runningdog.vo.UserVo">
+		<![CDATA[
+			update users
+			set  locationNo = #{locationNo},
+			     name = #{name},
+			     birth = #{birth, jdbcType = VARCHAR},
+			     gender = #{gender, jdbcType = VARCHAR}
+			where userNo = #{userNo}
+		]]>
+	</update>
+	
+	
+	<!-- 동네 검색 -->
+	<select id="selectAddressList" parameterType="String" resultType="com.runningdog.vo.UserVo">
+		<![CDATA[
+			SELECT  locationNo,
+			        si,
+			        gu,
+			        dong
+			FROM location
+			WHERE gu || dong LIKE REPLACE('%'||#{keyword}||'%', ' ', '')
+			order by locationNo asc
+		]]>
+	</select>
+	
+	
+<!-- 	강아지 	-->
+
+	<!-- 강아지 카드 (리스트) -->
+	<select id="selectDogList" parameterType="int" resultType="com.runningdog.vo.DogsVo">
+		<![CDATA[
+			select  do.dogNo dogNo,
+			        do.dogName dogName,
+			        do.birth birth,
+			        do.gender gender,
+			        do.weight weight,
+			        do.kind kind,
+			        do.neuter neuter,
+			        do.personality personality,
+			        do.color color,
+			        do.userName userName,
+			        nvl(i.saveName, 'dog_default_img.jpg') saveName
+			from   (select  d.dogNo dogNo,
+			                d.name dogName, 
+			                d.birth birth,
+			                d.gender gender,
+			                d.weight weight,
+			                d.kind kind,
+			                d.neuter neuter,
+			                d.personality personality,
+			                d.color color,
+			                d.status status,
+			                u.name userName
+			        from dog d, users u
+			        where u.userNo = d.userNo
+			        and d.userNo = #{userNo}
+			        and d.status != 'F'
+			        order by dogNo asc) do left outer join images i
+			on do.dogNo = i.useNo
+			and i.type = 'dog'
+		]]>
+	</select>
+	
+	<!-- 댕댕이 등록 -->
+	<insert id="insertDog" parameterType="com.runningdog.vo.DogsVo">
+		<!-- DogsVo "주소"의 dogNo에 값을 넣는다. -->
+		<selectKey keyProperty="dogNo" resultType="int" order="BEFORE">	
+			<![CDATA[	
+				select seq_dog_no.nextval from dual
+			]]>
+		</selectKey>
+		<![CDATA[
+			INSERT INTO dog
+			VALUES (#{dogNo}, #{userNo}, #{dogName}, #{birth}, #{gender}, #{weight}, 
+			#{kind, jdbcType = VARCHAR}, #{neuter, jdbcType = VARCHAR}, #{personality, jdbcType = VARCHAR}, 'F', #{color, jdbcType = VARCHAR}, 'T')
+		]]>
+	</insert>
+	
+	<!-- 강아지 카드 1개 -->
+	<select id="selectDog" parameterType="int" resultType="com.runningdog.vo.DogsVo">
+		<![CDATA[
+			select  do.dogNo dogNo,
+			        do.dogName dogName, 
+			        do.birth birth,
+			        do.gender gender,
+			        do.weight weight,
+			        do.kind kind,
+			        do.neuter neuter,
+			        do.personality personality,
+			        do.color color,
+			        nvl(i.saveName, 'dog_default_img.jpg') saveName
+			from (select d.dogNo dogNo,
+			             d.name dogName, 
+			             d.birth birth,
+			             d.gender gender,
+			             d.weight weight,
+			             d.kind kind,
+			             d.neuter neuter,
+			             d.personality personality,
+			             d.color color
+			     from dog d, users u
+			     where u.userNo = d.userNo
+			     and d.dogNo = #{dogNo}
+			     and d.status != 'F') do left outer join images i
+			     on do.dogNo = i.useNo
+			     and i.type = 'dog'
+		]]>
+	</select>
+	
+	
+	<!-- 강아지 삭제 (상태 T -> F 변경) -->
+	<update id="deleteDog" parameterType="int">
+		<![CDATA[
+			update dog
+			set status = 'F'
+			where dogNo = #{dogNo}
+		]]>
+	</update>
+
+	<!-- 강아지 수정 -->
+	<update id="updateDog" parameterType="com.runningdog.vo.DogsVo">
+		<![CDATA[
+			update dog
+			set name = #{dogName},
+			    birth = #{birth},
+			    gender = #{gender},
+			    weight = #{weight},
+			    kind = #{kind, jdbcType = VARCHAR},
+			    neuter = #{neuter, jdbcType = VARCHAR},
+			    personality = #{personality, jdbcType = VARCHAR},
+			    color = #{color, jdbcType = VARCHAR}
+			where dogNo = #{dogNo}
+			and userNo = #{userNo}
+		]]>
+	</update>
+	
+	
+	
+<!-- 	친구 		-->
+	
+	<!-- 친구 목록 -->
+	<select id="selectFriendList" parameterType="map" resultType="com.runningdog.vo.FriendsVo">
+		<![CDATA[
+			select  ort.rn rn,
+			        ort.saveName saveName,
+			        ort.friendNo friendNo,
+			        ort.userNo userNo,
+			        ort.name name,
+			        ort.code code,
+			        ort.birth birth,
+			        ort.gender gender,
+			        ort.si si,
+			        ort.gu gu,
+			        ort.dong dong,
+			        ort.locationNo locationNo
+			from (select rownum rn,
+			             ot.saveName saveName,
+			             ot.friendNo friendNo,
+			             ot.userNo userNo,
+			             ot.name name,
+			             ot.code code,
+			             ot.birth birth,
+			             ot.gender gender,
+			             ot.si si,
+			             ot.gu gu,
+			             ot.dong dong,
+			             ot.locationNo locationNo
+			     from (select nvl(i.saveName, 'default_profile_img_white.jpg') saveName,
+			                  f.friendNo friendNo,
+			                  f.appliedUserNo userNo,
+			                  f.name name,
+			                  f.code code,
+			                  f.birth birth,
+			                  f.gender gender,
+			                  f.si si,
+			                  f.gu gu,
+			                  f.dong dong,
+			                  f.locationNo locationNo
+			          from (select f.friendNo,
+			                       f.appliedUserNo,
+			                       u.name,
+			                       u.code,
+			                       TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), to_char(u.birth,'YYYYMMDD'))/12) birth,
+			                       u.gender,
+			                       l.si,
+			                       l.gu,
+			                       l.dong,
+			                       u.locationNo
+			                from friend f, users u, location l
+			                where f.applyUserNo = #{userNo}
+			                and f.appliedUserNo = u.userNo
+			                and f.status = 'T'
+			                and l.locationNo = u.locationNo
+			                and u.status = 'T'
+			                
+			                union all
+			                
+			                select   f.friendNo,
+			                         f.applyUserNo,
+			                         u.name,
+			                         u.code,
+			                         TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), to_char(u.birth,'YYYYMMDD'))/12) birth,
+			                         u.gender,
+			                         l.si,
+			                         l.gu,
+			                         l.dong,
+			                         u.locationNo
+			                    from friend f, users u, location l
+			                    where f.appliedUserNo = #{userNo}
+			                    and f.applyUserNo = u.userNo
+			                    and f.status = 'T'
+			                    and l.locationNo = u.locationNo
+			                    and u.status = 'T'
+			                ) f left outer join images i
+			            on f.appliedUserNo = i.useNo
+			            and i.type = 'users'
+			            ]]>
+						<if test="'name'.equals(what)">
+						<![CDATA[
+							where f.name like '%' || trim(#{keyword}) || '%'
+						]]>
+						</if>
+						<if test="'code'.equals(what)">
+						<![CDATA[
+							where f.code like '%' || upper(trim(#{keyword})) || '%'
+						]]>
+						</if>	
+						<![CDATA[
+			            order by f.friendNo asc
+			        ) ot
+			    )ort
+			where rn >= #{startRNum}
+			and   rn <= #{endRNum}
+		]]>
+	</select>
+	
+	<!-- 친구 목록 전체 갯수 -->
+	<select id="selectTotalCnt" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(f.appliedUserNo) count
+			from (select f.appliedUserNo,
+			             u.name,
+			             u.code
+			      from friend f, users u, location l
+			      where f.applyUserNo = #{userNo}
+			      and f.appliedUserNo = u.userNo
+			      and f.status = 'T'
+			      and l.locationNo = u.locationNo
+			      and u.status = 'T'
+			    
+			      union all
+			    
+			      select f.applyUserNo,
+			             u.name,
+			             u.code
+			      from friend f, users u, location l
+			      where f.appliedUserNo = #{userNo}
+			      and f.applyUserNo = u.userNo
+			      and f.status = 'T'
+			      and l.locationNo = u.locationNo
+			      and u.status = 'T'
+			      ) f
+			]]>
+			<if test="'name'.equals(what)">
+			<![CDATA[
+			where f.name like '%' || trim(#{keyword}) || '%'
+			]]>
+			</if>
+			<if test="'code'.equals(what)">
+			<![CDATA[
+			where f.code like '%' || upper(trim(#{keyword})) || '%'
+			]]>
+			</if>	
+
+	</select>
+	
+	<!-- 친구 삭제 -->
+	<delete id="deleteFriend" parameterType="com.runningdog.vo.FriendsVo">
+		<![CDATA[
+			delete from friend
+			where friendNo = #{friendNo}
+			and (applyUserNo = #{userNo} or appliedUserNo = #{userNo})
+		]]>
+	</delete>
+	
+	<!-- 친구 강아지 목록 -->
+	<select id="selectFriendDogList" parameterType="int" resultType="com.runningdog.vo.DogsVo">
+		<![CDATA[
+			select  do.dogNo dogNo,
+			        do.dogName dogName,
+			        do.birth birth,
+			        do.gender gender,
+			        do.weight weight,
+			        do.kind kind,
+			        do.neuter neuter,
+			        do.personality personality,
+			        do.color color,
+			        do.userName userName,
+			        nvl(i.saveName, 'dog_default_img.jpg') saveName
+			from   (select f.appliedUserNo userNo
+			        from friend f, users u, location l
+			        where f.applyUserNo = #{userNo}
+			        and f.appliedUserNo = u.userNo
+			        and f.status = 'T'
+			        and l.locationNo = u.locationNo
+			        and u.status = 'T'
+			        
+			        union all
+			        
+			        select f.applyUserNo userNo
+			        from friend f, users u, location l
+			        where f.appliedUserNo = #{userNo}
+			        and f.applyUserNo = u.userNo
+			        and f.status = 'T'
+			        and l.locationNo = u.locationNo
+			        and u.status = 'T') fr, (select d.userNo userNo,
+							                d.dogNo dogNo,
+							                d.name dogName, 
+							                d.birth birth,
+							                d.gender gender,
+							                d.weight weight,
+							                d.kind kind,
+							                d.neuter neuter,
+							                d.personality personality,
+							                d.color color,
+							                d.status status,
+							                u.name userName
+							        from dog d, users u
+							        where u.userNo = d.userNo
+							        and d.status != 'F'
+							        order by dogNo asc) do left outer join images i
+			on do.dogNo = i.useNo
+			and i.type = 'dog'
+			where do.userNo = fr.userNo
+		]]>
+	</select>
+
+
+	<!-- 내가 받은 신청 -->
+	<select id="selectAppliedList" parameterType="map" resultType="com.runningdog.vo.FriendsVo">
+		<![CDATA[
+			select  ort.rn rn,
+			        ort.saveName saveName,
+			        ort.friendNo friendNo,
+			        ort.userNo userNo,
+			        ort.name name,
+			        ort.code code,
+			        ort.birth birth,
+			        ort.gender gender,
+			        ort.si si,
+			        ort.gu gu,
+			        ort.dong dong,
+			        ort.locationNo locationNo
+			from (select rownum rn,
+			             ot.saveName saveName,
+			             ot.friendNo friendNo,
+			             ot.userNo userNo,
+			             ot.name name,
+			             ot.code code,
+			             ot.birth birth,
+			             ot.gender gender,
+			             ot.si si,
+			             ot.gu gu,
+			             ot.dong dong,
+			             ot.locationNo locationNo
+			     from (select nvl(i.saveName, 'default_profile_img_white.jpg') saveName,
+			                  f.friendNo friendNo,
+			                  f.applyUserNo userNo,
+			                  f.name name,
+			                  f.code code,
+			                  f.birth birth,
+			                  f.gender gender,
+			                  f.si si,
+			                  f.gu gu,
+			                  f.dong dong,
+			                  f.locationNo locationNo
+			          from (select f.friendNo,
+			                       f.applyUserNo,
+			                       u.name,
+			                       u.code,
+			                       TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), to_char(u.birth,'YYYYMMDD'))/12) birth,
+			                       u.gender,
+			                       l.si,
+			                       l.gu,
+			                       l.dong,
+			                       u.locationNo
+			                 from friend f, users u, location l
+			                 where f.appliedUserNo = #{userNo}
+			                 and f.applyUserNo = u.userNo
+			                 and f.status = 'F'
+			                 and l.locationNo = u.locationNo
+			                 and u.status = 'T'
+			               ) f left outer join images i
+			          on f.applyUserNo = i.useNo
+			          and i.type = 'users'
+			          order by f.friendNo asc
+			        ) ot
+			    )ort
+			where rn >= #{startRNum}
+			and   rn <= #{endRNum}
+		]]>
+	</select>
+
+	<!-- 내가 받은 신청 전체 갯수 -->
+	<select id="selectAppliedTotalCnt" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(f.applyUserNo) count
+			from (select f.applyUserNo
+			      from friend f, users u, location l
+			      where f.appliedUserNo = #{userNo}
+			      and f.applyUserNo = u.userNo
+			      and f.status = 'F'
+			      and l.locationNo = u.locationNo
+			      and u.status = 'T') f
+		]]>
+	</select>
+
+	<!-- 친구 수락 -->
+	<update id="acceptFriend" parameterType="com.runningdog.vo.FriendsVo">
+		<![CDATA[
+			update friend
+			set status = 'T'
+			where friendNo = #{friendNo}
+			and appliedUserNo = #{userNo}
+		]]>
+	</update>
+
+
+	<!-- 내가 한 신청 -->
+	<select id="selectApplyList" parameterType="map" resultType="com.runningdog.vo.FriendsVo">
+		<![CDATA[
+			select  ort.rn rn,
+			        ort.saveName saveName,
+			        ort.friendNo friendNo,
+			        ort.userNo userNo,
+			        ort.name name,
+			        ort.code code,
+			        ort.birth birth,
+			        ort.gender gender,
+			        ort.si si,
+			        ort.gu gu,
+			        ort.dong dong,
+			        ort.locationNo locationNo
+			from (select rownum rn,
+			             ot.saveName saveName,
+			             ot.friendNo friendNo,
+			             ot.userNo userNo,
+			             ot.name name,
+			             ot.code code,
+			             ot.birth birth,
+			             ot.gender gender,
+			             ot.si si,
+			             ot.gu gu,
+			             ot.dong dong,
+			             ot.locationNo locationNo
+			     from (select nvl(i.saveName, 'default_profile_img_white.jpg') saveName,
+			                  f.friendNo friendNo,
+			                  f.appliedUserNo userNo,
+			                  f.name name,
+			                  f.code code,
+			                  f.birth birth,
+			                  f.gender gender,
+			                  f.si si,
+			                  f.gu gu,
+			                  f.dong dong,
+			                  f.locationNo locationNo
+			          from (select f.friendNo,
+			                       f.appliedUserNo,
+			                       u.name,
+			                       u.code,
+			                       TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), to_char(u.birth,'YYYYMMDD'))/12) birth,
+			                       u.gender,
+			                       l.si,
+			                       l.gu,
+			                       l.dong,
+			                       u.locationNo
+			                from friend f, users u, location l
+			                where f.applyUserNo = #{userNo}
+			                and f.appliedUserNo = u.userNo
+			                and f.status = 'F'
+			                and l.locationNo = u.locationNo
+			                and u.status = 'T'
+			               ) f left outer join images i
+			          on f.appliedUserNo = i.useNo
+			          and i.type = 'users'
+			          order by f.friendNo asc
+			        ) ot
+			    )ort
+			where rn >= #{startRNum}
+			and   rn <= #{endRNum}
+		]]>
+	</select>
+
+	<!-- 내가 한 신청 전체 갯수 -->
+	<select id="selectApplyTotalCnt" parameterType="int" resultType="int">
+		<![CDATA[
+			select count(f.appliedUserNo) count
+			from (select f.appliedUserNo
+			      from friend f, users u, location l
+			      where f.applyUserNo = #{userNo}
+			      and f.appliedUserNo = u.userNo
+			      and f.status = 'F'
+			      and l.locationNo = u.locationNo
+			      and u.status = 'T') f
+		]]>
+	</select>
+
+
+	<!-- 유저 목록 -->
+	<select id="selectUserList" parameterType="map" resultType="com.runningdog.vo.FriendsVo">
+		<![CDATA[
+			select  ort.rn rn,
+			        ort.saveName saveName,
+			        ort.userNo userNo,
+			        ort.name name,
+			        ort.code code,
+			        ort.birth birth,
+			        ort.gender gender,
+			        ort.si si,
+			        ort.gu gu,
+			        ort.dong dong,
+			        ort.locationNo locationNo
+			from (select rownum rn,
+			             ot.saveName saveName,
+			             ot.userNo userNo,
+			             ot.name name,
+			             ot.code code,
+			             ot.birth birth,
+			             ot.gender gender,
+			             ot.si si,
+			             ot.gu gu,
+			             ot.dong dong,
+			             ot.locationNo locationNo
+			     from (select nvl(i.saveName, 'default_profile_img_white.jpg') saveName,
+			                  u.userNo userNo,
+			                  u.name name,
+			                  u.code code,
+			                  u.birth birth,
+			                  u.gender gender,
+			                  u.si si,
+			                  u.gu gu,
+			                  u.dong dong,
+			                  u.locationNo locationNo
+			          from (select fno.userNo,
+			                       u.name,
+			                       u.code,
+			                       TRUNC(MONTHS_BETWEEN(TRUNC(SYSDATE), to_char(u.birth,'YYYYMMDD'))/12) birth,
+			                       u.gender,
+			                       l.si,
+			                       l.gu,
+			                       l.dong,
+			                       u.locationNo
+			                 from users u, location l, (select userNo
+			                                            from users
+			                                            
+			                                            minus
+			                                            
+			                                            (select appliedUserNo userNo
+			                                            from friend
+			                                            where applyUserNo = #{userNo}
+			                                            
+			                                            union all
+			                                            
+			                                            select applyUserNo userNo
+			                                            from friend
+			                                            where appliedUserNo = #{userNo})) fno
+			                 where l.locationNo = u.locationNo
+			                 and u.status = 'T'
+			                 and fno.userNo != #{userNo}
+			                 and fno.userNo = u.userNo
+			               ) u left outer join images i
+			          on i.type = 'users'
+			          and i.useNo = u.userNo
+		              ]]>
+					  <if test="'name'.equals(what)">
+				  	  <![CDATA[
+						where u.name like '%' || trim(#{keyword}) || '%'
+					  ]]>
+					  </if>
+					  <if test="'code'.equals(what)">
+					  <![CDATA[
+						where u.code like '%' || upper(trim(#{keyword})) || '%'
+					  ]]>
+					 </if>	
+					  <![CDATA[
+			            order by u.userNo asc
+			        ) ot
+			    )ort
+			where rn >= #{startRNum}
+			and   rn <= #{endRNum}
+		]]>
+	</select>
+	
+	<!-- 유저 목록 전체 갯수 -->
+	<select id="selectUserTotalCnt" parameterType="map" resultType="int">
+		<![CDATA[
+			select count(fno.userNo) count
+			from (  select userNo
+			        from users
+			        where status = 'T'
+			        and userNo != #{userNo}
+	        ]]>
+		<if test="'name'.equals(what)">
+			<![CDATA[
+					and name like '%' || trim(#{keyword}) || '%'
+			]]>
+		</if>
+		<if test="'code'.equals(what)">
+			<![CDATA[
+					and code like '%' || upper(trim(#{keyword})) || '%'
+			]]>
+		</if>
+			<![CDATA[
+			        minus
+			        
+			        (select appliedUserNo userNo
+			        from friend
+			        where applyUserNo = #{userNo}
+			        
+			        union all
+			        
+			        select applyUserNo userNo
+			        from friend
+			        where appliedUserNo = #{userNo})
+			     ) fno
+			]]>
+	</select>
+
+
+	<!-- 존재하는 신청인지 select -->
+	<select id="selectRequest" parameterType="com.runningdog.vo.FriendsVo" resultType="int">
+		<![CDATA[
+			select count(f.applyUserNo) exist
+			from (select  applyUserNo,
+			        appliedUserNo
+			from friend
+			where applyUserNo = #{applyUserNo}
+			and appliedUserNo = #{appliedUserNo}
+			
+			union all
+			
+			select  applyUserNo,
+			        appliedUserNo
+			from friend
+			where appliedUserNo = #{applyUserNo}
+			and applyUserNo = #{appliedUserNo}) f
+		]]>
+	</select>
+
+	<!-- 친추 -->
+	<insert id="insertFriend" parameterType="com.runningdog.vo.FriendsVo">
+		<![CDATA[
+			insert into friend 
+			values(seq_friend_no.nextval, #{applyUserNo}, #{appliedUserNo}, 'F')
+		]]>
+	</insert>
+
+
+
+<!-- 	회원 탈퇴 		-->
+
+	<!-- 회원 탈퇴 -->
+	<update id="resign" parameterType="com.runningdog.vo.UserVo">
+		<![CDATA[
+			update users
+			set status = 'F'
+			where userNo = #{userNo}
+			and id = #{id}
+			and password = #{password}
+		]]>
+	</update>
+	
+	<!-- 회원 탈퇴 친구 삭제 -->
+	<delete id="resignf" parameterType="int">
+		<![CDATA[
+			delete friend
+			where applyUserNo = #{userNo}
+			or appliedUserNo = #{userNo}
+		]]>
+	</delete>
+	
+	
+	
+	
+	
+</mapper>
+
+
+
+
+
+
+

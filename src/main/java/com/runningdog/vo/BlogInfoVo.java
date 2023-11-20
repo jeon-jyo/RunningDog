@@ -1,5 +1,7 @@
 package com.runningdog.vo;
 
+import java.util.List;
+
 public class BlogInfoVo {
 	
 	private int no;
@@ -19,15 +21,15 @@ public class BlogInfoVo {
 	private MonthlyStatsVo monthlyStatsThisMonth;
 	private MonthlyStatsVo monthlyStatsTotal;
 	
+	private List<BlogDogVo> blogDogList;
+	
 	
 	public BlogInfoVo() {}
 
 
-
-
 	public BlogInfoVo(int no, String name, String userSavename, String bannerSavename, int authNo, int ownerNo,
 			String paramCode, int followerNum, int followingNum, int followNo, MonthlyStatsVo monthlyStatsThisMonth,
-			MonthlyStatsVo monthlyStatsTotal) {
+			MonthlyStatsVo monthlyStatsTotal, List<BlogDogVo> blogDogList) {
 		super();
 		this.no = no;
 		this.name = name;
@@ -41,37 +43,8 @@ public class BlogInfoVo {
 		this.followNo = followNo;
 		this.monthlyStatsThisMonth = monthlyStatsThisMonth;
 		this.monthlyStatsTotal = monthlyStatsTotal;
+		this.blogDogList = blogDogList;
 	}
-
-
-
-
-	public MonthlyStatsVo getMonthlyStatsThisMonth() {
-		return monthlyStatsThisMonth;
-	}
-
-
-
-
-	public void setMonthlyStatsThisMonth(MonthlyStatsVo monthlyStatsThisMonth) {
-		this.monthlyStatsThisMonth = monthlyStatsThisMonth;
-	}
-
-
-
-
-	public MonthlyStatsVo getMonthlyStatsTotal() {
-		return monthlyStatsTotal;
-	}
-
-
-
-
-	public void setMonthlyStatsTotal(MonthlyStatsVo monthlyStatsTotal) {
-		this.monthlyStatsTotal = monthlyStatsTotal;
-	}
-
-
 
 
 	public int getNo() {
@@ -174,14 +147,49 @@ public class BlogInfoVo {
 	}
 
 
+	public MonthlyStatsVo getMonthlyStatsThisMonth() {
+		return monthlyStatsThisMonth;
+	}
+
+
+	public void setMonthlyStatsThisMonth(MonthlyStatsVo monthlyStatsThisMonth) {
+		this.monthlyStatsThisMonth = monthlyStatsThisMonth;
+	}
+
+
+	public MonthlyStatsVo getMonthlyStatsTotal() {
+		return monthlyStatsTotal;
+	}
+
+
+	public void setMonthlyStatsTotal(MonthlyStatsVo monthlyStatsTotal) {
+		this.monthlyStatsTotal = monthlyStatsTotal;
+	}
+
+
+	public List<BlogDogVo> getBlogDogList() {
+		return blogDogList;
+	}
+
+
+	public void setBlogDogList(List<BlogDogVo> blogDogList) {
+		this.blogDogList = blogDogList;
+	}
+
+
 	@Override
 	public String toString() {
 		return "BlogInfoVo [no=" + no + ", name=" + name + ", userSavename=" + userSavename + ", bannerSavename="
 				+ bannerSavename + ", authNo=" + authNo + ", ownerNo=" + ownerNo + ", paramCode=" + paramCode
-				+ ", followerNum=" + followerNum + ", followingNum=" + followingNum + ", followNo=" + followNo + "]";
+				+ ", followerNum=" + followerNum + ", followingNum=" + followingNum + ", followNo=" + followNo
+				+ ", monthlyStatsThisMonth=" + monthlyStatsThisMonth + ", monthlyStatsTotal=" + monthlyStatsTotal
+				+ ", blogDogList=" + blogDogList + "]";
 	}
-
 	
+
+
+
+
 
 
 

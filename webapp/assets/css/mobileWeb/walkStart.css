@@ -69,6 +69,10 @@
 	
 	#walkStart div a {
 	    text-decoration: none; /* 링크 텍스트 밑줄 제거 */		
+	}	
+	
+	.wValue {
+		color: rgb(63, 63, 63);
 	}
 	
 	.lBox{
@@ -97,11 +101,7 @@
 		background-color: white;
 		border:5px solid orange;
 		font-size: 36px;		
-	}
-	
-	/*진행중 버튼*/
-	
-	
+	}	
 	
 	
 	/*버튼 그림자*/
@@ -115,7 +115,7 @@
 		height: 60px;
 		display: flex;
 		align-items: center;
-		justify-content: space-around; /*  */
+		justify-content: flex-start; /*  */
 	}	
 	
 	/* 프로필 컨테이너 스타일링 */
@@ -124,9 +124,9 @@
 	    position: relative;
 	    display: flex;
 	}
-	
+		
 	/* 프로필 이미지 스타일링 */
-	.profile-circles {
+	.profile-circles {	    
 	    width: 330px;  /*원하는 너비로 설정 */
 	    overflow: hidden;
 	    position: relative;
@@ -146,7 +146,7 @@
 	    border:3px solid rgb(79, 79, 79);
 	}
 	
-	#pSelect {
+	.choiceRed {
 	    border:3px solid rgb(230, 81, 85);
 	}
 	

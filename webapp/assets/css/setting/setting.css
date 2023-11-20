@@ -48,72 +48,6 @@
 
 
 
-/* 사이드 바 */
-
-#settingsMenu{
-	width: 17%;
-	float: left;
-	margin-right: 30px;
-	padding: 0px;
-	position: relative;
-}
-
-#settingsMenu li{
-	height: 42px;
-	border-top: 1px;
-	border-left: 1px;
-	border-right: 1px;
-	border-color: rgb(192, 192, 192);
-	border-style: solid;
-	text-align: left;
-	line-height: 42px;
-}
-
-#settingsMenu .settingSubLi{
-	height: 40px;
-}
-
-#settingsMenu .noTopBorder{
-	border-top: none;
-	padding-top: 0px;
-}
-
-#settingsMenu li a{
-	padding: 10px;
-	font-size: 14px;
-	text-decoration: none;
-	color: #212529;
-	display: block;
-	line-height: 20px;
-}
-
-#settingsMenu li .setting_sub{
-	padding-left: 30px;
-	text-decoration: none;
-	color: #212529;
-}
-
-
-#settingsMenu .last_li{
-	border-bottom: 1px;
-	border-color: rgb(192, 192, 192);
-	border-style: solid;
-}
-
-
-#settingsMenu .selected{
-	background-color: rgb(230, 126, 34);
-}
-#settingsMenu .selected a{
-	color: white;
-}
-
-
-.selectedBold{
-	font-weight: bold;
-}
-
-
 
 
 
@@ -137,6 +71,10 @@
 	padding: none;
 }
 
+#profile > .marginBottom{
+	margin-bottom: 40px;
+}
+
 #profile > .firstElement{
 	padding: 0 0 10px;
 }
@@ -156,6 +94,10 @@
 	text-align: right;
 }
 
+#profile .personality{
+	width: 378px;
+}
+
 #profile > .imageArea *{
 	display: block;
 }
@@ -167,9 +109,16 @@
 	border-radius: 50%;
 }
 
-#profile > .imageArea input{
-	margin-left: 176px;
-	margin-top: 10px;
+#profile > .imageArea #showImgModal {
+	width: 124px;
+    border: 1px solid rgb(133, 133, 133); 
+    padding: 6px 12px;
+    display: inline-block;
+    cursor: pointer;
+    margin-left: 176px;
+	margin-top: 16px;
+	border-radius: 2px;
+	font-size: 15px;
 }
 
 
@@ -181,16 +130,131 @@
 	margin-left: 50px;
 }
 
-#profile #address{
-	width: 250px;
+#profile .address{
+	border: 1px solid rgb(115, 115, 115); 
+	border-radius: 2px;
+	padding: 2px 5px;
 }
 
 #profile #searchAddress{
 	border: 1px solid rgb(133, 133, 133); 
 	border-radius: 2px;
+	margin-left:6px;
 }
 
 
+
+.imageArea label #inputFile2 {
+	display: none;
+}
+
+.imageArea .upload-btn {
+	width: 107px;
+    border: 1px solid rgb(133, 133, 133); 
+    padding: 6px 12px;
+    display: block;
+    cursor: pointer;
+	border-radius: 2px;
+	margin-left: 184.5px;
+	margin-top: 16px;
+}
+
+.imageArea .upload-btn span{
+    font-size: 15px;
+    margin-top: 0;
+}
+
+
+/* 이미지 등록 모달창 */
+/*#addModal .close{*/
+/*	width: 28px;*/
+/*	height: 28px;*/
+/*	border: 1px solid rgb(133, 133, 133); */
+/*}*/
+
+/*#addModal #btnUpload{*/
+/*	border: 1px solid rgb(133, 133, 133); */
+/*}*/
+
+/*#addModal .upload-btn {*/
+/*	width: 107px;*/
+/*    border: 1px solid rgb(133, 133, 133); */
+/*    padding: 6px 12px;*/
+/*    display: block;*/
+/*    cursor: pointer;*/
+/*	border-radius: 2px;*/
+/*	margin:0 auto;*/
+/*	margin-top: 16px;*/
+/*}*/
+
+/*#addModal .upload-btn span{*/
+/*    font-size: 15px;*/
+/*}*/
+
+/*#addModal #inputFile {*/
+/*	display: none;*/
+/*}*/
+
+/*#addModal .profileImgModal{*/
+/*	width: 300px;*/
+/*	height: 300px;*/
+/*	border-radius: 50%;*/
+/*	display: block;*/
+/*	margin:0 auto;*/
+/*}*/
+/*------------------------------------*/
+
+
+/*동네 검색 모달*/
+#addressModal .btn-primary{
+	width: 120px;
+	height: 38px;
+	margin-left: 8px;
+	background-color: rgb(160, 160, 160);
+	border: none;
+}
+
+#addressModal .btn-primary:active{
+	background-color: rgb(110, 110, 110);
+}
+
+#addressModal .form-group{
+	height: 400px;
+	overflow-y: auto;
+}
+
+#addressModal #addressListTable tr{
+	width: 100%;
+}
+
+#addressModal #addressListTable tr td{
+	width: 1%;
+	text-align: center;
+}
+
+#addressModal #addressListTable #theadTr{
+	background-color: rgb(220,220,220);
+	font-size: 17px;
+	font-weight: bold;
+	border-bottom: 1px solid rgb(150,150,150);
+}
+
+#addressModal #addressListTable #theadTr td{
+	padding: 5px 0;
+}
+
+#addressModal #addressListTable .addressSelect{
+	border-bottom: 1px solid rgb(150,150,150);
+}
+
+#addressModal #addressListTable .addressSelect td{
+	padding: 10px 0;
+}
+
+#addressModal #addressListTable .addressSelect:hover{
+	cursor: pointer;
+}
+/*------------------------------------*/
 
 
 
@@ -286,8 +350,12 @@
 	padding-top: 6px;
 }
 
-#dogProfile .dogSlickBox .dogCard > .dogCardEliment{
-	width: 125px;
+#dogProfile .dogSlickBox .dogCard > .dogCardElimentL{
+	width: 150px;
+}
+
+#dogProfile .dogSlickBox .dogCard > .dogCardElimentS{
+	width: 100px;
 }
 
 #dogProfile .dogSlickBox .dogCard > .personal{
@@ -399,8 +467,8 @@ input::-webkit-inner-spin-button {
 	width: 300px;
 }
 
-#profile #weight{
-	width: 80px;
+#profile .smallBox{
+	width: 70px;
 }
 
 
@@ -440,7 +508,6 @@ input::-webkit-inner-spin-button {
 #friendProfile .listBox .friendList{
 	width: 100%;
 	text-align: center;
-	border-bottom: 1px solid rgb(192, 192, 192);
 	box-sizing: border-box;
 }
 
@@ -459,14 +526,15 @@ input::-webkit-inner-spin-button {
 
 #friendProfile #paging {
 	margin: 0px auto;
-	width: 420px;
-	border: none;
+	width: 280px;
 	margin-top: 30px;
-	text-align: center;
 }
 
 #friendProfile #paging ul {
 	margin: 10px 5px 10px 5px;
+	height: 30px;
+	display: flex;
+    justify-content: center;
 }
 
 #friendProfile #paging ul > li{
@@ -477,7 +545,18 @@ input::-webkit-inner-spin-button {
 #friendProfile #paging ul > li a{
 	color: #212529;
 	text-decoration: none;
+	font-size: 18px;
 }
+
+#friendProfile #paging ul > li.active{
+	font-size: 18px;
+	font-weight: bold;
+}
+
+#friendProfile .hidePaging{
+	display: none;
+}
+
 
 #friendProfile .listBox {
 	width: 100%;
@@ -521,18 +600,28 @@ input::-webkit-inner-spin-button {
 	border-bottom: 1px solid rgb(192, 192, 192);
 }
 
-#friendProfile .listBox .friendList tr td .ok{
+#friendProfile .listBox .friendList tr td .okBtn{
 	background-color: dodgerblue;
+}
+
+#friendProfile .listBox .friendList tr{
+	border-bottom: 1px solid rgb(192, 192, 192);
 }
 
 #friendProfile .listBox .friendList tr th{
 	font-weight: bold;
 	padding: 7px 0;
-	border-bottom: 1px solid rgb(192, 192, 192);
 }
 
 
-
+#friendProfile .listBox .dummyTable{
+	width: 100%;
+	text-align: center;
+	box-sizing: border-box;
+	font-size: 18px;
+	padding-top: 40px;
+	color: rgb(140, 140, 140);;
+}
 
 
 /* 회원탈퇴 */
@@ -543,6 +632,7 @@ input::-webkit-inner-spin-button {
 }
 
 #profile .warningBox .warning span{
+	width: 100%;
 	margin-bottom: 25px;
 	font-weight: bold;
 	color: red;

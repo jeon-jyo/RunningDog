@@ -1,16 +1,20 @@
 package com.runningdog.vo;
 
+import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class MoWalkLogVo {
-	
+
 	// 손성진 사용
-	
+
 	private int walkLogNo; // 산책기록 번호 (사용처번호)
 	private int userNo;
-	
+
 	private int locationNo;
 	private int meetingNo;
-	private String title;	
-	
+	private String title;
+
 	private String regDate;
 	private String startTime;
 	private String endTime;
@@ -19,15 +23,18 @@ public class MoWalkLogVo {
 	private String content;
 	private String security;
 	private char status;
-	
-	// 산책한 강아지 (walkedDog 테이블에 저장)
-	private int dogNo;	
-	
-	public MoWalkLogVo() {}
+
+	private List<Integer> dogNoList;
+	private List<XYVo> polylinePath;
+
+	private MultipartFile mapImg;
+
+	public MoWalkLogVo() {
+	}
 
 	public MoWalkLogVo(int walkLogNo, int userNo, int locationNo, int meetingNo, String title, String regDate,
 			String startTime, String endTime, int logTime, int distance, String content, String security, char status,
-			int dogNo) {
+			List<Integer> dogNoList, List<XYVo> polylinePath, MultipartFile mapImg) {
 		super();
 		this.walkLogNo = walkLogNo;
 		this.userNo = userNo;
@@ -42,7 +49,9 @@ public class MoWalkLogVo {
 		this.content = content;
 		this.security = security;
 		this.status = status;
-		this.dogNo = dogNo;
+		this.dogNoList = dogNoList;
+		this.polylinePath = polylinePath;
+		this.mapImg = mapImg;
 	}
 
 	public int getWalkLogNo() {
@@ -149,12 +158,28 @@ public class MoWalkLogVo {
 		this.status = status;
 	}
 
-	public int getDogNo() {
-		return dogNo;
+	public List<Integer> getDogNoList() {
+		return dogNoList;
 	}
 
-	public void setDogNo(int dogNo) {
-		this.dogNo = dogNo;
+	public void setDogNoList(List<Integer> dogNoList) {
+		this.dogNoList = dogNoList;
+	}
+
+	public List<XYVo> getPolylinePath() {
+		return polylinePath;
+	}
+
+	public void setPolylinePath(List<XYVo> polylinePath) {
+		this.polylinePath = polylinePath;
+	}
+
+	public MultipartFile getMapImg() {
+		return mapImg;
+	}
+
+	public void setMapImg(MultipartFile mapImg) {
+		this.mapImg = mapImg;
 	}
 
 	@Override
@@ -162,10 +187,8 @@ public class MoWalkLogVo {
 		return "MoWalkLogVo [walkLogNo=" + walkLogNo + ", userNo=" + userNo + ", locationNo=" + locationNo
 				+ ", meetingNo=" + meetingNo + ", title=" + title + ", regDate=" + regDate + ", startTime=" + startTime
 				+ ", endTime=" + endTime + ", logTime=" + logTime + ", distance=" + distance + ", content=" + content
-				+ ", security=" + security + ", status=" + status + ", dogNo=" + dogNo + "]";
+				+ ", security=" + security + ", status=" + status + ", dogNoList=" + dogNoList + ", polylinePath="
+				+ polylinePath + ", mapImg=" + mapImg + "]";
 	}
-
-	
-	
 
 }

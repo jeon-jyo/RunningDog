@@ -34,10 +34,10 @@ public class UserDao {
 	}
 	
 	//유저 코드 있는지 확인
-	public UserVo selectOneUserCode(String code) {
+	public String selectOneUserCode(String code) {
 		System.out.println("UsersDao.selectOneUserCode()");
 		
-		UserVo userCode = sqlSession.selectOne("user.selectOneUserCode", code);
+		String userCode = sqlSession.selectOne("user.selectOneUserCode", code);
 		
 		return userCode;
 	}

@@ -18,7 +18,7 @@
 		<h1>
 			<i class="fa-regular fa-star"></i>
 			&nbsp;${detailMap.trailVo.name }&nbsp;&nbsp;&nbsp;
-			<i class="fa-solid fa-diagram-project"></i>
+			<!-- <i class="fa-solid fa-diagram-project"></i> -->
 		</h1>
 		
 		<div class="section">
@@ -407,7 +407,6 @@
 <script type="text/javascript">
 
 	let trailNo = ${detailMap.trailVo.trailNo };
-	let authUserNo = (${userMap.usersVo.userNo} == null) ? 0 : ${userMap.usersVo.userNo};
 	
 	$(document).ready(function() {
 		fetchList(trailNo);
@@ -484,66 +483,104 @@
 	}
 	
 	/* cmt */
- 	/* $('#addModal').on('show.bs.modal', function (e) {}); */
+	let content = $('textarea[name=content]').val();
+	
  	var previewNode = document.querySelector("#template");
  	previewNode.id = "";
  	
  	var previewTemplate = previewNode.parentNode.innerHTML;
  	previewNode.parentNode.removeChild(previewNode);
  	Dropzone.autoDiscover = false;
- 	const dropzone = new Dropzone("div.dropzone", { url: "/file/post",
+ 	/*
+ 	const dropzone1 = new Dropzone("div.dropzone", { url: "/file/post",
 											 		 autoProcessQueue: false,
 											 		 previewTemplate: previewTemplate,
 											 		 previewsContainer: ".preview-list",});
+ 	*/
+ 	 var dropzone = new Dropzone("div.dropzone", {
+        url: '${pageContext.request.contextPath}/walkTrail/cmtAdd', // 파일 업로드할 url
+        method: "POST",
+		headers: {
+		    // 요청 보낼때 헤더 설정
+		    "trailNo" : trailNo
+		 },
+		autoProcessQueue: false,
+		previewTemplate: previewTemplate,
+		previewsContainer: ".preview-list",
+		acceptedFiles: '.jpeg,.jpg,.png,.gif,.JPEG,.JPG,.PNG,.GIF', // 이미지 파일 포맷만 허용
+		uploadMultiple: true, // 다중업로드 기능
+		parallelUploads: 10,
+		maxFiles: 10,
+		init: function () {
+			// 최초 dropzone 설정시 init을 통해 호출
+			console.log('최초 실행');
+			let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
+			
+			// 서버에 제출 submit 버튼 이벤트 등록
+			document.querySelector('#cmtAddBtn').addEventListener('click', function () {
+			   console.log('업로드');
+			   console.log('myDropzone ', myDropzone);
+			   
+			   if(dropzone.files.length > 10) {
+					alert("후기 사진은 10개 까지 가능합니다.");
+				} else {
+					myDropzone.processQueue(); // autoProcessQueue: false로 해주었기 때문에, 메소드 api로 파일을 서버로 제출
+				}
+			   
+			   console.log('dropzone.files ', dropzone.files);
+			   
+			});
+			
+			// 업로드한 파일을 서버에 요청하는 동안 호출 실행
+			this.on('sendingmultiple', function (files) {
+			   console.log('보내는중 ', files);
+			});
+			
+			// 서버로 파일이 성공적으로 전송되면 실행
+			this.on('successmultiple', function () {
+			   console.log('성공');
+			});
+			
+			// 업로드 에러 처리
+			this.on('errormultiple', function () {
+			});
+		},
+ 	});
     // Dropzone has been added as a global variable.
 	
-	$("#cmtAddBtn").on("click", function() {
-		console.log("cmtAddBtn");
+    // cmt add
+	function cmtAdd(trailNo) {
+		console.log("cmtAdd()");
 		
-		if(dropzone.files.length > 10) {
-			alert("후기 사진은 10개 까지 가능합니다.");
-		} else {
-			console.log("dropzone.files ", dropzone.files);
+		let content = $('textarea[name=content]').val();
+		console.log("content ", content);
+		
+		let trailVo = {
+			trailNo: trailNo
+		}
+		
+		let trailCmtVo = {
+			trailVo: trailVo,
+			content: content
+		}
+		console.log("trailCmtVo ", trailCmtVo);
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/cmtAdd",
+			type : "post",
+			contentType : "application/json",
+			data : JSON.stringify(trailCmtVo),
 			
-			let content = $('textarea[name=content]').val();
-			console.log("content ", content);
-		}
+			dataType : "json",
+			success : function(listMap) {
+				console.log("listMap ", listMap);
 
-		/*
-		let categoryVo = {
-			cateName: name,
-			description: desc
-		}
-		
-		if(name == "") {
-			alert("카테고리명을 입력해주세요.");
-		} else {
-			$.ajax({
-				url : "${pageContext.request.contextPath}/admin/categoryAdd/",
-				type : "post",
-				data: categoryVo,
-				
-				dataType : "json",
-				success : function(jsonResult) {
-					if(jsonResult.result  == "success") {
-						console.log("success");
-						
-						render(jsonResult.data, "up");
-						
-					} else if(jsonResult.result  == "fail") {
-						console.log("fail");
-						console.log("failMsg : " + jsonResult.data);
-					}
-					$('input[name=name]').val("");
-					$('input[name=desc]').val("");
-				},
-				error : function(XHR, status, error) {
-					console.error(status + " : " + error);
-				}
-			});
-		}
-		*/
-	})
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	}
 	
 	function fetchList(trailNo) {
 		console.log("fetchList()");
@@ -620,8 +657,8 @@
 		str += '			<span>' + listMap.cmtList[index].regDate + '</span>';
 		str += '		</div>';
 		str += '		<div class="user-modify">';
-		if(authUserNo == listMap.cmtList[index].usersVo.userNo) {
-			str += '			<i class="fa-solid fa-pen"></i>';
+		if(listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
+			/* str += '			<i class="fa-solid fa-pen"></i>'; */
 			str += '			<i class="fa-solid fa-trash"></i>';
 		}
 		str += '		</div>';
@@ -648,7 +685,6 @@
 		$('#modifyModal').modal("show");
 		modifyModal.focus();
 	});
-	
 	
 	
 	

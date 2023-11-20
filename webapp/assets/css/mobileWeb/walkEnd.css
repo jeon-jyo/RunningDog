@@ -17,7 +17,7 @@
 	}
 	
 	#text02 {
-		font-size: 20px;
+		font-size: 17px;
 	}
 	
 	.headerBox, .end, .recordBox {
@@ -162,6 +162,11 @@
 	    align-items: center; /* 수직 가운데 정렬 */
 	}
 	
+	/* 파일 선택창 숨기기 */
+	#fileInput {
+	    display: none;
+	}
+	
 	.textBox {
 		width: 100%;
 		box-sizing: border-box;
@@ -277,4 +282,17 @@
 	.back {
 	    background-color: rgb(114, 114, 114);
 	}
+	
+	/* 첨부파일 */
+	.file-list .filebox p {
+	    font-size: 14px;
+	    margin-top: 10px;
+	    display: inline-block;
+	}
+	.file-list .filebox .delete i{
+	    color: #ff5353;
+	    margin-left: 5px;
+	}
+	
+	
 	

@@ -54,6 +54,7 @@ public class UserController {
 		System.out.println("UsersController.login()");
 		
 		UserVo authUser = userService.selectOneUser(userVo);
+		//userNo, code
 		
 		session.setAttribute("authUser", authUser);
 		//세션은 web 전용이므로 controller에서 처리한다.
@@ -69,7 +70,7 @@ public class UserController {
 		//세션의 모든 값을 지움.
 		session.invalidate();
 		
-		return "redirect:/";
+		return "redirect:/loginForm";
 	}
 }
 

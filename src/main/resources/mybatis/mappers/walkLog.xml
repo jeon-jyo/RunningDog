@@ -4,9 +4,19 @@
 <mapper namespace="walkLog">
    
    <!-- 쿼리문 작성 --> 
+	
+	<!-- 유저 1명 가져오기 (로그인) -->
+	<select id="selectOneUser" parameterType="com.runningdog.vo.UserVo" resultType="com.runningdog.vo.UserVo">
+		<![CDATA[
+			select  userNo
+			from users
+			where id = #{id}
+			and password = #{password}
+		]]>
+	</select>
    
    <!-- 산책로 가져오기 -->
-   <select id="trailSelect"  resultType="com.runningdog.vo.UseTrailVo">
+   <select id="mapTrailSelect"  resultType="com.runningdog.vo.UseTrailVo">
       <![CDATA[
          SELECT co.coordno as coordNo
 		        ,tr.trailno as trailNo
@@ -20,11 +30,105 @@
          ORDER BY co.coordno asc
          , co.coordorder asc
       ]]>
+   </select>   
+  
+   <!-- 내 강아지 가져오기 -->   
+   <select id="dogSelect"  parameterType="int" resultType="com.runningdog.vo.MoDogVo">
+      <![CDATA[
+         SELECT  us.userno as userNo 
+		         ,us.name as userName
+		         ,do.dogno as dogNo
+		         ,do.name as dogName
+	     FROM users us,dog do
+	     where us.userno = #{userno}
+	     and us.userno = do.userno
+      ]]>
    </select>
    
-   <!-- 내 강아지 가져오기 -->
+   
+   <!-- 산책기록 저장하기 -->
+   <insert id="walkLogInsert"  parameterType="com.runningdog.vo.MoWalkLogVo" >
+		<selectKey resultType="int" keyProperty="walkLogNo" order="BEFORE">
+			<![CDATA[
+				SELECT seq_walkdog_no.nextVal FROM dual    
+			]]>
+		</selectKey>
+      <![CDATA[
+	         INSERT INTO walkLog
+			 VALUES (#{walkLogNo},  
+			         #{userNo},
+			         #{locationNo}, 
+			         #{meetingNo}, 
+			         #{title, jdbcType=VARCHAR},
+			         SYSDATE,
+			         to_date(#{startTime},'YY-MM-DD HH:MI'),
+			         to_date(#{endTime},'YY-MM-DD HH:MI'),
+			         #{logTime},
+			         #{distance},
+			         #{content, jdbcType=VARCHAR},
+			         #{security},
+			         #{status}
+			         )
+      ]]>
+   </insert>   
    
    
+   <!-- 산책강아지 저장하기 -->
+   <insert id="walkedDogInsert"  parameterType="com.runningdog.vo.MoWalkedDogVo" >
+      <![CDATA[
+         INSERT INTO walkedDog
+		 VALUES (seq_walkeddog_no.nextVal,
+		         #{walkLogNo},
+		         #{dogNo}   
+		         )
+      ]]>
+   </insert>
+   
+    <!-- 좌표 저장하기 -->
+   <insert id="coordsInsert"  parameterType="com.runningdog.vo.CoordsVo" >
+      <![CDATA[
+         INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) 
+		 VALUES (seq_coords_no.NEXTVAL,
+		         #{coordOrder},
+		         'walkLog',
+		         #{useNo},
+		         #{lng},
+		         #{lat}
+		         )
+      ]]>
+   </insert>
+   
+   <!-- 좌표값 가져오기 (캡쳐용) -->   
+   <select id="mapSelect"  parameterType="int" resultType="com.runningdog.vo.CoordsVo">
+      <![CDATA[
+        SELECT  coordorder
+		        ,lat
+		        ,lng
+		FROM coords
+		where type = 'walkLog' 
+		and useno = #{walkLogNo} 
+		ORDER BY coordorder asc
+      ]]>
+   </select>
+   
+   
+   
+   
+     
+   <!-- 산책로 가져오기 -->   
+   <select id="trailSelect"  parameterType="int" resultType="com.runningdog.vo.MoTrailVo">
+      <![CDATA[
+        SELECT tr.trailNo
+		       ,tr.name   
+		FROM (
+		    SELECT  trailNo
+		            ,name            
+		    FROM trail
+		    WHERE locationNo = #{locationNo} 
+		    ORDER BY name) tr
+		WHERE ROWNUM <= 3
+      ]]>
+   </select>
    
    
 

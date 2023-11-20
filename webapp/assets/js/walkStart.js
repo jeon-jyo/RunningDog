@@ -1,7 +1,29 @@
 	var time = 0;
 	
-	$(document).ready(function(){
-	  buttonEvt();
+	var selectedDogNos = []; // 선택된 강아지 번호를 담는 배열
+	
+	$(document).ready(function () {
+	    init();
+	    buttonEvt();
+	
+	    // 강아지 프로필사진 슬릭
+	    $('.profile-circles').slick({
+	        slidesToShow: 6,
+	        slidesToScroll: 6,
+	        infinite: false
+	    });
+	
+	    // 슬라이드 버튼을 숨김
+	    $('.slick-next, .slick-prev').hide();
+	
+	    // 페이지 로드 시에 실행
+	    updateSelectedDogNos();
+	
+	    // DOM이 완전히 로드된 후에 실행되도록 이벤트 리스너 추가
+	    $(document).on('click', '.profile-circle', function () {
+	        togglePSelect($(this));
+	        updateSelectedDogNos();
+	    });
 	});
 	
 	function init(){
@@ -40,10 +62,23 @@
 	
 	        document.getElementById("tVal").innerHTML = th + ":" + tm + ":" + ts;
 	        
+	        // 00:00:00 값의 시간을 초값으로 바꿔주기	
+            var timeString = th + ":" + tm + ":" + ts;
+            
+            console.log("시간값 "+timeString);
+
+            // 시간 문자열을 시, 분, 초로 분리합니다.
+            var timeArray = timeString.split(':');
+
+            // 각 부분을 정수로 변환하여 총 초로 계산합니다.
+            var totalSeconds = parseInt(timeArray[0]) * 3600 + parseInt(timeArray[1]) * 60 + parseInt(timeArray[2]);
+          
 	        // 시간 인풋창으로 넘기기
-	        $("#timeDataInput").val(th + ":" + tm + ":" + ts);   
+	        $("#timeDataInput").val(totalSeconds);   
 	         
 	      }, 1000);	
+	      
+	      
 	  });
 	
 	// 아직 미사용 ------------------------------------
@@ -141,28 +176,64 @@
       enableHighAccuracy: false,
       maximumAge: 0,
       timeout: Infinity
-    };    	
+    }; 
+    
+    // 현재시간 구하는 함수
+    function timeRecode() {
+		var currentDate = new Date();
+		
+		// 월, 일, 시, 분이 한 자리 숫자인 경우 앞에 0을 추가
+		var month = ('0' + (currentDate.getMonth() + 1)).slice(-2);
+		var day = ('0' + currentDate.getDate()).slice(-2);
+		var hours = ('0' + currentDate.getHours()).slice(-2);
+		var minutes = ('0' + currentDate.getMinutes()).slice(-2);
+		
+		var formattedDate = currentDate.getFullYear() + '-' + month + '-' + day + ' ' + hours + ':' + minutes;
+		
+		console.log(formattedDate);	
+		
+		// 현재시간을 반환
+    	return formattedDate;	
+	}
+	
  
     // 시작버튼 클릭 후 작동
-    function startTracking() {
+    function startTracking() {		
         if (!isTracking) {
             isTracking = true;                
             $("#startButton").hide(); // 시작버튼 가리기
             $("#walkStart").show(); // 정지버튼 보이기 
             
-            let sTime = new Date().toISOString().slice(0, 16);  
+            console.log("시작버튼 클릭"); 
+            
+			let sTime = timeRecode()
+			
+			console.log("시작시간" + sTime);           
             
             document.getElementById('sTimeDataInput').value = sTime;
-             
-            console.log("시작시간" + sTime);                          
-            
-            console.log("시작버튼 클릭");  
             
             // 네비게이션 기능으로 위치정보 받아오기 (3초마다 위치 업데이트)
             updateMyLocation();
             
-            watchId = setInterval(updateMyLocation, 3000);  
-        }
+            /*watchId = setInterval(updateMyLocation, 3000);  
+            
+            // 여기서 강아지 프로필 선택을 막을 수 있습니다.
+        	$(".profile-circle").off("click");  // 이벤트 제거*/
+        	
+        	// watchId 변수 선언
+	        let watchId = setInterval(function () {
+	            updateMyLocation();  // success 함수에서 받아온 위치 정보 전달
+	        }, 3000);
+	
+	        // 여기서 강아지 프로필 선택을 막을 수 있습니다.
+	        $(".profile-circle").off("click");  // 이벤트 제거
+	
+	        // watchId를 저장하여 나중에 중지할 수 있도록 함
+	        $(document).data("watchId", watchId);
+	        
+	    	}
+	
+        
     }          
          
     // 정지버튼 클릭 후 작동
@@ -172,11 +243,19 @@
             $("#startButton").show();
             $("#walkStart").hide();
             
-            let eTime = new Date().toISOString().slice(0, 16);  
+            console.log("종료버튼 클릭"); 
             
-            document.getElementById('sTimeDataInput').value = eTime;
-             
-            console.log("종료시간" + eTime);           
+            // 현재 날짜 및 시간을 가져옵니다.
+			//let currentDate = new Date();
+			
+			// 원하는 형식으로 날짜 및 시간을 표시합니다.
+			//let eTime = currentDate.toISOString().slice(0, 16).replace("T", " ");
+			//let eTime = currentDate.toLocaleString().slice(0, 16).replace("T", " ");
+			let eTime = timeRecode()
+			
+			console.log("종료시간" + eTime);           
+            
+            document.getElementById('eTimeDataInput').value = eTime;
             
             console.log("위치정보 받아오기 중단");    
 
@@ -310,25 +389,32 @@
         
         
         
-     }     
-     
-        
+     }   
 
     function handleError(error) {
         console.error("위치 정보 가져오기 실패: " + error.message);
     }  
     
-    
-   // 강아지 프로필사진 
-   $('.profile-circles').slick({
-       slidesToShow: 6, // 화면에 보여질 슬라이드 수
-       slidesToScroll: 6, // 스크롤할 슬라이드 수
-       infinite: false
-   });
-    
-    $(document).ready(function() {
-        // 슬라이드 버튼을 숨김
-        $('.slick-next, .slick-prev').hide();
-    });              
-        
+	function togglePSelect($element) {
+	    // profile-circle 클릭 시 호출되는 함수
+	    $element.toggleClass('choiceRed');
+	}
+	
+	function updateSelectedDogNos() {
+	    // 선택된 profile-circle 중에서 choiceRed 클래스가 적용된 요소들만 가져오기
+	    var selectedChoiceRed = $('.choiceRed');
+	
+	    // 선택된 profile-circle들의 dogNo를 배열로 모아서 설정
+	    selectedDogNos = selectedChoiceRed.map(function() {
+	        return $(this).find('.dogDate').val();
+	    }).get();
+	
+	    console.log("선택된 강아지 번호 " + selectedDogNos);
+	
+	    // 배열을 쉼표(,)로 구분된 문자열로 변환
+	    var dogNosString = selectedDogNos.join(',');
+	
+	    // 선택된 강아지 번호 배열을 dogDataInput에 설정
+	    $('#dogDataInput').val(dogNosString);
+	}
   

@@ -6,10 +6,17 @@
     </typeAliases>
 
     <mappers>
-    	<mapper resource="mybatis/mappers/users.xml" />
+        <mapper resource="mybatis/mappers/users.xml" />
+        
         <mapper resource="mybatis/mappers/user.xml" />        
+
         <mapper resource="mybatis/mappers/walkLog.xml" />
+        
         <mapper resource="mybatis/mappers/walkBlog.xml" />
+        
         <mapper resource="mybatis/mappers/walkTrail.xml" />
+        
+        <mapper resource="mybatis/mappers/setting.xml" />
     </mappers>
+    
 </configuration>

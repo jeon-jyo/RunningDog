@@ -1,0 +1,69 @@
+@charset "UTF-8";
+
+
+
+/* 사이드 바 */
+
+#settingsMenu{
+	width: 17%;
+	float: left;
+	margin-right: 30px;
+	padding: 0px;
+	position: relative;
+}
+
+#settingsMenu li{
+	height: 42px;
+	border-top: 1px;
+	border-left: 1px;
+	border-right: 1px;
+	border-color: rgb(192, 192, 192);
+	border-style: solid;
+	text-align: left;
+	line-height: 42px;
+}
+
+#settingsMenu .settingSubLi{
+	height: 40px;
+}
+
+#settingsMenu .noTopBorder{
+	border-top: none;
+	padding-top: 0px;
+}
+
+#settingsMenu li a{
+	padding: 10px;
+	font-size: 14px;
+	text-decoration: none;
+	color: #212529;
+	display: block;
+	line-height: 20px;
+}
+
+#settingsMenu li .setting_sub{
+	padding-left: 30px;
+	text-decoration: none;
+	color: #212529;
+}
+
+
+#settingsMenu .last_li{
+	border-bottom: 1px;
+	border-color: rgb(192, 192, 192);
+	border-style: solid;
+}
+
+
+#settingsMenu .selected{
+	background-color: rgb(230, 126, 34);
+}
+#settingsMenu .selected a{
+	color: white;
+}
+
+
+.selectedBold{
+	font-weight: bold;
+}
+

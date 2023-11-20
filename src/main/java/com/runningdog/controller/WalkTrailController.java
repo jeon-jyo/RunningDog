@@ -1,9 +1,11 @@
 package com.runningdog.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.runningdog.service.TrailService;
@@ -208,16 +212,6 @@ public class WalkTrailController {
 			usersVo.setUserNo(authUser.getUserNo());
 			trailVo.setUsersVo(usersVo);
 			userMap = trailService.userDetail(trailVo);
-		} else {
-			/*
-			UsersVo usersVo = new UsersVo();
-			usersVo.setUserNo(2);
-			trailVo.setUsersVo(usersVo);
-			userMap = trailService.userDetail(trailVo);
-			*/
-			UsersVo usersVo = new UsersVo();
-			usersVo.setUserNo(0);
-			userMap.put("usersVo", usersVo);
 		}
 		System.out.println("userMap " + userMap);
 		
@@ -244,7 +238,6 @@ public class WalkTrailController {
 			fetchSet.put("userNo", authUser.getUserNo());
 		} else {
 			fetchSet.put("userNo", 0);
-			// fetchSet.put("userNo", 2);
 		}
 		
 		Map<String, Object> listMap = new HashMap<String, Object>();
@@ -262,40 +255,48 @@ public class WalkTrailController {
 			// 산책일지
 		}
 		
+		if(authUser != null) {
+			listMap.put("authUserNo", authUser.getUserNo());
+		} else {
+			listMap.put("authUserNo", 0);
+		}
+		
 		return listMap;
 	}
 	
-	// 산책로 후기 작성
+	// 산책로 후기 작성 ajax
+	@ResponseBody
 	@RequestMapping(value = "/cmtAdd", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailCmtAdd(@ModelAttribute TrailVo trailVo,
-			@RequestParam(value="file") MultipartFile file, @RequestParam(value="content") String content, HttpSession session) {
+	public Map<String, Object> trailCmtAdd(MultipartHttpServletRequest request,
+		@RequestHeader int trailNo, HttpSession session) {
+		
+		Map<String, MultipartFile> paramMap = request.getFileMap();
+		System.out.println(paramMap.get("file[0]").getOriginalFilename());
 		System.out.println("WalkTrailController.trailCmtAdd()");
-		System.out.println("trailVo : " + trailVo);
-		System.out.println("content : " + content);
-		
-		System.out.println("file.isEmpty() : " + file.isEmpty() + " " + file.getOriginalFilename());
-		
+		System.out.println("trailNo " + trailNo);
+		//System.out.println("file size " + files.size());
+		//System.out.println("file.isEmpty() : " + file.isEmpty() + " " + file.getOriginalFilename());
+
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		Map<String, Object> userMap = null;
 		if(authUser != null) {
-
+			// fetchSet.put("userNo", authUser.getUserNo());
 		} else {
-
+			// fetchSet.put("userNo", 0);
 		}
 		
-		return "walkTrail/trailDetail";
+		Map<String, Object> listMap = new HashMap<String, Object>();
+		
+		return listMap;
 	}
 	
-	// 산책로 후기 작성2
-	@RequestMapping(value = "/cmtAdd2", method= { RequestMethod.GET, RequestMethod.POST})
-	public Map<String, Object> trailCmtAdd2(@ModelAttribute TrailCmtVo trailCmtVo,
-			@RequestParam(value="trailNo") int trailNo,
-			@RequestParam(value="file") MultipartFile file, HttpSession session) {
-		System.out.println("WalkTrailController.trailCmtAdd2()");
+	/*
+	@ResponseBody
+	@RequestMapping(value = "/cmtAdd", method= { RequestMethod.GET, RequestMethod.POST})
+	public Map<String, Object> trailCmtAdd(@RequestBody TrailCmtVo trailCmtVo,
+			HttpSession session) {
+		System.out.println("WalkTrailController.trailCmtAdd()");
 		System.out.println("trailCmtVo : " + trailCmtVo);
-		System.out.println("trailNo : " + trailNo);
-		
-		System.out.println("file.isEmpty() : " + file.isEmpty() + " " + file.getOriginalFilename());
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		Map<String, Object> userMap = null;
@@ -308,6 +309,7 @@ public class WalkTrailController {
 		
 		return listMap;
 	}
+	*/
 	
 	@RequestMapping(value = "/detail/deleted", method= { RequestMethod.GET, RequestMethod.POST})
 	public String trailDetailDeleted() {

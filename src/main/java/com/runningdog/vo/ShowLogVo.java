@@ -23,6 +23,7 @@ public class ShowLogVo {
 
 	private List<ShowLogCmtVo> showLogCmtList;
 	private List<WalkLogConImgVo> imageList;
+	private List<LogWalkedDogVo> walkedDogList;
 
 	
 	public ShowLogVo() {}
@@ -31,7 +32,7 @@ public class ShowLogVo {
 	public ShowLogVo(int walkLogNo, int userNo, int locationNo, String regDate, String startTime, String endTime,
 			long logTime, double distance, String distanceFormatted, String logTimeFormatted, String content,
 			String security, char status, String name, String title, List<ShowLogCmtVo> showLogCmtList,
-			List<WalkLogConImgVo> imageList) {
+			List<WalkLogConImgVo> imageList, List<LogWalkedDogVo> walkedDogList) {
 		super();
 		this.walkLogNo = walkLogNo;
 		this.userNo = userNo;
@@ -50,8 +51,22 @@ public class ShowLogVo {
 		this.title = title;
 		this.showLogCmtList = showLogCmtList;
 		this.imageList = imageList;
+		this.walkedDogList = walkedDogList;
 	}
 	
+	
+
+
+	public List<LogWalkedDogVo> getWalkedDogList() {
+		return walkedDogList;
+	}
+
+
+	public void setWalkedDogList(List<LogWalkedDogVo> walkedDogList) {
+		this.walkedDogList = walkedDogList;
+	}
+
+
 	public void setDistance(double distance) {
 	    this.distance = distance;
 	    this.distanceFormatted = String.format("%.2f", distance / 1000.0); // 미터를 킬로미터로 변환하고 소수점 둘째 자리까지 표시
@@ -237,8 +252,12 @@ public class ShowLogVo {
 				+ regDate + ", startTime=" + startTime + ", endTime=" + endTime + ", logTime=" + logTime + ", distance="
 				+ distance + ", distanceFormatted=" + distanceFormatted + ", logTimeFormatted=" + logTimeFormatted
 				+ ", content=" + content + ", security=" + security + ", status=" + status + ", name=" + name
-				+ ", title=" + title + ", showLogCmtList=" + showLogCmtList + ", imageList=" + imageList + "]";
+				+ ", title=" + title + ", showLogCmtList=" + showLogCmtList + ", imageList=" + imageList
+				+ ", walkedDogList=" + walkedDogList + "]";
 	}
+
+	
+
 
 
 	

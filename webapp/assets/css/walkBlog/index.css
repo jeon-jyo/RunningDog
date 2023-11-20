@@ -1,4 +1,4 @@
- @charset "UTF-8";
+  @charset "UTF-8";
 
 
   .contents {
@@ -30,6 +30,8 @@
 	font-weight: bold;
 	float: left;
 }
+
+
 
 .myColor {
 	color: #FC5200;
@@ -237,7 +239,7 @@
 	height: 66px;
 	border-style: solid;
 	 border-color:#dee2e6;
-  	border-width: 0 0 1px 0 ;
+  	border-width: 1px 0 1px 0 ;
   	display: flow-root;
 }
 
@@ -447,7 +449,7 @@ h2{
 	border-style: solid;
   	border-color:#dee2e6;
 	width: 780px;
-	height: 204px;
+	/*height: 204px;*/
 	float: left;
 	   
    }
@@ -470,7 +472,7 @@ h2{
   
   .MRuserName1{
 	  margin-top:5px;
-	  font-size: 14px;
+	  font-size: 18px;
 	  font-weight: bold;
 	  width: 120px;
 	  
@@ -482,6 +484,11 @@ h2{
   	float: left;
   	margin-right: 30px;
 	  
+  }
+  
+  .MRtitleBox > a{
+	  text-decoration: none;
+	  color : black;
   }
   
   .MRtime{
@@ -506,6 +513,12 @@ h2{
 	  margin-top: 20px;
 	  display: flow-root;
 	  
+	  border-style: solid;
+    border-color: #dee2e6;
+
+    /* 하단(border-bottom)에만 테두리를 추가합니다. */
+    border-width: 0 0 2px 0;
+	  
 	  
   }
   
@@ -517,7 +530,7 @@ h2{
   }
   .MRrecordData{
 	  font-size: 20px;
-	  width: 90px;
+	  width: 120px;
   }
   
   .MRtimeBox{
@@ -525,7 +538,7 @@ h2{
 	  
   }
   .MRlabel{
-	  font-size: 12px;
+	  font-size: 14px;
 	  width: 90px;
   }
   
@@ -533,13 +546,17 @@ h2{
 	  text-align: center;
   }
   
-  .MRdogCardBox{
-	  width:300px;
-	  height: 100px;
-	  
-	  float: right;
-	  padding: 20px;
-  }
+ .MRdogCardBox {
+    padding-left: 5px;
+    float: right;
+    /* padding: 20px; */
+    border-style: solid;
+    border-color: #dee2e6;
+
+    /* 하단(border-bottom)에만 테두리를 추가합니다. */
+    border-width: 0 0 2px 0;
+    margin-right: 80px;
+}
   
   .MRdogCards{
 	  margin-top: 5px;
@@ -576,18 +593,22 @@ h2{
   }
   
   .modifyDelete{
+	  width: 200px;
+	  height: 17px;
 	 float: right;
+	 display: flow-root;
 	  
   }
   
   .modifyButton{
-	   background-color:grey;
+	   background-color:grey;  
     color: #fff;
     padding: 5px 10px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
     
 	  
   }
@@ -600,7 +621,22 @@ h2{
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
+    margin-left: 10px;
     
+	  
+  }
+  
+  .walkLogContent{
+	  float: left;
+	  width: 600px;
+	  margin-left: 110px;
+	  margin-top: 10px;
+  }
+  
+  .contentModify{
+	  width: 100%;
+	  
 	  
   }
   
@@ -609,7 +645,7 @@ h2{
 	  margin-top: 10px;
 	  margin-bottom: 10px;
 	  width: 780px;
-	  height: 760px;
+	  /*height: 760px;*/
 	  border-style: solid;
   	border-color:#dee2e6;
 	  
@@ -626,6 +662,12 @@ h2{
   
   .MRpictures {
 	  display: flow-root;
+	  
+  }
+  
+  .picHidden {
+	  display: none;
+	  
   }
   
   .MRpictures img{
@@ -687,17 +729,30 @@ h2{
 	  font-size: 14px;
   }
   
+  .replyDateCmtBox{
+	  display: flow-root;
+	 float: right;
+	 width: 215px; 
+	 height: 58px;
+  }
+  
   .MRreplyDate{
 	  float: right;
-	  margin-top:10px;
-	  margin-right:10px;
+	  
   }
+  
+  .deleteCommentButton{
+	  float: right;
+  }
+  
+  .replyDateCmtBox
+  
   
   .MRborder{
 	  margin-top:10px;
 	  border-style: solid;
 	 border-color:black;
-  	border-width: 0 0 1px 0 ;
+  	border-width: 0 0 2px 0 ;
   }
 
 	
