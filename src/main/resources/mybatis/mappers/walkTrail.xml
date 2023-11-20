@@ -654,4 +654,23 @@
 		 ]]>
 	</select>
 	
+	<!-- 후기 등록 -->
+	<insert id="trailCmtAdd" parameterType="com.runningdog.vo.TrailCmtVo">
+	<selectKey keyProperty="trailCmtNo" resultType="int" order="BEFORE">	
+		select seq_trailcmt_no.NEXTVAL from dual
+	</selectKey>
+	<![CDATA[
+		INSERT INTO trailCmt
+		VALUES(#{trailCmtNo}, #{trailVo.trailNo}, #{usersVo.userNo}, sysdate, #{content}, 'T')
+	]]>
+	</insert>
+	
+	<!-- 후기 이미지 업로드 -->
+	<insert id="cmtImgAdd" parameterType="com.runningdog.vo.ImagesVo">
+	<![CDATA[
+		INSERT INTO images
+		VALUES(seq_images_no.NEXTVAL, #{orgName}, #{saveName}, #{filePath}, #{fileSize}, 'trailCmt', #{useNo}, #{imageOrder})
+	]]>
+	</insert>
+	
 </mapper>

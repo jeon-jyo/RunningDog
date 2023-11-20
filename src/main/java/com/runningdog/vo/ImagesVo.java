@@ -8,13 +8,13 @@ public class ImagesVo {
 	private String filePath;
 	private int fileSize;
 	private String type;
-	private int userNo;
+	private int useNo;
 	private int imageOrder;
 	
 	public ImagesVo() {}
 	
 	public ImagesVo(int imagesNo, String orgName, String saveName, String filePath, int fileSize, String type,
-			int userNo, int imageOrder) {
+			int useNo, int imageOrder) {
 		super();
 		this.imagesNo = imagesNo;
 		this.orgName = orgName;
@@ -22,7 +22,7 @@ public class ImagesVo {
 		this.filePath = filePath;
 		this.fileSize = fileSize;
 		this.type = type;
-		this.userNo = userNo;
+		this.useNo = useNo;
 		this.imageOrder = imageOrder;
 	}
 
@@ -74,12 +74,12 @@ public class ImagesVo {
 		this.type = type;
 	}
 
-	public int getUserNo() {
-		return userNo;
+	public int getUseNo() {
+		return useNo;
 	}
 
-	public void setUserNo(int userNo) {
-		this.userNo = userNo;
+	public void setUseNo(int useNo) {
+		this.useNo = useNo;
 	}
 
 	public int getImageOrder() {
@@ -93,7 +93,7 @@ public class ImagesVo {
 	@Override
 	public String toString() {
 		return "ImagesVo [imagesNo=" + imagesNo + ", orgName=" + orgName + ", saveName=" + saveName + ", filePath="
-				+ filePath + ", fileSize=" + fileSize + ", type=" + type + ", userNo=" + userNo + ", imageOrder="
+				+ filePath + ", fileSize=" + fileSize + ", type=" + type + ", useNo=" + useNo + ", imageOrder="
 				+ imageOrder + "]";
 	}
 	

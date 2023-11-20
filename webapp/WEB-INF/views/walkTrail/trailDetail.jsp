@@ -332,9 +332,11 @@
 	</div>
 	
 	<!-- Button trigger modal -->
+	<!-- 
 	<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modifyModal">
 		<i class="fa-solid fa-pen"></i>
 	</button>
+	-->
 	
 	<!-- modifyModal -->
 	<div class="modal fade" id="modifyModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -484,69 +486,75 @@
 	
 	/* cmt */
 	let content = $('textarea[name=content]').val();
+	content = '하이';
+	/*
+	$('textarea[name=content]').on('change', function() {
+		content = $(this).val();
+		console.log("content ", content);
+    });
+	*/
 	
- 	var previewNode = document.querySelector("#template");
- 	previewNode.id = "";
- 	
- 	var previewTemplate = previewNode.parentNode.innerHTML;
- 	previewNode.parentNode.removeChild(previewNode);
- 	Dropzone.autoDiscover = false;
- 	/*
- 	const dropzone1 = new Dropzone("div.dropzone", { url: "/file/post",
-											 		 autoProcessQueue: false,
-											 		 previewTemplate: previewTemplate,
-											 		 previewsContainer: ".preview-list",});
- 	*/
- 	 var dropzone = new Dropzone("div.dropzone", {
-        url: '${pageContext.request.contextPath}/walkTrail/cmtAdd', // 파일 업로드할 url
-        method: "POST",
-		headers: {
-		    // 요청 보낼때 헤더 설정
-		    "trailNo" : trailNo
-		 },
-		autoProcessQueue: false,
-		previewTemplate: previewTemplate,
-		previewsContainer: ".preview-list",
-		acceptedFiles: '.jpeg,.jpg,.png,.gif,.JPEG,.JPG,.PNG,.GIF', // 이미지 파일 포맷만 허용
-		uploadMultiple: true, // 다중업로드 기능
-		parallelUploads: 10,
-		maxFiles: 10,
-		init: function () {
+	var previewNode = document.querySelector("#template");
+	previewNode.id = "";
+
+	var previewTemplate = previewNode.parentNode.innerHTML;
+	previewNode.parentNode.removeChild(previewNode);
+	Dropzone.autoDiscover = false;
+
+	var dropzone = new Dropzone("div.dropzone", {
+		url : '${pageContext.request.contextPath}/walkTrail/cmtAdd', // 파일 업로드할 url
+		method : "POST",
+		/*
+		headers : {
+			"trailNo" : trailNo
+		},
+		*/
+		params: {
+            "trailNo" : trailNo,
+            "content" : content
+        },
+		autoProcessQueue : false,
+		previewTemplate : previewTemplate,
+		previewsContainer : ".preview-list",
+		acceptedFiles : '.jpeg,.jpg,.png,.gif,.JPEG,.JPG,.PNG,.GIF',
+		uploadMultiple : true,
+		parallelUploads : 10,
+		maxFiles : 10,
+		init : function() {
 			// 최초 dropzone 설정시 init을 통해 호출
 			console.log('최초 실행');
-			let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
-			
-			// 서버에 제출 submit 버튼 이벤트 등록
-			document.querySelector('#cmtAddBtn').addEventListener('click', function () {
-			   console.log('업로드');
-			   console.log('myDropzone ', myDropzone);
-			   
-			   if(dropzone.files.length > 10) {
+			let myDropzone = this; // closure 변수
+
+			document.querySelector('#cmtAddBtn').addEventListener('click', function() {
+				console.log('업로드');
+				// console.log('myDropzone ', myDropzone);
+				
+				content = $('textarea[name=content]').val();
+				console.log('content ', content);
+				console.log('dropzone.files ', dropzone.files);
+				
+				if (dropzone.files.length > 10) {
 					alert("후기 사진은 10개 까지 가능합니다.");
 				} else {
-					myDropzone.processQueue(); // autoProcessQueue: false로 해주었기 때문에, 메소드 api로 파일을 서버로 제출
+					myDropzone.processQueue();
+
+					window.location.href = "${pageContext.request.contextPath}/walkTrail/detail?trailNo=" + trailNo;
 				}
-			   
-			   console.log('dropzone.files ', dropzone.files);
-			   
 			});
-			
-			// 업로드한 파일을 서버에 요청하는 동안 호출 실행
-			this.on('sendingmultiple', function (files) {
-			   console.log('보내는중 ', files);
+
+			this.on('sendingmultiple', function(files) {
+				console.log('보내는중 ', files);
 			});
-			
-			// 서버로 파일이 성공적으로 전송되면 실행
-			this.on('successmultiple', function () {
-			   console.log('성공');
+
+			this.on('successmultiple', function() {
+				console.log('성공');
 			});
-			
-			// 업로드 에러 처리
-			this.on('errormultiple', function () {
+
+			this.on('errormultiple', function() {
 			});
 		},
- 	});
-    // Dropzone has been added as a global variable.
+	});
+	// Dropzone has been added as a global variable.
 	
     // cmt add
 	function cmtAdd(trailNo) {
@@ -634,12 +642,13 @@
 		console.log("listRender()");
 		
 		let content = (listMap.cmtList[index].content == null) ? "" : listMap.cmtList[index].content;
+		let path = (listMap.cmtImgList[index][0].saveName == "noImg") ? "" : listMap.cmtImgList[index][0].saveName
 		
 		let str = '';
 		str += '<div class="comment-detail">';
 		str += '	<div class="comment-img">';
-		if(listMap.cmtImgList[index].filePath != null) {
-			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">';
+		if(path != "") {
+			str += '		<img src="${pageContext.request.contextPath }/rdimg/trail/' + path + '">';
 		}
 		str += '	</div>';
 		str += '	<div class="comment-content">';
@@ -648,7 +657,7 @@
 		str += '	</div>';
 		str += '	<div class="comment-info">';
 		if(listMap.userImgList[index] != null) {
-			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">';
+			str += '		<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + listMap.userImgList[index].saveName + '">';
 		} else {
 			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg">';
 		}

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
@@ -7,11 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <title>trailDetail</title>
-<link
-	href="${pageContext.request.contextPath}/assets/css/walkTrail/trailDetail.css"
+<link href="${pageContext.request.contextPath}/assets/css/walkTrail/trailDetail.css"
 	rel="stylesheet" type="text/css">
-<link rel="stylesheet"
-	href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
+<link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
 	type="text/css" />
 <script type="text/javascript"
 	src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
@@ -33,8 +30,7 @@
 				<span class="stat-subtext">거리</span> <span class="stat-text">${detailMap.info[0] }</span>
 			</div>
 			<div class="stat stat-margin">
-				<span class="stat-subtext stat-margin">소요시간</span> <span
-					class="stat-text stat-margin">${detailMap.info[1] }</span>
+				<span class="stat-subtext stat-margin">소요시간</span> <span class="stat-text stat-margin">${detailMap.info[1] }</span>
 			</div>
 			<div class="stat">
 				<span class="stat-subtext">이용자</span> <span class="stat-text">${detailMap.trailUsedCnt }</span>
@@ -61,8 +57,7 @@
 										test="${trailTagVo.tagName == '공원 근처' || trailTagVo.tagName == '산 근처' || trailTagVo.tagName == '카페 근처' }">
 										<button class="btn badge btn1">${trailTagVo.tagName }</button>
 									</c:if>
-									<c:if
-										test="${trailTagVo.tagName == '넓은 공간' || trailTagVo.tagName == '흙길' }">
+									<c:if test="${trailTagVo.tagName == '넓은 공간' || trailTagVo.tagName == '흙길' }">
 										<button class="btn badge btn2">${trailTagVo.tagName }</button>
 									</c:if>
 									<c:if
@@ -93,21 +88,18 @@
 							</c:if>
 						</div>
 						<div class="user-modify">
-							<c:if
-								test="${authUser.userNo == detailMap.trailVo.usersVo.userNo }">
+							<c:if test="${authUser.userNo == detailMap.trailVo.usersVo.userNo }">
 								<i class="fa-solid fa-pen"></i>
 								<i class="fa-solid fa-trash"></i>
 							</c:if>
 						</div>
 					</div>
 
-					<div class="map-detail-text">${detailMap.trailVo.explanation }
-					</div>
+					<div class="map-detail-text">${detailMap.trailVo.explanation }</div>
 
 					<div class="map-detail-chart detail-border">
 						<h2>
-							<i class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;&nbsp;산책로 이용
-							시간대
+							<i class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;&nbsp;산책로 이용 시간대
 						</h2>
 						<div class="detail-chart">chart</div>
 					</div>
@@ -152,12 +144,10 @@
 					<div class="detail-bar">
 						<c:if test="${!empty userMap }">
 							<c:if test="${!empty userMap.userImg }">
-								<img
-									src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+								<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
 							</c:if>
 							<c:if test="${empty userMap.userImg }">
-								<img
-									src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang5.jpg">
+								<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang5.jpg">
 							</c:if>
 							<div class="detail-text">
 								<span>${userMap.usersVo.name }</span> <span><i
@@ -171,8 +161,8 @@
 					<h2>최근 일지</h2>
 					<div class="record-bar">
 						<c:if test="${!empty userMap.walkLogMap.walkLogList }">
-							<c:forEach items="${userMap.walkLogMap.walkLogList }"
-								var="walkLogVo" varStatus="status">
+							<c:forEach items="${userMap.walkLogMap.walkLogList }" var="walkLogVo"
+								varStatus="status">
 								<div class="detail-text">
 									<span>${walkLogVo.regDate }</span> <span>${userMap.walkLogMap.infoList[status.index][0] }</span>
 									<span>${userMap.walkLogMap.infoList[status.index][1] }</span> <i
@@ -192,12 +182,10 @@
 					<h2>공유 메이트</h2>
 					<div class="detail-bar">
 						<c:if test="${! empty detailMap.userImg }">
-							<img
-								src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
 						</c:if>
 						<c:if test="${empty detailMap.userImg }">
-							<img
-								src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang5.jpg">
+							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang5.jpg">
 						</c:if>
 						<div class="detail-text">
 							<span>${detailMap.trailVo.usersVo.name }</span> <span><i
@@ -210,8 +198,7 @@
 						</div>
 						<div class="detail-text">
 							<span class="textName">마지막 수정일</span>
-							<c:if
-								test="${detailMap.trailVo.regDate != detailMap.trailVo.updateDate }">
+							<c:if test="${detailMap.trailVo.regDate != detailMap.trailVo.updateDate }">
 								<span>${detailMap.trailVo.updateDate }</span>
 							</c:if>
 						</div>
@@ -223,20 +210,16 @@
 						<i class="fa-solid fa-crown"></i>&nbsp;가장 많이 이용한 메이트
 					</h2>
 					<c:if test="${!empty userUsedMap.userList }">
-						<c:forEach items="${userUsedMap.userList }" var="usersVo"
-							varStatus="status">
+						<c:forEach items="${userUsedMap.userList }" var="usersVo" varStatus="status">
 							<div class="ranking-detail-bar">
 								<c:if test="${!empty userUsedMap.imgList[status.index] }">
-									<img
-										src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang2.jpg">
+									<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang2.jpg">
 								</c:if>
 								<c:if test="${empty userUsedMap.imgList[status.index] }">
-									<img
-										src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg">
+									<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg">
 								</c:if>
 								<div class="detail-text">
-									<span>${usersVo.name }</span> <span><i
-										class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>${userUsedMap.usedCntList[status.index] }</strong></span>
+									<span>${usersVo.name }</span> <span><i class="fa-solid fa-person-walking"></i>&nbsp;&nbsp;&nbsp;<strong>${userUsedMap.usedCntList[status.index] }</strong></span>
 								</div>
 							</div>
 						</c:forEach>
@@ -280,8 +263,8 @@
 					</c:if>
 					-->
 
-					<button type="button" class="btn btn-secondary"
-						data-bs-toggle="modal" data-bs-target="#addModal">
+					<button type="button" class="btn btn-secondary" data-bs-toggle="modal"
+						data-bs-target="#addModal">
 						후기 작성하기&nbsp;&nbsp;&nbsp; <i class="fa-regular fa-images"></i>
 					</button>
 
@@ -298,8 +281,7 @@
 								<div class="modal-body">
 									<div>
 										<div class="mb-3">
-											<label for="exampleFormControlTextarea1" class="form-label"
-												hidden></label>
+											<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
 											<textarea class="form-control modal-input" name="content"
 												id="exampleFormControlTextarea1" rows="3"></textarea>
 										</div>
@@ -312,8 +294,7 @@
 									<div class="preview-list">
 										<div class="dz-preview dz-file-preview" id="template">
 											<img data-dz-thumbnail />
-											<button data-dz-remove="data-dz-remove"
-												class="btn btn-sm btn-danger">Delete</button>
+											<button data-dz-remove="data-dz-remove" class="btn btn-sm btn-danger">Delete</button>
 										</div>
 									</div>
 									<%-- <div class="img-content">
@@ -322,8 +303,7 @@
 									</div> --%>
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-light"
-										data-bs-dismiss="modal">취소</button>
+									<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
 									<button type="submit" class="btn btn-secondary" id="cmtAddBtn">작성</button>
 								</div>
 							</div>
@@ -335,14 +315,14 @@
 						<label class="form-check-label" for="flexCheckDefault">내 후기만 보기</label>
 					</div> -->
 
-					<div class="btn-group" role="group"
-						aria-label="Default button group" id="cmt-list-nav">
+					<div class="btn-group" role="group" aria-label="Default button group"
+						id="cmt-list-nav">
 						<button type="button" class="btn btn-outline-dark">목록</button>
 						<button type="button" class="btn btn-outline-dark">갤러리</button>
 					</div>
 
-					<div class="btn-group" role="group"
-						aria-label="Default button group" id="cmt-order-nav">
+					<div class="btn-group" role="group" aria-label="Default button group"
+						id="cmt-order-nav">
 						<button type="button" class="btn btn-outline-dark">최신순</button>
 						<button type="button" class="btn btn-outline-dark">인기순</button>
 					</div>
@@ -359,38 +339,33 @@
 	</div>
 
 	<!-- Button trigger modal -->
-	<button type="button" class="btn" data-bs-toggle="modal"
-		data-bs-target="#modifyModal">
+	<button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modifyModal">
 		<i class="fa-solid fa-pen"></i>
 	</button>
 
 	<!-- modifyModal -->
-	<div class="modal fade" id="modifyModal" tabindex="0"
-		aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="modifyModal" tabindex="0" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h1 class="modal-title fs-5" id="exampleModalLabel">후기 수정</h1>
-					<button type="button" class="btn-close" data-bs-dismiss="modal"
-						aria-label="Close"></button>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
 					<div>
 						<div class="mb-3">
-							<label for="exampleFormControlTextarea1" class="form-label"
-								hidden></label>
-							<textarea class="form-control modal-input"
-								id="exampleFormControlTextarea1" rows="3"></textarea>
+							<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
+							<textarea class="form-control modal-input" id="exampleFormControlTextarea1"
+								rows="3"></textarea>
 						</div>
 						<div class="mb-3">
-							<label for="formFileMultipleModi" class="form-label" hidden></label>
-							<input class="form-control" type="file" id="formFileMultipleModi"
-								multiple>
+							<label for="formFileMultipleModi" class="form-label" hidden></label> <input
+								class="form-control" type="file" id="formFileMultipleModi" multiple>
 						</div>
 					</div>
 					<div class="img-content">
-						<img
-							src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+						<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
 						<div class="imgCount">3</div>
 					</div>
 				</div>
@@ -413,8 +388,7 @@
 							<i class="fa-solid fa-chevron-left"></i>
 							<div class="detail-img">
 								<div class="detail-img-content">
-									<img
-										src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+									<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
 								</div>
 							</div>
 							<i class="fa-solid fa-chevron-right"></i>
@@ -422,8 +396,7 @@
 						<div class="img-info">
 							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
 							<div class="img-info-detail">
-								<img
-									src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+								<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
 								<div class="detail-text">
 									<span>닉네임</span> <span>2023/10/11</span>
 								</div>
@@ -441,188 +414,197 @@
 
 </body>
 <script type="text/javascript">
+	let trailNo = $
+	{
+		detailMap.trailVo.trailNo
+	};
 
-	let trailNo = ${detailMap.trailVo.trailNo };
-	
 	$(document).ready(function() {
 		fetchList(trailNo);
 	})
 
 	/* map */
-	let coords = ${detailMap.coordsJson };
-	let markerCoords = ${detailMap.markersJson };
-	
+	let coords = $
+	{
+		detailMap.coordsJson
+	};
+	let markerCoords = $
+	{
+		detailMap.markersJson
+	};
+
 	var map = new naver.maps.Map('map', {
-		zoom: 19,
-		center: new naver.maps.Point(coords[0].lng, coords[0].lat),
+		zoom : 19,
+		center : new naver.maps.Point(coords[0].lng, coords[0].lat),
 	});
-	
+
 	let trailPath = [];
-	for(let i = 0; i < coords.length; i++) {
+	for (let i = 0; i < coords.length; i++) {
 		trailPath.push(new naver.maps.LatLng(coords[i].lat, coords[i].lng));
 	}
-	
+
 	var polyline = new naver.maps.Polyline({
-		path: trailPath,
-        strokeColor: '#fc5200',
-        strokeOpacity: 0.8,
-        strokeWeight: 5,
-        zIndex: 2,
-        clickable: true,
-        map: map
-    });
-	
-	var marker = new naver.maps.Marker({
-		map: map,
-		position: trailPath[0],
-		icon: {
-			url: '${pageContext.request.contextPath}/assets/images/walkTrail/marker.png',
-		    size: new naver.maps.Size(30, 30),
-		    scaledSize: new naver.maps.Size(30, 30),
-       }
-    });
-	
+		path : trailPath,
+		strokeColor : '#fc5200',
+		strokeOpacity : 0.8,
+		strokeWeight : 5,
+		zIndex : 2,
+		clickable : true,
+		map : map
+	});
+
+	var marker = new naver.maps.Marker(
+			{
+				map : map,
+				position : trailPath[0],
+				icon : {
+					url : '${pageContext.request.contextPath}/assets/images/walkTrail/marker.png',
+					size : new naver.maps.Size(30, 30),
+					scaledSize : new naver.maps.Size(30, 30),
+				}
+			});
+
 	if (markerCoords[0] != null) {
-		for(let i = 0; i < markerCoords.length; i++) {
-			if(markerCoords[i].type == 'parking') {
-				var infoMarker = new naver.maps.Marker({
-					map: map,
-					position: new naver.maps.LatLng(markerCoords[i].lat, markerCoords[i].lng),
-					icon: {
-						url: '${pageContext.request.contextPath}/assets/images/walkTrail/marker0.png',
-					    size: new naver.maps.Size(30, 30),
-					    scaledSize: new naver.maps.Size(30, 30),
-			       }
-			    });
-			} else if(markerCoords[i].type == 'restroom') {
-				var infoMarker = new naver.maps.Marker({
-					map: map,
-					position: new naver.maps.LatLng(markerCoords[i].lat, markerCoords[i].lng),
-					icon: {
-						url: '${pageContext.request.contextPath}/assets/images/walkTrail/marker1.png',
-					    size: new naver.maps.Size(30, 30),
-					    scaledSize: new naver.maps.Size(30, 30),
-			       }
-			    });
-			} else if(markerCoords[i].type == 'trashCan') {
-				var infoMarker = new naver.maps.Marker({
-					map: map,
-					position: new naver.maps.LatLng(markerCoords[i].lat, markerCoords[i].lng),
-					icon: {
-						url: '${pageContext.request.contextPath}/assets/images/walkTrail/marker2.png',
-					    size: new naver.maps.Size(30, 30),
-					    scaledSize: new naver.maps.Size(30, 30),
-			       }
-			    });
+		for (let i = 0; i < markerCoords.length; i++) {
+			if (markerCoords[i].type == 'parking') {
+				var infoMarker = new naver.maps.Marker(
+						{
+							map : map,
+							position : new naver.maps.LatLng(
+									markerCoords[i].lat, markerCoords[i].lng),
+							icon : {
+								url : '${pageContext.request.contextPath}/assets/images/walkTrail/marker0.png',
+								size : new naver.maps.Size(30, 30),
+								scaledSize : new naver.maps.Size(30, 30),
+							}
+						});
+			} else if (markerCoords[i].type == 'restroom') {
+				var infoMarker = new naver.maps.Marker(
+						{
+							map : map,
+							position : new naver.maps.LatLng(
+									markerCoords[i].lat, markerCoords[i].lng),
+							icon : {
+								url : '${pageContext.request.contextPath}/assets/images/walkTrail/marker1.png',
+								size : new naver.maps.Size(30, 30),
+								scaledSize : new naver.maps.Size(30, 30),
+							}
+						});
+			} else if (markerCoords[i].type == 'trashCan') {
+				var infoMarker = new naver.maps.Marker(
+						{
+							map : map,
+							position : new naver.maps.LatLng(
+									markerCoords[i].lat, markerCoords[i].lng),
+							icon : {
+								url : '${pageContext.request.contextPath}/assets/images/walkTrail/marker2.png',
+								size : new naver.maps.Size(30, 30),
+								scaledSize : new naver.maps.Size(30, 30),
+							}
+						});
 			}
 		}
 	}
-	
-	/* cmt */
- 	/* $('#addModal').on('show.bs.modal', function (e) {}); */
- 	var previewNode = document.querySelector("#template");
- 	previewNode.id = "";
- 	
- 	var previewTemplate = previewNode.parentNode.innerHTML;
- 	previewNode.parentNode.removeChild(previewNode);
- 	Dropzone.autoDiscover = false;
- 	
- 	const dropzone = new Dropzone("div.dropzone", { url: "/file/post",
-											 		 autoProcessQueue: false,
-											 		 previewTemplate: previewTemplate,
-											 		 previewsContainer: ".preview-list",});
- 	
- 	 var myDropzone = new Dropzone("div.dropzone", {
-        url: '/commonfile/do_upload', // 파일 업로드할 url
-        method: "POST",
-        paramName: 'files',
-        params: {
-            fk_code:${board.code}
-        },
-        addRemoveLinks: true,
-        dictRemoveFile: "삭제",
-        init: function() {
-            if(fileCount > 0){
-                 var thisDropzone = this;
-                 
-                 <c:forEach items="${commonFileList}" var="files">
-                    var mockFile = {
-                          code: "${files.code}",
-                          name: "${files.origin_name}",
-                          path: "/resources/imgs/${files.thumb_name}"
-                        };
-                    thisDropzone.emit("addedfile", mockFile);
-                    thisDropzone.emit("thumbnail", mockFile, mockFile.path);
-                    thisDropzone.emit("complete", mockFile);
-                    thisDropzone.files.push(mockFile);
-                </c:forEach>
-            }
-        }
- 	};
-    // Dropzone has been added as a global variable.
-	
-    // cmt add
-	$("#cmtAddBtn").on("click", function() {
-		console.log("cmtAddBtn");
-		
-		if(dropzone.files.length > 10) {
-			alert("후기 사진은 10개 까지 가능합니다.");
-		} else {
-			console.log("dropzone.files ", dropzone.files);
-			
-			let content = $('textarea[name=content]').val();
-			console.log("content ", content);
-			
-			let trailVo = {
-				trailNo: trailNo
-			}
-			
-			let trailCmtVo = {
-				trailVo: trailVo,
-				content: content
-			}
-			
-			let imagesList = [];
-			if(dropzone.files.length != 0) {
-				for(let i = 0; i < dropzone.files.length; i++) {
-					/* let ImagesVo = {
-						orgName: dropzone.files[i].upload.filename,
-						fileSize: dropzone.files[i].upload.size,
-						imageOrder: i,
-					} */
-					imagesList.push(dropzone.files[i]);
-				}
-			}
-			
-			console.log("trailCmtVo ", trailCmtVo);
-			console.log("imagesList ", imagesList);
-			
-			let fetchSet = {
-				"trailCmtVo" : trailCmtVo,
-				"imagesList" : imagesList,
-			}
-			
-			$.ajax({
-				url : "${pageContext.request.contextPath}/walkTrail/cmtAdd",
-				type : "post",
-				contentType : "application/json",
-				data : JSON.stringify(fetchSet),
-				
-				dataType : "json",
-				success : function(listMap) {
-					console.log("listMap ", listMap);
 
-				},
-				error : function(XHR, status, error) {
-					console.error(status + " : " + error);
-				}
+	/* cmt */
+	let content = $('textarea[name=content]').val();
+
+	var previewNode = document.querySelector("#template");
+	previewNode.id = "";
+
+	var previewTemplate = previewNode.parentNode.innerHTML;
+	previewNode.parentNode.removeChild(previewNode);
+	Dropzone.autoDiscover = false;
+
+	var dropzone = new Dropzone("div.dropzone", {
+		url : '${pageContext.request.contextPath}/walkTrail/cmtAdd', // 파일 업로드할 url
+		method : "POST",
+		headers : {
+			// 요청 보낼때 헤더 설정
+			"trailNo" : trailNo
+		},
+		autoProcessQueue : false,
+		previewTemplate : previewTemplate,
+		previewsContainer : ".preview-list",
+		acceptedFiles : '.jpeg,.jpg,.png,.gif,.JPEG,.JPG,.PNG,.GIF', // 이미지 파일 포맷만 허용
+		uploadMultiple : true, // 다중업로드 기능
+		parallelUploads : 10,
+		maxFiles : 10,
+		init : function() {
+			// 최초 dropzone 설정시 init을 통해 호출
+			console.log('최초 실행');
+			let myDropzone = this; // closure 변수 (화살표 함수 쓰지않게 주의)
+
+			// 서버에 제출 submit 버튼 이벤트 등록
+			document.querySelector('#cmtAddBtn').addEventListener('click',
+					function() {
+						console.log('업로드');
+						console.log('myDropzone ', myDropzone);
+
+						if (dropzone.files.length > 10) {
+							alert("후기 사진은 10개 까지 가능합니다.");
+						} else {
+							myDropzone.processQueue(); // autoProcessQueue: false로 해주었기 때문에, 메소드 api로 파일을 서버로 제출
+						}
+
+						console.log('dropzone.files ', dropzone.files);
+
+					});
+
+			// 업로드한 파일을 서버에 요청하는 동안 호출 실행
+			this.on('sendingmultiple', function(files) {
+				console.log('보내는중 ', files);
 			});
+
+			// 서버로 파일이 성공적으로 전송되면 실행
+			this.on('successmultiple', function() {
+				console.log('성공');
+			});
+
+			// 업로드 에러 처리
+			this.on('errormultiple', function() {
+			});
+		},
+	});
+	// Dropzone has been added as a global variable.
+
+	// cmt add
+	function cmtAdd(trailNo) {
+		console.log("cmtAdd()");
+
+		let content = $('textarea[name=content]').val();
+		console.log("content ", content);
+
+		let trailVo = {
+			trailNo : trailNo
 		}
-	})
-	
+
+		let trailCmtVo = {
+			trailVo : trailVo,
+			content : content
+		}
+		console.log("trailCmtVo ", trailCmtVo);
+
+		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/cmtAdd",
+			type : "post",
+			contentType : "application/json",
+			data : JSON.stringify(trailCmtVo),
+
+			dataType : "json",
+			success : function(listMap) {
+				console.log("listMap ", listMap);
+
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	}
+
 	function fetchList(trailNo) {
 		console.log("fetchList()");
-		
+
 		let fetchSet = {
 			"trailNo" : trailNo,
 			"cmtNav" : cmtIndex,
@@ -630,34 +612,34 @@
 			"cmtOrderNav" : cmtOrderIndex,
 		}
 		console.log("fetchSet ", fetchSet);
-		
+
 		$.ajax({
 			url : "${pageContext.request.contextPath}/walkTrail/cmtListMap",
 			type : "post",
 			contentType : "application/json",
 			data : JSON.stringify(fetchSet),
-			
+
 			dataType : "json",
 			success : function(listMap) {
 				console.log("listMap ", listMap);
-				
+
 				$(".comment-list").empty();
-				
-				if(cmtIndex == 0) {
-					if(cmtListIndex == 0) {
+
+				if (cmtIndex == 0) {
+					if (cmtListIndex == 0) {
 						console.log("후기 목록");
-						
-						if(listMap.cmtList.length == 0) {
+
+						if (listMap.cmtList.length == 0) {
 							// nonListRender();
 						} else {
-							for(let i = 0; i < listMap.cmtList.length; i++) {
+							for (let i = 0; i < listMap.cmtList.length; i++) {
 								listRender(listMap, i, "down");
 							}
 						}
-					} else if(cmtListIndex == 1) {
+					} else if (cmtListIndex == 1) {
 						console.log("후기 갤러리");
 					}
-				} else if(cmtIndex == 1) {
+				} else if (cmtIndex == 1) {
 					console.log("산책일지 목록");
 				}
 			},
@@ -666,26 +648,28 @@
 			}
 		});
 	}
-	
+
 	// cmt list
 	function listRender(listMap, index, dir) {
 		console.log("listRender()");
-		
-		let content = (listMap.cmtList[index].content == null) ? "" : listMap.cmtList[index].content;
-		
+
+		let content = (listMap.cmtList[index].content == null) ? ""
+				: listMap.cmtList[index].content;
+
 		let str = '';
 		str += '<div class="comment-detail">';
 		str += '	<div class="comment-img">';
-		if(listMap.cmtImgList[index].filePath != null) {
+		if (listMap.cmtImgList[index].filePath != null) {
 			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">';
 		}
 		str += '	</div>';
 		str += '	<div class="comment-content">';
 		str += '		<div>' + content + '</div>';
-		str += '		<span><i class="fa-regular fa-heart"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
+		str += '		<span><i class="fa-regular fa-heart"></i>&nbsp;'
+				+ listMap.likeCntList[index] + '</span>';
 		str += '	</div>';
 		str += '	<div class="comment-info">';
-		if(listMap.userImgList[index] != null) {
+		if (listMap.userImgList[index] != null) {
 			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">';
 		} else {
 			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg">';
@@ -695,96 +679,93 @@
 		str += '			<span>' + listMap.cmtList[index].regDate + '</span>';
 		str += '		</div>';
 		str += '		<div class="user-modify">';
-		if(listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
+		if (listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
 			/* str += '			<i class="fa-solid fa-pen"></i>'; */
 			str += '			<i class="fa-solid fa-trash"></i>';
 		}
 		str += '		</div>';
 		str += '	</div>';
 		str += '</div>';
-		
- 		if(dir == "up") {
+
+		if (dir == "up") {
 			$(".comment-list").prepend(str);
-		} else if(dir == "down") {
+		} else if (dir == "down") {
 			$(".comment-list").append(str);
 		} else {
 			console.log("잘못입력");
 		}
 	}
-	
+
 	/* cmt detail modify modal */
 	$(".comment-img").on("click", function() {
 		$('#detailModal').modal("show");
 	});
-	
+
 	const modifyModal = document.getElementById('modifyModal');
-	
+
 	$("#detail-modify-btn").on("click", function() {
 		$('#modifyModal').modal("show");
 		modifyModal.focus();
 	});
-	
-	
-	
+
 	/* comment-nav filter */
- 	const cmtGroup = document.querySelectorAll(".comment-nav div");
- 	let cmtIndex = 0;
- 	
- 	cmtGroup[cmtIndex].classList.add("selected");
- 	
- 	cmtGroup.forEach(function (item, index) {
-        item.addEventListener("click", function () {
-        	cmtGroup[cmtIndex].classList.remove("selected");
-        	cmtIndex = index;
-        	cmtGroup[cmtIndex].classList.add("selected");
-        	
-        	if(cmtIndex == 0) {
-        		console.log("후기 선택");
-        		
-        		cmtListGroup[0].classList.remove("nonList");
-        		cmtListGroup[1].classList.remove("nonList");
-        	} else {
-        		console.log("산책일지 선택");
-        		
-        		cmtListGroup[0].classList.add("nonList");
-        		cmtListGroup[1].classList.add("nonList");
-        	}
-        	
-        	fetchList(trailNo);
-        })
-    });
- 	
- 	/* cmt-list-nav filter */
- 	const cmtListGroup = document.querySelectorAll("#cmt-list-nav button");
- 	let cmtListIndex = 0;
- 	
- 	cmtListGroup[cmtListIndex].classList.add("selected-order");
- 	
- 	cmtListGroup.forEach(function (item, index) {
-        item.addEventListener("click", function () {
-        	cmtListGroup[cmtListIndex].classList.remove("selected-order");
-        	cmtListIndex = index;
-        	cmtListGroup[cmtListIndex].classList.add("selected-order");
-        	
-        	fetchList(trailNo);
-        })
-    });
- 	
- 	/* cmt-order-nav filter */
- 	const cmtOrderGroup = document.querySelectorAll("#cmt-order-nav button");
- 	let cmtOrderIndex = 0;
- 	
- 	cmtOrderGroup[cmtOrderIndex].classList.add("selected-order");
- 	
- 	cmtOrderGroup.forEach(function (item, index) {
-        item.addEventListener("click", function () {
-        	cmtOrderGroup[cmtOrderIndex].classList.remove("selected-order");
-        	cmtOrderIndex = index;
-        	cmtOrderGroup[cmtOrderIndex].classList.add("selected-order");
-        	
-        	fetchList(trailNo);
-        })
-    });
- 	
+	const cmtGroup = document.querySelectorAll(".comment-nav div");
+	let cmtIndex = 0;
+
+	cmtGroup[cmtIndex].classList.add("selected");
+
+	cmtGroup.forEach(function(item, index) {
+		item.addEventListener("click", function() {
+			cmtGroup[cmtIndex].classList.remove("selected");
+			cmtIndex = index;
+			cmtGroup[cmtIndex].classList.add("selected");
+
+			if (cmtIndex == 0) {
+				console.log("후기 선택");
+
+				cmtListGroup[0].classList.remove("nonList");
+				cmtListGroup[1].classList.remove("nonList");
+			} else {
+				console.log("산책일지 선택");
+
+				cmtListGroup[0].classList.add("nonList");
+				cmtListGroup[1].classList.add("nonList");
+			}
+
+			fetchList(trailNo);
+		})
+	});
+
+	/* cmt-list-nav filter */
+	const cmtListGroup = document.querySelectorAll("#cmt-list-nav button");
+	let cmtListIndex = 0;
+
+	cmtListGroup[cmtListIndex].classList.add("selected-order");
+
+	cmtListGroup.forEach(function(item, index) {
+		item.addEventListener("click", function() {
+			cmtListGroup[cmtListIndex].classList.remove("selected-order");
+			cmtListIndex = index;
+			cmtListGroup[cmtListIndex].classList.add("selected-order");
+
+			fetchList(trailNo);
+		})
+	});
+
+	/* cmt-order-nav filter */
+	const cmtOrderGroup = document.querySelectorAll("#cmt-order-nav button");
+	let cmtOrderIndex = 0;
+
+	cmtOrderGroup[cmtOrderIndex].classList.add("selected-order");
+
+	cmtOrderGroup.forEach(function(item, index) {
+		item.addEventListener("click", function() {
+			cmtOrderGroup[cmtOrderIndex].classList.remove("selected-order");
+			cmtOrderIndex = index;
+			cmtOrderGroup[cmtOrderIndex].classList.add("selected-order");
+
+			fetchList(trailNo);
+		})
+	});
 </script>
 </html>

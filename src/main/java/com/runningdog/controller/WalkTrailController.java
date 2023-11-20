@@ -1,11 +1,9 @@
 package com.runningdog.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -267,27 +264,39 @@ public class WalkTrailController {
 	// 산책로 후기 작성 ajax
 	@ResponseBody
 	@RequestMapping(value = "/cmtAdd", method= { RequestMethod.GET, RequestMethod.POST})
-	public Map<String, Object> trailCmtAdd(MultipartHttpServletRequest request,
-		@RequestHeader int trailNo, HttpSession session) {
-		
-		Map<String, MultipartFile> paramMap = request.getFileMap();
-		System.out.println(paramMap.get("file[0]").getOriginalFilename());
+	public void trailCmtAdd(MultipartHttpServletRequest request,
+		@RequestParam int trailNo, @RequestParam(required = false) String content, HttpSession session) {
 		System.out.println("WalkTrailController.trailCmtAdd()");
 		System.out.println("trailNo " + trailNo);
-		//System.out.println("file size " + files.size());
-		//System.out.println("file.isEmpty() : " + file.isEmpty() + " " + file.getOriginalFilename());
-
+		System.out.println("content " + content);
+		
+		Map<String, MultipartFile> fileMap = request.getFileMap();
+		TrailCmtVo trailCmtVo = new TrailCmtVo();
+		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		Map<String, Object> userMap = null;
 		if(authUser != null) {
-			// fetchSet.put("userNo", authUser.getUserNo());
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(authUser.getUserNo());
+			
+			TrailVo trailVo = new TrailVo();
+			trailVo.setTrailNo(trailNo);
+			
+			trailCmtVo.setUsersVo(usersVo);
+			trailCmtVo.setTrailVo(trailVo);
+			trailCmtVo.setContent(content);
 		} else {
-			// fetchSet.put("userNo", 0);
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(2);
+			
+			TrailVo trailVo = new TrailVo();
+			trailVo.setTrailNo(trailNo);
+			
+			trailCmtVo.setUsersVo(usersVo);
+			trailCmtVo.setTrailVo(trailVo);
+			trailCmtVo.setContent(content);
 		}
 		
-		Map<String, Object> listMap = new HashMap<String, Object>();
-		
-		return listMap;
+		trailService.trailCmtAdd(fileMap, trailCmtVo);
 	}
 	
 	/*
