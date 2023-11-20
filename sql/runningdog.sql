@@ -394,26 +394,34 @@ SELECT c.useNo
  ORDER BY c.coordOrder;
 
 -- 산책로 툴팁
+
+-- 산책로 정보
 SELECT t.trailNo
        ,t.name
+       ,t.spot
        ,t.distance
        ,t.eta
+       ,t.parking
+       ,t.restroom
+       ,t.trashcan
+       ,t.explanation
        ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
+       ,TO_CHAR(t.updatedate, 'YY-MM-DD') updateDate
        ,u.userNo
        ,u.name
   FROM trail t, users u
  WHERE t.userNo = u.userNo
    AND t.trailNo = 1;
 
-SELECT u.userNo
-       ,u.name
-       ,i.orgName
+-- 유저 프로필
+SELECT i.orgName
        ,i.saveName
        ,i.filePath
   FROM users u, images i
  WHERE i.type = 'users'
    AND i.useNo = 1;
 
+-- 산책로 이용 정보
 SELECT COUNT(*)
   FROM trailUsed
  WHERE trailNo = 1;
@@ -449,9 +457,250 @@ VALUES (seq_coords_no.NEXTVAL, 'trail', 4, 1, 37.5436749, 127.1252811);
 INSERT INTO coords
 VALUES (seq_coords_no.NEXTVAL, 'trailParking', 4, 1, 37.5436747, 127.1252813);
 
+-- 산책로 상세
+
+-- 산책로 태그
+SELECT tagName
+  FROM trailTag
+ WHERE trailNo = 1;
+
+-- 산책로 정보 좌표
+SELECT c.useNo
+       ,c.coordOrder
+       ,c.lat
+       ,c.lng
+  FROM trail t, coords c
+ WHERE t.trailNo = c.useNo
+   AND c.type = 'parking'
+   AND c.useNo = 1;
+
+-- 유저 이용수
+SELECT COUNT(*)
+  FROM trailUsed tu, walkLog w
+ WHERE tu.walklogno = w.walkLogNo
+   AND w.userNo = 2
+   AND tu.trailNo = 8;
+
+-- 유저 상세
+SELECT userNo
+       ,name
+  FROM users
+ WHERE userNo = 1;
+
+-- 최근 산책일지 목록
+SELECT ort.walkLogNo
+       ,ort.userNo
+       ,ort.distance
+       ,ort.logTime
+       ,ort.regDate
+  FROM (SELECT ROWNUM rn
+               ,ot.walkLogNo
+               ,ot.userNo
+               ,ot.distance
+               ,ot.logTime
+               ,ot.regDate
+          FROM (SELECT w.walklogNo
+                       ,w.userNo
+                       ,w.distance
+                       ,w.logTime
+                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+                  FROM trailUsed tu, walkLog w
+                 WHERE tu.walklogno = w.walkLogNo
+                   AND w.status = 'T'
+                   AND w.userNo = 2
+                   AND tu.trailNo = 1
+                 ORDER BY regDate DESC
+               ) ot
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 3;
+
+-- 가장 많이 이용한 메이트
+SELECT ort.userNo
+       ,ort.name
+       ,ort.cnt
+  FROM ( SELECT ROWNUM rn
+               ,s.userNo
+               ,s.name
+               ,ot.cnt
+          FROM users s, ( SELECT COUNT(*) cnt
+                                 ,u.userNo
+                            FROM trailUsed tu, walkLog w, users u
+                           WHERE tu.walklogno = w.walkLogNo
+                             AND w.userNo = u.userNo
+                             AND tu.trailNo = 1
+                           GROUP BY u.userNo
+                           ORDER BY cnt DESC ) ot
+          WHERE s.userNo = ot.userNo
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 5;
+
+SELECT ort.userNo
+       ,ort.name
+  FROM ( SELECT ROWNUM rn
+               ,s.userNo
+               ,s.name
+          FROM users s, ( SELECT COUNT(*) cnt
+                                 ,u.userNo
+                            FROM trailUsed tu, walkLog w, users u
+                           WHERE tu.walklogno = w.walkLogNo
+                             AND w.userNo = u.userNo
+                             AND tu.trailNo = 1
+                           GROUP BY u.userNo
+                           ORDER BY cnt DESC ) ot
+          WHERE s.userNo = ot.userNo
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 5;
+
+-- 산책로 후기
+
+-- 후기 목록
+-- 최신순
+SELECT ort.trailCmtNo
+       ,ort.trailNo
+       ,ort.content
+       ,ort.userNo
+       ,ort.name userName
+       ,ort.regDate
+  FROM (SELECT ROWNUM rn
+               ,ot.trailCmtNo
+               ,ot.trailNo
+               ,ot.content
+               ,ot.userNo
+               ,ot.name
+               ,ot.regDate
+          FROM (SELECT t.trailCmtNo
+                       ,t.trailNo
+                       ,t.content
+                       ,u.userNo
+                       ,u.name
+                       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
+                  FROM users u, trailCmt t
+                 WHERE t.userNo = u.userNo
+                   AND t.trailNo = 1
+                   AND t.status = 'T'
+                 ORDER BY DECODE(u.userNo, 2, 1), regDate DESC
+               ) ot
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 10;
+
+-- 인기순
+SELECT ort.trailCmtNo
+       ,ort.trailNo
+       ,ort.content
+       ,ort.userNo
+       ,ort.name userName
+       ,ort.regDate
+  FROM (SELECT ROWNUM rn
+               ,ot.trailCmtNo
+               ,ot.trailNo
+               ,ot.content
+               ,ot.userNo
+               ,ot.name
+               ,ot.regDate
+          FROM (SELECT t.trailCmtNo
+                       ,t.trailNo
+                       ,t.content
+                       ,u.userNo
+                       ,u.name
+                       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
+                  FROM users u, trailCmt t
+                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
+                                           ,useNo
+                                      FROM userLike
+                                     WHERE type = 'trailCmt'
+                                     GROUP BY useNo ) gt
+                    ON t.trailCmtNo = gt.useNo
+                 WHERE t.userNo = u.userNo
+                   AND t.trailNo = 1
+                   AND t.status = 'T'
+                 ORDER BY DECODE(u.userNo, 2, 1), gt.cnt DESC, regDate DESC
+               ) ot
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 10;
+
+SELECT ort.trailCmtNo
+       ,ort.trailNo
+       ,ort.content
+       ,ort.userNo
+       ,ort.name userName
+       ,ort.regDate
+       ,ort.cnt
+  FROM (SELECT ROWNUM rn
+               ,ot.trailCmtNo
+               ,ot.trailNo
+               ,ot.content
+               ,ot.userNo
+               ,ot.name
+               ,ot.regDate
+               ,ot.cnt
+          FROM (SELECT t.trailCmtNo
+                       ,t.trailNo
+                       ,t.content
+                       ,u.userNo
+                       ,u.name
+                       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
+                       ,gt.cnt
+                  FROM users u, trailCmt t
+                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
+                                           ,useNo
+                                      FROM userLike
+                                     WHERE type = 'trailCmt'
+                                     GROUP BY useNo ) gt
+                    ON t.trailCmtNo = gt.useNo
+                 WHERE t.userNo = u.userNo
+                   AND t.trailNo = 1
+                   AND t.status = 'T'
+                 ORDER BY DECODE(u.userNo, 0, 1), gt.cnt DESC, regDate DESC
+               ) ot
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 10;
+
+-- 후기 이미지 목록
+SELECT i.orgName
+       ,i.saveName
+       ,i.filePath
+       ,i.imageOrder
+  FROM trailcmt t, images i
+ WHERE i.type = 'trailCmt'
+   AND i.useNo = 1
+ ORDER BY i.imageOrder ASC;
+
+-- cmt 좋아요 수
+SELECT COUNT(*)
+  FROM userLike
+ WHERE type = 'trailCmt'
+   AND useNo = 1;
+
+-- 후기 전체 수
+
 ---------------------------------------------------------------------------------------
 
-SELECT walkLogNo
+DELETE FROM users
+WHERE userNo = 99;
+
+INSERT INTO userLike
+VALUES(seq_userlike_no.NEXTVAL, 2, 'trailCmt', 9);
+INSERT INTO userLike
+VALUES(seq_userlike_no.NEXTVAL, 3, 'trailCmt', 8);
+
+DELETE FROM users
+WHERE userNo = 99;
+
+UPDATE walkLog
+   SET distance = 20
+ WHERE walkLogNo = 2;
+
+UPDATE coords
+   SET type = 'trashCan'
+ WHERE type = 'trailTrashCan';
+
+SELECT *
   FROM walkLog;
 
 SELECT *
@@ -459,10 +708,13 @@ SELECT *
  WHERE type = 'walkLog';
 
 INSERT INTO walkLog
-VALUES (seq_walklog_no.NEXTVAL, 2, 1174010900, null, '제목', SYSDATE, to_date('2023-11-04 03:28','YYYY/MM/DD HH:MI'), to_date('2023-11-05 03:28','YYYY/MM/DD HH:MI'), 3560, 15, '내용을 적어주세요', '공개', 'T');
+VALUES (seq_walklog_no.NEXTVAL, 3, 1174010900, null, '제목', SYSDATE, to_date('2023-11-04 03:28','YYYY/MM/DD HH:MI'), to_date('2023-11-05 03:28','YYYY/MM/DD HH:MI'), 3560, 15, '내용을 적어주세요', '공개', 'T');
 
 INSERT INTO coords
 VALUES (seq_coords_no.NEXTVAL, 'walkLog', seq_walklog_no.CURRVAL, 1, 37.5436749, 127.1252811);
+
+INSERT INTO trailUsed
+VALUES(seq_trailused_no.NEXTVAL, seq_walklog_no.CURRVAL, 1);
 
 UPDATE walkLog
    SET userNo = '2'

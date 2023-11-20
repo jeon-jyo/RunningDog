@@ -234,11 +234,11 @@ INSERT INTO trailTag
 VALUES (5, 3, '공원 근처');
 
 INSERT INTO coords
-VALUES (seq_coords_no.NEXTVAL, 'trailParking', 1, 1, 37.544770, 127.126219);
+VALUES (seq_coords_no.NEXTVAL, 'parking', 1, 1, 37.544770, 127.126219);
 INSERT INTO coords
-VALUES (seq_coords_no.NEXTVAL, 'trailRestroom', 2, 1, 37.548796, 127.119965);
+VALUES (seq_coords_no.NEXTVAL, 'restroom', 2, 1, 37.548796, 127.119965);
 INSERT INTO coords
-VALUES (seq_coords_no.NEXTVAL, 'trailTrashCan', 3, 1, 37.545122, 127.119196);
+VALUES (seq_coords_no.NEXTVAL, 'trashCan', 3, 1, 37.545122, 127.119196);
 
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 1, 'trail', 1, 127.1252811, 37.5436749);
 INSERT INTO coords (coordNo, coordOrder, type, useNo, lng, lat) VALUES (seq_coords_no.NEXTVAL, 2, 'trail', 1, 127.1254717, 37.54419228);
