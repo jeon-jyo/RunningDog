@@ -112,18 +112,23 @@
 
 	<select id="getShowLogCmtList" parameterType="int" resultType="com.runningdog.vo.ShowLogCmtVo">
     <![CDATA[
-        SELECT 
-               WC.walkLogCmtNo,
-               WC.walkLogNo,
-               US.userNo,
-               US.name,
-               WC.content,
-               TO_CHAR(WC.regDate, '""YYYY"년 "MM"월 "DD"일 "HH24"시 "MI"분"') regDate,
-               WC.status
-        FROM walkLogCmt WC, users US
-        where WC.userNo = US.userNo
-        and walkLogNo = #{walkLogNo}
-        ORDER BY walkLogCmtNo ASC
+           SELECT 
+    WC.walkLogCmtNo,
+    WC.walkLogNo,
+    US.userNo,
+    US.name,
+    WC.content,
+    TO_CHAR(WC.regDate, 'YYYY"년 "MM"월 "DD"일 "HH24"시 "MI"분"') AS regDate,
+    WC.status,
+    IM.saveName AS userSavename
+FROM 
+    walkLogCmt WC
+    JOIN users US ON WC.userNo = US.userNo
+    LEFT JOIN images IM ON IM.useNo = US.userNo
+WHERE 
+    WC.walkLogNo = 7
+ORDER BY 
+    WC.walkLogCmtNo ASC
     ]]>
 	</select>
 	
@@ -287,6 +292,18 @@
     ]]>
 	</select>
 	
+	
+	 <select id="getWalkLogMap" parameterType="int" resultType="String">
+    <![CDATA[
+    select IM.saveName 
+    from images IM , walkLog wL
+    where  IM.useNo = WL.walkLogNo
+    and  IM.useNo = #{walkLogNo}
+    and type = 'walkLogMap'
+    ]]>
+	</select> 
+	
+	
 	<select id="getFriendDogList" parameterType="String" resultType="com.runningdog.vo.BlogDogVo">
     <![CDATA[
 			SELECT 
@@ -307,6 +324,19 @@
                                                 WHERE code = #{paramCode})))
     ]]>
 </select>
+
+<select id="getUserSavenameByWalkLogNo" parameterType="int" resultType="String">
+    <![CDATA[
+   select IM.saveName 
+    from images IM , users US
+    where  IM.useNo = US.userNo
+    and  IM.useNo = (SELECT U.userNo
+                           FROM users U, walkLog W
+                           where  U.userNo = W.userNo
+                           and W.walkLogNo = #{walkLogNo})
+    and type = 'users'
+    ]]>
+	</select>
 
 
 

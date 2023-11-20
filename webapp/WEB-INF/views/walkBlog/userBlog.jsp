@@ -9,7 +9,8 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://kit.fontawesome.com/98aecd1b62.js" crossorigin="anonymous"></script>
 <script>
- /* function toggleFollowButton() {
+
+function toggleFollowButton() {
     var followButton = document.getElementById("followButton");
     var followStatus = "${requestScope.blogInfoVo.followNo}";
 
@@ -54,51 +55,8 @@
     }
 }
 
-	function addComment(walkLogNo) {
-		var commentText = document.getElementById("commentText").value;
-		console.log(commentText);
-		console.log(${ShowLogVo.walkLogNo});
-		
-		if (commentText.trim() !== "") {
-			// Ajax 호출
-			$.ajax({
-				type : "POST",
-				url : "${pageContext.request.contextPath}/walkBlog/addComment",
-				data : {
-					walkLogNo : walkLogNo, // 적절한 walkLogNo 전달
-					content : commentText,
-					userNo: ${blogInfoVo.authNo}
-				},
-				success : function(response) {
-					// 성공 시, 화면 갱신 등 추가 작업 가능
-					console.log("댓글 등록 성공");
-				},
-				error : function(error) {
-					console.error("댓글 등록 실패: " + error);
-				}
-			});
-		}
-	}
+
 	
-	function deleteComment(cmtNo) {
-        // Ajax 호출
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/walkBlog/deleteComment",
-            data: {
-                walkLogCmtNo: cmtNo
-            },
-            success: function(response) {
-                // 성공 시, 화면 갱신 등 추가 작업 가능
-                console.log("댓글 삭제 성공");
-                // 여기에 화면 갱신 등을 위한 코드를 추가할 수 있습니다.
-            },
-            error: function(error) {
-                console.error("댓글 삭제 실패: " + error);
-            }
-        });
-    }
-	  */
 	  
 	  function addComment(walkLogNo) {
 		    var commentText = document.getElementById("commentText").value;
@@ -116,16 +74,28 @@
 		                userNo: ${blogInfoVo.authNo}
 		            },
 		            success: function (response) {
-		                // 성공 시, 화면 갱신 등 추가 작업 가능
-		                console.log("댓글 등록 성공");
-		                
-		                // 새로운 댓글이 등록되면 화면 갱신
-		                // 이 부분에서 필요한 화면 갱신 동작을 수행하면 됩니다.
-		                // 예를 들어, 새로운 댓글을 바로 추가하는 등의 동작을 수행할 수 있습니다.
-		                // ...
+		            	 // 댓글이 성공적으로 등록되면 화면에 추가
+		                var commentSection = $(".MRcomments");
 
-		                // 추가: 새로운 댓글이 등록되면 댓글 목록을 갱신
-		                refreshCommentSection(walkLogNo);
+		                // 새로운 댓글을 화면에 추가하는 부분
+		                var newCommentHtml = `
+		                    <div class="MRcomment1" id="${response.walkLogCmtNo}">
+		                        <img src="${pageContext.request.contextPath}/assets/images/${response.userSavename}" alt="">
+		                        <div class="replyDateCmtBox">
+		                            <div class="MRreplyDate">${response.regDate}</div>
+		                            <button class="deleteCommentButton" onclick="deleteComment('${response.walkLogCmtNo}')">삭제</button>
+		                        </div>
+		                        <div class="MRuserIdandContent">
+		                            <div class="MRreplyUserId">${response.name}</div>
+		                            <div class="MRreplyContent">${response.content}</div>
+		                        </div>
+		                    </div>
+		                `;
+
+		                commentSection.append(newCommentHtml);
+
+		                // 등록 후 입력창 비우기
+		                document.getElementById("commentText").value = "";
 		            },
 		            error: function (error) {
 		                console.error("댓글 등록 실패: " + error);
@@ -145,14 +115,8 @@
 		        success: function (response) {
 		            // 성공 시, 화면 갱신 등 추가 작업 가능
 		            console.log("댓글 삭제 성공");
-
-		            // 댓글이 삭제되면 화면 갱신
-		            // 이 부분에서 필요한 화면 갱신 동작을 수행하면 됩니다.
-		            // 예를 들어, 삭제된 댓글을 화면에서 감추는 등의 동작을 수행할 수 있습니다.
-		            // ...
-
-		            // 추가: 삭제된 댓글이 없어지면 댓글 목록을 갱신
-		            refreshCommentSection(cmtNo);
+		            $('#comment_' + cmtNo).remove();
+		           
 		        },
 		        error: function (error) {
 		            console.error("댓글 삭제 실패: " + error);
@@ -160,29 +124,7 @@
 		    });
 		}
 
-		// 추가: 댓글 섹션을 갱신하는 함수
-		function refreshCommentSection(walkLogNo) {
-		    // 필요한 화면 갱신 로직을 여기에 추가
-		    // 예를 들어, 댓글 목록을 다시 불러와서 갱신하는 등의 동작을 수행할 수 있습니다.
-		    // ...
-
-		    // 간단한 예시: 해당 walkLogNo에 대한 댓글 목록을 갱신
-		    $.ajax({
-		        type: "GET",
-		        url: "${pageContext.request.contextPath}/walkBlog/getComments",
-		        data: {
-		            walkLogNo: walkLogNo
-		        },
-		        success: function (response) {
-		            // 새로운 댓글 목록을 받아와서 화면에 적용하는 로직
-		            // 이 부분에서는 댓글 목록을 갱신하는 등의 동작을 수행할 수 있습니다.
-		            // ...
-		        },
-		        error: function (error) {
-		            console.error("댓글 목록 불러오기 실패: " + error);
-		        }
-		    });
-		}
+		
 	
 </script>
 </head>
@@ -278,7 +220,7 @@
 
 										<div class="MRprofileWrapper1">
 											<div class="MRprofileImg1">
-												<img src="${pageContext.request.contextPath}/assets/images/마루쉐.png" alt="">
+												<img src="${pageContext.request.contextPath}/assets/images/${ShowLogVo.userSavename}" alt="">
 											</div>
 
 											<div class="MRuserName1">${ShowLogVo.name}</div>
@@ -367,7 +309,7 @@
 
 									<div class="MRwalkRecordSection">
 										<div class="MRwalkData">
-											<img src="${pageContext.request.contextPath}/assets/images/산책데이터.png" alt="">
+											<img src="${pageContext.request.contextPath}/assets/images/${ShowLogVo.walkLogMap}" alt="">
 										</div>
 										<div class="MRpictures">
 											<!-- 이미지 가져오기 -->
@@ -384,11 +326,11 @@
 									<div class="MRcommentSection">
 
 										<div class="MRcomments">
-											<c:forEach items="${ShowLogVo.showLogCmtList}" var="cmt">
+											<c:forEach items="${ShowLogVo.showLogCmtList}" var="cmt"  >
 												<c:if test="${not empty ShowLogVo.status and  String.valueOf(ShowLogVo.status) eq 'T'}">
-													<div class="MRcomment1">
+													<div id="comment_${cmt.walkLogCmtNo} class="MRcomment1">
 
-														<img src="${pageContext.request.contextPath}/assets/images/마루쉐.png" alt="">
+														<img src="${pageContext.request.contextPath}/assets/images/${cmt.userSavename}" alt="">
 														<div class="replyDateCmtBox">
 															<div class="MRreplyDate">${cmt.regDate}</div>
 															<c:if test="${requestScope.blogInfoVo.authNo eq cmt.userNo}">

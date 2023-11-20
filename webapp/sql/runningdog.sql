@@ -294,7 +294,7 @@ SELECT ort.walkLogNo
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND w.status = 'T'
-                   AND w.userNo = '2'
+                   AND w.userNo = '3'
                  ORDER BY regDate DESC
                ) ot
        ) ort
@@ -414,12 +414,13 @@ SELECT t.trailNo
    AND t.trailNo = 1;
 
 -- 유저 프로필
-SELECT i.orgName
-       ,i.saveName
-       ,i.filePath
-  FROM users u, images i
- WHERE i.type = 'users'
-   AND i.useNo = 1;
+SELECT orgName
+       ,saveName
+       ,filePath
+  FROM images
+ WHERE type = 'users'
+   AND useNo = 1;
+
 
 -- 산책로 이용 정보
 SELECT COUNT(*)
@@ -668,10 +669,21 @@ SELECT i.orgName
        ,i.imageOrder
   FROM trailcmt t, images i
  WHERE i.type = 'trailCmt'
-   AND i.useNo = 1
+   AND t.trailCmtNo = i.useNo
+   AND i.useNo = 12
  ORDER BY i.imageOrder ASC;
 
--- cmt 좋아요 수
+SELECT i.orgName
+       ,i.saveName
+       ,i.filePath
+       ,i.imageOrder
+  FROM trailcmt t, images i
+ WHERE i.type = 'trailCmt'
+   AND t.trailCmtNo = i.useNo
+   AND i.useNo = 12
+ ORDER BY i.imageOrder ASC;
+
+-- 후기 좋아요 수
 SELECT COUNT(*)
   FROM userLike
  WHERE type = 'trailCmt'
@@ -679,15 +691,36 @@ SELECT COUNT(*)
 
 -- 후기 전체 수
 
+-- 후기 작성
+INSERT INTO trailCmt
+VALUES(seq_trailcmt_no.NEXTVAL, 1000, 1, sysdate, '산책로 좋아요', 'T');
+
+-- 후기 이미지 업로드
+INSERT INTO images
+VALUES(seq_images_no.NEXTVAL, '원본이름', '저장이름', '저장위치', 41214, 'trailCmt', 1000, 0);
+
+SELECT *
+  FROM trailCmt;
+SELECT *
+  FROM images;
+SELECT *
+  FROM users;
+SELECT *
+  FROM trail;
+
 ---------------------------------------------------------------------------------------
+
+DELETE FROM images;
 
 DELETE FROM users
 WHERE userNo = 99;
 
 INSERT INTO userLike
-VALUES(seq_userlike_no.NEXTVAL, 2, 'trailCmt', 9);
+VALUES(seq_userlike_no.NEXTVAL, 2, 'trailCmt', 1);
 INSERT INTO userLike
-VALUES(seq_userlike_no.NEXTVAL, 3, 'trailCmt', 8);
+VALUES(seq_userlike_no.NEXTVAL, 3, 'trailCmt', 2);
+INSERT INTO userLike
+VALUES(seq_userlike_no.NEXTVAL, 3, 'trailCmt', 3);
 
 DELETE FROM users
 WHERE userNo = 99;

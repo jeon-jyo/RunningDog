@@ -177,5 +177,20 @@ public class WalkBlogDao {
 		return sqlSession.selectList("walkBlog.getFriendDogList", paramCode);
 	}
 
+	public String getWalkLogMap(int walkLogNo) {
+		
+		return sqlSession.selectOne("walkBlog.getWalkLogMap", walkLogNo);
+	}
+
+	public String getUserSavename(int walkLogNo) {
+		
+		return sqlSession.selectOne("walkBlog.getUserSavename", walkLogNo);
+	}
+
+	public String getUserSavenameByWalkLogNo(int walkLogNo) {
+		
+		return sqlSession.selectOne("walkBlog.getUserSavenameByWalkLogNo", walkLogNo);
+	}
+
 	
 }

@@ -52,6 +52,11 @@ body .global-header nav ul {
 	
 }
 
+.wrap .clubInfo .clubTitle a{
+	text-decoration: none;
+	color: #212529;
+}
+
 .wrap .clubInfo p {
 	margin-bottom: 4px;
 }

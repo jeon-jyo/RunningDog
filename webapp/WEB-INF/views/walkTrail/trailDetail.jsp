@@ -631,12 +631,6 @@
 								galleryRender(listMap, i, "down");
 							}
 						}
-						
-						
-						
-						for(let i = 0; i < listMap.cmtList.length; i++) {
-							listRender(listMap, i, "down");
-						}
 					}
 				} else if(cmtIndex == 1) {
 					console.log("산책일지 목록");

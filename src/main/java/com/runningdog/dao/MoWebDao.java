@@ -77,19 +77,13 @@ public class MoWebDao {
 		return  sqlSession.selectList("walkLog.mapSelect", walkLogNo);
 	}
 	
-	// 첨부이미지 저장하기
+	// 이미지 저장하기
 	public void imgsSave(ImagesVo imagesVo){
 		System.out.println("다오 첨부이미지 저장하기");	
 		System.out.println(imagesVo);
 		sqlSession.insert("walkLog.imgsSave", imagesVo);
 	}
-		
-	// 맵이미지 저장하기
-	public String mapImgSave(ImagesVo imagesVo){
-		System.out.println("다오 맵이미지 저장하기");	
-		
-		return  "";
-	}	
+	
 	
 	// (0) 유사한 산책로 불러오기 (현재는 더미데이터 3개 불러오기)
 	public List<MoTrailVo> trailSelect(int locationNo){

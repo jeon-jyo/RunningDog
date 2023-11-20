@@ -17,7 +17,7 @@
 		</div>
 		<div class="clubInfo">
 			<h2 class="clubTitle">
-				강아지 산악회 <i class="fa-solid fa-gear"></i>
+				강아지 산악회 <a class="fa-solid fa-gear" href="${pageContext.request.contextPath}/walkmeeting/membersetting"></a>
 			</h2>
 			<p>
 				<i class="fa-solid fa-location-dot"></i>서울특별시 강동구 천호동

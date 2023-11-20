@@ -9,6 +9,7 @@
 	<select id="selectOneUser" parameterType="com.runningdog.vo.UserVo" resultType="com.runningdog.vo.UserVo">
 		<![CDATA[
 			select  userNo
+					,code
 			from users
 			where id = #{id}
 			and password = #{password}
@@ -42,6 +43,7 @@
 		         ,im.orgname as orgName
 		 FROM users us,dog do, images im
 	 	 where us.userno = #{userno}
+	 	 and im.type = 'dog'
 	 	 and us.userno = do.userno
 		 and do.dogno = im.useno
       ]]>
@@ -107,12 +109,28 @@
                       ,#{saveName}
                       ,#{filePath}
                       ,#{fileSize}
-                      ,'walkLogCon'
-                      ,#{userNo}
+                      ,#{type}
+                      ,#{useNo}
                       ,#{imageOrder}
                       )
 		 ]]>
 	</insert>
+	
+	<insert id="mapImgSave" parameterType="com.runningdog.vo.ImagesVo">  
+		 <![CDATA[
+		 INSERT INTO images
+		 VALUES (seq_images_no.nextval
+                      ,#{orgName}
+                      ,#{saveName}
+                      ,#{filePath}
+                      ,#{fileSize}
+                      ,#{type}
+                      ,#{useNo}
+                      ,#{imageOrder}
+                      )
+		 ]]>
+	</insert>
+	
    
    <!-- 좌표값 가져오기 (캡쳐용) -->   
    <select id="mapSelect"  parameterType="int" resultType="com.runningdog.vo.CoordsVo">

@@ -10,7 +10,9 @@
 	    $('.profile-circles').slick({
 	        slidesToShow: 6,
 	        slidesToScroll: 6,
-	        infinite: false
+	        infinite: false,
+	        centerMode: false, // 왼쪽 정렬을 위해 추가
+	        variableWidth: true // 왼쪽 정렬을 위해 추가
 	    });
 	
 	    // 슬라이드 버튼을 숨김

@@ -20,6 +20,8 @@ public class ShowLogVo {
 	private char status;
 	private String name;
 	private String title;
+	private String walkLogMap;
+	private String userSavename;
 
 	private List<ShowLogCmtVo> showLogCmtList;
 	private List<WalkLogConImgVo> imageList;
@@ -29,10 +31,15 @@ public class ShowLogVo {
 	public ShowLogVo() {}
 
 
+
+
+
+
+
 	public ShowLogVo(int walkLogNo, int userNo, int locationNo, String regDate, String startTime, String endTime,
 			long logTime, double distance, String distanceFormatted, String logTimeFormatted, String content,
-			String security, char status, String name, String title, List<ShowLogCmtVo> showLogCmtList,
-			List<WalkLogConImgVo> imageList, List<LogWalkedDogVo> walkedDogList) {
+			String security, char status, String name, String title, String walkLogMap, String userSavename,
+			List<ShowLogCmtVo> showLogCmtList, List<WalkLogConImgVo> imageList, List<LogWalkedDogVo> walkedDogList) {
 		super();
 		this.walkLogNo = walkLogNo;
 		this.userNo = userNo;
@@ -49,12 +56,53 @@ public class ShowLogVo {
 		this.status = status;
 		this.name = name;
 		this.title = title;
+		this.walkLogMap = walkLogMap;
+		this.userSavename = userSavename;
 		this.showLogCmtList = showLogCmtList;
 		this.imageList = imageList;
 		this.walkedDogList = walkedDogList;
 	}
-	
-	
+
+
+
+
+
+
+
+	public String getUserSavename() {
+		return userSavename;
+	}
+
+
+
+
+
+
+
+	public void setUserSavename(String userSavename) {
+		this.userSavename = userSavename;
+	}
+
+
+
+
+
+
+
+	public String getWalkLogMap() {
+		return walkLogMap;
+	}
+
+
+
+
+
+	public void setWalkLogMap(String walkLogMap) {
+		this.walkLogMap = walkLogMap;
+	}
+
+
+
 
 
 	public List<LogWalkedDogVo> getWalkedDogList() {
@@ -246,15 +294,26 @@ public class ShowLogVo {
 	}
 
 
+
+
+
+
+
 	@Override
 	public String toString() {
 		return "ShowLogVo [walkLogNo=" + walkLogNo + ", userNo=" + userNo + ", locationNo=" + locationNo + ", regDate="
 				+ regDate + ", startTime=" + startTime + ", endTime=" + endTime + ", logTime=" + logTime + ", distance="
 				+ distance + ", distanceFormatted=" + distanceFormatted + ", logTimeFormatted=" + logTimeFormatted
 				+ ", content=" + content + ", security=" + security + ", status=" + status + ", name=" + name
-				+ ", title=" + title + ", showLogCmtList=" + showLogCmtList + ", imageList=" + imageList
-				+ ", walkedDogList=" + walkedDogList + "]";
+				+ ", title=" + title + ", walkLogMap=" + walkLogMap + ", userSavename=" + userSavename
+				+ ", showLogCmtList=" + showLogCmtList + ", imageList=" + imageList + ", walkedDogList=" + walkedDogList
+				+ "]";
 	}
+
+
+
+
+
 
 	
 

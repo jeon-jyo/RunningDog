@@ -38,15 +38,15 @@
 		</div>
 		<p class="inputTitle">강아지 크기</p>
 		<div class="form-check form-check-inline">
-		  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" checked>
+		  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
 		  <label class="form-check-label" for="inlineCheckbox1">소형견</label>
 		</div>
 		<div class="form-check form-check-inline">
-		  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" checked>
+		  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2">
 		  <label class="form-check-label" for="inlineCheckbox2">대형견</label>
 		</div>
 		<div class="form-check form-check-inline">
-		  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" checked>
+		  <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3">
 		  <label class="form-check-label" for="inlineCheckbox3">중형견</label>
 		</div>
 		<i class="fa-solid fa-circle-exclamation" data-bs-html="true" data-toggle="tooltip" data-placement="top" 

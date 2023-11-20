@@ -128,6 +128,15 @@ public class WalkBlogService {
             walkLog.setShowLogCmtList(cmtList);
         }
         
+        
+        
+        for (ShowLogVo walkLog : walkLogList) {
+            
+            walkLog.setWalkLogMap(walkBlogDao.getWalkLogMap(walkLog.getWalkLogNo()));
+            walkLog.setUserSavename(walkBlogDao.getUserSavenameByWalkLogNo(walkLog.getWalkLogNo()));
+        }
+        
+        
         for (ShowLogVo walkLog : walkLogList) {
         	System.out.println(walkLog.getWalkLogNo());
         	List<LogWalkedDogVo> walkedDogList = walkBlogDao.getWalkedDogList(walkLog.getWalkLogNo());

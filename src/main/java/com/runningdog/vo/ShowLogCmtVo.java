@@ -9,7 +9,28 @@ public class ShowLogCmtVo {
 	private String name;
 	private String content;
 	private String regDate;
+	private String userSavename;
 	private char status;
+	
+	
+	
+	public ShowLogCmtVo(int walkLogCmtNo, int walkLogNo, int userNo, String name, String content, String regDate,
+			String userSavename, char status) {
+		super();
+		this.walkLogCmtNo = walkLogCmtNo;
+		this.walkLogNo = walkLogNo;
+		this.userNo = userNo;
+		this.name = name;
+		this.content = content;
+		this.regDate = regDate;
+		this.userSavename = userSavename;
+		this.status = status;
+	}
+
+
+
+
+	
 	
 	
 	
@@ -18,22 +39,33 @@ public class ShowLogCmtVo {
 	
 	
 	
+
 	
-	public ShowLogCmtVo( int walkLogCmtNo, int walkLogNo, int userNo, String name, String content,
-			String regDate, char status) {
-		super();
-		
-		this.walkLogCmtNo = walkLogCmtNo;
-		this.walkLogNo = walkLogNo;
-		this.userNo = userNo;
-		this.name = name;
-		this.content = content;
-		this.regDate = regDate;
-		this.status = status;
+	
+	public String getUserSavename() {
+		return userSavename;
 	}
-	
-	
-	
+
+
+
+
+
+
+
+
+
+	public void setUserSavename(String userSavename) {
+		this.userSavename = userSavename;
+	}
+
+
+
+
+
+
+
+
+
 	public int getWalkLogCmtNo() {
 		return walkLogCmtNo;
 	}
@@ -77,15 +109,23 @@ public class ShowLogCmtVo {
 		this.status = status;
 	}
 
- 
+
+
+
+
+
+
 
 
 	@Override
 	public String toString() {
-		return "ShowLogCmt [walkLogCmtNo=" + walkLogCmtNo + ", walkLogNo="
-				+ walkLogNo + ", userNo=" + userNo + ", name=" + name + ", content=" + content + ", regDate=" + regDate
+		return "ShowLogCmtVo [walkLogCmtNo=" + walkLogCmtNo + ", walkLogNo=" + walkLogNo + ", userNo=" + userNo
+				+ ", name=" + name + ", content=" + content + ", regDate=" + regDate + ", userSavename=" + userSavename
 				+ ", status=" + status + "]";
 	}
+
+ 
+
 	
 	
 	

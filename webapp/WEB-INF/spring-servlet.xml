@@ -34,4 +34,5 @@
 	
 	<!-- url매핑-->
 	<mvc:resources mapping="/rdimg/**" location="file:C:/javaStudy/rdimg/" />
+	
 </beans>

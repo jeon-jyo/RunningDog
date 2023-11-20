@@ -21,7 +21,7 @@ body .global-header {
 	float: left;
 	height: calc(100vh - 56px);
 	background-color: #f0f0f5;
-	position: fixed;
+	position: absolute;
 	display: flow-root;
 }
 
@@ -58,6 +58,11 @@ body .global-header {
 	margin : 0 40px;
 	position: relative;
 	cursor: pointer;
+}
+
+.clubSidebar ul li a{
+	text-decoration: none;
+	color: #212529;
 }
 
 .clubSidebar ul li:last-child {

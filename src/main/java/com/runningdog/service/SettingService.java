@@ -32,8 +32,6 @@ public class SettingService {
 			
 		UserVo selectUser = settingDao.selectUser(userNo);
 		
-		System.out.println(selectUser);
-		
 		//이미지 가져오기
 		MainImageVo userImg = new MainImageVo("users", userNo);
 		String saveName = settingDao.selectImg(userImg);
