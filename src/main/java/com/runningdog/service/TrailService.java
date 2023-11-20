@@ -431,53 +431,45 @@ public class TrailService {
 		return userUsedMap;
 	}
 
-	// 산책로 후기 목록 ajax
+	// 후기 - 목록 / 갤러리
 	public Map<String, Object> cmtListMap(Map<String, Object> fetchSet) {
 		System.out.println("TrailService.cmtListMap()");
 		
-		int cmtListNav = (int) fetchSet.get("cmtListNav");
+		List<TrailCmtVo> cmtList = trailDao.cmtList(fetchSet);
+		// System.out.println("cmtList : " + cmtList);
 		
-		if(cmtListNav == 0) {
-			// 목록
-			List<TrailCmtVo> cmtList = trailDao.cmtList(fetchSet);
-			// System.out.println("cmtList : " + cmtList);
+		List<List<ImagesVo>> cmtImgList = new ArrayList<List<ImagesVo>>();
+		List<ImagesVo> userImgList = new ArrayList<ImagesVo>();
+		List<Integer> likeCntList = new ArrayList<Integer>();
+		for (TrailCmtVo trailCmtVo : cmtList) {
+			// 후기 이미지 목록
+			List<ImagesVo> images = trailDao.cmtImages(trailCmtVo.getTrailCmtNo());
+			// 유저 프로필
+			ImagesVo userImg = trailDao.userImg(trailCmtVo.getUsersVo().getUserNo());
+			// 후기 좋아요수
+			int cmtLikeCnt = trailDao.cmtLikeCnt(trailCmtVo.getTrailCmtNo());
 			
-			List<List<ImagesVo>> cmtImgList = new ArrayList<List<ImagesVo>>();
-			List<ImagesVo> userImgList = new ArrayList<ImagesVo>();
-			List<Integer> likeCntList = new ArrayList<Integer>();
-			for (TrailCmtVo trailCmtVo : cmtList) {
-				// 후기 이미지 목록
-				List<ImagesVo> images = trailDao.cmtImages(trailCmtVo.getTrailCmtNo());
-				// 유저 프로필
-				ImagesVo userImg = trailDao.userImg(trailCmtVo.getUsersVo().getUserNo());
-				// 후기 좋아요수
-				int cmtLikeCnt = trailDao.cmtLikeCnt(trailCmtVo.getTrailCmtNo());
-				
-				if(CollectionUtils.isEmpty(images)) {
-					ImagesVo vo = new ImagesVo();
-					vo.setSaveName("noImg");
-					vo.setImageOrder(0);
-					images.add(vo);
-				}
-				cmtImgList.add(images);
-				userImgList.add(userImg);
-				likeCntList.add(cmtLikeCnt);
+			if(CollectionUtils.isEmpty(images)) {
+				ImagesVo vo = new ImagesVo();
+				vo.setSaveName("noImg");
+				vo.setImageOrder(0);
+				images.add(vo);
 			}
-			// System.out.println("cmtImgList : " + cmtImgList);
-			// System.out.println("userImgList : " + userImgList);
-			// System.out.println("likeCntList : " + likeCntList);
-			
-			Map<String, Object> listMap = new HashMap<String, Object>();
-			listMap.put("cmtList", cmtList);
-			listMap.put("cmtImgList", cmtImgList);
-			listMap.put("userImgList", userImgList);
-			listMap.put("likeCntList", likeCntList);
-			
-			return listMap;
-		} else {
-			// 갤러리
-			return null;
+			cmtImgList.add(images);
+			userImgList.add(userImg);
+			likeCntList.add(cmtLikeCnt);
 		}
+		// System.out.println("cmtImgList : " + cmtImgList);
+		// System.out.println("userImgList : " + userImgList);
+		// System.out.println("likeCntList : " + likeCntList);
+		
+		Map<String, Object> listMap = new HashMap<String, Object>();
+		listMap.put("cmtList", cmtList);
+		listMap.put("cmtImgList", cmtImgList);
+		listMap.put("userImgList", userImgList);
+		listMap.put("likeCntList", likeCntList);
+		
+		return listMap;
 	}
 
 	// 산책로 후기 작성 ajax

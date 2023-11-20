@@ -576,7 +576,7 @@
 		 ]]>
 	</select>
 	
-	<!-- 후기 목록 -->
+	<!-- 후기 - 목록 / 갤러리 -->
 	<select id="cmtList" parameterType="java.util.Map" resultMap="TrailCmtMap">
 		 <![CDATA[
 			SELECT ort.trailCmtNo
@@ -639,6 +639,7 @@
 			       ,i.imageOrder
 			  FROM trailcmt t, images i
 			 WHERE i.type = 'trailCmt'
+			   AND t.trailCmtNo = i.useNo
 			   AND i.useNo = #{trailCmtNo}
 			 ORDER BY i.imageOrder ASC
 		 ]]>

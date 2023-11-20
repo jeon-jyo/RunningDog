@@ -323,7 +323,9 @@
 				</div>
 				<!-- // comment-bar -->
 				
-				<div class="comment-list"></div>
+				<div class="comment-list cmt-list"></div>
+				<div class="comment-list gallery-list"></div>
+				<div class="meetingList"></div>
 				<!-- // comment-list -->
 			</div>
 			<!-- // comment-container -->
@@ -596,7 +598,6 @@
 		let fetchSet = {
 			"trailNo" : trailNo,
 			"cmtNav" : cmtIndex,
-			"cmtListNav" : cmtListIndex,
 			"cmtOrderNav" : cmtOrderIndex,
 		}
 		console.log("fetchSet ", fetchSet);
@@ -611,24 +612,36 @@
 			success : function(listMap) {
 				console.log("listMap ", listMap);
 				
-				$(".comment-list").empty();
+				$(".cmt-list").empty();
+				$(".gallery-list").empty();
+				$(".meetingList").empty();
 				
 				if(cmtIndex == 0) {
-					if(cmtListIndex == 0) {
-						console.log("후기 목록");
-						
-						if(listMap.cmtList.length == 0) {
-							// nonListRender();
-						} else {
+					console.log("후기 - 목록 / 갤러리");
+					
+					if(listMap.cmtList.length == 0) {
+						nonListRender();
+					} else {
+						if(cmtListIndex == 0) {
 							for(let i = 0; i < listMap.cmtList.length; i++) {
 								listRender(listMap, i, "down");
 							}
+						} else if(cmtListIndex == 1) {
+							for(let i = 0; i < listMap.cmtList.length; i++) {
+								galleryRender(listMap, i, "down");
+							}
 						}
-					} else if(cmtListIndex == 1) {
-						console.log("후기 갤러리");
+						
+						
+						
+						for(let i = 0; i < listMap.cmtList.length; i++) {
+							listRender(listMap, i, "down");
+						}
 					}
 				} else if(cmtIndex == 1) {
 					console.log("산책일지 목록");
+					
+					nonListRender();
 				}
 			},
 			error : function(XHR, status, error) {
@@ -649,6 +662,7 @@
 		str += '	<div class="comment-img">';
 		if(path != "") {
 			str += '		<img src="${pageContext.request.contextPath }/rdimg/trail/' + path + '">';
+			str += '		<div class="imgCount">3</div>';
 		}
 		str += '	</div>';
 		str += '	<div class="comment-content">';
@@ -675,13 +689,50 @@
 		str += '</div>';
 		
  		if(dir == "up") {
-			$(".comment-list").prepend(str);
+ 			$(".cmt-list").prepend(str);
 		} else if(dir == "down") {
-			$(".comment-list").append(str);
+			$(".cmt-list").append(str);
 		} else {
 			console.log("잘못입력");
 		}
 	}
+	
+	// cmt gallery list
+	function galleryRender(listMap, index, dir) {
+		console.log("galleryRender()");
+		
+		for(let i = 0; i <listMap.cmtImgList[index].length; i++) {
+			let path = (listMap.cmtImgList[index][i].saveName == "noImg") ? "" : listMap.cmtImgList[index][i].saveName
+			
+			if(path != "") {
+				let str = '';
+				str += '<div class="gallery-img">';
+				str += '	<div class="comment-img">';
+				str += '		<img src="${pageContext.request.contextPath }/rdimg/trail/' + path + '">';
+				str += '	</div>';
+				str += '</div>';
+				
+				if(dir == "up") {
+		 			$(".gallery-list").prepend(str);
+				} else if(dir == "down") {
+					$(".gallery-list").append(str);
+				} else {
+					console.log("잘못입력");
+				}
+			}
+		}
+	}
+	
+	function nonListRender() {
+		let str = '';
+		str += '<div class="comment-detail nonList">';
+		str += '	<span>목록이 없습니다.</span>';
+		str += '</div>';
+		
+		$(".cmt-list").append(str);
+	}
+	
+	
 	
 	/* cmt detail modify modal */
 	$(".comment-img").on("click", function() {
