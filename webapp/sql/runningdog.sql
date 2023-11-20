@@ -670,7 +670,7 @@ SELECT i.orgName
   FROM trailcmt t, images i
  WHERE i.type = 'trailCmt'
    AND t.trailCmtNo = i.useNo
-   AND i.useNo = 12
+   AND i.useNo = 8
  ORDER BY i.imageOrder ASC;
 
 SELECT i.orgName
@@ -679,8 +679,7 @@ SELECT i.orgName
        ,i.imageOrder
   FROM trailcmt t, images i
  WHERE i.type = 'trailCmt'
-   AND t.trailCmtNo = i.useNo
-   AND i.useNo = 12
+   AND i.useNo = 8
  ORDER BY i.imageOrder ASC;
 
 -- 후기 좋아요 수
