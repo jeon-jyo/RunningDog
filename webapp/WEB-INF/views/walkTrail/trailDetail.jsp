@@ -144,10 +144,10 @@
 					<div class="detail-bar">
 						<c:if test="${!empty userMap }">
 							<c:if test="${!empty userMap.userImg }">
-								<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+								<img src="${pageContext.request.contextPath }/rdimg/userProfile/${userMap.userImg.saveName }">
 							</c:if>
 							<c:if test="${empty userMap.userImg }">
-								<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang5.jpg">
+								<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
 							</c:if>
 							<div class="detail-text">
 								<span>${userMap.usersVo.name }</span>
@@ -182,10 +182,10 @@
 					<h2>공유 메이트</h2>
 					<div class="detail-bar">
 						<c:if test="${! empty detailMap.userImg }">
-							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+							<img src="${pageContext.request.contextPath }/rdimg/userProfile/${detailMap.userImg.saveName }">
 						</c:if>
 						<c:if test="${empty detailMap.userImg }">
-							<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang5.jpg">
+							<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
 						</c:if>
 						<div class="detail-text">
 							<span>${detailMap.trailVo.usersVo.name }</span>
@@ -212,10 +212,10 @@
 						<c:forEach items="${userUsedMap.userList }" var="usersVo" varStatus="status">
 							<div class="ranking-detail-bar">
 								<c:if test="${!empty userUsedMap.imgList[status.index] }">
-									<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang2.jpg">
+									<img src="${pageContext.request.contextPath }/rdimg/userProfile/${userUsedMap.imgList[status.index].saveName }">
 								</c:if>
 								<c:if test="${empty userUsedMap.imgList[status.index] }">
-									<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg">
+									<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
 								</c:if>
 								<div class="detail-text">
 									<span>${usersVo.name }</span>
@@ -659,7 +659,7 @@
 		if(listMap.userImgList[index] != null) {
 			str += '		<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + listMap.userImgList[index].saveName + '">';
 		} else {
-			str += '		<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg">';
+			str += '		<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">';
 		}
 		str += '		<div class="detail-text">';
 		str += '			<span>' + listMap.cmtList[index].usersVo.name + '</span>';

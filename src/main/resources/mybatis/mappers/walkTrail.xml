@@ -258,12 +258,12 @@
 	<!-- 유저 프로필 -->
 	<select id="userImg" parameterType="int" resultType="com.runningdog.vo.ImagesVo">
 		 <![CDATA[
-			SELECT i.orgName
-			       ,i.saveName
-			       ,i.filePath
-			  FROM users u, images i
-			 WHERE i.type = 'users'
-			   AND i.useNo = #{userNo}
+			SELECT orgName
+			       ,saveName
+			       ,filePath
+			  FROM images
+			 WHERE type = 'users'
+			   AND useNo = #{userNo}
 		 ]]>
 	</select>
 	

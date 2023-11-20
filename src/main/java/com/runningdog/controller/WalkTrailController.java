@@ -202,11 +202,13 @@ public class WalkTrailController {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		Map<String, Object> userMap = new HashMap<String, Object>();
 		if(authUser != null) {
-			System.out.println("authUser.getUserNo() " + authUser.getUserNo());
-			System.out.println("authUser.getUserNo() " + authUser);
-			
 			UsersVo usersVo = new UsersVo();
 			usersVo.setUserNo(authUser.getUserNo());
+			trailVo.setUsersVo(usersVo);
+			userMap = trailService.userDetail(trailVo);
+		} else {
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(2);
 			trailVo.setUsersVo(usersVo);
 			userMap = trailService.userDetail(trailVo);
 		}

@@ -48,6 +48,12 @@
 	display: block;
 }
 
+/* 프로필 */
+.detail-bar > img,
+.comment-info > img {
+    border-radius: 50%;
+}
+
 /* map-container main */
 .map-container {
 	/*height: 1425px;*/

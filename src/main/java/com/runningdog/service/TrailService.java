@@ -484,13 +484,11 @@ public class TrailService {
 	public void trailCmtAdd(Map<String, MultipartFile> fileMap, TrailCmtVo trailCmtVo) {
 		System.out.println("TrailService.trailCmtAdd()");
 		
-		System.out.println("trailCmtVo : " + trailCmtVo);
 		// 후기 등록
 		int insertCnt = trailDao.trailCmtAdd(trailCmtVo);
 		
 		if(insertCnt != 0) {
 			System.out.println("후기 등록 성공");
-			System.out.println("trailCmtVo : " + trailCmtVo);
 			
 			int index = 0;
 			for (MultipartFile file : fileMap.values()) {
@@ -516,13 +514,12 @@ public class TrailService {
 					imagesVo.setFilePath(filePath);
 					imagesVo.setFileSize(fileSize);
 					imagesVo.setImageOrder(index);
-					System.out.println("imagesVo : " + imagesVo);
 					
 					// DB 연결
 					// 후기 이미지 업로드
 					int imgInsertCnt = trailDao.cmtImgAdd(imagesVo);
 					if(imgInsertCnt == 1) {
-						System.out.println("후기 이미지 등록 성공");
+						// System.out.println("후기 이미지 등록 성공");
 						
 						// 서버 파일 저장
 						try {
@@ -539,8 +536,6 @@ public class TrailService {
 							e.printStackTrace();
 						}
 						index++;
-					} else {
-						System.out.println("후기 이미지 등록 실패");
 					}
 				}
 	        }

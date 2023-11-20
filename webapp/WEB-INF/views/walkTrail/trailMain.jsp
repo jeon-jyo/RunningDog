@@ -319,11 +319,11 @@
 				
 				if(infoMap.userImg != null) {
 					tooltipInfo.push(
-					    '       <img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang1.jpg" />',
+					    '       <img src="${pageContext.request.contextPath}/rdimg/userProfile/' + infoMap.userImg.saveName + '" />',
 					);
 				} else {
 					tooltipInfo.push(
-					    '       <img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang2.jpg" />',
+					    '       <img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg" />',
 					);
 				}
 				
@@ -413,6 +413,12 @@
 		
 		$("#trailList").append(str);
 	}
+	
+	$(".fa-circle-plus").on("click", function() {
+		console.log("fa-circle-plus click");
+		
+		window.location.href = "${pageContext.request.contextPath}/walkTrail/walkLog";
+	});
 	
 	/* Non-list */
  	$("#fa-angles").on("click", function() {
