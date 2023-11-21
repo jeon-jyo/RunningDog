@@ -295,6 +295,57 @@ public class WalkTrailController {
 		trailService.trailCmtAdd(fileMap, trailCmtVo);
 	}
 	
+	// 산책로 후기 작성 ajax1
+	@ResponseBody
+	@RequestMapping(value = "/cmtAdd1", method= { RequestMethod.GET, RequestMethod.POST})
+	public int trailCmtAdd1(@RequestParam int trailNo, @RequestParam(required = false) String content, HttpSession session) {
+		System.out.println("WalkTrailController.trailCmtAdd1()");
+		System.out.println("trailNo " + trailNo);
+		System.out.println("content " + content);
+		TrailCmtVo trailCmtVo = new TrailCmtVo();
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser != null) {
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(authUser.getUserNo());
+			
+			TrailVo trailVo = new TrailVo();
+			trailVo.setTrailNo(trailNo);
+			
+			trailCmtVo.setUsersVo(usersVo);
+			trailCmtVo.setTrailVo(trailVo);
+			trailCmtVo.setContent(content);
+		} else {
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(2);
+			
+			TrailVo trailVo = new TrailVo();
+			trailVo.setTrailNo(trailNo);
+			
+			trailCmtVo.setUsersVo(usersVo);
+			trailCmtVo.setTrailVo(trailVo);
+			trailCmtVo.setContent(content);
+		}
+		
+		int trailCmtNo = trailService.trailCmtAdd1(trailCmtVo);
+		System.out.println("trailCmtNo : " + trailCmtNo);
+		
+		return trailCmtNo;
+	}
+	
+	// 산책로 후기 작성 ajax2
+	@ResponseBody
+	@RequestMapping(value = "/cmtAdd2", method= { RequestMethod.GET, RequestMethod.POST})
+	public void trailCmtAdd2(MultipartHttpServletRequest request,
+			@RequestParam int trailCmtNo, HttpSession session) {
+		System.out.println("WalkTrailController.trailCmtAdd2()");
+		System.out.println("trailCmtNo " + trailCmtNo);
+		
+		Map<String, MultipartFile> fileMap = request.getFileMap();
+		
+		trailService.trailCmtAdd2(fileMap, trailCmtNo);
+	}
+	
 	@RequestMapping(value = "/detail/deleted", method= { RequestMethod.GET, RequestMethod.POST})
 	public String trailDetailDeleted() {
 		System.out.println("WalkTrailController.trailDetailDeleted()");

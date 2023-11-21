@@ -577,5 +577,68 @@ public class TrailService {
 	        }
 		}
 	}
+
+	public int trailCmtAdd1(TrailCmtVo trailCmtVo) {
+		System.out.println("TrailService.trailCmtAdd1()");
+		
+		// 후기 등록
+		int insertCnt = trailDao.trailCmtAdd(trailCmtVo);
+		
+		return trailCmtVo.getTrailCmtNo();
+	}
+
+	public void trailCmtAdd2(Map<String, MultipartFile> fileMap, int trailCmtNo) {
+		System.out.println("TrailService.trailCmtAdd2()");
+		
+		int index = 0;
+		for (MultipartFile file : fileMap.values()) {
+			if(!file.isEmpty()) {
+				// 파일 정보
+				String saveDir = "C:\\javaStudy\\rdimg\\trail";
+				
+				String orgName = file.getOriginalFilename();
+				String exName = orgName.substring(orgName.lastIndexOf("."));
+				
+				String saveName = System.currentTimeMillis()
+						+ UUID.randomUUID().toString()
+						+ exName;
+				
+				String filePath = saveDir + "\\" + saveName;
+				
+				int fileSize = (int) file.getSize();
+				
+				ImagesVo imagesVo = new ImagesVo();
+				imagesVo.setUseNo(trailCmtNo);
+				imagesVo.setOrgName(orgName);
+				imagesVo.setSaveName(saveName);
+				imagesVo.setFilePath(filePath);
+				imagesVo.setFileSize(fileSize);
+				imagesVo.setImageOrder(index);
+				
+				// DB 연결
+				// 후기 이미지 업로드
+				int imgInsertCnt = trailDao.cmtImgAdd(imagesVo);
+				if(imgInsertCnt == 1) {
+					// System.out.println("후기 이미지 등록 성공");
+					
+					// 서버 파일 저장
+					try {
+						byte[] fileDate;
+						fileDate = file.getBytes();
+						
+						OutputStream os = new FileOutputStream(filePath);
+						BufferedOutputStream bos = new BufferedOutputStream(os);
+						
+						bos.write(fileDate);
+						bos.close();
+						
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					index++;
+				}
+			}
+        }
+	}
 	
 }

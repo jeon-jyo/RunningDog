@@ -509,11 +509,11 @@
 	Dropzone.autoDiscover = false;
 
 	var dropzone = new Dropzone("div.dropzone", {
-		url : '${pageContext.request.contextPath}/walkTrail/cmtAdd',
+		url : '${pageContext.request.contextPath}/walkTrail/cmtAdd2',
 		method : "POST",
-		params: {
+		/* params: {
             "trailNo" : trailNo,
-        },
+        }, */
 		autoProcessQueue : false,
 		previewTemplate : previewTemplate,
 		previewsContainer : ".preview-list",
@@ -527,14 +527,7 @@
 
 			document.querySelector('#cmtAddBtn').addEventListener('click', function() {
 				console.log('업로드');
-				// console.log('myDropzone ', myDropzone);
-				
-				content = $('textarea[name=content]').val();
-				console.log('content ', content);
-				
-				console.log('dropzone.files ', dropzone);
-				
-				
+				console.log('dropzone.files ', dropzone.files);
 			});
 
 			this.on('sendingmultiple', function(files) {
@@ -543,6 +536,7 @@
 
 			this.on('successmultiple', function() {
 				console.log('성공');
+				
 				$('#addModal').modal('hide');
 				fetchList(trailNo);
 			});
@@ -555,23 +549,31 @@
 	document.querySelector('#cmtAddBtn').addEventListener('click', function() {
 		if (dropzone.files.length > 10) {
 			alert("후기 사진은 10개 까지 가능합니다.");
-		} 
-		$.ajax({
-			url : "${pageContext.request.contextPath}/walkTrail/cmtAdd",
-			type : "post",
-			contentType : "application/json",
-			data : {"trailNo" : trailNo,
-					"content" : $('textarea[name=content]').val()},
-			dataType : "json",
-			success : function(result) {
-				dropzone.options.params.trailCmtNo = result.trailCmtNo;
-				dropzone.processQueue();
-			},
-			error : function(XHR, status, error) {
-				console.error(status + " : " + error);
-			}
-		});
-	}
+		} else {
+			$.ajax({
+				url : "${pageContext.request.contextPath}/walkTrail/cmtAdd1",
+				type : "post",
+				data : {"trailNo" : trailNo,
+						"content" : $('textarea[name=content]').val()},
+						
+				dataType : "json",
+				success : function(result) {
+					console.log("result ", result);
+					
+					if (dropzone.files.length != 0) {
+						dropzone.options.params.trailCmtNo = result;
+						dropzone.processQueue();
+					} else {
+						$('#addModal').modal('hide');
+						fetchList(trailNo);
+					}
+				},
+				error : function(XHR, status, error) {
+					console.error(status + " : " + error);
+				}
+			});
+		}
+	});
 	// Dropzone has been added as a global variable.
 	
     /* cmt */
