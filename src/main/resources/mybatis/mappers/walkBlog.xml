@@ -126,7 +126,7 @@ FROM
     JOIN users US ON WC.userNo = US.userNo
     LEFT JOIN images IM ON IM.useNo = US.userNo
 WHERE 
-    WC.walkLogNo = 7
+    WC.walkLogNo = #{walkLogNo}
 ORDER BY 
     WC.walkLogCmtNo ASC
     ]]>

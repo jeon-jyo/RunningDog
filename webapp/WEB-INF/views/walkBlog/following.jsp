@@ -183,6 +183,19 @@
 		        }
 		    });
 		}
+		
+		function redirectBasedOnSelection() {
+	        var selectedValue = document.getElementById("followSelector").value;
+
+	        if (selectedValue === "follower") {
+	            window.location.href = "${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}/follower";
+	        } else if (selectedValue === "following") {
+	            window.location.href = "${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}/following";
+	        }
+	    }
+		
+		
+		
 	
 </script>
 </head>
@@ -257,21 +270,22 @@
 				<div class="mainPosts">
 
 					<div class="category">
-						<div class="tab record active">산책기록</div>
+						<div class="tab record ">산책기록</div>
 
 						<div class="tab meeting">산책모임</div>
-						<div class="tab following">팔로잉</div>
+						<a href="${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}/following">
+							<div class="tab following active">팔로잉</div>
+						</a>
 						<div class="tab blank"></div>
 					</div>
-					
+
 					<div class="followingSection">
 						<h2>팔로잉</h2>
 						<div class="selector">
-							<select class="form-select form-select-sm" aria-label="Small select example">
-								<option selected>팔로워</option>
-								<option value="1">팔로잉</option>
-
-
+							<select id="followSelector" class="form-select form-select-sm" aria-label="Small select example" onchange="redirectBasedOnSelection()">
+								<option value="following" selected>팔로잉</option>
+								<option value="follower" >팔로워</option>
+								
 							</select>
 						</div>
 						<div class="followings">
@@ -298,7 +312,7 @@
 					</div>
 
 
-					
+
 
 
 				</div>

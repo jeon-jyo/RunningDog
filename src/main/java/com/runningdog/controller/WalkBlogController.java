@@ -71,7 +71,7 @@ public class WalkBlogController {
 
 	}
 
-	@RequestMapping(value = "/{code}/{walkLogNo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{code}/{walkLogNo}",method = { RequestMethod.GET, RequestMethod.POST })
 	public String viewWalkLog(@PathVariable(value = "code") String code,
 			@PathVariable(value = "walkLogNo") int walkLogNo, Model model, Model model2, HttpSession session) {
 
@@ -96,8 +96,65 @@ public class WalkBlogController {
 
 		return "walkBlog/walkLogDetail"; // walkLog 상세 정보용 새로운 JSP 생성 (필요한 경우)
 	}
+	
+	
 
-	@RequestMapping(value = "/{code}/{walkLogNo}/modifyForm", method = RequestMethod.GET)
+	@RequestMapping(value = "/{code}/following",method = { RequestMethod.GET, RequestMethod.POST })
+	public String viewFollowing(@PathVariable(value = "code") String code,
+			 Model model, Model model2, HttpSession session) {
+
+		UserVo authuser = (UserVo) session.getAttribute("authUser");
+		System.out.println(authuser);
+
+		int authUserNo = (authuser != null) ? authuser.getUserNo() : 0; // authuser가 null이면 0으로 설정
+		System.out.println(authUserNo);
+		String paramCode = code;
+
+		BlogInfoVo blogInfoVo = walkBlogService.selectBlogInfo(paramCode, authUserNo);
+
+		System.out.println(blogInfoVo);
+
+		model.addAttribute("blogInfoVo", blogInfoVo);
+
+		
+
+		// 모델에 필요한 다른 속성 추가
+
+		return "walkBlog/following"; // walkLog 상세 정보용 새로운 JSP 생성 (필요한 경우)
+	}
+	
+	@RequestMapping(value = "/{code}/follower",method = { RequestMethod.GET, RequestMethod.POST })
+	public String viewFollower(@PathVariable(value = "code") String code,
+			 Model model, Model model2, HttpSession session) {
+
+		UserVo authuser = (UserVo) session.getAttribute("authUser");
+		System.out.println(authuser);
+
+		int authUserNo = (authuser != null) ? authuser.getUserNo() : 0; // authuser가 null이면 0으로 설정
+		System.out.println(authUserNo);
+		String paramCode = code;
+
+		BlogInfoVo blogInfoVo = walkBlogService.selectBlogInfo(paramCode, authUserNo);
+
+		System.out.println(blogInfoVo);
+
+		model.addAttribute("blogInfoVo", blogInfoVo);
+
+		
+
+		// 모델에 필요한 다른 속성 추가
+
+		return "walkBlog/follower"; // walkLog 상세 정보용 새로운 JSP 생성 (필요한 경우)
+	}
+	
+	
+	
+	
+	
+	
+	
+
+	@RequestMapping(value = "/{code}/{walkLogNo}/modifyForm", method = { RequestMethod.GET, RequestMethod.POST })
 	public String showModifyForm(@PathVariable(value = "code") String code,
 			@PathVariable(value = "walkLogNo") int walkLogNo, Model model, Model model2, HttpSession session) {
 		System.out.println("modifyForm");
@@ -259,14 +316,14 @@ public class WalkBlogController {
 		return "success";
 	}
 
-	@RequestMapping(value = "/deleteComment", method = RequestMethod.POST)
+	@RequestMapping(value = "/deleteComment", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String deleteComment(@RequestParam("walkLogCmtNo") int walkLogCmtNo) {
 		walkBlogService.deleteComment(walkLogCmtNo);
 		return "success";
 	}
 
-	@RequestMapping(value = "/toggleFollow", method = RequestMethod.POST)
+	@RequestMapping(value = "/toggleFollow", method = { RequestMethod.GET, RequestMethod.POST })
 	@ResponseBody
 	public String toggleFollow(@RequestParam("followeeNo") int followeeNo, HttpSession session) {
 		UserVo authuser = (UserVo) session.getAttribute("authUser");

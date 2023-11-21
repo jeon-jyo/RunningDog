@@ -67,7 +67,7 @@ SELECT ort.trailNo
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
-                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
+                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC, t.trailNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -295,7 +295,7 @@ SELECT ort.walkLogNo
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND w.status = 'T'
                    AND w.userNo = '3'
-                 ORDER BY regDate DESC
+                 ORDER BY regDate DESC, w.walkLogNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -326,7 +326,7 @@ SELECT ort.walkLogNo
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND w.status = 'T'
                    AND w.userNo = '2'
-                 ORDER BY regDate ASC
+                 ORDER BY regDate ASC, w.walkLogNo ASC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -363,7 +363,7 @@ SELECT ort.walkLogNo
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND w.status = 'T'
                    AND w.userNo = '2'
-                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
+                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC, w.walkLogNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -405,8 +405,8 @@ SELECT t.trailNo
        ,t.restroom
        ,t.trashcan
        ,t.explanation
-       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
-       ,TO_CHAR(t.updatedate, 'YY-MM-DD') updateDate
+       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+       ,TO_CHAR(t.updatedate, 'YY-MM-DD HH24:MI:SS') updateDate
        ,u.userNo
        ,u.name
   FROM trail t, users u
@@ -509,7 +509,7 @@ SELECT ort.walkLogNo
                    AND w.status = 'T'
                    AND w.userNo = 2
                    AND tu.trailNo = 1
-                 ORDER BY regDate DESC
+                 ORDER BY regDate DESC, w.walklogNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -544,6 +544,7 @@ SELECT ort.trailCmtNo
        ,ort.userNo
        ,ort.name userName
        ,ort.regDate
+       ,ort.cnt
   FROM (SELECT ROWNUM rn
                ,ot.trailCmtNo
                ,ot.trailNo
@@ -551,17 +552,25 @@ SELECT ort.trailCmtNo
                ,ot.userNo
                ,ot.name
                ,ot.regDate
+               ,ot.cnt
           FROM (SELECT t.trailCmtNo
                        ,t.trailNo
                        ,t.content
                        ,u.userNo
                        ,u.name
-                       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
+                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+                       ,gt.cnt
                   FROM users u, trailCmt t
+                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
+                                           ,useNo
+                                      FROM userLike
+                                     WHERE type = 'trailCmt'
+                                     GROUP BY useNo ) gt
+                    ON t.trailCmtNo = gt.useNo
                  WHERE t.userNo = u.userNo
                    AND t.trailNo = 1
                    AND t.status = 'T'
-                 ORDER BY DECODE(u.userNo, 2, 1), regDate DESC
+                 ORDER BY DECODE(u.userNo, 2, 1), regDate DESC, trailCmtNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -588,7 +597,7 @@ SELECT ort.trailCmtNo
                        ,t.content
                        ,u.userNo
                        ,u.name
-                       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
+                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
                        ,gt.cnt
                   FROM users u, trailCmt t
                   LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
@@ -600,7 +609,7 @@ SELECT ort.trailCmtNo
                  WHERE t.userNo = u.userNo
                    AND t.trailNo = 1
                    AND t.status = 'T'
-                 ORDER BY DECODE(u.userNo, 2, 1), gt.cnt DESC NULLS LAST, regDate DESC
+                 ORDER BY DECODE(u.userNo, 2, 1), gt.cnt DESC NULLS LAST, regDate DESC, trailCmtNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -676,7 +685,7 @@ SELECT ort.walkLogNo
                        ,w.distance
                        ,w.logTime
                        ,w.content
-                       ,TO_CHAR(w.regdate, 'YY-MM-DD') regDate
+                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
                        ,gt.cnt
                   FROM users u, trailUsed tu, walkLog w
                   LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
@@ -689,7 +698,7 @@ SELECT ort.walkLogNo
                    AND w.userNo = u.userNo
                    AND w.status = 'T'
                    AND tu.trailNo = 1
-                 ORDER BY DECODE(w.userNo, 2, 1), regDate DESC
+                 ORDER BY DECODE(w.userNo, 2, 1), regDate DESC, w.walklogNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -719,7 +728,7 @@ SELECT ort.walkLogNo
                        ,w.distance
                        ,w.logTime
                        ,w.content
-                       ,TO_CHAR(w.regdate, 'YY-MM-DD') regDate
+                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
                        ,gt.cnt
                   FROM users u, trailUsed tu, walkLog w
                   LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
@@ -732,7 +741,7 @@ SELECT ort.walkLogNo
                    AND w.userNo = u.userNo
                    AND w.status = 'T'
                    AND tu.trailNo = 1
-                 ORDER BY DECODE(w.userNo, 2, 1), gt.cnt DESC NULLS LAST, regDate DESC
+                 ORDER BY DECODE(w.userNo, 2, 1), gt.cnt DESC NULLS LAST, regDate DESC, w.walklogNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1

@@ -44,7 +44,8 @@
 			<div class="profile-circles" >
 				<c:forEach items="${dogList}" var="MoDogVo">
 			        <div class="profile-circle choiceRed" >
-			            <img src="${pageContext.request.contextPath}/assets/images/${MoDogVo.orgName}" alt="Profile Image 1">
+			            <!-- <img src="${pageContext.request.contextPath}/assets/images/${MoDogVo.orgName}" alt="Profile Image 1">-->
+			            <img src="${pageContext.request.contextPath}/rdimg/dogProfile/${MoDogVo.saveName}" alt="Profile Image 1">
 			            <input type="hidden" name="dogNo" class="dogDate" value="${MoDogVo.dogNo}">
 			        </div>
 		        </c:forEach>            

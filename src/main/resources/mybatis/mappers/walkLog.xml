@@ -41,8 +41,9 @@
 		         ,do.dogno as dogNo
 		         ,do.name as dogName
 		         ,im.orgname as orgName
+		         ,im.savename as saveName
 		 FROM users us,dog do, images im
-	 	 where us.userno = #{userno}
+	 	 where us.userno = #{userNo}
 	 	 and im.type = 'dog'
 	 	 and us.userno = do.userno
 		 and do.dogno = im.useno

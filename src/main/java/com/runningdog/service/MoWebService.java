@@ -168,12 +168,11 @@ public class MoWebService {
 		try { byte[]
 			fileData; fileData = file.getBytes();			 
 			OutputStream os = new
-			FileOutputStream("C:\\javaStudy\\upload\\"+file.getOriginalFilename()+".png"); BufferedOutputStream
+			FileOutputStream("C:\\javaStudy\\rdimg\\conImg\\"+saveName); BufferedOutputStream
 			bos = new BufferedOutputStream(os);			 
 			bos.write(fileData); bos.close();		 
 		} catch (IOException e) {
 		e.printStackTrace(); }	
-		
 		return "";					
 	}	
 	
@@ -200,7 +199,7 @@ public class MoWebService {
         	String saveName = System.currentTimeMillis()+UUID.randomUUID().toString()+".jpg";
         	
             // 캡쳐 코드
-        	savePath = "C:\\javaStudy\\upload\\mapImg\\" + saveName;
+        	savePath = "C:\\javaStudy\\rdimg\\mapImg\\" + saveName;
             File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(srcFile, new File(savePath));
             

@@ -9,19 +9,22 @@ public class MoDogVo {
 	private int userNo;
 	private String userName;	
 
-	private String orgName; // 강아지 이미지의 이름
+	private String saveName; // 강아지 이미지의 이름
+	private String orgName;
 	
 	private String color;
 	private char status;
 	
 	public MoDogVo() {}
 
-	public MoDogVo(int dogNo, String dogName, int userNo, String userName, String orgName, String color, char status) {
+	public MoDogVo(int dogNo, String dogName, int userNo, String userName, String saveName, String orgName,
+			String color, char status) {
 		super();
 		this.dogNo = dogNo;
 		this.dogName = dogName;
 		this.userNo = userNo;
 		this.userName = userName;
+		this.saveName = saveName;
 		this.orgName = orgName;
 		this.color = color;
 		this.status = status;
@@ -59,6 +62,14 @@ public class MoDogVo {
 		this.userName = userName;
 	}
 
+	public String getSaveName() {
+		return saveName;
+	}
+
+	public void setSaveName(String saveName) {
+		this.saveName = saveName;
+	}
+
 	public String getOrgName() {
 		return orgName;
 	}
@@ -86,9 +97,9 @@ public class MoDogVo {
 	@Override
 	public String toString() {
 		return "MoDogVo [dogNo=" + dogNo + ", dogName=" + dogName + ", userNo=" + userNo + ", userName=" + userName
-				+ ", orgName=" + orgName + ", color=" + color + ", status=" + status + "]";
-	};
-	
+				+ ", saveName=" + saveName + ", orgName=" + orgName + ", color=" + color + ", status=" + status + "]";
+	}
+
 	
 	
 	
