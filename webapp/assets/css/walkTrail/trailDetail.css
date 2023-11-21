@@ -50,7 +50,21 @@
 
 /* 프로필 */
 .detail-bar > img,
-.comment-info > img {
+.comment-info > img,
+.ranking-detail-bar > img,
+.img-info-detail > img,
+.dog-img > img {
+    border-radius: 50%;
+}
+
+.img-info-detail .imgCount {
+    height: 25px;
+    width: 25px;
+    text-align: center;
+    line-height: 25px;
+    margin-left: 10px;
+    background-color: #fc5200;
+    color: white;
     border-radius: 50%;
 }
 

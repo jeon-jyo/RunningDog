@@ -67,7 +67,7 @@ SELECT ort.trailNo
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
-                 ORDER BY gt.cnt DESC, regDate DESC
+                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -103,7 +103,7 @@ SELECT ort.trailNo
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
-                 ORDER BY gt.cnt DESC, regDate DESC
+                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -140,7 +140,7 @@ SELECT ort.trailNo
                    AND c.lng BETWEEN 127.1162072 AND 127.157406
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
-                 ORDER BY gt.cnt DESC, regDate DESC
+                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -213,7 +213,7 @@ SELECT ort.trailNo
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND t.status = 'T'
                    AND t.userNo = '2'
-                 ORDER BY gt.cnt DESC, regDate DESC
+                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -251,7 +251,7 @@ SELECT ort.trailNo
                    AND t.status = 'T'
                    AND t.trailNo = ts.trailNo
                    AND ts.userNo = '2'
-                 ORDER BY gt.cnt DESC, regDate DESC
+                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -363,7 +363,7 @@ SELECT ort.walkLogNo
                    AND c.lat BETWEEN 37.5342968 AND 37.5557335
                    AND w.status = 'T'
                    AND w.userNo = '2'
-                 ORDER BY gt.cnt DESC, regDate DESC
+                 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -420,7 +420,6 @@ SELECT orgName
   FROM images
  WHERE type = 'users'
    AND useNo = 1;
-
 
 -- 산책로 이용 정보
 SELECT COUNT(*)
@@ -516,44 +515,24 @@ SELECT ort.walkLogNo
  WHERE ort.rn >= 1
    AND ort.rn <= 3;
 
--- 가장 많이 이용한 메이트
-SELECT ort.userNo
-       ,ort.name
-       ,ort.cnt
-  FROM ( SELECT ROWNUM rn
-               ,s.userNo
-               ,s.name
-               ,ot.cnt
-          FROM users s, ( SELECT COUNT(*) cnt
-                                 ,u.userNo
-                            FROM trailUsed tu, walkLog w, users u
-                           WHERE tu.walklogno = w.walkLogNo
-                             AND w.userNo = u.userNo
-                             AND tu.trailNo = 1
-                           GROUP BY u.userNo
-                           ORDER BY cnt DESC ) ot
-          WHERE s.userNo = ot.userNo
-       ) ort
- WHERE ort.rn >= 1
-   AND ort.rn <= 5;
-
+-- 유저 상세 목록 (많이 이용한 메이트)
 SELECT ort.userNo
        ,ort.name
   FROM ( SELECT ROWNUM rn
-               ,s.userNo
-               ,s.name
-          FROM users s, ( SELECT COUNT(*) cnt
-                                 ,u.userNo
-                            FROM trailUsed tu, walkLog w, users u
-                           WHERE tu.walklogno = w.walkLogNo
-                             AND w.userNo = u.userNo
-                             AND tu.trailNo = 1
-                           GROUP BY u.userNo
-                           ORDER BY cnt DESC ) ot
+                ,s.userNo
+                ,s.name
+           FROM users s, ( SELECT COUNT(*) cnt
+                                  ,u.userNo
+                             FROM trailUsed tu, walkLog w, users u
+                            WHERE tu.walklogno = w.walkLogNo
+                              AND w.userNo = u.userNo
+                              AND tu.trailNo = 1
+                            GROUP BY u.userNo
+                            ORDER BY cnt DESC ) ot
           WHERE s.userNo = ot.userNo
        ) ort
- WHERE ort.rn >= 1
-   AND ort.rn <= 5;
+WHERE ort.rn >= 1
+  AND ort.rn <= 5;
 
 -- 산책로 후기
 
@@ -595,41 +574,6 @@ SELECT ort.trailCmtNo
        ,ort.userNo
        ,ort.name userName
        ,ort.regDate
-  FROM (SELECT ROWNUM rn
-               ,ot.trailCmtNo
-               ,ot.trailNo
-               ,ot.content
-               ,ot.userNo
-               ,ot.name
-               ,ot.regDate
-          FROM (SELECT t.trailCmtNo
-                       ,t.trailNo
-                       ,t.content
-                       ,u.userNo
-                       ,u.name
-                       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
-                  FROM users u, trailCmt t
-                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
-                                           ,useNo
-                                      FROM userLike
-                                     WHERE type = 'trailCmt'
-                                     GROUP BY useNo ) gt
-                    ON t.trailCmtNo = gt.useNo
-                 WHERE t.userNo = u.userNo
-                   AND t.trailNo = 1
-                   AND t.status = 'T'
-                 ORDER BY DECODE(u.userNo, 2, 1), gt.cnt DESC, regDate DESC
-               ) ot
-       ) ort
- WHERE ort.rn >= 1
-   AND ort.rn <= 10;
-
-SELECT ort.trailCmtNo
-       ,ort.trailNo
-       ,ort.content
-       ,ort.userNo
-       ,ort.name userName
-       ,ort.regDate
        ,ort.cnt
   FROM (SELECT ROWNUM rn
                ,ot.trailCmtNo
@@ -656,7 +600,7 @@ SELECT ort.trailCmtNo
                  WHERE t.userNo = u.userNo
                    AND t.trailNo = 1
                    AND t.status = 'T'
-                 ORDER BY DECODE(u.userNo, 0, 1), gt.cnt DESC, regDate DESC
+                 ORDER BY DECODE(u.userNo, 2, 1), gt.cnt DESC NULLS LAST, regDate DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
@@ -707,9 +651,112 @@ SELECT *
 SELECT *
   FROM trail;
 
+-- 산책로 이용한 산책일지 목록
+-- 최신순
+SELECT ort.walkLogNo
+       ,ort.userNo
+       ,ort.name userName
+       ,ort.distance
+       ,ort.logTime
+       ,ort.content
+       ,ort.regDate
+       ,ort.cnt
+  FROM (SELECT ROWNUM rn
+               ,ot.walkLogNo
+               ,ot.userNo
+               ,ot.name
+               ,ot.distance
+               ,ot.logTime
+               ,ot.content
+               ,ot.regDate
+               ,ot.cnt
+          FROM (SELECT w.walklogNo
+                       ,u.userNo
+                       ,u.name
+                       ,w.distance
+                       ,w.logTime
+                       ,w.content
+                       ,TO_CHAR(w.regdate, 'YY-MM-DD') regDate
+                       ,gt.cnt
+                  FROM users u, trailUsed tu, walkLog w
+                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
+                                           ,useNo
+                                      FROM userLike
+                                     WHERE type = 'walkLog'
+                                     GROUP BY useNo ) gt
+                    ON w.walkLogNo = gt.useNo
+                 WHERE tu.walklogno = w.walkLogNo
+                   AND w.userNo = u.userNo
+                   AND w.status = 'T'
+                   AND tu.trailNo = 1
+                 ORDER BY DECODE(w.userNo, 2, 1), regDate DESC
+               ) ot
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 10;
+
+-- 인기순
+SELECT ort.walkLogNo
+       ,ort.userNo
+       ,ort.name userName
+       ,ort.distance
+       ,ort.logTime
+       ,ort.content
+       ,ort.regDate
+       ,ort.cnt
+  FROM (SELECT ROWNUM rn
+               ,ot.walkLogNo
+               ,ot.userNo
+               ,ot.name
+               ,ot.distance
+               ,ot.logTime
+               ,ot.content
+               ,ot.regDate
+               ,ot.cnt
+          FROM (SELECT w.walklogNo
+                       ,u.userNo
+                       ,u.name
+                       ,w.distance
+                       ,w.logTime
+                       ,w.content
+                       ,TO_CHAR(w.regdate, 'YY-MM-DD') regDate
+                       ,gt.cnt
+                  FROM users u, trailUsed tu, walkLog w
+                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
+                                           ,useNo
+                                      FROM userLike
+                                     WHERE type = 'walkLog'
+                                     GROUP BY useNo ) gt
+                    ON w.walkLogNo = gt.useNo
+                 WHERE tu.walklogno = w.walkLogNo
+                   AND w.userNo = u.userNo
+                   AND w.status = 'T'
+                   AND tu.trailNo = 1
+                 ORDER BY DECODE(w.userNo, 2, 1), gt.cnt DESC NULLS LAST, regDate DESC
+               ) ot
+       ) ort
+ WHERE ort.rn >= 1
+   AND ort.rn <= 10;
+
+-- 산책일지 이미지
+SELECT orgName
+       ,saveName
+       ,filePath
+       ,imageorder
+  FROM images
+ WHERE type = 'walkLog'
+   AND imageorder = 1
+   AND useNo = 1;
+
+-- 산책일지 좋아요수
+SELECT COUNT(*)
+  FROM userLike
+ WHERE type = 'walkLog'
+   AND useNo = 1;
+
 ---------------------------------------------------------------------------------------
 
-DELETE FROM images;
+SELECT * FROM images;
 
 DELETE FROM users
 WHERE userNo = 99;

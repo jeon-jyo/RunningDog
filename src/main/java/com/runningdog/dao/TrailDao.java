@@ -262,4 +262,31 @@ public class TrailDao {
 		return insertCnt;
 	}
 
+	// 산책로 산책일지
+	public List<WalkLogVo> logList(Map<String, Object> fetchSet) {
+		System.out.println("TrailDao.logList()");
+		
+		List<WalkLogVo> logList = sqlSession.selectList("walkTrail.logList", fetchSet);
+		
+		return logList;
+	}
+
+	// 산책일지 이미지
+	public ImagesVo logImg(int walkLogNo) {
+		// System.out.println("TrailDao.logImg()");
+		
+		ImagesVo imagesVo = sqlSession.selectOne("walkTrail.logImg", walkLogNo);
+		
+		return imagesVo;
+	}
+
+	// 산책일지 좋아요수
+	public int logLikeCnt(int walkLogNo) {
+		// System.out.println("TrailDao.logLikeCnt()");
+		
+		int logLikeCnt = sqlSession.selectOne("walkTrail.logLikeCnt", walkLogNo);
+		
+		return logLikeCnt;
+	}
+
 }

@@ -39,6 +39,15 @@
 		<collection property="locationVo" resultMap="LocationMap"></collection>
 	</resultMap>
 	
+	<resultMap id="TrailCmtMap" type="com.runningdog.vo.TrailCmtVo">
+		<result column="trailCmtNo" property="trailCmtNo"></result>
+		<result column="regDate" property="regDate"></result>
+		<result column="content" property="content"></result>
+		<result column="status" property="status"></result>
+		<collection property="trailVo" resultMap="TrailMap"></collection>
+		<collection property="usersVo" resultMap="UsersMap"></collection>
+	</resultMap>
+	
 	<resultMap id="WalkLogMap" type="com.runningdog.vo.WalkLogVo">
 		<result column="walkLogNo" property="walkLogNo"></result>
 		<result column="regDate" property="regDate"></result>
@@ -53,13 +62,9 @@
 		<collection property="locationVo" resultMap="LocationMap"></collection>
 	</resultMap>
 	
-	<resultMap id="TrailCmtMap" type="com.runningdog.vo.TrailCmtVo">
-		<result column="trailCmtNo" property="trailCmtNo"></result>
-		<result column="regDate" property="regDate"></result>
-		<result column="content" property="content"></result>
-		<result column="status" property="status"></result>
-		<collection property="trailVo" resultMap="TrailMap"></collection>
-		<collection property="usersVo" resultMap="UsersMap"></collection>
+	<resultMap id="logListMap" type="java.util.Map">
+		<result column="cnt" property="cnt"></result>
+		<collection property="walkLogVo" resultMap="WalkLogMap"></collection>
 	</resultMap>
 
 	<!-- trailMain -->
@@ -201,7 +206,7 @@
 		</if>
 		<if test='filter == 0 || filter == 1 || filter == 2'>
 			<![CDATA[
-				  			 ORDER BY gt.cnt DESC, regDate DESC
+				  			 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
 			]]>
 		</if>
 		<if test='filter == 3'>
@@ -346,7 +351,7 @@
 		</if>
 		<if test='filter == 2'>
 			<![CDATA[
-							 ORDER BY gt.cnt DESC, regDate DESC
+							 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
 			]]>
 		</if>
 		<![CDATA[
@@ -370,69 +375,6 @@
 			   AND c.useNo = #{walkLogNo}
 			   AND w.status = 'T'
 			 ORDER BY c.coordOrder
-		 ]]>
-	</select>
-	
-	<!-- 산책일지 목록 페이징 테스트 -->
-	<select id="walkLogListTest" parameterType="java.util.Map" resultType="com.runningdog.vo.WalkLogVo">
-		<![CDATA[
-			SELECT ort.walkLogNo
-			       ,ort.userNo
-			       ,ort.distance
-			       ,ort.logTime
-			       ,ort.regDate
-			  FROM (SELECT ROWNUM rn
-			               ,ot.walkLogNo
-			               ,ot.userNo
-			               ,ot.distance
-			               ,ot.logTime
-			               ,ot.regDate
-			          FROM (SELECT w.walkLogNo
-			                       ,w.userNo
-			                       ,w.distance
-			                       ,w.logTime
-			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-			                  FROM coords c, walkLog w
-		]]>
-		<if test='filter == 2'>
-			<![CDATA[
-							  LEFT OUTER JOIN ( SELECT COUNT(userNo) cnt
-			                                           ,useNo
-			                                      FROM userLike
-			                                     WHERE type = 'walkLog'
-			                                     GROUP BY useNo ) gt
-			                    ON w.walkLogNo = gt.useNo
-			]]>
-		</if>
-		<![CDATA[
-			                 WHERE w.walkLogNo = c.useNo
-			                   AND c.type = 'walkLog'
-			                   AND c.coordorder = 1
-			                   AND c.lng BETWEEN #{coordsMap.swX} AND #{coordsMap.neX}
-			   				   AND c.lat BETWEEN #{coordsMap.swY} AND #{coordsMap.neY}
-			                   AND w.status = 'T'
-			                   AND w.userNo = #{userNo}
-		]]>
-		<if test='filter == 0'>
-			<![CDATA[
-							 ORDER BY regDate DESC
-			]]>
-		</if>
-		<if test='filter == 1'>
-			<![CDATA[
-							 ORDER BY regDate ASC
-			]]>
-		</if>
-		<if test='filter == 2'>
-			<![CDATA[
-							 ORDER BY gt.cnt DESC, regDate DESC
-			]]>
-		</if>
-		<![CDATA[
-			               ) ot
-			       ) ort
-			 WHERE ort.rn >= 1
-			   AND ort.rn <= 10
 		 ]]>
 	</select>
 	
@@ -559,20 +501,20 @@
 			SELECT ort.userNo
 			       ,ort.name
 			  FROM ( SELECT ROWNUM rn
-			               ,s.userNo
-			               ,s.name
-			          FROM users s, ( SELECT COUNT(*) cnt
-			                                 ,u.userNo
-			                            FROM trailUsed tu, walkLog w, users u
-			                           WHERE tu.walklogno = w.walkLogNo
-			                             AND w.userNo = u.userNo
-			                             AND tu.trailNo = #{trailNo}
-			                           GROUP BY u.userNo
-			                           ORDER BY cnt DESC ) ot
+			                ,s.userNo
+			                ,s.name
+			           FROM users s, ( SELECT COUNT(*) cnt
+			                                  ,u.userNo
+			                             FROM trailUsed tu, walkLog w, users u
+			                            WHERE tu.walklogno = w.walkLogNo
+			                              AND w.userNo = u.userNo
+			                              AND tu.trailNo = #{trailNo}
+			                            GROUP BY u.userNo
+			                            ORDER BY cnt DESC ) ot
 			          WHERE s.userNo = ot.userNo
 			       ) ort
-			 WHERE ort.rn >= 1
-			   AND ort.rn <= 5
+			WHERE ort.rn >= 1
+			  AND ort.rn <= 5
 		 ]]>
 	</select>
 	
@@ -619,7 +561,7 @@
 		</if>
 		<if test='cmtOrderNav == 1'>
 			<![CDATA[
-							 ORDER BY DECODE(u.userNo, #{userNo}, 1), gt.cnt DESC, regDate DESC
+							 ORDER BY DECODE(u.userNo, #{userNo}, 1), gt.cnt DESC NULLS LAST, regDate DESC
 			]]>
 		</if>
 		<![CDATA[
@@ -673,5 +615,87 @@
 		VALUES(seq_images_no.NEXTVAL, #{orgName}, #{saveName}, #{filePath}, #{fileSize}, 'trailCmt', #{useNo}, #{imageOrder})
 	]]>
 	</insert>
+	
+	<!-- 산책로 산책일지 -->
+	<select id="logList" parameterType="java.util.Map" resultMap="WalkLogMap">
+		 <![CDATA[
+			SELECT ort.walkLogNo
+			       ,ort.userNo
+			       ,ort.name userName
+			       ,ort.distance
+			       ,ort.logTime
+			       ,ort.content
+			       ,ort.regDate
+			       ,ort.cnt
+			  FROM (SELECT ROWNUM rn
+			               ,ot.walkLogNo
+			               ,ot.userNo
+			               ,ot.name
+			               ,ot.distance
+			               ,ot.logTime
+			               ,ot.content
+			               ,ot.regDate
+			               ,ot.cnt
+			          FROM (SELECT w.walklogNo
+			                       ,u.userNo
+			                       ,u.name
+			                       ,w.distance
+			                       ,w.logTime
+			                       ,w.content
+			                       ,TO_CHAR(w.regdate, 'YY-MM-DD') regDate
+			                       ,gt.cnt
+			                  FROM users u, trailUsed tu, walkLog w
+			                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
+			                                           ,useNo
+			                                      FROM userLike
+			                                     WHERE type = 'walkLog'
+			                                     GROUP BY useNo ) gt
+			                    ON w.walkLogNo = gt.useNo
+			                 WHERE tu.walklogno = w.walkLogNo
+			                   AND w.userNo = u.userNo
+			                   AND w.status = 'T'
+			                   AND tu.trailNo = #{trailNo}
+		]]>
+		<if test='cmtOrderNav == 0'>
+			<![CDATA[
+							 ORDER BY DECODE(w.userNo, #{userNo}, 1), regDate DESC
+			]]>
+		</if>
+		<if test='cmtOrderNav == 1'>
+			<![CDATA[
+							 ORDER BY DECODE(w.userNo, #{userNo}, 1), gt.cnt DESC NULLS LAST, regDate DESC
+			]]>
+		</if>
+		<![CDATA[
+			               ) ot
+			       ) ort
+			 WHERE ort.rn >= 1
+			   AND ort.rn <= 10
+		]]>
+	</select>
+	
+	<!-- 산책일지 이미지 -->
+	<select id="logImg" parameterType="int" resultType="com.runningdog.vo.ImagesVo">
+		 <![CDATA[
+			SELECT orgName
+			       ,saveName
+			       ,filePath
+			       ,imageorder
+			  FROM images
+			 WHERE type = 'walkLog'
+			   AND imageorder = 0
+			   AND useNo = #{walkLogNo}
+		 ]]>
+	</select>
+	
+	<!-- 산책일지 좋아요수 -->
+	<select id="logLikeCnt" parameterType="int" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			   FROM userLike
+			  WHERE type = 'walkLog'
+			    AND useNo = #{walkLogNo}
+		 ]]>
+	</select>
 	
 </mapper>

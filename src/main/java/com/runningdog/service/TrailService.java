@@ -471,6 +471,50 @@ public class TrailService {
 		
 		return listMap;
 	}
+	
+	// 산책로 산책일지
+	public Map<String, Object> logListMap(Map<String, Object> fetchSet) {
+		System.out.println("TrailService.logListMap()");
+		
+		List<WalkLogVo> logList = trailDao.logList(fetchSet);
+		System.out.println("logList : " + logList);
+		
+		List<ImagesVo> logImgList = new ArrayList<ImagesVo>();
+		List<ImagesVo> userImgList = new ArrayList<ImagesVo>();
+		List<Integer> likeCntList = new ArrayList<Integer>();
+		for (WalkLogVo walkLogVo : logList) {
+			
+			System.out.println("walkLogVo " + walkLogVo.getUsersVo().getName());
+			
+			// 산책일지 이미지
+			ImagesVo logImg = trailDao.logImg(walkLogVo.getWalkLogNo());
+			// 유저 프로필
+			ImagesVo userImg = trailDao.userImg(walkLogVo.getUsersVo().getUserNo());
+			// 산책일지 좋아요수
+			int logLikeCnt = trailDao.logLikeCnt(walkLogVo.getWalkLogNo());
+			
+			if(logImg == null) {
+				ImagesVo vo = new ImagesVo();
+				vo.setSaveName("noImg");
+				vo.setImageOrder(0);
+				logImg = vo;
+			}
+			logImgList.add(logImg);
+			userImgList.add(userImg);
+			likeCntList.add(logLikeCnt);
+		}
+		// System.out.println("logImgList : " + logImgList);
+		// System.out.println("userImgList : " + userImgList);
+		// System.out.println("likeCntList : " + likeCntList);
+		
+		Map<String, Object> listMap = new HashMap<String, Object>();
+		listMap.put("logList", logList);
+		listMap.put("logImgList", logImgList);
+		listMap.put("userImgList", userImgList);
+		listMap.put("likeCntList", likeCntList);
+		
+		return listMap;
+	}
 
 	// 산책로 후기 작성 ajax
 	public void trailCmtAdd(Map<String, MultipartFile> fileMap, TrailCmtVo trailCmtVo) {

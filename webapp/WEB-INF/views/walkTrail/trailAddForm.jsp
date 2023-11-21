@@ -97,7 +97,7 @@
 	var btn = document.querySelector("#btn");
 	
 	var errorRange = 20;	// 오차 범위 (미터단위)
-	var matchRate = 70;		// 몇퍼센트 이상 일치해야 하는지 (일치율)
+	var matchRate = 60;		// 몇퍼센트 이상 일치해야 하는지 (일치율)
 	
 	let overlayMarker = [];
 	let overlayInfoMarker = [];

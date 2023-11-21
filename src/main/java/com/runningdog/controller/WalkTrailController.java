@@ -245,7 +245,8 @@ public class WalkTrailController {
 			// 후기 - 목록 / 갤러리
 			listMap = trailService.cmtListMap(fetchSet);
 		} else if(cmtNav == 1) {
-			// 산책일지
+			// 산책로 산책일지
+			listMap = trailService.logListMap(fetchSet);
 		}
 		
 		if(authUser != null) {
@@ -265,7 +266,6 @@ public class WalkTrailController {
 		System.out.println("WalkTrailController.trailCmtAdd()");
 		System.out.println("trailNo " + trailNo);
 		System.out.println("content " + content);
-		
 		Map<String, MultipartFile> fileMap = request.getFileMap();
 		TrailCmtVo trailCmtVo = new TrailCmtVo();
 		
@@ -294,27 +294,6 @@ public class WalkTrailController {
 		
 		trailService.trailCmtAdd(fileMap, trailCmtVo);
 	}
-	
-	/*
-	@ResponseBody
-	@RequestMapping(value = "/cmtAdd", method= { RequestMethod.GET, RequestMethod.POST})
-	public Map<String, Object> trailCmtAdd(@RequestBody TrailCmtVo trailCmtVo,
-			HttpSession session) {
-		System.out.println("WalkTrailController.trailCmtAdd()");
-		System.out.println("trailCmtVo : " + trailCmtVo);
-		
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		Map<String, Object> userMap = null;
-		if(authUser != null) {
-
-		} else {
-
-		}
-		Map<String, Object> listMap = new HashMap<String, Object>();
-		
-		return listMap;
-	}
-	*/
 	
 	@RequestMapping(value = "/detail/deleted", method= { RequestMethod.GET, RequestMethod.POST})
 	public String trailDetailDeleted() {
