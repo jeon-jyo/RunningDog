@@ -517,6 +517,7 @@ public class TrailService {
 	}
 
 	// 산책로 후기 작성 ajax
+	/*
 	public void trailCmtAdd(Map<String, MultipartFile> fileMap, TrailCmtVo trailCmtVo) {
 		System.out.println("TrailService.trailCmtAdd()");
 		
@@ -578,17 +579,24 @@ public class TrailService {
 		}
 	}
 
-	public int trailCmtAdd1(TrailCmtVo trailCmtVo) {
-		System.out.println("TrailService.trailCmtAdd1()");
+*/
+	// 산책로 후기 작성 ajax
+	public int trailCmtAdd(TrailCmtVo trailCmtVo) {
+		System.out.println("TrailService.trailCmtAdd()");
 		
-		// 후기 등록
 		int insertCnt = trailDao.trailCmtAdd(trailCmtVo);
-		
-		return trailCmtVo.getTrailCmtNo();
+		if(insertCnt != 0) {
+			System.out.println("후기 등록 성공");
+			
+			return trailCmtVo.getTrailCmtNo();
+		} else {
+			return 0;
+		}
 	}
-
-	public void trailCmtAdd2(Map<String, MultipartFile> fileMap, int trailCmtNo) {
-		System.out.println("TrailService.trailCmtAdd2()");
+	
+	// 후기 이미지 업로드
+	public void trailCmtImgAdd(Map<String, MultipartFile> fileMap, int trailCmtNo) {
+		System.out.println("TrailService.trailCmtImgAdd()");
 		
 		int index = 0;
 		for (MultipartFile file : fileMap.values()) {
@@ -619,7 +627,7 @@ public class TrailService {
 				// 후기 이미지 업로드
 				int imgInsertCnt = trailDao.cmtImgAdd(imagesVo);
 				if(imgInsertCnt == 1) {
-					// System.out.println("후기 이미지 등록 성공");
+					System.out.println("후기 이미지 업로드 성공");
 					
 					// 서버 파일 저장
 					try {

@@ -531,7 +531,7 @@
 }
 .comment-detail {
 	height: 180px;
-	padding-right: 80px;
+	/*padding-right: 80px;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -570,7 +570,7 @@
 .comment-info {
 	display: flex;
     align-items: center;
-    width: 230px;
+    width: 265px;
 }
 .comment-info > img,
 .img-info > div > img {

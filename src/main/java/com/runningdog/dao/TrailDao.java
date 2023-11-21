@@ -244,7 +244,7 @@ public class TrailDao {
 		return cmtLikeCnt;
 	}
 
-	// 후기 등록
+	// 후기 작성
 	public int trailCmtAdd(TrailCmtVo trailCmtVo) {
 		System.out.println("TrailDao.trailCmtAdd()");
 		

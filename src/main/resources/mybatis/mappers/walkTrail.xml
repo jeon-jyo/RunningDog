@@ -206,12 +206,12 @@
 		</if>
 		<if test='filter == 0 || filter == 1 || filter == 2'>
 			<![CDATA[
-				  			 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
+				  			 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC, t.trailNo DESC
 			]]>
 		</if>
 		<if test='filter == 3'>
 			<![CDATA[
-				  			 ORDER BY t.regDate DESC
+				  			 ORDER BY t.regDate DESC, t.trailNo DESC
 			]]>
 		</if>
 		<![CDATA[
@@ -250,8 +250,8 @@
 			       ,t.restroom
 			       ,t.trashcan
 			       ,t.explanation
-			       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
-			       ,TO_CHAR(t.updatedate, 'YY-MM-DD') updateDate
+			       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI') regDate
+			       ,TO_CHAR(t.updatedate, 'YY-MM-DD HH24:MI') updateDate
 			       ,u.userNo
 			       ,u.name userName
 			  FROM trail t, users u
@@ -317,7 +317,7 @@
 			                       ,w.userNo
 			                       ,w.distance
 			                       ,w.logTime
-			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI') regDate
 			                  FROM coords c, walkLog w
 		]]>
 		<if test='filter == 2'>
@@ -341,17 +341,17 @@
 		]]>
 		<if test='filter == 0'>
 			<![CDATA[
-							 ORDER BY regDate DESC
+							 ORDER BY regDate DESC, w.walkLogNo DESC
 			]]>
 		</if>
 		<if test='filter == 1'>
 			<![CDATA[
-							 ORDER BY regDate ASC
+							 ORDER BY regDate ASC, w.walkLogNo ASC
 			]]>
 		</if>
 		<if test='filter == 2'>
 			<![CDATA[
-							 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC
+							 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC, w.walkLogNo DESC
 			]]>
 		</if>
 		<![CDATA[
@@ -481,13 +481,13 @@
 			                       ,w.userNo
 			                       ,w.distance
 			                       ,w.logTime
-			                       ,TO_CHAR(w.regdate, 'YY-MM-DD') regDate
+			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI') regDate
 			                  FROM trailUsed tu, walkLog w
 			                 WHERE tu.walklogno = w.walkLogNo
 			                   AND w.status = 'T'
 			                   AND w.userNo = #{usersVo.userNo}
 			                   AND tu.trailNo = #{trailNo}
-			                 ORDER BY regDate DESC
+			                 ORDER BY regDate DESC, w.walklogNo DESC
 			               ) ot
 			       ) ort
 			 WHERE ort.rn >= 1
@@ -541,7 +541,7 @@
 			                       ,t.content
 			                       ,u.userNo
 			                       ,u.name
-			                       ,TO_CHAR(t.regdate, 'YY-MM-DD') regDate
+			                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI') regDate
 			                       ,gt.cnt
 			                  FROM users u, trailCmt t
 			                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
@@ -556,12 +556,12 @@
 		]]>
 		<if test='cmtOrderNav == 0'>
 			<![CDATA[
-							 ORDER BY DECODE(u.userNo, #{userNo}, 1), regDate DESC
+							 ORDER BY DECODE(u.userNo, #{userNo}, 1), regDate DESC, trailCmtNo DESC
 			]]>
 		</if>
 		<if test='cmtOrderNav == 1'>
 			<![CDATA[
-							 ORDER BY DECODE(u.userNo, #{userNo}, 1), gt.cnt DESC NULLS LAST, regDate DESC
+							 ORDER BY DECODE(u.userNo, #{userNo}, 1), gt.cnt DESC NULLS LAST, regDate DESC, trailCmtNo DESC
 			]]>
 		</if>
 		<![CDATA[
@@ -597,7 +597,7 @@
 		 ]]>
 	</select>
 	
-	<!-- 후기 등록 -->
+	<!-- 후기 작성 -->
 	<insert id="trailCmtAdd" parameterType="com.runningdog.vo.TrailCmtVo">
 	<selectKey keyProperty="trailCmtNo" resultType="int" order="BEFORE">	
 		select seq_trailcmt_no.NEXTVAL from dual
@@ -642,7 +642,7 @@
 			                       ,w.distance
 			                       ,w.logTime
 			                       ,w.content
-			                       ,TO_CHAR(w.regdate, 'YY-MM-DD') regDate
+			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI') regDate
 			                       ,gt.cnt
 			                  FROM users u, trailUsed tu, walkLog w
 			                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
@@ -658,12 +658,12 @@
 		]]>
 		<if test='cmtOrderNav == 0'>
 			<![CDATA[
-							 ORDER BY DECODE(w.userNo, #{userNo}, 1), regDate DESC
+							 ORDER BY DECODE(w.userNo, #{userNo}, 1), regDate DESC, w.walklogNo DESC
 			]]>
 		</if>
 		<if test='cmtOrderNav == 1'>
 			<![CDATA[
-							 ORDER BY DECODE(w.userNo, #{userNo}, 1), gt.cnt DESC NULLS LAST, regDate DESC
+							 ORDER BY DECODE(w.userNo, #{userNo}, 1), gt.cnt DESC NULLS LAST, regDate DESC, w.walklogNo DESC
 			]]>
 		</if>
 		<![CDATA[

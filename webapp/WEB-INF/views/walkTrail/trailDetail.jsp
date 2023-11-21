@@ -493,13 +493,6 @@
 	
 	/* cmt */
 	let content = $('textarea[name=content]').val();
-	content = '하이';
-	/*
-	$('textarea[name=content]').on('change', function() {
-		content = $(this).val();
-		console.log("content ", content);
-    });
-	*/
 	
 	var previewNode = document.querySelector("#template");
 	previewNode.id = "";
@@ -509,11 +502,8 @@
 	Dropzone.autoDiscover = false;
 
 	var dropzone = new Dropzone("div.dropzone", {
-		url : '${pageContext.request.contextPath}/walkTrail/cmtAdd2',
+		url : '${pageContext.request.contextPath}/walkTrail/cmtImgAdd',
 		method : "POST",
-		/* params: {
-            "trailNo" : trailNo,
-        }, */
 		autoProcessQueue : false,
 		previewTemplate : previewTemplate,
 		previewsContainer : ".preview-list",
@@ -526,8 +516,7 @@
 			let myDropzone = this; // closure 변수
 
 			document.querySelector('#cmtAddBtn').addEventListener('click', function() {
-				console.log('업로드');
-				console.log('dropzone.files ', dropzone.files);
+				console.log('업로드 ', dropzone.files);
 			});
 
 			this.on('sendingmultiple', function(files) {
@@ -551,18 +540,20 @@
 			alert("후기 사진은 10개 까지 가능합니다.");
 		} else {
 			$.ajax({
-				url : "${pageContext.request.contextPath}/walkTrail/cmtAdd1",
+				url : "${pageContext.request.contextPath}/walkTrail/cmtAdd",
 				type : "post",
 				data : {"trailNo" : trailNo,
 						"content" : $('textarea[name=content]').val()},
 						
 				dataType : "json",
-				success : function(result) {
-					console.log("result ", result);
+				success : function(trailCmtNo) {
+					console.log("trailCmtNo ", trailCmtNo);
 					
 					if (dropzone.files.length != 0) {
-						dropzone.options.params.trailCmtNo = result;
-						dropzone.processQueue();
+						if(trailCmtNo != 0) {
+							dropzone.options.params = {"trailCmtNo" : trailCmtNo};
+							dropzone.processQueue();
+						}
 					} else {
 						$('#addModal').modal('hide');
 						fetchList(trailNo);
@@ -576,7 +567,6 @@
 	});
 	// Dropzone has been added as a global variable.
 	
-    /* cmt */
 	function fetchList(trailNo) {
 		console.log("fetchList()");
 		
