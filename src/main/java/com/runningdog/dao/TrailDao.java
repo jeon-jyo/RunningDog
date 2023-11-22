@@ -191,6 +191,15 @@ public class TrailDao {
 		return userUsedCnt;
 	}
 	
+	// 산책로 이용 시간대
+	public List<WalkLogVo> trailUseTime(int trailNo) {
+		System.out.println("TrailDao.trailUseTime()");
+		
+		List<WalkLogVo> trailUseTime = sqlSession.selectList("walkTrail.trailUseTime", trailNo);
+		
+		return trailUseTime;
+	}
+	
 	// 유저 상세
 	public UsersVo userDetail(int userNo) {
 		System.out.println("TrailDao.userDetail()");
@@ -324,6 +333,15 @@ public class TrailDao {
 		int logLikeCnt = sqlSession.selectOne("walkTrail.logLikeCnt", walkLogNo);
 		
 		return logLikeCnt;
+	}
+
+	// 산책일지 맵 이미지
+	public ImagesVo logMapImg(int walkLogNo) {
+		// System.out.println("TrailDao.logMapImg()");
+		
+		ImagesVo imagesVo = sqlSession.selectOne("walkTrail.logMapImg", walkLogNo);
+		
+		return imagesVo;
 	}
 
 }

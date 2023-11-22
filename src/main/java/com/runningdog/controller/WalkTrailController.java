@@ -216,9 +216,13 @@ public class WalkTrailController {
 		// 산책로 이용 랭킹
 		Map<String, Object> userUsedMap = trailService.trailUserUsed(trailVo);
 		
+		// 산책로 이용 시간대
+		String useTimeJson = trailService.trailUseTime(trailVo);
+		
 		model.addAttribute("detailMap", detailMap);
 		model.addAttribute("userMap", userMap);
 		model.addAttribute("userUsedMap", userUsedMap);
+		model.addAttribute("useTimeJson", useTimeJson);
 		
 		return "walkTrail/trailDetail";
 	}

@@ -826,7 +826,7 @@
 
 .meetingList .walkLog {
 	width: 470px;
-    height: 190px;
+    height: 200px;
 }
 .meetingList .meeting .walkTitle {
     padding: 10px;
@@ -835,10 +835,12 @@
     justify-content: space-evenly;
 }
 .meetingList .meeting .meetingTitle .walk-title1 {
-	margin-right: 50px;
+    width: 60px;
+    margin-right: 20px;
 }
 .meetingList .meeting .meetingTitle .walk-title2 {
-	margin-right: 150px;
+    width: 85px;
+    margin-right: 135px;
 }
 
 .img-info-detail > span.walkLogLike {

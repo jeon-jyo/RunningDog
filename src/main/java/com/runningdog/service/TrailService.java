@@ -432,6 +432,19 @@ public class TrailService {
 		
 		return userUsedMap;
 	}
+	
+	// 산책로 이용 시간대
+	public String trailUseTime(TrailVo trailVo) throws JsonProcessingException {
+		System.out.println("TrailService.trailUseTime()");
+		
+		List<WalkLogVo> trailUseTime = trailDao.trailUseTime(trailVo.getTrailNo());
+		System.out.println("trailUseTime : " + trailUseTime);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String useTimeJson = mapper.writeValueAsString(trailUseTime);
+		
+		return useTimeJson;
+	}
 
 	// 후기 - 목록 / 갤러리
 	public Map<String, Object> cmtListMap(Map<String, Object> fetchSet) {
@@ -509,8 +522,6 @@ public class TrailService {
 	        }
 			info[1] += minute + "분";
 			
-			System.out.println("logList.get(i).getWalkLogNo() " + logList.get(i).getWalkLogNo());
-			
 			// 산책일지 이미지
 			ImagesVo logImg = trailDao.logImg(logList.get(i).getWalkLogNo());
 			// 유저 프로필
@@ -518,15 +529,15 @@ public class TrailService {
 			// 산책한 강아지
 			List<DogVo> dogList = trailDao.walkedDog(logList.get(i).getWalkLogNo());
 			
-			ImagesVo dogImg = new ImagesVo();
-			int dogCnt = 0;
 			if(CollectionUtils.isEmpty(dogList)) {
-				ImagesVo vo = new ImagesVo();
-				vo.setSaveName("noImg");
-				vo.setImageOrder(0);
-				dogImg = vo;
+				DogVo dogVo = new DogVo();
+				dogVo.setDogNo(0);
+				dogList.add(dogVo);
 			}
-			if(dogList.size() != 0) {
+			
+			ImagesVo dogImg = null;
+			int dogCnt = 0;
+			if(dogList.get(0).getDogNo() != 0) {
 				// 강아지 프로필
 				dogImg = trailDao.dogImg(dogList.get(0).getDogNo());
 				// 강아지 수
@@ -539,10 +550,21 @@ public class TrailService {
 			int logLikeCnt = trailDao.logLikeCnt(logList.get(i).getWalkLogNo());
 			
 			if(logImg == null) {
+				// 산책일지 맵 이미지
+				ImagesVo vo = trailDao.logMapImg(logList.get(i).getWalkLogNo());
+				logImg = vo;
+			}
+			if(logImg == null) {
 				ImagesVo vo = new ImagesVo();
 				vo.setSaveName("noImg");
 				vo.setImageOrder(0);
 				logImg = vo;
+			}
+			if(dogImg == null) {
+				ImagesVo vo = new ImagesVo();
+				vo.setSaveName("noImg");
+				vo.setImageOrder(0);
+				dogImg = vo;
 			}
 			
 			infoList[i][0] = info[0];
