@@ -62,11 +62,6 @@
 		<collection property="locationVo" resultMap="LocationMap"></collection>
 	</resultMap>
 	
-	<resultMap id="logListMap" type="java.util.Map">
-		<result column="cnt" property="cnt"></result>
-		<collection property="walkLogVo" resultMap="WalkLogMap"></collection>
-	</resultMap>
-
 	<!-- trailMain -->
 	
 	<!-- 유저 설정 위치 -->
@@ -254,6 +249,7 @@
 			       ,TO_CHAR(t.updatedate, 'YY-MM-DD HH24:MI') updateDate
 			       ,u.userNo
 			       ,u.name userName
+			       ,u.code
 			  FROM trail t, users u
 			 WHERE t.userNo = u.userNo
 			   AND t.trailNo = #{trailNo}
@@ -458,6 +454,7 @@
 		 <![CDATA[
 			SELECT userNo
 			       ,name
+			       ,code
 			  FROM users
 			 WHERE userNo = #{userNo}
 		 ]]>
@@ -500,9 +497,11 @@
 		 <![CDATA[
 			SELECT ort.userNo
 			       ,ort.name
+			       ,ort.code
 			  FROM ( SELECT ROWNUM rn
 			                ,s.userNo
 			                ,s.name
+			                ,s.code
 			           FROM users s, ( SELECT COUNT(*) cnt
 			                                  ,u.userNo
 			                             FROM trailUsed tu, walkLog w, users u
@@ -526,6 +525,7 @@
 			       ,ort.content
 			       ,ort.userNo
 			       ,ort.name userName
+			       ,ort.code
 			       ,ort.regDate
 			       ,ort.cnt
 			  FROM (SELECT ROWNUM rn
@@ -534,6 +534,7 @@
 			               ,ot.content
 			               ,ot.userNo
 			               ,ot.name
+			               ,ot.code
 			               ,ot.regDate
 			               ,ot.cnt
 			          FROM (SELECT t.trailCmtNo
@@ -541,6 +542,7 @@
 			                       ,t.content
 			                       ,u.userNo
 			                       ,u.name
+			                       ,u.code
 			                       ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI') regDate
 			                       ,gt.cnt
 			                  FROM users u, trailCmt t
@@ -597,6 +599,15 @@
 		 ]]>
 	</select>
 	
+	<!-- 후기 전체 수 -->
+	<select id="cmtCnt" parameterType="int" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			  FROM trailCmt
+			 WHERE trailNo = #{trailNo}
+		 ]]>
+	</select>
+	
 	<!-- 후기 작성 -->
 	<insert id="trailCmtAdd" parameterType="com.runningdog.vo.TrailCmtVo">
 	<selectKey keyProperty="trailCmtNo" resultType="int" order="BEFORE">	
@@ -622,6 +633,7 @@
 			SELECT ort.walkLogNo
 			       ,ort.userNo
 			       ,ort.name userName
+			       ,ort.code
 			       ,ort.distance
 			       ,ort.logTime
 			       ,ort.content
@@ -631,6 +643,7 @@
 			               ,ot.walkLogNo
 			               ,ot.userNo
 			               ,ot.name
+			               ,ot.code
 			               ,ot.distance
 			               ,ot.logTime
 			               ,ot.content
@@ -639,6 +652,7 @@
 			          FROM (SELECT w.walklogNo
 			                       ,u.userNo
 			                       ,u.name
+			                       ,u.code
 			                       ,w.distance
 			                       ,w.logTime
 			                       ,w.content
@@ -682,13 +696,45 @@
 			       ,filePath
 			       ,imageorder
 			  FROM images
-			 WHERE type = 'walkLog'
+			 WHERE type = 'walkLogCon'
 			   AND imageorder = 0
 			   AND useNo = #{walkLogNo}
 		 ]]>
 	</select>
 	
-	<!-- 산책일지 좋아요수 -->
+	<!-- 산책한 강아지 -->
+	<select id="walkedDog" parameterType="int" resultType="com.runningdog.vo.DogVo">
+		 <![CDATA[
+			SELECT dogNo
+			  FROM walkedDog
+			 WHERE walkLogNo = #{walkLogNo}
+			 ORDER BY dogNo DESC
+		 ]]>
+	</select>
+	
+	<!-- 강아지 프로필 -->
+	<select id="dogImg" parameterType="int" resultType="com.runningdog.vo.ImagesVo">
+		 <![CDATA[
+			SELECT orgName
+			       ,saveName
+			       ,filePath
+			  FROM images
+			 WHERE type = 'dog'
+			   AND useNo = #{dogNo}
+		 ]]>
+	</select>
+	
+	<!-- 산책일지 이미지 수 -->
+	<select id="logImgCnt" parameterType="int" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			  FROM images
+			 WHERE type = 'walkLogCon'
+			   AND useNo = #{walkLogNo}
+		 ]]>
+	</select>
+	
+	<!-- 산책일지 좋아요 수 -->
 	<select id="logLikeCnt" parameterType="int" resultType="int">
 		 <![CDATA[
 			SELECT COUNT(*)

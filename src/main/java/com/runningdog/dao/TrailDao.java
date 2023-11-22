@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.runningdog.vo.CoordsVo;
+import com.runningdog.vo.DogVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailCmtVo;
@@ -243,6 +244,15 @@ public class TrailDao {
 		
 		return cmtLikeCnt;
 	}
+	
+	// 후기 전체 수
+	public int cmtCnt(int trailNo) {
+		System.out.println("TrailDao.cmtCnt()");
+		
+		int cmtCnt = sqlSession.selectOne("walkTrail.cmtCnt", trailNo);
+		
+		return cmtCnt;
+	}
 
 	// 후기 작성
 	public int trailCmtAdd(TrailCmtVo trailCmtVo) {
@@ -279,8 +289,35 @@ public class TrailDao {
 		
 		return imagesVo;
 	}
+	
+	// 산책한 강아지
+	public List<DogVo> walkedDog(int walkLogNo) {
+		// System.out.println("TrailDao.walkedDog()");
+	
+		List<DogVo> dogList = sqlSession.selectList("walkTrail.walkedDog", walkLogNo);
+		
+		return dogList;
+	}
 
-	// 산책일지 좋아요수
+	// 강아지 프로필
+	public ImagesVo dogImg(int walkedDogNo) {
+		// System.out.println("TrailDao.dogImg()");
+		
+		ImagesVo imagesVo = sqlSession.selectOne("walkTrail.dogImg", walkedDogNo);
+		
+		return imagesVo;
+	}
+	
+	// 산책일지 이미지 수
+	public int logImgCnt(int walkLogNo) {
+		// System.out.println("TrailDao.logImgCnt()");
+		
+		int logImgCnt = sqlSession.selectOne("walkTrail.logImgCnt", walkLogNo);
+		
+		return logImgCnt;
+	}
+
+	// 산책일지 좋아요 수
 	public int logLikeCnt(int walkLogNo) {
 		// System.out.println("TrailDao.logLikeCnt()");
 		

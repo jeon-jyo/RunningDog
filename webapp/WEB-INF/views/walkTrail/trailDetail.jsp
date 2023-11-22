@@ -144,10 +144,14 @@
 					<div class="detail-bar">
 						<c:if test="${!empty userMap }">
 							<c:if test="${!empty userMap.userImg }">
-								<img src="${pageContext.request.contextPath }/rdimg/userProfile/${userMap.userImg.saveName }">
+								<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+									<img src="${pageContext.request.contextPath }/rdimg/userProfile/${userMap.userImg.saveName }">
+								</a>
 							</c:if>
 							<c:if test="${empty userMap.userImg }">
-								<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
+								<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+									<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
+								</a>
 							</c:if>
 							<div class="detail-text">
 								<span>${userMap.usersVo.name }</span>
@@ -182,10 +186,14 @@
 					<h2>공유 메이트</h2>
 					<div class="detail-bar">
 						<c:if test="${! empty detailMap.userImg }">
-							<img src="${pageContext.request.contextPath }/rdimg/userProfile/${detailMap.userImg.saveName }">
+							<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+								<img src="${pageContext.request.contextPath }/rdimg/userProfile/${detailMap.userImg.saveName }">
+							</a>
 						</c:if>
 						<c:if test="${empty detailMap.userImg }">
-							<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
+							<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+								<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
+							</a>
 						</c:if>
 						<div class="detail-text">
 							<span>${detailMap.trailVo.usersVo.name }</span>
@@ -212,10 +220,14 @@
 						<c:forEach items="${userUsedMap.userList }" var="usersVo" varStatus="status">
 							<div class="ranking-detail-bar">
 								<c:if test="${!empty userUsedMap.imgList[status.index] }">
-									<img src="${pageContext.request.contextPath }/rdimg/userProfile/${userUsedMap.imgList[status.index].saveName }">
+									<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+										<img src="${pageContext.request.contextPath }/rdimg/userProfile/${userUsedMap.imgList[status.index].saveName }">
+									</a>
 								</c:if>
 								<c:if test="${empty userUsedMap.imgList[status.index] }">
-									<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
+									<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+										<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
+									</a>
 								</c:if>
 								<div class="detail-text">
 									<span>${usersVo.name }</span>
@@ -237,7 +249,7 @@
 			<div class="comment-nav">
 				<div>후기</div>
 				<div>산책일지</div>
-				<!-- <div>모임일지</div> -->
+				<div>모임일지</div>
 				<i class="fa-solid fa-caret-up"></i>
 			</div>
 			
@@ -496,11 +508,11 @@
 	
 	var previewNode = document.querySelector("#template");
 	previewNode.id = "";
-
+	
 	var previewTemplate = previewNode.parentNode.innerHTML;
 	previewNode.parentNode.removeChild(previewNode);
 	Dropzone.autoDiscover = false;
-
+	
 	var dropzone = new Dropzone("div.dropzone", {
 		url : '${pageContext.request.contextPath}/walkTrail/cmtImgAdd',
 		method : "POST",
@@ -567,6 +579,7 @@
 	});
 	// Dropzone has been added as a global variable.
 	
+	const cmtCnt = document.querySelector(".comment-number span");
 	function fetchList(trailNo) {
 		console.log("fetchList()");
 		
@@ -597,6 +610,7 @@
 					if(listMap.cmtList.length == 0) {
 						nonListRender();
 					} else {
+						cmtCnt.innerText = listMap.cmtCnt;
 						if(cmtListIndex == 0) {
 							for(let i = 0; i < listMap.cmtList.length; i++) {
 								listRender(listMap, i, "down");
@@ -619,6 +633,22 @@
 							walkLogRender(listMap, i, "down");
 						}
 					}
+				} else if(cmtIndex == 2) {
+					console.log("모임일지 목록");
+					
+					console.log("listMap ", listMap);
+					
+					nonListRender();
+					
+					/*
+					if(listMap.logList.length == 0) {
+						nonListRender();
+					} else {
+						for(let i = 0; i < listMap.logList.length; i++) {
+							walkLogRender(listMap, i, "down");
+						}
+					}
+					*/
 				}
 			},
 			error : function(XHR, status, error) {
@@ -632,14 +662,14 @@
 		console.log("listRender()");
 		
 		let content = (listMap.cmtList[index].content == null) ? "" : listMap.cmtList[index].content;
-		let path = (listMap.cmtImgList[index][0].saveName == "noImg") ? "" : listMap.cmtImgList[index][0].saveName
+		let path = (listMap.cmtImgList[index][0].saveName == "noImg") ? "" : listMap.cmtImgList[index][0].saveName;
 		
 		let str = '';
 		str += '<div class="comment-detail">';
 		str += '	<div class="comment-img">';
 		if(path != "") {
 			str += '		<img src="${pageContext.request.contextPath }/rdimg/trail/' + path + '">';
-			str += '		<div class="imgCount">3</div>';
+			str += '		<div class="imgCount">' + listMap.cmtImgList[index].length + '</div>';
 		}
 		str += '	</div>';
 		str += '	<div class="comment-content">';
@@ -648,9 +678,13 @@
 		str += '	</div>';
 		str += '	<div class="comment-info">';
 		if(listMap.userImgList[index] != null) {
-			str += '		<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + listMap.userImgList[index].saveName + '">';
+			str += '		<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.cmtList[index].usersVo.code + '">';
+			str += '			<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + listMap.userImgList[index].saveName + '">';
+			str += '		</a>';
 		} else {
-			str += '		<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">';
+			str += '		<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.cmtList[index].usersVo.code + '">';
+			str += '			<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">';
+			str += '		</a>';
 		}
 		str += '		<div class="detail-text">';
 		str += '			<span>' + listMap.cmtList[index].usersVo.name + '</span>';
@@ -705,12 +739,13 @@
 		console.log("walkLogRender()");
 		
 		let path = (listMap.logImgList[index].saveName == "noImg") ? "" : listMap.logImgList[index].saveName
+		let dogPath = (listMap.dogImgList[index].saveName == "noImg") ? "" : listMap.dogImgList[index].saveName
 
  		let str = '';
  		str += '<div class="meeting walkLog">';
  		str += '	<div class="meetingTitle walkTitle">';
-		str += '		<div class="left walk-title1">' + listMap.logList[index].distance + '</div>';
-		str += '		<div class="left walk-title2">' + listMap.logList[index].logTime + '</div>';
+		str += '		<div class="left walk-title1">' + listMap.infoList[index][0] + '</div>';
+		str += '		<div class="left walk-title2">' + listMap.infoList[index][1] + '</div>';
 		str += '		<div class="right">' + listMap.logList[index].regDate + '</div>';
 		str += '	</div>';
 		str += '	<div class="meetingContent">';
@@ -727,8 +762,13 @@
 		str += '						<span>' + listMap.logList[index].usersVo.name + '</span>';
 		str += '						<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
 		str += '					</div>';
-		str += '					<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>';
-		str += '					<div class="imgCount">3</div>';
+		if(dogPath != "") {
+			str += '					<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/rdimg/dogProfile/' + dogPath + '"></div>';
+			str += '					<div class="imgCount">' + listMap.dogCntList[index] + '</div>';
+		} else {
+			str += '					<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/sarang3.jpg"></div>';
+			str += '					<div class="imgCount">' + listMap.dogCntList[index] + '</div>';
+		}
 		str += '				</div>';
 		str += '			</div>';
 		str += '		</div>';
@@ -736,7 +776,7 @@
 		str += '			<div class="comment-img">';
 		if(path != "") {
 			str += '		<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + path + '">';
-			str += '				<div class="imgCount">3</div>';
+			str += '				<div class="imgCount">' + path + '</div>';
 		}
 		str += '			</div>';
 		str += '		</div>';
@@ -750,7 +790,6 @@
 		} else {
 			console.log("잘못입력");
 		}
-
 	}
 	
 	function nonListRender() {
@@ -795,10 +834,15 @@
         		
         		cmtListGroup[0].classList.remove("nonList");
         		cmtListGroup[1].classList.remove("nonList");
-        	} else {
+        	} else if(cmtIndex == 1) {
         		console.log("산책일지 선택");
         		
         		cmtListGroup[0].classList.add("nonList");
+        		cmtListGroup[1].classList.add("nonList");
+        	} else if(cmtIndex == 2) {
+				console.log("산책일지 선택");
+        		
+				cmtListGroup[0].classList.add("nonList");
         		cmtListGroup[1].classList.add("nonList");
         	}
         	

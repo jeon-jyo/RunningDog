@@ -409,6 +409,7 @@ SELECT t.trailNo
        ,TO_CHAR(t.updatedate, 'YY-MM-DD HH24:MI:SS') updateDate
        ,u.userNo
        ,u.name
+       ,u.code
   FROM trail t, users u
  WHERE t.userNo = u.userNo
    AND t.trailNo = 1;
@@ -484,6 +485,7 @@ SELECT COUNT(*)
 -- 유저 상세
 SELECT userNo
        ,name
+       ,code
   FROM users
  WHERE userNo = 1;
 
@@ -518,9 +520,11 @@ SELECT ort.walkLogNo
 -- 유저 상세 목록 (많이 이용한 메이트)
 SELECT ort.userNo
        ,ort.name
+       ,ort.code
   FROM ( SELECT ROWNUM rn
                 ,s.userNo
                 ,s.name
+                ,s.code
            FROM users s, ( SELECT COUNT(*) cnt
                                   ,u.userNo
                              FROM trailUsed tu, walkLog w, users u
@@ -543,6 +547,7 @@ SELECT ort.trailCmtNo
        ,ort.content
        ,ort.userNo
        ,ort.name userName
+       ,ort.code
        ,ort.regDate
        ,ort.cnt
   FROM (SELECT ROWNUM rn
@@ -551,6 +556,7 @@ SELECT ort.trailCmtNo
                ,ot.content
                ,ot.userNo
                ,ot.name
+               ,ot.code
                ,ot.regDate
                ,ot.cnt
           FROM (SELECT t.trailCmtNo
@@ -558,6 +564,7 @@ SELECT ort.trailCmtNo
                        ,t.content
                        ,u.userNo
                        ,u.name
+                       ,u.code
                        ,TO_CHAR(t.regdate, 'YY-MM-DD HH24:MI:SS') regDate
                        ,gt.cnt
                   FROM users u, trailCmt t
@@ -642,6 +649,9 @@ SELECT COUNT(*)
    AND useNo = 1;
 
 -- 후기 전체 수
+SELECT COUNT(*)
+  FROM trailCmt
+ WHERE trailNo = 1;
 
 -- 후기 작성
 INSERT INTO trailCmt
@@ -665,6 +675,7 @@ SELECT *
 SELECT ort.walkLogNo
        ,ort.userNo
        ,ort.name userName
+       ,ort.code
        ,ort.distance
        ,ort.logTime
        ,ort.content
@@ -674,6 +685,7 @@ SELECT ort.walkLogNo
                ,ot.walkLogNo
                ,ot.userNo
                ,ot.name
+               ,ot.code
                ,ot.distance
                ,ot.logTime
                ,ot.content
@@ -682,6 +694,7 @@ SELECT ort.walkLogNo
           FROM (SELECT w.walklogNo
                        ,u.userNo
                        ,u.name
+                       ,u.code
                        ,w.distance
                        ,w.logTime
                        ,w.content
@@ -753,15 +766,36 @@ SELECT orgName
        ,filePath
        ,imageorder
   FROM images
- WHERE type = 'walkLog'
-   AND imageorder = 1
+ WHERE type = 'walkLogCon'
+   AND imageorder = 0
    AND useNo = 1;
 
--- 산책일지 좋아요수
+-- 산책한 강아지
+SELECT dogNo
+  FROM walkedDog
+ WHERE walkLogNo = 2
+ ORDER BY dogNo DESC;
+
+-- 강아지 프로필
+SELECT orgName
+       ,saveName
+       ,filePath
+  FROM images
+ WHERE type = 'dog'
+   AND useNo = 1;
+
+-- 산책일지 이미지 수
+SELECT COUNT(*)
+  FROM images
+ WHERE type = 'walkLogCon'
+   AND useNo = 1;
+
+-- 산책일지 좋아요 수
 SELECT COUNT(*)
   FROM userLike
  WHERE type = 'walkLog'
    AND useNo = 1;
+
 
 ---------------------------------------------------------------------------------------
 

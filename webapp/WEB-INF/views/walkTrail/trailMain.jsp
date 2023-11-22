@@ -103,7 +103,7 @@
 		let address = $("#address").value;
 		console.log("address ", address);
 	}); */
-
+	
 	/* map */
    	var map = new naver.maps.Map('map', {
 		zoom: 15
@@ -319,17 +319,24 @@
 				
 				if(infoMap.userImg != null) {
 					tooltipInfo.push(
-					    '       <img src="${pageContext.request.contextPath}/rdimg/userProfile/' + infoMap.userImg.saveName + '" />',
+					    '       <a href="${pageContext.request.contextPath}/walkBlog/' + infoMap.trailVo.usersVo.code + '">',
+					    '       	<img src="${pageContext.request.contextPath}/rdimg/userProfile/' + infoMap.userImg.saveName + '" />',
+					    '       </a>',
 					);
 				} else {
 					tooltipInfo.push(
-					    '       <img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg" />',
+					    '       <a href="${pageContext.request.contextPath}/walkBlog/' + infoMap.trailVo.usersVo.code + '">',
+					    '       	<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg" />',
+					    '       </a>',
 					);
 				}
 				
 				tooltipInfo.push(
 					'       	<div class="detail-text">',
+				    '       <a href="${pageContext.request.contextPath}/walkBlog/' + infoMap.trailVo.usersVo.code + '">',
+
 				    '       		<span>' + infoMap.trailVo.usersVo.name + '</span>',
+				    '       </a>',
 				 	'       		<span class="detail-info">' + infoMap.trailVo.regDate + '</span>',
 				    '       	</div>',
 				    '		</div>',

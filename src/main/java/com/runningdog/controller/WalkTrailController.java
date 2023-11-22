@@ -247,6 +247,8 @@ public class WalkTrailController {
 		} else if(cmtNav == 1) {
 			// 산책로 산책일지
 			listMap = trailService.logListMap(fetchSet);
+		} else if(cmtNav == 2) {
+			// 산책로 모임일지
 		}
 		
 		if(authUser != null) {
@@ -261,7 +263,8 @@ public class WalkTrailController {
 	// 산책로 후기 작성 ajax
 	@ResponseBody
 	@RequestMapping(value = "/cmtAdd", method= { RequestMethod.GET, RequestMethod.POST})
-	public int trailCmtAdd(@RequestParam int trailNo, @RequestParam(required = false) String content, HttpSession session) {
+	public int trailCmtAdd(@RequestParam int trailNo, @RequestParam(required = false) String content,
+			HttpSession session) {
 		System.out.println("WalkTrailController.trailCmtAdd()");
 
 		TrailCmtVo trailCmtVo = new TrailCmtVo();

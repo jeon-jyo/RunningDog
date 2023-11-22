@@ -39,6 +39,7 @@
 
 				<i class="fa-solid fa-pen-to-square" id="trailAddFormGo"></i>
 				<button type="button" class="btn btn-primary">일지 보기</button>
+				<input type="hidden" name="hiddenCode" id="hidden-code" value="${authUser.code}">
 			</div>
 
 			<div class="main-content">
@@ -61,6 +62,23 @@
 		let address = $("#address").value;
 		console.log("address ", address);
 	}); */
+	
+	let hiddenCode = document.querySelector("#hidden-code");
+	
+	$(".btn-primary").on("click", function() {
+		// console.log("btn-primary click");
+		
+		if(overlayMarker.length == 0) {
+			alert("산책일지를 선택해주세요.");
+		} else {
+	        let seq = overlayMarker[0].get('seq');
+	        let code = hiddenCode.value;
+	        
+	        console.log(seq, code);
+			
+	        window.location.href = "${pageContext.request.contextPath}/walkBlog/" + code + "/" + seq;
+		}
+	});
 	
 	$("#trailAddFormGo").on("click", function() {
 		// console.log("trailAddFormGo click");

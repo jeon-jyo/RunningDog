@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.runningdog.dao.TrailDao;
 import com.runningdog.vo.CoordsVo;
+import com.runningdog.vo.DogVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailCmtVo;
@@ -26,6 +27,7 @@ import com.runningdog.vo.TrailTagVo;
 import com.runningdog.vo.TrailVo;
 import com.runningdog.vo.UsersVo;
 import com.runningdog.vo.WalkLogVo;
+import com.runningdog.vo.WalkedDogVo;
 
 @Service
 public class TrailService {
@@ -437,6 +439,8 @@ public class TrailService {
 		
 		List<TrailCmtVo> cmtList = trailDao.cmtList(fetchSet);
 		// System.out.println("cmtList : " + cmtList);
+		// 후기 전체 수
+		int cmtCnt = trailDao.cmtCnt(cmtList.get(0).getTrailVo().getTrailNo());
 		
 		List<List<ImagesVo>> cmtImgList = new ArrayList<List<ImagesVo>>();
 		List<ImagesVo> userImgList = new ArrayList<ImagesVo>();
@@ -465,6 +469,7 @@ public class TrailService {
 		
 		Map<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("cmtList", cmtList);
+		listMap.put("cmtCnt", cmtCnt);
 		listMap.put("cmtImgList", cmtImgList);
 		listMap.put("userImgList", userImgList);
 		listMap.put("likeCntList", likeCntList);
@@ -477,21 +482,61 @@ public class TrailService {
 		System.out.println("TrailService.logListMap()");
 		
 		List<WalkLogVo> logList = trailDao.logList(fetchSet);
-		System.out.println("logList : " + logList);
+		// System.out.println("logList : " + logList);
 		
+		String[][] infoList = new String[logList.size()][2];
 		List<ImagesVo> logImgList = new ArrayList<ImagesVo>();
 		List<ImagesVo> userImgList = new ArrayList<ImagesVo>();
+		List<ImagesVo> dogImgList = new ArrayList<ImagesVo>();
+		List<Integer> logImgCntList = new ArrayList<Integer>();
+		List<Integer> dogCntList = new ArrayList<Integer>();
 		List<Integer> likeCntList = new ArrayList<Integer>();
-		for (WalkLogVo walkLogVo : logList) {
+		for (int i = 0; i < logList.size(); i++) {
 			
-			System.out.println("walkLogVo " + walkLogVo.getUsersVo().getName());
+			String[] info = {"", ""};
+			if(logList.get(i).getDistance() >= 1000) {
+				info[0] = (int) Math.floor(logList.get(i).getDistance() / 1000) + "." +(int) Math.floor((logList.get(i).getDistance() % 1000) / 10) + "km";
+			} else {
+				info[0] = logList.get(i).getDistance() + "m";
+			}
+			
+			int minute = (int) Math.floor(logList.get(i).getLogTime() / 60);
+			if(60 <= minute) {
+				int hour = (int) Math.floor(minute / 60);
+	        	minute = minute - (hour * 60);
+
+	        	info[1] +=  hour +  "시간 ";
+	        }
+			info[1] += minute + "분";
+			
+			System.out.println("logList.get(i).getWalkLogNo() " + logList.get(i).getWalkLogNo());
 			
 			// 산책일지 이미지
-			ImagesVo logImg = trailDao.logImg(walkLogVo.getWalkLogNo());
+			ImagesVo logImg = trailDao.logImg(logList.get(i).getWalkLogNo());
 			// 유저 프로필
-			ImagesVo userImg = trailDao.userImg(walkLogVo.getUsersVo().getUserNo());
+			ImagesVo userImg = trailDao.userImg(logList.get(i).getUsersVo().getUserNo());
+			// 산책한 강아지
+			List<DogVo> dogList = trailDao.walkedDog(logList.get(i).getWalkLogNo());
+			
+			ImagesVo dogImg = new ImagesVo();
+			int dogCnt = 0;
+			if(CollectionUtils.isEmpty(dogList)) {
+				ImagesVo vo = new ImagesVo();
+				vo.setSaveName("noImg");
+				vo.setImageOrder(0);
+				dogImg = vo;
+			}
+			if(dogList.size() != 0) {
+				// 강아지 프로필
+				dogImg = trailDao.dogImg(dogList.get(0).getDogNo());
+				// 강아지 수
+				dogCnt = dogList.size();
+			}
+
+			// 산책일지 이미지 수
+			int logImgCnt = trailDao.logImgCnt(logList.get(i).getWalkLogNo());
 			// 산책일지 좋아요수
-			int logLikeCnt = trailDao.logLikeCnt(walkLogVo.getWalkLogNo());
+			int logLikeCnt = trailDao.logLikeCnt(logList.get(i).getWalkLogNo());
 			
 			if(logImg == null) {
 				ImagesVo vo = new ImagesVo();
@@ -499,87 +544,45 @@ public class TrailService {
 				vo.setImageOrder(0);
 				logImg = vo;
 			}
+			
+			infoList[i][0] = info[0];
+			infoList[i][1] = info[1];
+			
 			logImgList.add(logImg);
 			userImgList.add(userImg);
+			dogImgList.add(dogImg);
+			logImgCntList.add(logImgCnt);
+			dogCntList.add(dogCnt);
 			likeCntList.add(logLikeCnt);
-		}
+	    }
 		// System.out.println("logImgList : " + logImgList);
 		// System.out.println("userImgList : " + userImgList);
-		// System.out.println("likeCntList : " + likeCntList);
+		System.out.println("dogImgList : " + dogImgList);
+		System.out.println("logImgCntList : " + logImgCntList);
+		System.out.println("dogCntList : " + dogCntList);
+		System.out.println("likeCntList : " + likeCntList);
+		/*
+		for (int i = 0; i < infoList.length; i++) {
+		    for (int j = 0; j < infoList[i].length; j++) {
+		        System.out.print(infoList[i][j] + " ");
+		    }
+		    System.out.println();
+		}
+		*/
 		
 		Map<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("logList", logList);
 		listMap.put("logImgList", logImgList);
 		listMap.put("userImgList", userImgList);
+		listMap.put("dogImgList", dogImgList);
+		listMap.put("logImgCntList", logImgCntList);
+		listMap.put("dogCntList", dogCntList);
 		listMap.put("likeCntList", likeCntList);
+		listMap.put("infoList", infoList);
 		
 		return listMap;
 	}
 
-	// 산책로 후기 작성 ajax
-	/*
-	public void trailCmtAdd(Map<String, MultipartFile> fileMap, TrailCmtVo trailCmtVo) {
-		System.out.println("TrailService.trailCmtAdd()");
-		
-		// 후기 등록
-		int insertCnt = trailDao.trailCmtAdd(trailCmtVo);
-		
-		if(insertCnt != 0) {
-			System.out.println("후기 등록 성공");
-			
-			int index = 0;
-			for (MultipartFile file : fileMap.values()) {
-				if(!file.isEmpty()) {
-					// 파일 정보
-					String saveDir = "C:\\javaStudy\\rdimg\\trail";
-					
-					String orgName = file.getOriginalFilename();
-					String exName = orgName.substring(orgName.lastIndexOf("."));
-					
-					String saveName = System.currentTimeMillis()
-							+ UUID.randomUUID().toString()
-							+ exName;
-					
-					String filePath = saveDir + "\\" + saveName;
-					
-					int fileSize = (int) file.getSize();
-					
-					ImagesVo imagesVo = new ImagesVo();
-					imagesVo.setUseNo(trailCmtVo.getTrailCmtNo());
-					imagesVo.setOrgName(orgName);
-					imagesVo.setSaveName(saveName);
-					imagesVo.setFilePath(filePath);
-					imagesVo.setFileSize(fileSize);
-					imagesVo.setImageOrder(index);
-					
-					// DB 연결
-					// 후기 이미지 업로드
-					int imgInsertCnt = trailDao.cmtImgAdd(imagesVo);
-					if(imgInsertCnt == 1) {
-						// System.out.println("후기 이미지 등록 성공");
-						
-						// 서버 파일 저장
-						try {
-							byte[] fileDate;
-							fileDate = file.getBytes();
-							
-							OutputStream os = new FileOutputStream(filePath);
-							BufferedOutputStream bos = new BufferedOutputStream(os);
-							
-							bos.write(fileDate);
-							bos.close();
-							
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						index++;
-					}
-				}
-	        }
-		}
-	}
-
-*/
 	// 산책로 후기 작성 ajax
 	public int trailCmtAdd(TrailCmtVo trailCmtVo) {
 		System.out.println("TrailService.trailCmtAdd()");

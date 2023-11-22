@@ -49,7 +49,7 @@
 }
 
 /* 프로필 */
-.detail-bar > img,
+.detail-bar > img
 .comment-info > img,
 .ranking-detail-bar > img,
 .img-info-detail > img,
@@ -225,11 +225,16 @@
 	height: 86px;
 }
 .map-sidebar > div.detail-bar > img,
-.map-sidebar > div.ranking-detail-bar > img {
+.map-sidebar > div.detail-bar > a > img,
+.map-sidebar > div.ranking-detail-bar > img
+.map-sidebar > div.ranking-detail-bar > a > img,
+.ranking-detail-bar > a > img {
 	height: 65px;
 	width: 65px;
 	margin-left: 20px;
+	border-radius: 50%;
 }
+
 .detail-bar .detail-text,
 .ranking-detail-bar .detail-text {
 	display: flex;
@@ -573,9 +578,12 @@
     width: 265px;
 }
 .comment-info > img,
+.comment-info > a > img,
+.comment-detail .comment-info > a > img,
 .img-info > div > img {
 	height: 60px;
 	width: 60px;
+	border-radius: 50%;
 }
 .comment-info .detail-text,
 .img-info .img-info-detail .detail-text {

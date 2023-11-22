@@ -29,7 +29,9 @@
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=main">추천 산책로</a></li>
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=my">등록한 산책로</a></li>
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=star">찜한 산책로</a></li>
-							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/walkLog">산책로 등록하기</a></li>
+							<c:if test="${sessionScope.authUser != null}">
+								<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/walkLog">산책로 등록하기</a></li>
+				 			</c:if>
 						</ul>
 					</div>
 				</li>
