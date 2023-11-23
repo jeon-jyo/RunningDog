@@ -765,6 +765,7 @@ SELECT orgName
        ,saveName
        ,filePath
        ,imageorder
+       ,type
   FROM images
  WHERE type = 'walkLogCon'
    AND imageorder = 0
@@ -773,7 +774,7 @@ SELECT orgName
 -- 산책한 강아지
 SELECT dogNo
   FROM walkedDog
- WHERE walkLogNo = 2
+ WHERE walkLogNo = 3
  ORDER BY dogNo DESC;
 
 -- 강아지 프로필
@@ -796,6 +797,35 @@ SELECT COUNT(*)
  WHERE type = 'walkLog'
    AND useNo = 1;
 
+-- 산책일지 맵 이미지
+SELECT orgName
+       ,saveName
+       ,filePath
+       ,type
+  FROM images
+ WHERE type = 'walkLogMap'
+   AND useNo = 1;
+
+-- 산책로 모든 산책일지 (이용 시간대)
+SELECT w.walklogNo
+       ,w.distance
+       ,w.logTime
+       ,TO_CHAR(w.regdate, 'HH24') regDate
+  FROM trailUsed tu, walkLog w
+ WHERE tu.walklogno 
+   AND w.status = 'T'
+   AND tu.trailNo = 1
+ ORDER BY regDate DESC, w.walklogNo DESC;
+ 
+ 
+SELECT TO_CHAR(w.regdate, 'HH24') regDate
+  FROM trailUsed tu, walkLog w
+ WHERE tu.walklogno
+   AND w.status = 'T'
+   AND tu.trailNo = 1;
+ 
+ 
+-- 산책로 산책일지 이용 시간대
 
 ---------------------------------------------------------------------------------------
 
