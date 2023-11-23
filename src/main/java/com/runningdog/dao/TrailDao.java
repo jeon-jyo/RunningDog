@@ -192,11 +192,11 @@ public class TrailDao {
 	}
 	
 	// 산책로 이용 시간대
-	public List<WalkLogVo> trailUseTime(int trailNo) {
+	public List<Map<String,Object>> trailUseTime(int trailNo) {
 		System.out.println("TrailDao.trailUseTime()");
 		
-		List<WalkLogVo> trailUseTime = sqlSession.selectList("walkTrail.trailUseTime", trailNo);
-		
+		List<Map<String,Object>> trailUseTime = sqlSession.selectList("walkTrail.trailUseTime", trailNo);
+		System.out.println("trailUseTime : " + trailUseTime);
 		return trailUseTime;
 	}
 	

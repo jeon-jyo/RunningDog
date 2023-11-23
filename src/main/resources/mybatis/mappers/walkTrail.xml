@@ -61,7 +61,7 @@
 		<collection property="usersVo" resultMap="UsersMap"></collection>
 		<collection property="locationVo" resultMap="LocationMap"></collection>
 	</resultMap>
-	
+
 	<!-- trailMain -->
 	
 	<!-- 유저 설정 위치 -->
@@ -759,17 +759,17 @@
 	</select>
 	
 	<!-- 산책로 이용 시간대 -->
-	<select id="trailUseTime" parameterType="int" resultType="com.runningdog.vo.WalkLogVo">
+	<select id="trailUseTime" parameterType="int" resultType="java.util.Map">
 		 <![CDATA[
-			SELECT w.walklogNo
-			       ,w.distance
-			       ,w.logTime
-			       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
-			  FROM trailUsed tu, walkLog w
+			SELECT w.regDate,
+			       COUNT(*) cnts
+			  FROM trailUsed tu, (SELECT walkLogNo,
+			                             TO_CHAR(regdate, 'HH24') regdate
+			                        FROM walkLog)w
 			 WHERE tu.walklogno = w.walkLogNo
-			   AND w.status = 'T'
 			   AND tu.trailNo = #{trailNo}
-			 ORDER BY regDate DESC, w.walklogNo DESC
+			 GROUP BY w.regDate
+			 ORDER BY w.regDate ASC
 		 ]]>
 	</select>
 	

@@ -11,6 +11,8 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script>
 <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+
 </head>
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
@@ -422,46 +424,48 @@
 </body>
 <script type="text/javascript">
 
+
+
+
 	let useTimeJson = ${useTimeJson };
 	
 	console.log("useTimeJson ", useTimeJson);
 	
 	for(let i = 0; i < useTimeJson.length; i++) {
 		console.log("regTime ", useTimeJson[i].regDate);
+		console.log("cnt ", useTimeJson[i].cnt);
 	}
 
 	
-	google.charts.load('current', {'packages':['bar']});
+	google.charts.load('current', {'packages':['corechart', 'line']});
 	google.charts.setOnLoadCallback(drawChart);
 
 	function drawChart() {
 
 	  var data = new google.visualization.DataTable();
-	  data.addColumn('timeofday', 'Time of Day');
-	  data.addColumn('number', 'Emails Received');
+	  data.addColumn('string', '시간');
+	  data.addColumn('number', '이용자수');
+	  let datas = [];
+	  for(let i = 0; i < 24; i++) {
+		  let cnt = 0;
+		  for(let j = 0; j < useTimeJson.length; j++) {
+		  	  if(i == useTimeJson[j].REGDATE){
+		  		  cnt = useTimeJson[j].CNT;
+		  	  }
+		  }
+		  datas.push([i+"시",cnt]);
+	  }
 
-	  data.addRows([
-	    [[8, 30, 45], 5],
-	    [[9, 0, 0], 10],
-	    [[10, 0, 0, 0], 12],
-	    [[10, 45, 0, 0], 13],
-	    [[11, 0, 0, 0], 15],
-	    [[12, 15, 45, 0], 20],
-	    [[13, 0, 0, 0], 22],
-	    [[14, 30, 0, 0], 25],
-	    [[15, 12, 0, 0], 30],
-	    [[16, 45, 0], 32],
-	    [[16, 59, 0], 42]
-	  ]);
+	  data.addRows(datas);
 
 	  var options = {
-	    title: 'Total Emails Received Throughout the Day',
+	    title: '산책로 이용 시간대',
 	    height: 450
-	  };
+	  }
 
-	  var chart = new google.charts.Bar(document.getElementById('chart_div'));
+	  var chart = new google.visualization.LineChart(document.querySelector('.detail-chart'));
 
-	  chart.draw(data, google.charts.Bar.convertOptions(options));
+	  chart.draw(data, options);
 	}
 
 	
@@ -755,6 +759,37 @@
 		} else {
 			console.log("잘못입력");
 		}
+ 		
+/*  		$(".comment-list").on("click", ".comment-img", function() {
+ 			console.log("comment-img click");
+ 			
+ 			cmtImgDetail(listMap, index);
+ 		}); */
+ 		
+ 		$(".comment-list").children().last().on("click", function() {
+ 			console.log("comment-img click");
+ 			cmtImgDetail(listMap, index);
+		})
+	}
+	
+	
+	
+	function cmtImgDetail(listMap, index) {
+		console.log("cmtImgDetail()");
+		console.log("listMap : ", listMap);
+		
+		let path = (listMap.cmtImgList[index][0].saveName == "noImg") ? "" : listMap.cmtImgList[index][0].saveName;
+		
+		$(".detail-img").empty();
+		
+		let str = '';
+		str += '<div class="detail-img-content">';
+		str += '	<img src="${pageContext.request.contextPath }/rdimg/trail/' + path + '">';
+		str += '</div>';
+		
+		$(".detail-img").append(str);
+		
+		$('#detailModal').modal("show");
 	}
 	
 	// cmt gallery list

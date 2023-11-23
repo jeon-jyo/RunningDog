@@ -70,8 +70,8 @@
 
 /* map-container main */
 .map-container {
-	/*height: 1425px;*/
-	height: 1150px;
+	height: 1425px;
+	/*height: 1150px;*/
 	width: 100%;
 	border-bottom: 1px solid #dee2e6;
 }

@@ -437,7 +437,7 @@ public class TrailService {
 	public String trailUseTime(TrailVo trailVo) throws JsonProcessingException {
 		System.out.println("TrailService.trailUseTime()");
 		
-		List<WalkLogVo> trailUseTime = trailDao.trailUseTime(trailVo.getTrailNo());
+		List<Map<String,Object>> trailUseTime = trailDao.trailUseTime(trailVo.getTrailNo());
 		System.out.println("trailUseTime : " + trailUseTime);
 		
 		ObjectMapper mapper = new ObjectMapper();
