@@ -11,8 +11,7 @@
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
-		<h1><i class="fa-regular fa-star"></i>&nbsp;천호공원 한바퀴&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-diagram-project"></i></h1>
-		
+		<h1><i class="fa-regular fa-star star"></i>&nbsp;천호공원 한바퀴&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-diagram-project"></i></h1>
 		<div class="section">
 			<div class="location">서울 강동구 올림픽로 702 해공도서관</div>
 			<div class="stat">

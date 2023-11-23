@@ -23,6 +23,7 @@ import com.runningdog.service.TrailService;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailCmtVo;
+import com.runningdog.vo.TrailStarVo;
 import com.runningdog.vo.TrailVo;
 import com.runningdog.vo.UserVo;
 import com.runningdog.vo.UsersVo;
@@ -309,6 +310,28 @@ public class WalkTrailController {
 		Map<String, MultipartFile> fileMap = request.getFileMap();
 		
 		trailService.trailCmtImgAdd(fileMap, trailCmtNo);
+	}
+	
+	// 산책로 찜 추가
+	@ResponseBody
+	@RequestMapping(value = "/trailStarAdd", method= { RequestMethod.GET, RequestMethod.POST})
+	public int trailStarAdd(@ModelAttribute TrailVo trailVo, HttpSession session) {
+		System.out.println("WalkTrailController.trailStarAdd()");
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser != null) {
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(authUser.getUserNo());
+			trailVo.setUsersVo(usersVo);
+		} else {
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(2);
+			trailVo.setUsersVo(usersVo);
+		}
+		
+		int insertCnt = trailService.trailStarAdd(trailVo);
+		
+		return insertCnt;
 	}
 	
 	@RequestMapping(value = "/detail/deleted", method= { RequestMethod.GET, RequestMethod.POST})

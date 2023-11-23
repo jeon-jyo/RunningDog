@@ -449,6 +449,33 @@
 		 ]]>
 	</select>
 	
+	<!-- 산책로 이용 시간대 -->
+	<select id="trailUseTime" parameterType="int" resultType="java.util.Map">
+		 <![CDATA[
+			SELECT COUNT(*) cnt
+			       ,w.regDate
+			  FROM trailUsed tu, (SELECT walkLogNo
+			                             ,TO_CHAR(regdate, 'HH24') regdate
+			                        FROM walkLog) w
+			 WHERE tu.walklogno = w.walkLogNo
+			   AND tu.trailNo = #{trailNo}
+			 GROUP BY w.regDate
+			 ORDER BY w.regDate ASC
+		 ]]>
+	</select>
+	
+	<!-- 산책로 찜 확인 -->
+	<select id="userTrailStar" parameterType="int" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			  FROM trailStar ts, trail t, users u
+			 WHERE t.trailNo = ts.trailNo
+			   AND ts.userNo = u.userNo
+			   AND ts.userNo = #{usersVo.userNo}
+			   AND t.trailNo = #{trailNo}
+		 ]]>
+	</select>
+	
 	<!-- 유저 상세 -->
 	<select id="userDetail" parameterType="int" resultType="com.runningdog.vo.UsersVo">
 		 <![CDATA[
@@ -755,21 +782,6 @@
 			  FROM images
 			 WHERE type = 'walkLogMap'
 			   AND useNo = #{walkLogNo}
-		 ]]>
-	</select>
-	
-	<!-- 산책로 이용 시간대 -->
-	<select id="trailUseTime" parameterType="int" resultType="java.util.Map">
-		 <![CDATA[
-			SELECT w.regDate,
-			       COUNT(*) cnts
-			  FROM trailUsed tu, (SELECT walkLogNo,
-			                             TO_CHAR(regdate, 'HH24') regdate
-			                        FROM walkLog)w
-			 WHERE tu.walklogno = w.walkLogNo
-			   AND tu.trailNo = #{trailNo}
-			 GROUP BY w.regDate
-			 ORDER BY w.regDate ASC
 		 ]]>
 	</select>
 	

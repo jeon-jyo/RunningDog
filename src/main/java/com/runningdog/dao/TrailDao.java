@@ -12,6 +12,7 @@ import com.runningdog.vo.DogVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailCmtVo;
+import com.runningdog.vo.TrailStarVo;
 import com.runningdog.vo.TrailTagVo;
 import com.runningdog.vo.TrailVo;
 import com.runningdog.vo.UsersVo;
@@ -196,8 +197,17 @@ public class TrailDao {
 		System.out.println("TrailDao.trailUseTime()");
 		
 		List<Map<String,Object>> trailUseTime = sqlSession.selectList("walkTrail.trailUseTime", trailNo);
-		System.out.println("trailUseTime : " + trailUseTime);
+
 		return trailUseTime;
+	}
+	
+	// 산책로 찜 확인
+	public int userTrailStar(TrailVo trailVo) {
+		// System.out.println("TrailDao.userTrailStar()");
+		
+		int selectCnt = sqlSession.selectOne("walkTrail.userTrailStar", trailVo);
+		
+		return selectCnt;
 	}
 	
 	// 유저 상세
@@ -343,5 +353,5 @@ public class TrailDao {
 		
 		return imagesVo;
 	}
-
+	
 }

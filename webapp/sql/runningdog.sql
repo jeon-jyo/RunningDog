@@ -482,6 +482,17 @@ SELECT COUNT(*)
    AND w.userNo = 2
    AND tu.trailNo = 8;
 
+-- 산책로 이용 시간대
+SELECT COUNT(*) cnt
+       ,w.regDate
+  FROM trailUsed tu, (SELECT walkLogNo
+                             ,TO_CHAR(regdate, 'HH24') regdate
+                        FROM walkLog) w
+ WHERE tu.walklogno = w.walkLogNo
+   AND tu.trailNo = 1
+ GROUP BY w.regDate
+ ORDER BY w.regDate ASC;
+
 -- 유저 상세
 SELECT userNo
        ,name
@@ -806,26 +817,27 @@ SELECT orgName
  WHERE type = 'walkLogMap'
    AND useNo = 1;
 
--- 산책로 모든 산책일지 (이용 시간대)
-SELECT w.walklogNo
-       ,w.distance
-       ,w.logTime
-       ,TO_CHAR(w.regdate, 'HH24') regDate
-  FROM trailUsed tu, walkLog w
- WHERE tu.walklogno 
-   AND w.status = 'T'
-   AND tu.trailNo = 1
- ORDER BY regDate DESC, w.walklogNo DESC;
- 
- 
-SELECT TO_CHAR(w.regdate, 'HH24') regDate
-  FROM trailUsed tu, walkLog w
- WHERE tu.walklogno
-   AND w.status = 'T'
-   AND tu.trailNo = 1;
- 
- 
--- 산책로 산책일지 이용 시간대
+-- 산책로 찜 확인
+SELECT ts.trailStarNo
+       ,ts.trailNo
+       ,ts.userNo
+       ,TO_CHAR(ts.starDate, 'YY-MM-DD HH24:MI:SS') regDate
+  FROM trailStar ts, trail t, users u
+ WHERE t.trailNo = ts.trailNo
+   AND ts.userNo = u.userNo
+   AND ts.userNo = 2
+   AND t.trailNo = 1;
+
+SELECT COUNT(*)
+  FROM trailStar ts, trail t, users u
+ WHERE t.trailNo = ts.trailNo
+   AND ts.userNo = u.userNo
+   AND ts.userNo = 2
+   AND t.trailNo = 1;
+
+-- 산책로 찜 추가
+
+-- 산책로 찜 삭제
 
 ---------------------------------------------------------------------------------------
 

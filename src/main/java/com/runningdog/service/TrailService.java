@@ -23,6 +23,7 @@ import com.runningdog.vo.DogVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailCmtVo;
+import com.runningdog.vo.TrailStarVo;
 import com.runningdog.vo.TrailTagVo;
 import com.runningdog.vo.TrailVo;
 import com.runningdog.vo.UsersVo;
@@ -351,6 +352,8 @@ public class TrailService {
 	public Map<String, Object> userDetail(TrailVo trailVo) {
 		System.out.println("TrailService.userDetail()");
 		
+		// 산책로 찜 확인
+		int starChk = trailDao.userTrailStar(trailVo);
 		// 유저 상세
 		UsersVo usersVo = trailDao.userDetail(trailVo.getUsersVo().getUserNo());
 		// 유저 프로필
@@ -396,6 +399,7 @@ public class TrailService {
 		walkLogMap.put("infoList", infoList);
 		
 		Map<String, Object> userMap = new HashMap<String, Object>();
+		userMap.put("starChk", starChk);
 		userMap.put("usersVo", usersVo);
 		userMap.put("userImg", userImg);
 		userMap.put("userUsedCnt", userUsedCnt);
@@ -579,10 +583,10 @@ public class TrailService {
 	    }
 		// System.out.println("logImgList : " + logImgList);
 		// System.out.println("userImgList : " + userImgList);
-		System.out.println("dogImgList : " + dogImgList);
-		System.out.println("logImgCntList : " + logImgCntList);
-		System.out.println("dogCntList : " + dogCntList);
-		System.out.println("likeCntList : " + likeCntList);
+		// System.out.println("dogImgList : " + dogImgList);
+		// System.out.println("logImgCntList : " + logImgCntList);
+		// System.out.println("dogCntList : " + dogCntList);
+		// System.out.println("likeCntList : " + likeCntList);
 		/*
 		for (int i = 0; i < infoList.length; i++) {
 		    for (int j = 0; j < infoList[i].length; j++) {
@@ -672,6 +676,12 @@ public class TrailService {
 				}
 			}
         }
+	}
+
+	// 산책로 찜
+	public int trailStarAdd(TrailVo trailStarVo) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }

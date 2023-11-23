@@ -18,7 +18,14 @@
 	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
 		<h1>
-			<i class="fa-regular fa-star"></i>
+			<c:if test="${!empty userMap.trailStarVo }">
+				<i class="fa-solid fa-star"></i>
+				<input type="hidden" id="hiddenStar" value="true">
+			</c:if>
+			<c:if test="${empty userMap.trailStarVo }">
+				<i class="fa-regular fa-star"></i>
+				<input type="hidden" id="hiddenStar" value="false">
+			</c:if>
 			&nbsp;${detailMap.trailVo.name }&nbsp;&nbsp;&nbsp;
 			<!-- <i class="fa-solid fa-diagram-project"></i> -->
 		</h1>
@@ -103,7 +110,7 @@
 					
 					<div class="map-detail-chart detail-border">
 						<h2><i class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;&nbsp;산책로 이용 시간대</h2>
-						<div class="detail-chart">chart</div>
+						<div class="detail-chart"></div>
 					</div>
 					
 					<!-- 
@@ -424,18 +431,9 @@
 </body>
 <script type="text/javascript">
 
-
-
-
 	let useTimeJson = ${useTimeJson };
-	
-	console.log("useTimeJson ", useTimeJson);
-	
-	for(let i = 0; i < useTimeJson.length; i++) {
-		console.log("regTime ", useTimeJson[i].regDate);
-		console.log("cnt ", useTimeJson[i].cnt);
-	}
-
+	let trailNo = ${detailMap.trailVo.trailNo };
+	let faStar = document.querySelector(".fa-star");
 	
 	google.charts.load('current', {'packages':['corechart', 'line']});
 	google.charts.setOnLoadCallback(drawChart);
@@ -453,9 +451,12 @@
 		  		  cnt = useTimeJson[j].CNT;
 		  	  }
 		  }
-		  datas.push([i+"시",cnt]);
+		  if(0 <= i < 12) {
+			  datas.push([i + "am", cnt]);
+		  } else if(12 <= i < 24) {
+			  datas.push([i + "pm", cnt]);
+		  }
 	  }
-
 	  data.addRows(datas);
 
 	  var options = {
@@ -468,14 +469,37 @@
 	  chart.draw(data, options);
 	}
 
-	
-	
-	
-	
-	
-	
-
-	let trailNo = ${detailMap.trailVo.trailNo };
+	$(".fa-star").on("click", function() {
+		console.log("fa-star click");
+		
+		if($("#hiddenStar").val() == "true") {
+			$("#hiddenStar").val("false");
+			faStar.classList.remove("fa-solid");
+			faStar.classList.add("fa-regular");
+		} else {
+			$("#hiddenStar").val("true");
+			faStar.classList.remove("fa-regular");
+			faStar.classList.add("fa-solid");
+		}
+		
+		/*
+		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/trailStarAdd",
+			type : "post",
+			data : {"trailNo" : trailNo,
+					"content" : $('textarea[name=content]').val()},
+					
+			dataType : "json",
+			success : function(insertCnt) {
+				console.log("insertCnt ", insertCnt);
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+		*/
+	});
 	
 	window.addEventListener('load', function() {
 		fetchList(trailNo);
@@ -772,8 +796,6 @@
 		})
 	}
 	
-	
-	
 	function cmtImgDetail(listMap, index) {
 		console.log("cmtImgDetail()");
 		console.log("listMap : ", listMap);
@@ -791,6 +813,20 @@
 		
 		$('#detailModal').modal("show");
 	}
+	
+	
+	/* cmt detail modify modal */
+	$(".comment-img").on("click", function() {
+		$('#detailModal').modal("show");
+	});
+	
+	const modifyModal = document.getElementById('modifyModal');
+	
+	$("#detail-modify-btn").on("click", function() {
+		$('#modifyModal').modal("show");
+		modifyModal.focus();
+	});
+	
 	
 	// cmt gallery list
 	function galleryRender(listMap, index, dir) {
@@ -892,22 +928,6 @@
 		
 		$(".cmt-list").append(str);
 	}
-	
-	
-	
-	/* cmt detail modify modal */
-	$(".comment-img").on("click", function() {
-		$('#detailModal').modal("show");
-	});
-	
-	const modifyModal = document.getElementById('modifyModal');
-	
-	$("#detail-modify-btn").on("click", function() {
-		$('#modifyModal').modal("show");
-		modifyModal.focus();
-	});
-	
-	
 	
 	/* comment-nav filter */
  	const cmtGroup = document.querySelectorAll(".comment-nav div");

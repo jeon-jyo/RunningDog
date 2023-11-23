@@ -11,7 +11,7 @@
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
-		<h1><i class="fa-solid fa-star deleted"></i></i>&nbsp;삭제된 산책로</h1>
+		<h1><i class="fa-solid fa-star star"></i></i>&nbsp;삭제된 산책로</h1>
 		
 		<div class="section">
 			<div class="location">이용할 수 없는 산책로입니다.</div>
