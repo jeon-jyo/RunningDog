@@ -414,6 +414,10 @@
 	width: 600px;
 	min-height: 520px;
 }
+.modal .modal-dialog .modal-detail {
+	width: 700px;
+	min-height: 520px;
+}
 .modal .modal-dialog {
 	margin: 100px auto;
 }
@@ -446,14 +450,15 @@
 }
 .img-content > img,
 .detail-img-content > img,
+.detail-img-content > .slick-list > .slick-track > img,
 .comment-img > img,
 .gallery-img .comment-img > img,
 .meetingInfo .comment-img > img {
 	/*height: 100%;
 	object-fit:cover;*/
-	height: 100%;
-	width: 100%;
-	object-fit:cover;
+	max-width: 100%;
+  height: auto;
+  display: block;
 }
 .img-content .imgCount,
 .comment-img .imgCount,
@@ -471,7 +476,13 @@
    text-align: center;
    font-size: 17px;
 }
-
+.detail-img-content .imgBox {
+	width: 500px;
+	height: 450px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center center;
+}
 /* 작성 버튼 변경 */
 .modal-footer > button.btn-secondary {
 	background-color: #fc5200;
@@ -639,8 +650,9 @@
 .detail-img-content {
 	height: 450px;
     width: 500px;
-	display: flex;
-    justify-content: center;
+	/*display: flex;*/
+    /*justify-content: center;*/
+    overflow: hidden;
 }
 .modal-body .fa-chevron-left, .modal-body .fa-chevron-right {
 	font-size: 30px;
@@ -649,6 +661,14 @@
 
 .img-slider {
 	display: flex;
+}
+
+.img-slider > i{
+	cursor: pointer;
+}
+
+.img-slider > i:hover {
+	color: #fc5200;;
 }
 
 /* img-info */

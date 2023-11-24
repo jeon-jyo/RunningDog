@@ -50,6 +50,7 @@
 	
 	<resultMap id="WalkLogMap" type="com.runningdog.vo.WalkLogVo">
 		<result column="walkLogNo" property="walkLogNo"></result>
+		<result column="title" property="title"></result>
 		<result column="regDate" property="regDate"></result>
 		<result column="startTime" property="startTime"></result>
 		<result column="endTime" property="endTime"></result>
@@ -217,7 +218,7 @@
 		 ]]>
 	</select>
 
-	<!-- 산책로 좌표 목록 -->
+	<!-- 산책로 좌표 -->
 	<select id="coordsList" parameterType="int" resultType="com.runningdog.vo.CoordsVo">
 		 <![CDATA[
 			SELECT c.useNo
@@ -664,6 +665,7 @@
 			       ,ort.distance
 			       ,ort.logTime
 			       ,ort.content
+			       ,ort.title
 			       ,ort.regDate
 			       ,ort.cnt
 			  FROM (SELECT ROWNUM rn
@@ -674,6 +676,7 @@
 			               ,ot.distance
 			               ,ot.logTime
 			               ,ot.content
+			               ,ot.title
 			               ,ot.regDate
 			               ,ot.cnt
 			          FROM (SELECT w.walklogNo
@@ -683,6 +686,7 @@
 			                       ,w.distance
 			                       ,w.logTime
 			                       ,w.content
+			                       ,w.title
 			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI') regDate
 			                       ,gt.cnt
 			                  FROM users u, trailUsed tu, walkLog w
@@ -695,6 +699,7 @@
 			                 WHERE tu.walklogno = w.walkLogNo
 			                   AND w.userNo = u.userNo
 			                   AND w.status = 'T'
+			                   AND w.security = '공개'
 			                   AND tu.trailNo = #{trailNo}
 		]]>
 		<if test='cmtOrderNav == 0'>
@@ -713,6 +718,17 @@
 			 WHERE ort.rn >= 1
 			   AND ort.rn <= 10
 		]]>
+	</select>
+	
+	<!-- 산책일지 전체 수 -->
+	<select id="logCnt" parameterType="int" resultType="int">
+		 <![CDATA[
+		 	SELECT COUNT(*)
+			  FROM trailUsed tu, trail t, walkLog w
+			 WHERE t.trailNo = tu.trailNo
+			   AND tu.walkLogNo = w.walkLogNo
+			   AND t.trailNo = #{trailNo}
+		 ]]>
 	</select>
 	
 	<!-- 산책일지 이미지 -->
@@ -784,5 +800,32 @@
 			   AND useNo = #{walkLogNo}
 		 ]]>
 	</select>
+	
+	<!-- 산책로 찜 추가 -->
+	<insert id="trailStarAdd" parameterType="com.runningdog.vo.TrailVo">
+		<![CDATA[
+			INSERT INTO trailStar
+			VALUES (seq_trailstar_no.NEXTVAL, #{usersVo.userNo}, #{trailNo}, sysdate)
+		]]>
+	</insert>
+	
+	<!-- 산책로 찜 삭제 -->
+	<delete id="trailStarDelete" parameterType="com.runningdog.vo.TrailVo">
+		<![CDATA[
+			DELETE FROM trailStar
+			 WHERE userNo = #{usersVo.userNo}
+			   AND trailNo = #{trailNo}
+		]]>
+	</delete>
+	
+	<!-- 산책로 찜 삭제 -->
+	<delete id="trailDelete" parameterType="com.runningdog.vo.TrailVo">
+		<![CDATA[
+			UPDATE trail
+			   SET status = 'F'
+			       ,updateDate = sysdate
+			 WHERE trailNo = #{trailNo}
+		]]>
+	</delete>
 	
 </mapper>

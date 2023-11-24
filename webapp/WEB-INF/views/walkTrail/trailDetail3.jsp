@@ -19,16 +19,13 @@
 	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
 		<h1>
-			<c:if test="${!empty authUser.userNo }">
-				<c:if test="${userMap.starChk != 0 }">
-					<i class="fa-solid fa-star loginStar"></i>
-				</c:if>
-				<c:if test="${userMap.starChk == 0 }">
-					<i class="fa-regular fa-star loginStar"></i>
-				</c:if>
+			<c:if test="${!empty userMap.trailStarVo }">
+				<i class="fa-solid fa-star"></i>
+				<input type="hidden" id="hiddenStar" value="true">
 			</c:if>
-			<c:if test="${empty authUser.userNo }">
+			<c:if test="${empty userMap.trailStarVo }">
 				<i class="fa-regular fa-star"></i>
+				<input type="hidden" id="hiddenStar" value="false">
 			</c:if>
 			&nbsp;${detailMap.trailVo.name }&nbsp;&nbsp;&nbsp;
 			<!-- <i class="fa-solid fa-diagram-project"></i> -->
@@ -102,8 +99,8 @@
 						</div>
 						<div class="user-modify">
 							<c:if test="${authUser.userNo == detailMap.trailVo.usersVo.userNo }">
-								<i class="fa-solid fa-pen trail-update"></i>
-								<i class="fa-solid fa-trash trail-delete"></i>
+								<i class="fa-solid fa-pen"></i>
+								<i class="fa-solid fa-trash"></i>
 							</c:if>
 						</div>
 					</div>
@@ -365,6 +362,38 @@
 	</button>
 	-->
 	
+	<!-- modifyModal -->
+	<div class="modal fade" id="modifyModal" tabindex="0" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="exampleModalLabel">후기 수정</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div>
+						<div class="mb-3">
+							<label for="exampleFormControlTextarea1" class="form-label" hidden></label>
+							<textarea class="form-control modal-input" id="exampleFormControlTextarea1" rows="3"></textarea>
+						</div>
+						<div class="mb-3">
+							<label for="formFileMultipleModi" class="form-label" hidden></label>
+							<input class="form-control" type="file" id="formFileMultipleModi" multiple>
+						</div>
+					</div>
+					<div class="img-content">
+						<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
+						<div class="imgCount">3</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light" data-bs-dismiss="modal">취소</button>
+					<button type="button" class="btn btn-secondary">수정</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
 	<!-- detailModal -->
 	<div class="detailModal">
 		<div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -405,13 +434,8 @@
 
 	let useTimeJson = ${useTimeJson };
 	let trailNo = ${detailMap.trailVo.trailNo };
+	let faStar = document.querySelector(".fa-star");
 	
-	window.addEventListener('load', function() {
-		fetchList(trailNo);
-		markerRender();
-	})
-	
-	/* use time */
 	google.charts.load('current', {'packages':['corechart', 'line']});
 	google.charts.setOnLoadCallback(drawChart);
 
@@ -437,7 +461,7 @@
 	  data.addRows(datas);
 
 	  var options = {
-	    /* title: '산책로 이용 시간대', */
+	    title: '산책로 이용 시간대',
 	    height: 450
 	  }
 
@@ -445,6 +469,43 @@
 
 	  chart.draw(data, options);
 	}
+
+	$(".fa-star").on("click", function() {
+		console.log("fa-star click");
+		
+		if($("#hiddenStar").val() == "true") {
+			$("#hiddenStar").val("false");
+			faStar.classList.remove("fa-solid");
+			faStar.classList.add("fa-regular");
+		} else {
+			$("#hiddenStar").val("true");
+			faStar.classList.remove("fa-regular");
+			faStar.classList.add("fa-solid");
+		}
+		
+		/*
+		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/trailStarAdd",
+			type : "post",
+			data : {"trailNo" : trailNo,
+					"content" : $('textarea[name=content]').val()},
+					
+			dataType : "json",
+			success : function(insertCnt) {
+				console.log("insertCnt ", insertCnt);
+				
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+		*/
+	});
+	
+	window.addEventListener('load', function() {
+		fetchList(trailNo);
+		markerRender();
+	})
 
 	/* map */
 	let coords = ${detailMap.coordsJson };
@@ -597,7 +658,6 @@
 	// Dropzone has been added as a global variable.
 	
 	const cmtCnt = document.querySelector(".comment-number span");
-	
 	function fetchList(trailNo) {
 		console.log("fetchList()");
 		
@@ -642,10 +702,11 @@
 				} else if(cmtIndex == 1) {
 					console.log("산책일지 목록");
 					
+					console.log("listMap ", listMap);
+					
 					if(listMap.logList.length == 0) {
 						nonListRender();
 					} else {
-						cmtCnt.innerText = listMap.logCnt;
 						for(let i = 0; i < listMap.logList.length; i++) {
 							walkLogRender(listMap, i, "down");
 						}
@@ -727,12 +788,30 @@
  		if(path != "") {
  			$(".comment-list").children().last().on("click", function() {
  	 			console.log("comment-img click");
+ 	 			
  	 			cmtImgDetail(listMap, index);
+ 	 			
+ 	 			$('.detail-img-content').slick({
+ 				  slidesToShow: 1,
+ 				  slidesToScroll: 1,
+ 				  autoplay: false,
+ 				  nextArrow:$('.fa-chevron-right'),
+ 				  prevArrow:$('.fa-chevron-left'),
+ 				  infinite: true,
+	 				 responsive: [ // 반응형 웹 구현
+	 			        {  
+	 			          breakpoint: 700, //화면 사이즈
+	 			          settings: {
+	 			            slidesToShow: 1
+	 			          } 
+	 			        },
+	 			     ],
+ 				});
  			})
 		}
 	}
 	
-	/* // cmt detail
+	/* cmt detail modal */
 	function cmtImgDetail(listMap, index) {
 		console.log("cmtImgDetail()");
 		console.log("listMap ", listMap);
@@ -748,44 +827,22 @@
 		}
 		
 		$(".detail-img-content").append(str);
-		
-		$('#detailModal').modal("show");
-	} */
-	
-	function cmtImgDetail(listMap, index) {
-		console.log("cmtImgDetail()");
-		console.log("listMap ", listMap);
-		
-		$(".detail-img-content").empty();
-		let str = '';
-		for(let i = 0; i < listMap.cmtImgList[index].length; i++) {
-			
-			let path = listMap.cmtImgList[index][i].saveName;
-			console.log("path ", path);
-			
-			str += '<div class="imgBox" style="background-image:url(${pageContext.request.contextPath }/rdimg/trail/' + path + ')"></div>';
-		}
-		
-		$(".detail-img-content").append(str);
-		
 		$('#detailModal').modal("show");
 	}
 	
-	$('#detailModal').on('shown.bs.modal', function() {
-		$('.detail-img-content').slick({
-			slide: 'div',
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			autoplay: false,
-			nextArrow:$('.fa-chevron-right'),
-			prevArrow:$('.fa-chevron-left'),
-			infinite: true,
-		});
-	})
 	
-	$('#detailModal').on('hidden.bs.modal', function() {
-		$('.detail-img-content').slick('unslick');
-	})
+	/* cmt detail modify modal */
+/* 	$(".comment-img").on("click", function() {
+		$('#detailModal').modal("show");
+	});
+	
+	const modifyModal = document.getElementById('modifyModal');
+	
+	$("#detail-modify-btn").on("click", function() {
+		$('#modifyModal').modal("show");
+		modifyModal.focus();
+	}); */
+	
 	
 	// cmt gallery list
 	function galleryRender(listMap, index, dir) {
@@ -833,7 +890,7 @@
 		str += '	</div>';
 		str += '	<div class="meetingContent">';
 		str += '		<div class="meetingInfo left">';
-		str += '			<p class="info-border">' + listMap.logList[index].title + '</p>';
+		str += '			<p class="info-border">' + listMap.logList[index].content + '</p>';
 		str += '			<div class="img-info">';
 		str += '				<div class="img-info-detail">';
 		if(listMap.userImgList[index] != null) {
@@ -887,61 +944,6 @@
 		
 		$(".cmt-list").append(str);
 	}
-
-	/* trail star */
-	let faStar = document.querySelector(".loginStar");
-	$(".loginStar").on("click", function() {
-		console.log("fa-star click");
-		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/walkTrail/trailStarUpdate",
-			type : "post",
-			data : {"trailNo" : trailNo},
-					
-			dataType : "json",
-			success : function(starChk) {
-				console.log("starChk ", starChk);
-				if(starChk != 0) {
-					faStar.classList.remove("fa-regular");
-					faStar.classList.add("fa-solid");
-				} else if(starChk == 0) {
-					faStar.classList.remove("fa-solid");
-					faStar.classList.add("fa-regular");
-				}
-			},
-			error : function(XHR, status, error) {
-				console.error(status + " : " + error);
-			}
-		});
-	});
-	
-	$(".trail-delete").on("click", function() {
-		console.log("trail-delete click");
-		
-		if(confirm('산책로를 삭제 하시겠습니까?')) { 
-			$.ajax({
-				url : "${pageContext.request.contextPath}/walkTrail/trailDelete",
-				type : "post",
-				data : {"trailNo" : trailNo},
-						
-				dataType : "json",
-				success : function(result) {
-					console.log("result ", result);
-					
-					window.location.href = "${pageContext.request.contextPath}/walkTrail/main?listKey=my";
-				},
-				error : function(XHR, status, error) {
-					console.error(status + " : " + error);
-				}
-			});
-		}
-	});
-	
-	$(".trail-update").on("click", function() {
-		console.log("trail-update click");
-		
-		window.location.href = "${pageContext.request.contextPath}/walkTrail/modifyForm";
-	});
 	
 	/* comment-nav filter */
  	const cmtGroup = document.querySelectorAll(".comment-nav div");

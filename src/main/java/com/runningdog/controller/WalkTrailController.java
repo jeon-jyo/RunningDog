@@ -23,7 +23,6 @@ import com.runningdog.service.TrailService;
 import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.LocationVo;
 import com.runningdog.vo.TrailCmtVo;
-import com.runningdog.vo.TrailStarVo;
 import com.runningdog.vo.TrailVo;
 import com.runningdog.vo.UserVo;
 import com.runningdog.vo.UsersVo;
@@ -182,10 +181,36 @@ public class WalkTrailController {
 		return insertCnt;
 	}
 	
+	// 산책로 삭제 ajax
+	@ResponseBody
+	@RequestMapping(value = "/trailDelete", method= { RequestMethod.GET, RequestMethod.POST})
+	public int trailDelete(@ModelAttribute TrailVo trailVo) {
+		System.out.println("WalkTrailController.trailDelete()");
+		
+		int deleteCnt = trailService.trailDelete(trailVo);
+		
+		return deleteCnt;
+	}
+	
+	// 산책로 수정폼
 	@RequestMapping(value = "/modifyForm", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailModifyForm() {
+	public String trailModifyForm(@ModelAttribute TrailVo trailVo,
+			Model model) throws JsonProcessingException {
 		System.out.println("WalkTrailController.trailModifyForm()");
+
+		String coordsJson = trailService.trailCoordsList(trailVo);
+		
+		model.addAttribute("coordsJson", coordsJson);
+		
+		trailService.trailModify(trailVo);
+		
 		return "walkTrail/trailModifyForm";
+	}
+	
+	@RequestMapping(value = "/modifyForm2", method= { RequestMethod.GET, RequestMethod.POST})
+	public String trailModifyForm2() {
+		System.out.println("WalkTrailController.trailModifyForm2()");
+		return "walkTrail/trailModifyForm2";
 	}
 	
 	// trailDetail //////////////////////////////
@@ -312,11 +337,11 @@ public class WalkTrailController {
 		trailService.trailCmtImgAdd(fileMap, trailCmtNo);
 	}
 	
-	// 산책로 찜 추가
+	// 산책로 찜 추가, 삭제
 	@ResponseBody
-	@RequestMapping(value = "/trailStarAdd", method= { RequestMethod.GET, RequestMethod.POST})
-	public int trailStarAdd(@ModelAttribute TrailVo trailVo, HttpSession session) {
-		System.out.println("WalkTrailController.trailStarAdd()");
+	@RequestMapping(value = "/trailStarUpdate", method= { RequestMethod.GET, RequestMethod.POST})
+	public int trailStarUpdate(@ModelAttribute TrailVo trailVo, HttpSession session) {
+		System.out.println("WalkTrailController.trailStarUpdate()");
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if(authUser != null) {
@@ -328,10 +353,9 @@ public class WalkTrailController {
 			usersVo.setUserNo(2);
 			trailVo.setUsersVo(usersVo);
 		}
+		int starChk = trailService.trailStarUpdate(trailVo);
 		
-		int insertCnt = trailService.trailStarAdd(trailVo);
-		
-		return insertCnt;
+		return starChk;
 	}
 	
 	@RequestMapping(value = "/detail/deleted", method= { RequestMethod.GET, RequestMethod.POST})

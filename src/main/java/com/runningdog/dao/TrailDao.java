@@ -53,7 +53,7 @@ public class TrailDao {
 		return trailList;
 	}
 	
-	// 산책로 좌표 목록
+	// 산책로 좌표
 	public List<CoordsVo> coordsList(int trailNo) {
 		// System.out.println("TrailDao.coordsList()");
 		
@@ -162,6 +162,15 @@ public class TrailDao {
 		
 		return insertCnt;
 	}
+	
+	// 산책로 삭제 ajax
+	public int trailDelete(TrailVo trailVo) {
+		System.out.println("TrailDao.trailDelete()");
+		
+		int deleteCnt = sqlSession.delete("walkTrail.trailDelete", trailVo);
+		
+		return deleteCnt;
+	}	
 	
 	// trailDetail //////////////////////////////
 	
@@ -352,6 +361,33 @@ public class TrailDao {
 		ImagesVo imagesVo = sqlSession.selectOne("walkTrail.logMapImg", walkLogNo);
 		
 		return imagesVo;
+	}
+
+	// 산책로 찜 추가
+	public int trailStarAdd(TrailVo trailVo) {
+		System.out.println("TrailDao.trailStarAdd()");
+		
+		int insertCnt = sqlSession.insert("walkTrail.trailStarAdd", trailVo);
+		
+		return insertCnt;
+	}
+
+	// 산책로 찜 삭제
+	public int trailStarDelete(TrailVo trailVo) {
+		System.out.println("TrailDao.trailStarDelete()");
+		
+		int deleteCnt = sqlSession.insert("walkTrail.trailStarDelete", trailVo);
+		
+		return deleteCnt;
+	}
+
+	// 산책일지 전체 수
+	public int logCnt(Map<String, Object> fetchSet) {
+		System.out.println("TrailDao.logCnt()");
+		
+		int logCnt = sqlSession.selectOne("walkTrail.logCnt", fetchSet);
+		
+		return logCnt;
 	}
 	
 }

@@ -381,7 +381,7 @@ SELECT c.useNo
    AND w.status = 'T'
  ORDER BY c.coordOrder;
 
--- 산책로 좌표 목록
+-- 산책로 좌표
 SELECT c.useNo
        ,c.coordOrder
        ,c.lat
@@ -681,7 +681,7 @@ SELECT *
 SELECT *
   FROM trail;
 
--- 산책로 이용한 산책일지 목록
+-- 산책로 산책일지
 -- 최신순
 SELECT ort.walkLogNo
        ,ort.userNo
@@ -690,6 +690,7 @@ SELECT ort.walkLogNo
        ,ort.distance
        ,ort.logTime
        ,ort.content
+       ,ort.title
        ,ort.regDate
        ,ort.cnt
   FROM (SELECT ROWNUM rn
@@ -700,6 +701,7 @@ SELECT ort.walkLogNo
                ,ot.distance
                ,ot.logTime
                ,ot.content
+               ,ot.title
                ,ot.regDate
                ,ot.cnt
           FROM (SELECT w.walklogNo
@@ -709,6 +711,7 @@ SELECT ort.walkLogNo
                        ,w.distance
                        ,w.logTime
                        ,w.content
+                       ,w.title
                        ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
                        ,gt.cnt
                   FROM users u, trailUsed tu, walkLog w
@@ -721,6 +724,7 @@ SELECT ort.walkLogNo
                  WHERE tu.walklogno = w.walkLogNo
                    AND w.userNo = u.userNo
                    AND w.status = 'T'
+                   AND w.security = '공개'
                    AND tu.trailNo = 1
                  ORDER BY DECODE(w.userNo, 2, 1), regDate DESC, w.walklogNo DESC
                ) ot
@@ -735,6 +739,7 @@ SELECT ort.walkLogNo
        ,ort.distance
        ,ort.logTime
        ,ort.content
+       ,ort.title
        ,ort.regDate
        ,ort.cnt
   FROM (SELECT ROWNUM rn
@@ -744,6 +749,7 @@ SELECT ort.walkLogNo
                ,ot.distance
                ,ot.logTime
                ,ot.content
+               ,ot.title
                ,ot.regDate
                ,ot.cnt
           FROM (SELECT w.walklogNo
@@ -752,6 +758,7 @@ SELECT ort.walkLogNo
                        ,w.distance
                        ,w.logTime
                        ,w.content
+                       ,w.title
                        ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
                        ,gt.cnt
                   FROM users u, trailUsed tu, walkLog w
@@ -764,12 +771,20 @@ SELECT ort.walkLogNo
                  WHERE tu.walklogno = w.walkLogNo
                    AND w.userNo = u.userNo
                    AND w.status = 'T'
+                   AND w.security = '공개'
                    AND tu.trailNo = 1
                  ORDER BY DECODE(w.userNo, 2, 1), gt.cnt DESC NULLS LAST, regDate DESC, w.walklogNo DESC
                ) ot
        ) ort
  WHERE ort.rn >= 1
    AND ort.rn <= 10;
+
+-- 산책일지 전체 수
+SELECT COUNT(*)
+  FROM trailUsed tu, trail t, walkLog w
+ WHERE t.trailNo = tu.trailNo
+   AND tu.walkLogNo = w.walkLogNo
+   AND t.trailNo = 1;
 
 -- 산책일지 이미지
 SELECT orgName
@@ -821,6 +836,7 @@ SELECT orgName
 SELECT ts.trailStarNo
        ,ts.trailNo
        ,ts.userNo
+       ,u.name
        ,TO_CHAR(ts.starDate, 'YY-MM-DD HH24:MI:SS') regDate
   FROM trailStar ts, trail t, users u
  WHERE t.trailNo = ts.trailNo
@@ -836,12 +852,33 @@ SELECT COUNT(*)
    AND t.trailNo = 1;
 
 -- 산책로 찜 추가
+INSERT INTO trailStar
+VALUES (seq_trailstar_no.NEXTVAL, 2, 1, sysdate);
 
 -- 산책로 찜 삭제
+DELETE FROM trailStar
+WHERE userNo = 2
+  AND trailNo = 1;
+
+-- 후기 좋아요 확인
+
+-- 후기 좋아요 추가
+
+-- 후기 좋아요 삭제
+
+-- 후기 삭제
+
+-- 산책로 수정
+
+-- 산책로 삭제
+UPDATE trail
+   SET status = 'F'
+       ,updateDate = sysdate
+ WHERE trailNo = 1;
 
 ---------------------------------------------------------------------------------------
 
-SELECT * FROM images;
+SELECT * FROM trail;
 
 DELETE FROM users
 WHERE userNo = 99;
