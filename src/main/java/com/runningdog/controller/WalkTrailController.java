@@ -197,12 +197,12 @@ public class WalkTrailController {
 	public String trailModifyForm(@ModelAttribute TrailVo trailVo,
 			Model model) throws JsonProcessingException {
 		System.out.println("WalkTrailController.trailModifyForm()");
+		System.out.println("trailVo" + trailVo);
 
-		String coordsJson = trailService.trailCoordsList(trailVo);
+		// 산책로 상세
+		Map<String, Object> detailMap = trailService.trailModifyDetail(trailVo);
 		
-		model.addAttribute("coordsJson", coordsJson);
-		
-		trailService.trailModify(trailVo);
+		model.addAttribute("detailMap", detailMap);
 		
 		return "walkTrail/trailModifyForm";
 	}
@@ -337,7 +337,19 @@ public class WalkTrailController {
 		trailService.trailCmtImgAdd(fileMap, trailCmtNo);
 	}
 	
-	// 산책로 찜 추가, 삭제
+	// 후기 삭제 ajax
+	@ResponseBody
+	@RequestMapping(value = "/cmtDelete", method= { RequestMethod.GET, RequestMethod.POST})
+	public int trailCmtDelete(@ModelAttribute TrailCmtVo trailCmtVo) {
+		System.out.println("WalkTrailController.trailCmtDelete()");
+		
+		// 후기 삭제
+		int deleteCnt = trailService.trailCmtDelete(trailCmtVo);
+		
+		return deleteCnt;
+	}
+
+	// 산책로 찜 수정 ajax
 	@ResponseBody
 	@RequestMapping(value = "/trailStarUpdate", method= { RequestMethod.GET, RequestMethod.POST})
 	public int trailStarUpdate(@ModelAttribute TrailVo trailVo, HttpSession session) {

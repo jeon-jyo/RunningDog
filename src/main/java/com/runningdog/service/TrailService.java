@@ -256,6 +256,28 @@ public class TrailService {
 		return insertCnt;
 	}
 	
+	// 산책로 삭제 ajax
+	public int trailDelete(TrailVo trailVo) {
+		System.out.println("TrailService.trailDelete()");
+		
+		int deleteCnt = trailDao.trailDelete(trailVo);
+		
+		return deleteCnt;
+	}
+	
+	// 산책로 좌표 - 산책로 수정
+	public String trailCoordsList(TrailVo trailVo) throws JsonProcessingException {
+		System.out.println("TrailService.trailCoordsList()");
+		
+		// 산책로 좌표
+		List<CoordsVo> coords = trailDao.coordsList(trailVo.getTrailNo());
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String coordsJson = mapper.writeValueAsString(coords);
+		
+		return coordsJson;
+	}
+	
 	// trailDetail //////////////////////////////
 
 	// 산책로 상세
@@ -455,12 +477,12 @@ public class TrailService {
 		System.out.println("TrailService.cmtListMap()");
 		
 		List<TrailCmtVo> cmtList = trailDao.cmtList(fetchSet);
-		System.out.println("cmtList : " + cmtList);
+		// System.out.println("cmtList : " + cmtList);
 		
 		int cmtCnt = 0;
-		if(cmtList.size() != 0) {
+		if(!CollectionUtils.isEmpty(cmtList)) {
 			// 후기 전체 수
-			trailDao.cmtCnt(cmtList.get(0).getTrailVo().getTrailNo());
+			cmtCnt = trailDao.cmtCnt(cmtList.get(0).getTrailVo().getTrailNo());
 		}
 		
 		List<List<ImagesVo>> cmtImgList = new ArrayList<List<ImagesVo>>();
@@ -684,8 +706,24 @@ public class TrailService {
 			}
         }
 	}
-
-	// 산책로 찜 추가
+	
+	// 후기 삭제
+	public int trailCmtDelete(TrailCmtVo trailCmtVo) {
+		System.out.println("TrailService.trailCmtDelete()");
+		
+		int deleteCnt = trailDao.trailCmtDelete(trailCmtVo.getTrailCmtNo());
+		if(deleteCnt != 0) {
+			System.out.println("삭제 성공");
+			// 후기 이미지 삭제
+			trailDao.cmtImgDelete(trailCmtVo.getTrailCmtNo());
+		} else {
+			System.out.println("삭제 실패");
+		}
+		
+		return deleteCnt;
+	}
+	
+	// 산책로 찜 수정 ajax
 	public int trailStarUpdate(TrailVo trailVo) {
 		System.out.println("TrailService.trailStarUpdate()");
 		
@@ -704,32 +742,76 @@ public class TrailService {
 		return starChk;
 	}
 
-	// 산책로 삭제 ajax
-	public int trailDelete(TrailVo trailVo) {
-		System.out.println("TrailService.trailDelete()");
-		
-		int deleteCnt = trailDao.trailDelete(trailVo);
-		
-		return deleteCnt;
-	}
-	
-	// 산책로 좌표
-	public String trailCoordsList(TrailVo trailVo) throws JsonProcessingException {
-		System.out.println("TrailService.trailCoordsList()");
-		
-		// 산책로 좌표
-		List<CoordsVo> coords = trailDao.coordsList(trailVo.getTrailNo());
-		
+	public Map<String, Object> trailModifyDetail(TrailVo vo) throws JsonProcessingException {
+		String[] info = {"", ""};
+		String[] markers = {"parking", "restroom", "trashCan"};
 		ObjectMapper mapper = new ObjectMapper();
+		
+		// 산책로 정보
+		TrailVo trailVo = trailDao.trailDetail(vo.getTrailNo());
+		System.out.println("trailVo : " + trailVo);
+		
+		if(trailVo.getDistance() >= 1000) {
+			info[0] = (int) Math.floor(trailVo.getDistance() / 1000) + "." +(int) Math.floor((trailVo.getDistance() % 1000) / 10) + "km";
+		} else {
+			info[0] = trailVo.getDistance() + "m";
+		}
+		
+		int minute = (int) Math.floor(trailVo.getEta() / 60);
+		if(60 <= minute) {
+			int hour = (int) Math.floor(minute / 60);
+        	minute = minute - (hour * 60);
+
+        	info[1] +=  hour +  "시간 ";
+        }
+		info[1] += minute + "분";
+		
+		// 산책로 태그
+		List<TrailTagVo> tagList = trailDao.tagList(vo.getTrailNo());
+		// System.out.println("tagList : " + tagList);
+		// 산책로 좌표
+		List<CoordsVo> coords = trailDao.coordsList(vo.getTrailNo());
 		String coordsJson = mapper.writeValueAsString(coords);
 		
-		return coordsJson;
+		List<CoordsVo> markerCoords = new ArrayList<CoordsVo>();
+		if(trailVo.getParking() == 'T') {
+			CoordsVo markerVo = new CoordsVo();
+			markerVo.setType(markers[0]);
+			markerVo.setUseNo(vo.getTrailNo());
+			
+			// 산책로 정보 좌표
+			CoordsVo resultVo = trailDao.markerCoords(markerVo);
+			markerCoords.add(resultVo);
+		}
+		if(trailVo.getRestroom() == 'T') {
+			CoordsVo markerVo = new CoordsVo();
+			markerVo.setType(markers[1]);
+			markerVo.setUseNo(vo.getTrailNo());
+			
+			// 산책로 정보 좌표
+			CoordsVo resultVo = trailDao.markerCoords(markerVo);
+			markerCoords.add(resultVo);
+		}
+		if(trailVo.getTrashCan() == 'T') {
+			CoordsVo markerVo = new CoordsVo();
+			markerVo.setType(markers[2]);
+			markerVo.setUseNo(vo.getTrailNo());
+			
+			// 산책로 정보 좌표
+			CoordsVo resultVo = trailDao.markerCoords(markerVo);
+			markerCoords.add(resultVo);
+		}
+		// System.out.println("markerCoords : " + markerCoords);
+		String markersJson = mapper.writeValueAsString(markerCoords);
+		
+		Map<String, Object> detailMap = new HashMap<String, Object>();
+		detailMap.put("trailVo", trailVo);
+		detailMap.put("info", info);
+		detailMap.put("tagList", tagList);
+		detailMap.put("coordsJson", coordsJson);
+		detailMap.put("markersJson", markersJson);
+		
+		return detailMap;
 	}
 
-	// 산책로 수정폼
-	public int trailModify(TrailVo trailVo) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 }

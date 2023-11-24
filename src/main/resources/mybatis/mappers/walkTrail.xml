@@ -413,6 +413,16 @@
 	]]>
 	</insert>
 	
+	<!-- 산책로 삭제 -->
+	<update id="trailDelete" parameterType="com.runningdog.vo.TrailVo">
+		<![CDATA[
+			UPDATE trail
+			   SET status = 'F'
+			       ,updateDate = sysdate
+			 WHERE trailNo = #{trailNo}
+		]]>
+	</update>
+	
 	<!-- trailDetail -->
 	
 	<!-- 산책로 태그 -->
@@ -633,6 +643,7 @@
 			SELECT COUNT(*)
 			  FROM trailCmt
 			 WHERE trailNo = #{trailNo}
+			   AND status = 'T'
 		 ]]>
 	</select>
 	
@@ -801,6 +812,24 @@
 		 ]]>
 	</select>
 	
+	<!-- 후기 삭제 -->
+	<update id="trailCmtDelete" parameterType="int">
+		<![CDATA[
+			UPDATE trailCmt
+			   SET status = 'F'
+			 WHERE trailCmtNo = #{trailCmtNo}
+		]]>
+	</update>
+	
+	<!-- 후기 이미지 삭제 -->
+	<delete id="cmtImgDelete" parameterType="int">
+		<![CDATA[
+			DELETE images
+			 WHERE type= 'trailCmt'
+			   AND useNo = #{trailCmtNo}
+		]]>
+	</delete>
+
 	<!-- 산책로 찜 추가 -->
 	<insert id="trailStarAdd" parameterType="com.runningdog.vo.TrailVo">
 		<![CDATA[
@@ -815,16 +844,6 @@
 			DELETE FROM trailStar
 			 WHERE userNo = #{usersVo.userNo}
 			   AND trailNo = #{trailNo}
-		]]>
-	</delete>
-	
-	<!-- 산책로 찜 삭제 -->
-	<delete id="trailDelete" parameterType="com.runningdog.vo.TrailVo">
-		<![CDATA[
-			UPDATE trail
-			   SET status = 'F'
-			       ,updateDate = sysdate
-			 WHERE trailNo = #{trailNo}
 		]]>
 	</delete>
 	

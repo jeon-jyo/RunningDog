@@ -380,20 +380,7 @@
 							</div>
 							<i class="fa-solid fa-chevron-right"></i>
 						</div>
-						<div class="img-info">
-							<span><i class="fa-regular fa-heart"></i>&nbsp;20</span>
-							<div class="img-info-detail">
-								<img src="${pageContext.request.contextPath}/assets/images/walkTrail/sarang3.jpg">
-								<div class="detail-text">
-									<span>닉네임</span>
-									<span>2023/10/11</span>
-								</div>
-								<div class="user-modify">
-									<i class="fa-solid fa-pen" id="detail-modify-btn"></i>
-									<i class="fa-solid fa-trash"></i>
-								</div>
-							</div>
-						</div>
+						<div class="img-info detail-modal-info"></div>
 					</div>
 				</div>
 			</div>
@@ -622,6 +609,8 @@
 				$(".gallery-list").empty();
 				$(".meetingList").empty();
 				
+				cmtCnt.innerText = 0;
+				
 				if(cmtIndex == 0) {
 					console.log("후기 - 목록 / 갤러리");
 					
@@ -683,10 +672,12 @@
 		
 		let str = '';
 		str += '<div class="comment-detail">';
-		str += '	<div class="comment-img">';
+		str += '	<div class="comment-img cmt-comment-img">';
 		if(path != "") {
+			if(listMap.cmtImgList[index].length > 1) {
+				str += '		<div class="imgCount">' + listMap.cmtImgList[index].length + '</div>';
+			}
 			str += '		<img src="${pageContext.request.contextPath }/rdimg/trail/' + path + '">';
-			str += '		<div class="imgCount">' + listMap.cmtImgList[index].length + '</div>';
 		}
 		str += '	</div>';
 		str += '	<div class="comment-content">';
@@ -710,7 +701,7 @@
 		str += '		<div class="user-modify">';
 		if(listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
 			/* str += '			<i class="fa-solid fa-pen"></i>'; */
-			str += '			<i class="fa-solid fa-trash"></i>';
+			str += '			<i class="fa-solid fa-trash" data-cmtdelno="' + listMap.cmtList[index].trailCmtNo + '"></i>';
 		}
 		str += '		</div>';
 		str += '	</div>';
@@ -724,68 +715,17 @@
 			console.log("잘못입력");
 		}
  		
- 		if(path != "") {
- 			$(".comment-list").children().last().on("click", function() {
- 	 			console.log("comment-img click");
+ 		if(listMap.cmtImgList[index].length > 0) {
+ 			/* $(".cmt-comment-img").children().last().on("click", function() {
  	 			cmtImgDetail(listMap, index);
+ 			}) */
+ 			
+ 			$(".cmt-comment-img").children().last().on("click", function() {
+ 	 			cmtImgDetail(listMap, index);
+ 	 			console.log("listMap.cmtList[index].trailCmtNo ", listMap.cmtList[index].trailCmtNo);
  			})
-		}
+ 		}
 	}
-	
-	/* // cmt detail
-	function cmtImgDetail(listMap, index) {
-		console.log("cmtImgDetail()");
-		console.log("listMap ", listMap);
-		
-		$(".detail-img-content").empty();
-		let str = '';
-		for(let i = 0; i < listMap.cmtImgList[index].length; i++) {
-			
-			let path = listMap.cmtImgList[index][i].saveName;
-			console.log("path ", path);
-			
-			str += '<img src="${pageContext.request.contextPath }/rdimg/trail/' + path + '">';
-		}
-		
-		$(".detail-img-content").append(str);
-		
-		$('#detailModal').modal("show");
-	} */
-	
-	function cmtImgDetail(listMap, index) {
-		console.log("cmtImgDetail()");
-		console.log("listMap ", listMap);
-		
-		$(".detail-img-content").empty();
-		let str = '';
-		for(let i = 0; i < listMap.cmtImgList[index].length; i++) {
-			
-			let path = listMap.cmtImgList[index][i].saveName;
-			console.log("path ", path);
-			
-			str += '<div class="imgBox" style="background-image:url(${pageContext.request.contextPath }/rdimg/trail/' + path + ')"></div>';
-		}
-		
-		$(".detail-img-content").append(str);
-		
-		$('#detailModal').modal("show");
-	}
-	
-	$('#detailModal').on('shown.bs.modal', function() {
-		$('.detail-img-content').slick({
-			slide: 'div',
-			slidesToShow: 1,
-			slidesToScroll: 1,
-			autoplay: false,
-			nextArrow:$('.fa-chevron-right'),
-			prevArrow:$('.fa-chevron-left'),
-			infinite: true,
-		});
-	})
-	
-	$('#detailModal').on('hidden.bs.modal', function() {
-		$('.detail-img-content').slick('unslick');
-	})
 	
 	// cmt gallery list
 	function galleryRender(listMap, index, dir) {
@@ -809,9 +749,72 @@
 				} else {
 					console.log("잘못입력");
 				}
+				
+	 			$(".comment-list").children().last().on("click", function() {
+	 				console.log("comment-list click");
+	 	 			cmtImgDetail(listMap, index);
+	 			})
 			}
 		}
 	}
+	
+	// cmt detail
+	function cmtImgDetail(listMap, index) {
+		console.log("cmtImgDetail()");
+		
+		$(".detail-img-content").empty();
+		let str = '';
+		for(let i = 0; i < listMap.cmtImgList[index].length; i++) {
+			let path = listMap.cmtImgList[index][i].saveName;
+			
+			// str += '<img src="${pageContext.request.contextPath }/rdimg/trail/' + path + '">';
+			str += '<div class="imgBox" style="background-image:url(${pageContext.request.contextPath }/rdimg/trail/' + path + ')"></div>';
+		}
+		$(".detail-img-content").append(str);
+		
+		$(".detail-modal-info").empty();
+		let infoStr = '';
+		infoStr += '<span><i class="fa-regular fa-heart"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
+		infoStr += '<div class="img-info-detail">';
+		if(listMap.userImgList[index] != null) {
+			infoStr += '		<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.cmtList[index].usersVo.code + '">';
+			infoStr += '			<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + listMap.userImgList[index].saveName + '">';
+			infoStr += '		</a>';
+		} else {
+			infoStr += '		<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.cmtList[index].usersVo.code + '">';
+			infoStr += '			<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">';
+			infoStr += '		</a>';
+		}
+		infoStr += '	<div class="detail-text">';
+		infoStr += '		<span>' + listMap.cmtList[index].usersVo.name + '</span>';
+		infoStr += '		<span>' + listMap.cmtList[index].regDate + '</span>';
+		infoStr += '	</div>';
+		infoStr += '	<div class="user-modify">';
+		if(listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
+			infoStr += '			<i class="fa-solid fa-trash" data-cmtdelno="' + listMap.cmtList[index].trailCmtNo + '"></i>';
+		}
+		infoStr += '	</div>';
+		infoStr += '</div>';
+		$(".detail-modal-info").append(infoStr);
+		
+		$('#detailModal').modal("show");
+	}
+	
+	$('#detailModal').on('shown.bs.modal', function() {
+		$('.detail-img-content').slick({
+			slide: 'div',
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			autoplay: false,
+			nextArrow:$('.fa-chevron-right'),
+			prevArrow:$('.fa-chevron-left'),
+			infinite: true,
+		});
+	})
+	
+	$('#detailModal').on('hidden.bs.modal', function() {
+		$('.detail-img-content').slick('unslick');
+	})
 	
 	// cmt walkLog list
 	function walkLogRender(listMap, index, dir) {
@@ -847,10 +850,14 @@
 		str += '					</div>';
 		if(dogPath != "") {
 			str += '					<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/rdimg/dogProfile/' + dogPath + '"></div>';
-			str += '					<div class="imgCount">' + listMap.dogCntList[index] + '</div>';
+			if(listMap.dogCntList[index] > 1) {
+				str += '					<div class="imgCount">' + listMap.dogCntList[index] + '</div>';
+			}
 		} else {
 			str += '					<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/dog_default_img.jpg"></div>';
-			str += '					<div class="imgCount">' + listMap.dogCntList[index] + '</div>';
+			if(listMap.dogCntList[index] > 1) {
+				str += '					<div class="imgCount">' + listMap.dogCntList[index] + '</div>';
+			}
 		}
 		str += '				</div>';
 		str += '			</div>';
@@ -860,7 +867,9 @@
 		if(path != "") {
 			str += '			<img src="${pageContext.request.contextPath }/rdimg/' + path + '">';
 			if(listMap.logImgList[index].type == "walkLogCon") {
-				str += '			<div class="imgCount">' + listMap.logImgCntList[index] + '</div>';
+				if(listMap.logImgCntList[index] > 0) {
+					str += '			<div class="imgCount">' + listMap.logImgCntList[index] + '</div>';
+				}
 			}
 		} else {
 			str += '			<img src="${pageContext.request.contextPath}/assets/images/map1.jpg">';
@@ -887,32 +896,63 @@
 		
 		$(".cmt-list").append(str);
 	}
-
-	/* trail star */
-	let faStar = document.querySelector(".loginStar");
-	$(".loginStar").on("click", function() {
-		console.log("fa-star click");
+	
+	let cmtListArea = document.querySelector(".cmt-list");
+	let galleryListArea = document.querySelector(".gallery-list");
+	
+	$(".cmt-list").on("click", ".fa-trash", function() {
+		console.log("cmt-delete click");
 		
-		$.ajax({
-			url : "${pageContext.request.contextPath}/walkTrail/trailStarUpdate",
-			type : "post",
-			data : {"trailNo" : trailNo},
-					
-			dataType : "json",
-			success : function(starChk) {
-				console.log("starChk ", starChk);
-				if(starChk != 0) {
-					faStar.classList.remove("fa-regular");
-					faStar.classList.add("fa-solid");
-				} else if(starChk == 0) {
-					faStar.classList.remove("fa-solid");
-					faStar.classList.add("fa-regular");
+		let $this = $(this);
+		let cmtNo = $this.data("cmtdelno");
+		console.log("cmtNo ", cmtNo);
+
+		if(confirm('후기를 삭제 하시겠습니까?')) {
+			$.ajax({
+				url : "${pageContext.request.contextPath}/walkTrail/cmtDelete",
+				type : "get",
+				data : {trailCmtNo : cmtNo},
+						
+				dataType : "json",
+				success : function(deleteCnt) {
+					console.log("deleteCnt ", deleteCnt);
+					if(deleteCnt) {
+						fetchList(trailNo);
+					}
+				},
+				error : function(XHR, status, error) {
+					console.error(status + " : " + error);
 				}
-			},
-			error : function(XHR, status, error) {
-				console.error(status + " : " + error);
-			}
-		});
+			});
+		}
+	});
+	
+	$(".detail-modal-info").on("click", ".fa-trash", function() {
+		console.log("cmt-delete click");
+		
+		let $this = $(this);
+		let cmtNo = $this.data("cmtdelno");
+		console.log("cmtNo ", cmtNo);
+		
+		if(confirm('후기를 삭제 하시겠습니까?')) {
+			$.ajax({
+				url : "${pageContext.request.contextPath}/walkTrail/cmtDelete",
+				type : "get",
+				data : {trailCmtNo : cmtNo},
+						
+				dataType : "json",
+				success : function(deleteCnt) {
+					console.log("deleteCnt ", deleteCnt);
+					if(deleteCnt) {
+						$('#detailModal').modal('hide');
+						fetchList(trailNo);
+					}
+				},
+				error : function(XHR, status, error) {
+					console.error(status + " : " + error);
+				}
+			});
+		}
 	});
 	
 	$(".trail-delete").on("click", function() {
@@ -940,7 +980,34 @@
 	$(".trail-update").on("click", function() {
 		console.log("trail-update click");
 		
-		window.location.href = "${pageContext.request.contextPath}/walkTrail/modifyForm";
+		window.location.href = "${pageContext.request.contextPath}/walkTrail/modifyForm?trailNo=" + trailNo;
+	});
+	
+	/* trail star */
+	let faStar = document.querySelector(".loginStar");
+	$(".loginStar").on("click", function() {
+		console.log("fa-star click");
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/trailStarUpdate",
+			type : "post",
+			data : {"trailNo" : trailNo},
+					
+			dataType : "json",
+			success : function(starChk) {
+				console.log("starChk ", starChk);
+				if(starChk != 0) {
+					faStar.classList.remove("fa-regular");
+					faStar.classList.add("fa-solid");
+				} else if(starChk == 0) {
+					faStar.classList.remove("fa-solid");
+					faStar.classList.add("fa-regular");
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
 	});
 	
 	/* comment-nav filter */
@@ -966,7 +1033,7 @@
         		cmtListGroup[0].classList.add("nonList");
         		cmtListGroup[1].classList.add("nonList");
         	} else if(cmtIndex == 2) {
-				console.log("산책일지 선택");
+				console.log("모임일지 선택");
         		
 				cmtListGroup[0].classList.add("nonList");
         		cmtListGroup[1].classList.add("nonList");

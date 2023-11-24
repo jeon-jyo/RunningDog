@@ -641,7 +641,7 @@ SELECT i.orgName
   FROM trailcmt t, images i
  WHERE i.type = 'trailCmt'
    AND t.trailCmtNo = i.useNo
-   AND i.useNo = 8
+   AND i.useNo = 1
  ORDER BY i.imageOrder ASC;
 
 SELECT i.orgName
@@ -662,7 +662,8 @@ SELECT COUNT(*)
 -- 후기 전체 수
 SELECT COUNT(*)
   FROM trailCmt
- WHERE trailNo = 1;
+ WHERE trailNo = 1
+   AND status = 'T';
 
 -- 후기 작성
 INSERT INTO trailCmt
@@ -867,6 +868,18 @@ WHERE userNo = 2
 -- 후기 좋아요 삭제
 
 -- 후기 삭제
+UPDATE trailCmt
+   SET status = 'F'
+ WHERE trailCmtNo = 13;
+
+-- 후기 이미지 삭제
+DELETE images
+ WHERE type= 'trailCmt'
+   AND useNo = 1;
+
+DELETE images
+ WHERE type= 'trailCmt'
+   AND useNo = 1;
 
 -- 산책로 수정
 
@@ -878,7 +891,8 @@ UPDATE trail
 
 ---------------------------------------------------------------------------------------
 
-SELECT * FROM trail;
+SELECT * FROM trailCmt;
+SELECT * FROM images;
 
 DELETE FROM users
 WHERE userNo = 99;

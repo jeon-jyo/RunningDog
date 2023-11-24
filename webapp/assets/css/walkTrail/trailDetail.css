@@ -450,7 +450,6 @@
 }
 .img-content > img,
 .detail-img-content > img,
-.detail-img-content > .slick-list > .slick-track > img,
 .comment-img > img,
 .gallery-img .comment-img > img,
 .meetingInfo .comment-img > img {
@@ -476,13 +475,15 @@
    text-align: center;
    font-size: 17px;
 }
+
 .detail-img-content .imgBox {
-	width: 500px;
 	height: 450px;
+	width: 500px;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center center;
 }
+
 /* 작성 버튼 변경 */
 .modal-footer > button.btn-secondary {
 	background-color: #fc5200;
@@ -599,7 +600,8 @@
 .comment-info > img,
 .comment-info > a > img,
 .comment-detail .comment-info > a > img,
-.img-info > div > img {
+.img-info > div > img,
+.img-info-detail > a > img {
 	height: 60px;
 	width: 60px;
 	border-radius: 50%;
