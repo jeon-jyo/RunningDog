@@ -84,10 +84,342 @@
     ]]>
 </delete>
 
-	<select id="walkLogList" resultType="com.runningdog.vo.ShowLogVo" parameterType="String">
+<!-- 	<select id="walkLogList" resultType="com.runningdog.vo.ShowLogVo" parameterType="map">
       <![CDATA[
-		select       WL.walkLogNo,
-		       		 US.userNo,
+		select ort.rn,
+		       ort.walkLogNo,
+		       ort.userNo,
+		       ort.locationNo,
+		       ort.regDate,
+		       ort.startTime,
+		       ort.endTime,
+		       ort.logTime,
+		       ort.distance,
+		       ort.content,
+		       ort.security,
+		       ort.status,
+		       ort.name,
+		       ort.title 
+		from (  select rownum rn,
+		               ot.walkLogNo,
+		               ot.userNo,
+		               ot.locationNo,
+		               ot.regDate,
+		               ot.startTime,
+		               ot.endTime,
+		               ot.logTime,
+		               ot.distance,
+		               ot.content,
+		               ot.security,
+		               ot.status,
+		               ot.name,
+		               ot.title 
+		        from (select WL.walkLogNo,
+		                     US.userNo,
+		                     WL.locationNo,
+		                     TO_CHAR(WL.regDate, '""YYYY"년 "MM"월 "DD"일 "HH24"시 "MI"분"') regDate,
+		                     WL.startTime,
+		                     WL.endTime,
+		                     WL.logTime,
+		                     WL.distance,
+		                     WL.content,
+		                     WL.security,
+		                     WL.status,
+		                     US.name,
+		                     WL.title
+		                             
+		                from walkLog WL, users US
+		                where WL.userNo = US.userNo 
+		                and WL.userNo = (SELECT US.userNo
+		                                 From users US
+		                                WHERE code = #{paramCode})
+		                and WL.status = 'T'
+		                
+	  ]]>		                
+		            <if test='date != "0"'>
+		            	and TO_CHAR(WL.regDate, 'YYYY-MM-DD') = #{date}
+		            </if>
+		            <if test='dogNo != "0"'>
+		            	WD.dogNo = #{dogNo} 
+		            </if>
+	  <![CDATA[ 	                
+		                
+		                order by WL.walkLogNo desc  
+		            )ot
+		     )ort
+		where rn>=#{startRNum}
+		and rn<=#{endRNum}
+      ]]>
+	</select> -->
+
+
+<select id="walkLogList" resultType="com.runningdog.vo.ShowLogVo" parameterType="map">
+	<![CDATA[
+		select ort.rn,
+		       ort.walkLogNo,
+		       ort.userNo,
+		       ort.locationNo,
+		       TO_CHAR(ort.regDate, 'YYYY"년 "MM"월 "DD"일 "HH24"시 "MI"분"') AS regDate,
+		       ort.startTime,
+		       ort.endTime,
+		       ort.logTime,
+		       ort.distance,
+		       ort.content,
+		       ort.security,
+		       ort.status,
+		       ort.name,
+		       ort.title,
+		       ort.dogs
+		from (  select rownum rn,
+		               ot.walkLogNo,
+		               ot.userNo,
+		               ot.locationNo,
+		               ot.regDate,
+		               ot.startTime,
+		               ot.endTime,
+		               ot.logTime,
+		               ot.distance,
+		               ot.content,
+		               ot.security,
+		               ot.status,
+		               ot.name,
+		               ot.title,
+		               ot.dogs
+	        	from (select a.walkLogNo,
+		                     a.userNo,
+		                     a.locationNo,
+		                     a.regDate,
+		                     a.startTime,
+		                     a.endTime,
+		                     a.logTime,
+		                     a.distance,
+		                     a.content,
+		                     a.security,
+		                     a.status,
+		                     a.name,
+		                     a.title,
+		                     b.dogs
+	              	   from (SELECT WL.walkLogNo,
+		                            US.userNo,
+		                            WL.locationNo,
+		                            WL.regDate,
+		                            WL.startTime,
+		                            WL.endTime,
+		                            WL.logTime,
+		                            WL.distance,
+		                            WL.content,
+		                            WL.security,
+		                            WL.status,
+		                            US.name,
+		                            WL.title
+	                     	 FROM walkLog WL, users US 
+	                     	 where WL.userNo = US.userNo
+	                     	 and WL.userNo = (SELECT userNo FROM users WHERE code = #{paramCode})
+	                     	 and WL.status = 'T' 
+	                     	 and WL.meetingNo = 0) a,                         
+		                    (SELECT DISTINCT WD.walkLogNo,
+		                     LISTAGG(dogNo, ',') WITHIN GROUP (ORDER BY dogNo) OVER(PARTITION BY WD.walkLogNo) AS dogs
+		                     FROM walkedDog WD, walkLog WL 
+		                     WHERE WD.walkLogNo = WL.walkLogNo) b
+	              	   	where a.walkLogNo = b.walkLogNo(+) 
+	]]>
+					<if test='date != "0"'>
+			            and TO_CHAR(a.regDate, 'YYYY-MM-DD') = #{date}
+			        </if>
+	            	<if test='dogNo != "0"'>
+	               		and (b.dogs LIKE '%' || #{dogNo} || ',%' OR b.dogs LIKE '%,' || #{dogNo} || ',%' OR b.dogs LIKE '%,' || #{dogNo})
+	            	</if>
+	<![CDATA[ 
+	              		ORDER BY a.walkLogNo DESC)ot
+	    )ort
+		where rn>=#{startRNum}
+		and rn<=#{endRNum}                        
+	]]>                 
+          
+</select>
+	
+	
+<!-- 페이징검색 조회 글 수 -->
+<select id="selectTotalCnt" resultType="int" parameterType="map">
+	<![CDATA[
+		select COUNT(*) AS count
+       	from (SELECT WL.walkLogNo,
+                     US.userNo,
+                     WL.locationNo,
+                     WL.regDate,
+                     WL.startTime,
+                     WL.endTime,
+                     WL.logTime,
+                     WL.distance,
+                     WL.content,
+                     WL.security,
+                     WL.status,
+                     US.name,
+                     WL.title
+			  FROM walkLog WL, users US 
+              where WL.userNo = US.userNo
+              and WL.userNo = (SELECT userNo FROM users WHERE code = #{paramCode})
+              and WL.status = 'T' 
+              and WL.meetingNo = 0) a,                         
+             (SELECT DISTINCT WD.walkLogNo,
+              LISTAGG(dogNo, ',') WITHIN GROUP (ORDER BY dogNo) OVER(PARTITION BY WD.walkLogNo) AS dogs
+              FROM walkedDog WD, walkLog WL 
+              WHERE WD.walkLogNo = WL.walkLogNo) b
+       	 where a.walkLogNo = b.walkLogNo(+) 
+	]]>
+	<if test='date != "0"'>
+	     and TO_CHAR(a.regDate, 'YYYY-MM-DD') = #{date}
+	</if>
+	<if test='dogNo != "0"'>
+	     and (b.dogs LIKE '%' || #{dogNo} || ',%' OR b.dogs LIKE '%,' || #{dogNo} || ',%' OR b.dogs LIKE '%,' || #{dogNo})
+	</if>
+ </select>
+	
+
+
+<select id="meetingLogList" resultType="com.runningdog.vo.ShowLogVo" parameterType="map">
+	<![CDATA[
+		select ort.rn,
+		       ort.walkLogNo,
+		       ort.userNo,
+		       ort.locationNo,
+		       TO_CHAR(ort.regDate, 'YYYY"년 "MM"월 "DD"일 "HH24"시 "MI"분"') AS regDate,
+		       ort.startTime,
+		       ort.endTime,
+		       ort.logTime,
+		       ort.distance,
+		       ort.content,
+		       ort.security,
+		       ort.status,
+		       ort.name,
+		       ort.title,
+		       ort.dogs
+		from (  select rownum rn,
+		               ot.walkLogNo,
+		               ot.userNo,
+		               ot.locationNo,
+		               ot.regDate,
+		               ot.startTime,
+		               ot.endTime,
+		               ot.logTime,
+		               ot.distance,
+		               ot.content,
+		               ot.security,
+		               ot.status,
+		               ot.name,
+		               ot.title,
+		               ot.dogs
+	        	from (select a.walkLogNo,
+		                     a.userNo,
+		                     a.locationNo,
+		                     a.regDate,
+		                     a.startTime,
+		                     a.endTime,
+		                     a.logTime,
+		                     a.distance,
+		                     a.content,
+		                     a.security,
+		                     a.status,
+		                     a.name,
+		                     a.title,
+		                     b.dogs
+	              	   from (SELECT WL.meetingNo,
+                                    WL.walkLogNo,
+		                            US.userNo,
+		                            WL.locationNo,
+		                            WL.regDate,
+		                            WL.startTime,
+		                            WL.endTime,
+		                            WL.logTime,
+		                            WL.distance,
+		                            WL.content,
+		                            WL.security,
+		                            WL.status,
+		                            US.name,
+		                            WL.title
+	                     	 FROM walkLog WL, users US 
+	                     	 where WL.userNo = US.userNo
+	                     	 and WL.status = 'T' 
+	                     	 and WL.meetingNo != 0
+                             and WL.meetingNo in (select meetingNo
+                                                  from meetingInfo mi
+                                                  where mi.userNo = (SELECT userNo FROM users WHERE code = #{paramCode}))
+	              	   		) a,                         
+		                    (SELECT DISTINCT WD.walkLogNo,
+		                     LISTAGG(dogNo, ',') WITHIN GROUP (ORDER BY dogNo) OVER(PARTITION BY WD.walkLogNo) AS dogs
+		                     FROM walkedDog WD, walkLog WL 
+		                     WHERE WD.walkLogNo = WL.walkLogNo) b
+	              	   	where a.walkLogNo = b.walkLogNo(+) 
+	]]>
+					<if test='date != "0"'>
+			            and TO_CHAR(a.regDate, 'YYYY-MM-DD') = #{date}
+			        </if>
+	            	<if test='dogNo != "0"'>
+	               		and (b.dogs LIKE '%' || #{dogNo} || ',%' OR b.dogs LIKE '%,' || #{dogNo} || ',%' OR b.dogs LIKE '%,' || #{dogNo})
+	            	</if>
+	<![CDATA[ 
+	              		ORDER BY a.walkLogNo DESC)ot
+	    )ort
+		where rn>=#{startRNum}
+		and rn<=#{endRNum}                        
+	]]>                 
+          
+</select>
+		
+	
+
+	
+<!--  -->
+<select id="selectMeetingTotalCnt" resultType="int" parameterType="map">
+	<![CDATA[
+		select COUNT(*) AS count
+       	from (SELECT WL.meetingNo,
+                     WL.walkLogNo,
+                     US.userNo,
+                     WL.locationNo,
+                     WL.regDate,
+                     WL.startTime,
+                     WL.endTime,
+                     WL.logTime,
+                     WL.distance,
+                     WL.content,
+                     WL.security,
+                     WL.status,
+                     US.name,
+                     WL.title
+             	 FROM walkLog WL, users US 
+             	 where WL.userNo = US.userNo
+             	 and WL.status = 'T' 
+             	 and WL.meetingNo != 0
+                 and WL.meetingNo in (select meetingNo
+                                      from meetingInfo mi
+                                      where mi.userNo = (SELECT userNo FROM users WHERE code = #{paramCode}))
+       		  ) a,                         
+             (SELECT DISTINCT WD.walkLogNo,
+              LISTAGG(dogNo, ',') WITHIN GROUP (ORDER BY dogNo) OVER(PARTITION BY WD.walkLogNo) AS dogs
+              FROM walkedDog WD, walkLog WL 
+              WHERE WD.walkLogNo = WL.walkLogNo) b
+       	 where a.walkLogNo = b.walkLogNo(+) 
+	]]>
+	<if test='date != "0"'>
+	     and TO_CHAR(a.regDate, 'YYYY-MM-DD') = #{date}
+	</if>
+	<if test='dogNo != "0"'>
+	     and (b.dogs LIKE '%' || #{dogNo} || ',%' OR b.dogs LIKE '%,' || #{dogNo} || ',%' OR b.dogs LIKE '%,' || #{dogNo})
+	</if>
+ </select>
+	
+
+	
+	
+	
+	
+	
+	
+	<select id="walkLogListByDog" resultType="com.runningdog.vo.ShowLogVo" parameterType="java.util.Map">
+      <![CDATA[
+		 select       WL.walkLogNo,
+		       		 WL.userNo,
 		       	  	 WL.locationNo,
 		       		 TO_CHAR(WL.regDate, '""YYYY"년 "MM"월 "DD"일 "HH24"시 "MI"분"') regDate,
 		       		 WL.startTime,
@@ -99,13 +431,19 @@
 		      		 WL.status,
 		      		 US.name,
 		      		 WL.title
+                    
 		             
-		from walkLog WL, users US
-		where WL.userNo = US.userNo 
-		and WL.userNo = (SELECT US.userNo
-		                 From users US
-		                WHERE code = #{paramCode})
-		order by WL.walkLogNo desc
+		from walkLog WL
+    JOIN users US ON WL.userNo = US.userNo
+    LEFT JOIN walkedDog WD ON WD.walkLogNo = WL.walkLogNo
+		where WL.userNo = (SELECT userNo
+                            FROM users
+                            WHERE code = #{paramCode}) 
+    and WD.dogNo = #{dogNo} 
+		
+		order by WL.walkLogNo desc   
+		
+	
       ]]>
 	</select>
 
@@ -141,7 +479,7 @@ ORDER BY
               
         FROM walkedDog WD, dog D
         where WD.dogNo = D.dogNo
-        and walkLogNo = #{walkLogNo}
+        and walkLogNo = #{walkLogNo} and D.status = 'T'
         ORDER BY walkedDogNo ASC
     ]]>
 	</select>
@@ -256,7 +594,7 @@ ORDER BY
 	
 	</update>
 	
-	<select id="getBlogDogList" parameterType="int" resultType="com.runningdog.vo.BlogDogVo">
+	<select id="getBlogDogList" parameterType="String" resultType="com.runningdog.vo.BlogDogVo">
     <![CDATA[
         SELECT 
         	DG.name,
@@ -266,7 +604,7 @@ ORDER BY
             WHERE DG.userNo = US.userNo
             and DG.userNo = (SELECT userNo
                            FROM users 
-                           WHERE code = #{paramCode})
+                           WHERE code = #{paramCode}) and DG.status = 'T'
     ]]>
 </select>
 
@@ -311,7 +649,7 @@ ORDER BY
             DG.status,
             DG.dogNo
             FROM dog DG, users US
-            WHERE DG.userNo = US.userNo
+            WHERE DG.userNo = US.userNo and DG.status = 'T'
             and (DG.userNo IN (SELECT applieduserNo
                            FROM friend 
                            WHERE applyuserNo = (SELECT userNo
@@ -337,7 +675,104 @@ ORDER BY
     and type = 'users'
     ]]>
 	</select>
+	
+	
+	<select id="getFollowerList" parameterType="String" resultType="com.runningdog.vo.FollowListVo">
+    <![CDATA[
+         SELECT 
+    
+    F.followNo,
+    US.name,
+    F.followeeNo,
+    F.followerNo,
+    
+    IM.saveName AS userSavename
+FROM 
+    follow F
+    JOIN users US ON F.followerNo = US.userNo
+    LEFT JOIN images IM ON IM.useNo = US.userNo
+where followeeNo =(SELECT userNo
+        From users
+        WHERE code = #{paramCode}) 
+ORDER BY 
+    F.followNo ASC
+    ]]>
+</select>
 
+<select id="getFollowingList" parameterType="String" resultType="com.runningdog.vo.FollowListVo">
+    <![CDATA[
+ SELECT 
+    
+    F.followNo,
+    US.name,
+    F.followeeNo,
+    F.followerNo,
+    
+    IM.saveName AS userSavename
+FROM 
+    follow F
+    JOIN users US ON F.followeeNo = US.userNo
+    LEFT JOIN images IM ON IM.useNo = US.userNo
+where followerNo =(SELECT userNo
+        From users
+        WHERE code = #{paramCode})
+ORDER BY 
+    F.followNo ASC
+
+
+    ]]>
+</select>
+
+<select id="usedTrailList" resultType="com.runningdog.vo.UsedTrailVo" parameterType="int">
+      <![CDATA[
+		SELECT
+    t.trailNo,
+    t.name,
+    t.eta,
+    t.distance,
+    COUNT(wl.walkLogNo) AS trailHit,
+    COUNT(ts.trailStarNo) AS trailStar,
+    COUNT(tc.trailCmtNo) AS trailCmt
+FROM
+    trail t
+JOIN
+    trailUsed tu ON t.trailNo = tu.trailNo
+LEFT JOIN
+    walkLog wl ON tu.walkLogNo = wl.walkLogNo
+LEFT JOIN
+    trailStar ts ON t.trailNo = ts.trailNo
+LEFT JOIN
+    trailCmt tc ON t.trailNo = tc.trailNo
+WHERE
+    tu.walkLogNo = #{walkLog}
+GROUP BY
+    t.trailNo, t.name, t.eta, t.distance
+      ]]>
+	</select>
+	
+	
+	
+	<insert id="insertLike" parameterType="java.util.Map">
+    <![CDATA[
+        INSERT INTO userLike 
+        VALUES (seq_like_no.NEXTVAL, #{authUserNo}, 'walkLog', #{walkLogNo})
+    ]]>
+</insert>
+
+<!-- 팔로우 취소 -->
+<delete id="deleteLike" parameterType="java.util.Map">
+    <![CDATA[
+        DELETE FROM userLike
+        WHERE userNo = #{authUserNo} AND useNo = #{walkLogNo} and type='walkLog'
+    ]]>
+</delete>
+
+<select id="getTotalWalkLogs" resultType="int" parameterType="String">
+    <![CDATA[
+        SELECT COUNT(*) FROM walkLog WL
+        WHERE WL.userNo = (SELECT US.userNo FROM users US WHERE code = #{paramCode})
+    ]]>
+</select>
 
 
 

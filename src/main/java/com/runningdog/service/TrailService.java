@@ -1,6 +1,7 @@
 package com.runningdog.service;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -10,6 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Dimension;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -239,6 +246,10 @@ public class TrailService {
 					trailDao.trailCoordsInsert(coordsVo);
 				}
 			}
+			
+			// 맵 이미지 등록
+			// mapImgSave(trailVo.getTrailNo());
+			
 			insertCnt = 1;
 		} else {
 			System.out.println("산책로 등록 실패");
@@ -257,6 +268,55 @@ public class TrailService {
 		return insertCnt;
 	}
 	
+	// 맵 이미지 등록 - 셀레리움으로 화면캡쳐
+	private String mapImgSave(int walkLogNo) {
+		System.out.println("TrailService.mapImgSave()");
+		
+		String path = System.getProperty("user.dir");
+        System.out.println("현재 작업 경로: " + path);
+		
+        System.setProperty("webdriver.chrome.driver", "C:\\javaStudy\\RunningDog\\webapp\\assets\\driver\\chromedriver.exe");
+
+        // Create a new instance of the Chrome driver
+        WebDriver driver = new ChromeDriver();
+        
+        //driver.get("http://localhost:433/RunningDog/m/walkMap?walkLogNo="+walkLogNo); // 학원 경로
+        driver.get("http://localhost:8000/RunningDogJH/m/walkMap?walkLogNo="+walkLogNo); // 집 경로
+        driver.manage().window().setSize(new Dimension(745+16, 380+138));
+ 
+        String savePath = null;
+        try {
+        	ImagesVo imagesVo = new ImagesVo();
+        	
+        	String saveName = System.currentTimeMillis()+UUID.randomUUID().toString()+".jpg";
+        	
+            // 캡쳐 코드
+        	savePath = "C:\\javaStudy\\rdimg\\trail\\" + saveName; // 저장 경로변경
+            File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+            FileUtils.copyFile(srcFile, new File(savePath));
+            
+            // (6) Vo로 묶기
+    		imagesVo.setFilePath(savePath);
+    		imagesVo.setOrgName(saveName);
+    		imagesVo.setSaveName(saveName);
+    		imagesVo.setType("walkLogMap"); // 타입지정   // 산책로일때 'trailMap'
+    		imagesVo.setUseNo(walkLogNo); // 셀렉트키 넣기 
+    		//imagesVo.setFileSize(fileSize);	
+    		
+    		// (7) Dao 만들어서 저장하기
+    		System.out.println("맵이미지 db에 저장 " + imagesVo);
+    		// moWebDao.imgsSave(imagesVo);            
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        // Close the browser
+        //driver.quit();
+      
+		return savePath;
+	}
+	
 	// 산책로 삭제 ajax
 	public int trailDelete(TrailVo trailVo) {
 		System.out.println("TrailService.trailDelete()");
@@ -265,8 +325,6 @@ public class TrailService {
 		
 		return deleteCnt;
 	}
-	
-
 	
 	// trailDetail //////////////////////////////
 
@@ -469,9 +527,7 @@ public class TrailService {
 		System.out.println("TrailService.cmtListMap()");
 		
 		int userNo = (int) fetchSet.get("userNo");
-		if(userNo == 0) {
-			userNo = 2;
-		}
+
 		UsersVo usersVo = new UsersVo();
 		usersVo.setUserNo(userNo);
 		
@@ -493,7 +549,6 @@ public class TrailService {
 			TrailCmtVo userCmtStarVo = new TrailCmtVo();
 			userCmtStarVo.setTrailCmtNo(trailCmtVo.getTrailCmtNo());
 			userCmtStarVo.setUsersVo(usersVo);
-			System.out.println("userCmtStarVo " + userCmtStarVo);
 			
 			// 후기 이미지 목록
 			List<ImagesVo> images = trailDao.cmtImages(trailCmtVo.getTrailCmtNo());
@@ -536,7 +591,7 @@ public class TrailService {
 		System.out.println("TrailService.logListMap()");
 		
 		List<WalkLogVo> logList = trailDao.logList(fetchSet);
-		System.out.println("logList : " + logList);
+		// System.out.println("logList : " + logList);
 		
 		// 산책일지 전체 수
 		int logCnt = trailDao.logCnt(fetchSet);
@@ -655,7 +710,6 @@ public class TrailService {
 		System.out.println("TrailService.meetingListMap()");
 		
 		List<WalkLogVo> logList = trailDao.meetingLogList(fetchSet);
-		System.out.println("logList : " + logList.get(0).getMeetingVo());
 		
 		// 모임일지 전체 수
 		int logCnt = trailDao.meetingLogCnt(fetchSet);

@@ -29,7 +29,7 @@
 		
 		<div class="imageArea">
 			<div class="settingLabel">프로필 이미지</div>
-			<img class="profileImg" alt="" src="${pageContext.request.contextPath}/rdimg/dogProfile/${dogVo.saveName}">
+			<img class="profileImg" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/dog_default_img.jpg';" src="${pageContext.request.contextPath}/rdimg/dogProfile/${dogVo.saveName}">
 			<label for="inputFile2" class="upload-btn" id="uploadLabel">
 				<input id="inputFile2" type="file" name="file" accept="image/*">
 			    <span class="form-text" >이미지 선택</span>

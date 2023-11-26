@@ -49,8 +49,8 @@ public class WalkTrailController {
 		if(authUser != null) {
 			locationVo = trailService.userLocation(authUser.getUserNo());
 		} else {
-			// locationVo = trailService.userLocation(0);
-			locationVo = trailService.userLocation(2);
+			locationVo = trailService.userLocation(0);
+			// locationVo = trailService.userLocation(2);
 		}
 		model.addAttribute("locationVo", locationVo);
 		model.addAttribute("listKey", listKey);
@@ -69,8 +69,8 @@ public class WalkTrailController {
 		if(authUser != null) {
 			fetchSet.put("userNo", authUser.getUserNo());
 		} else {
-			// fetchSet.put("userNo", 0);
-			fetchSet.put("userNo", 2);
+			fetchSet.put("userNo", 0);
+			// fetchSet.put("userNo", 2);
 		}
 		Map<String, Object> listMap = trailService.trailListMap(fetchSet);
 		
@@ -98,8 +98,8 @@ public class WalkTrailController {
 		if(authUser != null) {
 			locationVo = trailService.userLocation(authUser.getUserNo());
 		} else {
-			// locationVo = trailService.userLocation(0);
-			locationVo = trailService.userLocation(2);
+			locationVo = trailService.userLocation(0);
+			// locationVo = trailService.userLocation(2);
 		}
 		model.addAttribute("locationVo", locationVo);
 		
@@ -117,8 +117,8 @@ public class WalkTrailController {
 		if(authUser != null) {
 			fetchSet.put("userNo", authUser.getUserNo());
 		} else {
-			// fetchSet.put("userNo", 0);
-			fetchSet.put("userNo", 2);
+			fetchSet.put("userNo", 0);
+			// fetchSet.put("userNo", 2);
 		}
 		List<WalkLogVo> walkLogList = trailService.walkLogList(fetchSet);
 		
@@ -171,9 +171,6 @@ public class WalkTrailController {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if(authUser != null) {
 			fetchSet.put("userNo", authUser.getUserNo());
-		} else {
-			// fetchSet.put("userNo", 0);
-			fetchSet.put("userNo", 2);
 		}
 		
 		int insertCnt = trailService.trailAdd(fetchSet);
@@ -217,12 +214,15 @@ public class WalkTrailController {
 			usersVo.setUserNo(authUser.getUserNo());
 			trailVo.setUsersVo(usersVo);
 			userMap = trailService.userDetail(trailVo);
-		} else {
+		}
+		/*
+		else {
 			UsersVo usersVo = new UsersVo();
 			usersVo.setUserNo(2);
 			trailVo.setUsersVo(usersVo);
 			userMap = trailService.userDetail(trailVo);
 		}
+		*/
 		
 		// 산책로 이용 랭킹
 		Map<String, Object> userUsedMap = trailService.trailUserUsed(trailVo);
@@ -296,7 +296,9 @@ public class WalkTrailController {
 			trailCmtVo.setUsersVo(usersVo);
 			trailCmtVo.setTrailVo(trailVo);
 			trailCmtVo.setContent(content);
-		} else {
+		}
+		/*
+		else {
 			UsersVo usersVo = new UsersVo();
 			usersVo.setUserNo(2);
 			
@@ -307,6 +309,8 @@ public class WalkTrailController {
 			trailCmtVo.setTrailVo(trailVo);
 			trailCmtVo.setContent(content);
 		}
+		*/
+		
 		int trailCmtNo = trailService.trailCmtAdd(trailCmtVo);
 		
 		return trailCmtNo;
@@ -346,11 +350,15 @@ public class WalkTrailController {
 			UsersVo usersVo = new UsersVo();
 			usersVo.setUserNo(authUser.getUserNo());
 			trailVo.setUsersVo(usersVo);
-		} else {
+		}
+		/*
+		else {
 			UsersVo usersVo = new UsersVo();
 			usersVo.setUserNo(2);
 			trailVo.setUsersVo(usersVo);
 		}
+		*/
+		
 		int starChk = trailService.trailStarUpdate(trailVo);
 		
 		return starChk;
@@ -368,11 +376,15 @@ public class WalkTrailController {
 			UsersVo usersVo = new UsersVo();
 			usersVo.setUserNo(authUser.getUserNo());
 			trailCmtVo.setUsersVo(usersVo);
-		} else {
+		}
+		/*
+		else {
 			UsersVo usersVo = new UsersVo();
 			usersVo.setUserNo(2);
 			trailCmtVo.setUsersVo(usersVo);
 		}
+		*/
+		
 		List<Integer> cnts = trailService.cmtStarUpdate(trailCmtVo, trailVo);
 		
 		return cnts;

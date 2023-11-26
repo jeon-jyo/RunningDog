@@ -873,7 +873,7 @@
 			                   AND w.userNo = u.userNo
 			                   AND w.status = 'T'
 			                   AND w.security = '공개'
-			                   AND m.trailNo = 1
+			                   AND m.trailNo = #{trailNo}
 		]]>
 		<if test='cmtOrderNav == 0'>
 			<![CDATA[

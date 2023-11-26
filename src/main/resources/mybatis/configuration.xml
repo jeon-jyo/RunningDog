@@ -17,6 +17,8 @@
         <mapper resource="mybatis/mappers/walkTrail.xml" />
         
         <mapper resource="mybatis/mappers/setting.xml" />
+        
+        <mapper resource="mybatis/mappers/meeting.xml" />
     </mappers>
     
 </configuration>

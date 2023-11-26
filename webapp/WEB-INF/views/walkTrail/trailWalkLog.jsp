@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>trailWalkLog</title>
 <link href="${pageContext.request.contextPath}/assets/css/walkTrail/trailMain.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/assets/css/setting/setting.css" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script>
 </head>
@@ -19,10 +20,10 @@
 			<div class="segment-map-filters">
 				<div class="input-group mb-3">
 					<c:if test="${locationVo.gu != '전체' }">
-						<input type="text" class="form-control" id="address" value="${locationVo.si } ${locationVo.gu } ${locationVo.dong }" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
+						<input type="text" class="form-control addressChange" id="address" value="${locationVo.si } ${locationVo.gu } ${locationVo.dong }" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
 					</c:if>
 					<c:if test="${locationVo.gu == '전체' }">
-						<input type="text" class="form-control" id="address" value="${locationVo.si }" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
+						<input type="text" class="form-control addressChange" id="address" value="${locationVo.si }" aria-label="Recipient's username" aria-describedby="button-addon2" readonly>
 					</c:if>
 					<button class="btn btn-outline-secondary" type="button" id="button-addon2">
 						<i class="fa-solid fa-magnifying-glass"></i>
@@ -38,7 +39,7 @@
 				<span>나의 산책일지 기록으로 마음에 드는 산책로를 만들어 보세요!</span>
 
 				<i class="fa-solid fa-pen-to-square" id="trailAddFormGo"></i>
-				<button type="button" class="btn btn-primary">일지 보기</button>
+				<button type="button" class="btn btn-primary walkLogGoBtn">일지 보기</button>
 				<input type="hidden" name="hiddenCode" id="hidden-code" value="${authUser.code}">
 			</div>
 
@@ -52,21 +53,96 @@
 			</div>
 		</div>
 	</div>
+	
+	<div class="modal fade" id="addressModal">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<input type="text" class="form-control" id="searchAddressInput" placeholder="구 혹은, 동으로 검색해보세요">
+					<button id="searchAddressBtn" type="button" class="btn btn-primary">동네 검색</button>
+				</div>
+				<form id="" method="post" action="">
+					<div class="modal-body">
+						<div id="showAddressList" class="form-group">
+							<table id="addressListTable">
+								<thead id="theadTr">
+									<tr>
+										<td>시</td>
+										<td>구</td>
+										<td>동</td>
+									</tr>
+								</thead>
+								<tbody id="addressListTbody"></tbody>
+							</table>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 <script type="text/javascript">
 
 	/* location change */
-/* 	$("#button-addon2").on("click", function() {
-		console.log("button-addon2 click");
+	$(".addressChange").on("click", () => {
+		console.log("addressChange click");
+	
+		$("#addressModal").modal("show");
+	});
+	
+	$("#searchAddressBtn").on("click", () => {
+		const keyword = $("#searchAddressInput").val();
 		
-		let address = $("#address").value;
-		console.log("address ", address);
-	}); */
+		$.ajax({
+			url : "${pageContext.request.contextPath}/setting/selectAddressList",
+			type : "post",
+			data : {keyword: keyword},
+	
+			dataType : "json",
+			success : function(addressList) {
+				console.log("addressList", addressList);
+				
+				$("#addressListTbody").html("");
+				
+				for(let i = 0; i<addressList.length; i++){
+					render(addressList[i]);
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	});	
+	
+	function render(userVo) {
+		let str = '';
+		str += '<tr data-lno="' + userVo.locationNo + '" class="addressSelect">';
+		str += '	<td class="si">' + userVo.si + '</td>';
+		str += '	<td class="gu">' + userVo.gu + '</td>';
+		str += '	<td class="dong">' + userVo.dong + '</td>';
+		str += '</tr>';
+		
+		$("#addressListTbody").append(str);
+	};
+	
+	$("#addressListTable").on("click", ".addressSelect", function() {
+		let $this = $(this);
+		let lno = parseInt($this.data("lno"));
+		
+		let si = $this.children(".si").text();
+		let gu = $this.children(".gu").text();
+		let dong = $this.children(".dong").text();
+		
+		let location = si + " " + gu + " " + dong;
+		$("#address").val(location);
+		$("#addressModal").modal("hide");
+		ChangeCenterCoords(location);
+	});
 	
 	let hiddenCode = document.querySelector("#hidden-code");
 	
-	$(".btn-primary").on("click", function() {
-		// console.log("btn-primary click");
+	$(".walkLogGoBtn").on("click", function() {
+		// console.log("walkLogGoBtn click");
 		
 		if(overlayMarker.length == 0) {
 			alert("산책일지를 선택해주세요.");
@@ -118,6 +194,24 @@
 		}
 		console.log("location ", location);
 
+		naver.maps.Service.geocode({
+	        query: location
+	    }, function(status, response) {
+	    	if (status !== naver.maps.Service.Status.OK) {
+	            return console.log('Something wrong!');
+	        }
+
+	        var result = response.v2, 		// 검색 결과의 컨테이너
+	            items = result.addresses;	// 검색 결과의 배열
+	        
+	        map.setCenter(new naver.maps.Point(items[0].x, items[0].y));
+	        getNewCoords();
+	    });
+	}
+	
+    function ChangeCenterCoords(location) {
+		console.log("ChangeCenterCoords()");
+		
 		naver.maps.Service.geocode({
 	        query: location
 	    }, function(status, response) {

@@ -447,7 +447,7 @@ public class TrailDao {
 
 	// 후기 좋아요 확인
 	public int userCmtStar(TrailCmtVo userCmtStarVo) {
-		System.out.println("TrailDao.userCmtStar()");
+		// System.out.println("TrailDao.userCmtStar()");
 		
 		int selectCnt = sqlSession.selectOne("walkTrail.userCmtStar", userCmtStarVo);
 		

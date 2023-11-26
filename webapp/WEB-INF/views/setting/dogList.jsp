@@ -47,7 +47,7 @@
 			    <c:when test="${not empty requestScope.dogListMap.dogList || requestScope.dogListMap.dogList.size() != 0}">
 				   	<c:forEach items="${requestScope.dogListMap.dogList}" var="dogVo">
 						<div class="dogCard" style="background-color: ${dogVo.color};">
-							<img class="profileImg" alt="" src="${pageContext.request.contextPath}/rdimg/dogProfile/${dogVo.saveName}">
+							<img class="profileImg" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/dog_default_img.jpg';" src="${pageContext.request.contextPath}/rdimg/dogProfile/${dogVo.saveName}">
 							
 							<h3>강아지 카드</h3>
 							<div>이름: ${dogVo.dogName}</div>
@@ -123,7 +123,7 @@
 			    <c:when test="${not empty requestScope.dogListMap.friendDogList || requestScope.dogListMap.friendDogList.size() != 0}">
 				   	<c:forEach items="${requestScope.dogListMap.friendDogList}" var="dogVo">
 						<div class="dogCard" style="background-color: ${dogVo.color};">
-							<img class="profileImg" alt="" src="${pageContext.request.contextPath}/rdimg/dogProfile/${dogVo.saveName}">
+							<img class="profileImg" onerror="this.onerror=null; this.src='${pageContext.request.contextPath}/assets/images/dog_default_img.jpg';" src="${pageContext.request.contextPath}/rdimg/dogProfile/${dogVo.saveName}">
 							
 							<h3>강아지 카드</h3>
 							<div>이름: ${dogVo.dogName}</div>

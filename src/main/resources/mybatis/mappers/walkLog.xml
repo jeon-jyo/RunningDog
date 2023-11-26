@@ -4,6 +4,24 @@
 <mapper namespace="walkLog">
    
    <!-- 쿼리문 작성 --> 
+   
+   <!-- 산책일지 좌표 삭제 (더미데이터용) -->
+	<delete id="coordsDelete" parameterType="int" >
+		<![CDATA[
+			DELETE FROM coords
+			WHERE type = 'walkLog'
+			and useno = #{walkLogNo}
+		]]>
+	</delete>  
+	
+	<!-- 산책일지 좌표 삭제 (더미데이터용) -->
+	<delete id="mapImagDelete" parameterType="int" >
+		<![CDATA[
+			DELETE FROM images
+			WHERE type = 'walkLogMap'
+			and useno = #{walkLogNo}
+		]]>
+	</delete>  
 	
 	<!-- 유저 1명 가져오기 (로그인) -->
 	<select id="selectOneUser" parameterType="com.runningdog.vo.UserVo" resultType="com.runningdog.vo.UserVo">
@@ -14,10 +32,26 @@
 			where id = #{id}
 			and password = #{password}
 		]]>
-	</select>
+	</select>  
+	 
+   <!-- *보류* 맵 산책로 불러오기 (동네전부) -->
+   <select id="mapTrailSelect" parameterType="int" resultType="com.runningdog.vo.UseTrailVo">
+      <![CDATA[
+         SELECT  tr.trailno as trailNo
+        		 ,tr.name as name
+		         ,co.coordorder as coordOrder
+		         ,co.lat as lat
+		         ,co.lng as lng
+		 FROM trail tr, coords co
+	 	 where co.type = 'trail'
+	 	 and locationno = #{locationNo}
+		 and tr.trailno = co.useno
+		 ORDER BY co.coordorder asc
+      ]]>
+   </select>   
    
-   <!-- 산책로 가져오기 -->
-   <select id="mapTrailSelect"  resultType="com.runningdog.vo.UseTrailVo">
+   <!-- *보류* 기록 산책로 불러오기 (3개) -->
+   <select id="endTrailSelect"  resultType="com.runningdog.vo.UseTrailVo">
       <![CDATA[
          SELECT co.coordno as coordNo
 		        ,tr.trailno as trailNo
@@ -36,19 +70,42 @@
    <!-- 내 강아지 가져오기 -->   
    <select id="dogSelect"  parameterType="int" resultType="com.runningdog.vo.MoDogVo">
       <![CDATA[
-         SELECT  us.userno as userNo
-		         ,us.name  as userName
-		         ,do.dogno as dogNo
-		         ,do.name as dogName
-		         ,im.orgname as orgName
-		         ,im.savename as saveName
-		 FROM users us,dog do, images im
-	 	 where us.userno = #{userNo}
-	 	 and im.type = 'dog'
-	 	 and us.userno = do.userno
-		 and do.dogno = im.useno
+         SELECT  dono.userno as userNo
+		        ,dono.username  as userName
+		        ,dono.dogno as dogNo
+		        ,dono.dogname as dogName
+		        ,im.orgname as orgName
+		        ,im.savename as saveName
+		 FROM images im , (SELECT  us.userno as userNo
+		                          ,us.name  as userName
+		                          ,do.dogno as dogNo
+		                          ,do.name as dogName
+                           		  ,do.status as status
+		                   FROM users us,dog do 
+		                   WHERE (us.userno = do.userno AND us.userno = #{userNo})
+		                      OR (us.userno = do.userno AND us.userno in (SELECT fi.applyuserno
+								                                          FROM users us, friend fi
+								                                          WHERE us.userno = #{userNo}  
+								                                          and us.userno = fi.applieduserno))   
+		                      OR (us.userno = do.userno AND us.userno in (SELECT fi.applieduserno
+								                                          FROM users us, friend fi
+								                                          WHERE us.userno = #{userNo}  
+								                                          and us.userno = fi.applyuserno))) dono
+		 where im.type = 'dog'
+		 and im.useno = dono.dogno		 
+         and dono.status = 'T'
       ]]>
-   </select>     
+   </select>       
+   
+   <!-- 내 동네번호 가져오기 -->   
+   <select id="locationSelect"  parameterType="com.runningdog.vo.LocationVo" resultType="int">
+      <![CDATA[
+         select locationNo
+	 	 from location
+	 	 where GU = #{gu}
+		 and DONG = #{dong}
+      ]]>
+   </select>      
    
    <!-- 산책기록 저장하기 -->
    <insert id="walkLogInsert"  parameterType="com.runningdog.vo.MoWalkLogVo" >
@@ -102,6 +159,7 @@
       ]]>
    </insert>
    
+   <!-- 첨부이미지 저장하기 -->
    <insert id="imgsSave" parameterType="com.runningdog.vo.ImagesVo">  
 		 <![CDATA[
 		 INSERT INTO images
@@ -117,6 +175,7 @@
 		 ]]>
 	</insert>
 	
+	<!-- 맵이미지 저장하기 -->
 	<insert id="mapImgSave" parameterType="com.runningdog.vo.ImagesVo">  
 		 <![CDATA[
 		 INSERT INTO images
@@ -130,8 +189,7 @@
                       ,#{imageOrder}
                       )
 		 ]]>
-	</insert>
-	
+	</insert>	
    
    <!-- 좌표값 가져오기 (캡쳐용) -->   
    <select id="mapSelect"  parameterType="int" resultType="com.runningdog.vo.CoordsVo">
@@ -146,7 +204,7 @@
       ]]>
    </select>
      
-   <!-- 산책로 가져오기 -->   
+   <!-- *보류* 산책로 가져오기 -->   
    <select id="trailSelect"  parameterType="int" resultType="com.runningdog.vo.MoTrailVo">
       <![CDATA[
         SELECT tr.trailNo
@@ -160,6 +218,162 @@
 		WHERE ROWNUM <= 3
       ]]>
    </select>
+   
+   
+   <!-- 산책로 3개 가져오기 -->   
+   <select id="threeTrailSelect"  parameterType="com.runningdog.vo.XYVo" resultType="com.runningdog.vo.UseTrailVo">
+      <![CDATA[	
+      	SELECT tt.trailNo
+		      ,tt.name
+		      ,tt.trailstar
+		      ,tt.rn
+		      ,tt.trailstarno
+		      ,im.orgname
+		      ,im.savename    
+		FROM images im, (SELECT  tr.trailno as trailNo
+				        ,tr.name as name
+				        ,CASE WHEN ts.trailno IS NOT NULL THEN 1 ELSE 0 END AS trailStar
+				        ,tn.rn
+		        		,NVL(ts.trailstarno, 0) trailstarno  
+				FROM trail tr
+				JOIN (SELECT trailF.rn
+				             ,trailF.trailno
+				      FROM   (SELECT rownum rn
+				                     ,trailC.trailno
+				              FROM   (SELECT latc.trailno as trailno
+				                                  ,latc.distance1 + lngc.distance2 as distance
+				                      FROM   (SELECT useno AS trailNo  
+				                                     ,LAT
+				                                     ,ABS(LAT - #{y}) AS Distance1   
+				                              FROM coords 
+				                              WHERE type = 'trail'  
+				                              and coordorder = 1
+				                              ORDER BY Distance1) latC 
+				                             , (SELECT useno AS trailNo  
+				                                       ,LNG
+				                                       ,ABS(LNG - #{x}) AS Distance2   
+				                                FROM coords 
+				                                WHERE type = 'trail'  
+				                                and coordorder = 1
+				                                ORDER BY Distance2) lngC
+				                      WHERE latc.trailno = lngc.trailno
+				                      ORDER BY distance) trailC) trailF
+				      WHERE trailF.rn BETWEEN 1 and 3) tn
+				ON tr.trailno = tn.trailno
+				LEFT JOIN trailStar ts ON tr.trailno = ts.trailno AND ts.userno = #{userNo}        
+				ORDER BY tn.rn ASC) tt
+		WHERE im.type ='trail'
+		and im.useno = tt.trailno	
+      ]]>
+   </select>  
+   
+   <!-- ////////////////////// 산책로 업데이트관련 /////////////////////////// -->
+   
+   <!-- 산책로 3개 가져오기 -->   
+   <insert id="trailCount"  parameterType="com.runningdog.vo.MotrailUsedVo" >
+	   <![CDATA[
+	        INSERT INTO trailUsed
+			VALUES(seq_trailused_no.NEXTVAL , #{walkLogNo} , #{trailNo} )
+	   ]]>   
+   </insert>
+   
+   <!-- 산책로 찜 하기 -->   
+   <insert id="starInsert"  parameterType="com.runningdog.vo.MoStarVo" >
+		<selectKey resultType="int" keyProperty="trailStarNo" order="BEFORE">
+			<![CDATA[
+				SELECT seq_trailstar_no.NEXTVAL FROM dual    
+			]]>
+		</selectKey>
+	   <![CDATA[
+	        INSERT INTO trailStar
+	        VALUES(#{trailStarNo},#{userNo} , #{trailNo} , sysdate )
+			
+	   ]]>   
+   </insert>
+   
+   <!-- 산책로 찜 되돌리기 -->   
+   <delete id="starDelete"  parameterType="com.runningdog.vo.MoStarVo" >
+	   <![CDATA[
+	        DELETE FROM trailStar
+			WHERE trailno = #{trailNo}
+			AND userno = #{userNo}
+	   ]]>   
+   </delete>
+   
+    <!-- ////////////////////// 모임관련 /////////////////////////// -->
+    
+   <!-- 나의 오늘 모임리스트 가져오기 -->   
+   <select id="todayMeetingSelect" parameterType="hashMap" resultType="com.runningdog.vo.MoMeetingVo">
+      <![CDATA[
+            SELECT m.meetingno   as meetingNo
+			       ,m.name     as name
+			       ,m.time     as time
+			       ,mu.userCount  as userCount
+			       ,m.maxmember   as maxMember
+			       ,md.dogCount  as dogCount
+       			   ,m.userNo	as	userNo
+			FROM meeting m , (SELECT mi.meetingno
+			                        ,COUNT(mi.dogno) as dogCount
+			                  FROM meetinginfo mi ,(SELECT meetingNo
+			                                        FROM meetinginfo
+			                                        WHERE userno = #{userNo}
+			                                        GROUP BY meetingNo) minum , meeting me
+			                  WHERE mi.meetingno = minum.meetingno
+			                  AND mi.meetingno = me.meetingno
+			                  GROUP BY mi.meetingno) md , (select  meetingNo 
+			                                                      ,count(distinct userNo) userCount
+			                                               from meetingInfo
+			                                               where meetingNo in(select meetingNo
+			                                                                  from meetingInfo mi
+			                                                                  where userNo = #{userNo}
+			                                                                  GROUP BY meetingNo)                                                                 
+			                                               GROUP BY meetingNo) mu
+			WHERE m.meetingno = md.meetingno
+			and  m.meetingno = mu.meetingno
+			and TO_DATE(SUBSTR(m.meetingdate, 1, 8), 'YY-MM-DD') = TO_DATE(#{todayDate}, 'YY/MM/DD')
+			and m.status ='T'
+			ORDER BY m.time asc
+      ]]>
+   </select>   
+   
+     <!-- 모임 강아지 가져오기 -->   
+   <select id="meetingDogSelect"  parameterType="int" resultType="com.runningdog.vo.MoDogVo">
+      <![CDATA[
+	        SELECT us.userno as userNo
+			      ,us.name  as userName
+			      ,do.dogno as dogNo
+			      ,do.name as dogName
+			      ,im.orgname as orgName
+			      ,im.savename as saveName
+			FROM meetinginfo mi ,users us, dog do, images im
+			WHERE mi.dogno = do.dogno
+			and do.userno = us.userno
+			and do.dogno = im.useno
+			and im.type = 'dog'
+			and meetingno = #{meetingNo}
+      ]]>
+   </select>       
+   
+   
+   
+   
+   
+   
+   <!-- ////////////////////// 어드민 업데이트관련 /////////////////////////// -->
+   
+   <update id="adminUpdate"  parameterType="com.runningdog.vo.MoWalkLogVo" >
+   		<![CDATA[
+	   		UPDATE walkLog
+			SET logtime = #{logTime},
+			    distance = #{distance}
+			WHERE walklogno = #{walkLogNo}
+	    ]]> 
+   </update>
+   
+   
+   
+   
+   
    
    
 
