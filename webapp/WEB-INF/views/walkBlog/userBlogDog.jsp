@@ -4,25 +4,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Insert title here</title>
-<link href="${pageContext.request.contextPath}/assets/css/global/reset.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/assets/css/walkBlog/index.css" rel="stylesheet" type="text/css">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
-
-
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://kit.fontawesome.com/98aecd1b62.js" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-
-
 <script>
 
-window.onload = function(){
+
 var deleteLogNo; // 전역 변수로 선언
 
 function setDeleteLogNo(logNo) {
@@ -40,8 +28,8 @@ function deleteLog() {
 
 
 function toggleFollowButton() {
-    let followButton = document.getElementByClass("followButton");
-    let followStatus = "${requestScope.blogInfoVo.followNo}";
+    var followButton = document.getElementById("followButton");
+    var followStatus = "${requestScope.blogInfoVo.followNo}";
 
     if (followStatus === "0") {
         // Follow
@@ -54,7 +42,6 @@ function toggleFollowButton() {
             success: function(response) {
                 if (response === "success") {
                     followButton.innerText = "팔로잉";
-                    location.reload(true);
                 } else {
                     console.error("팔로우 실패");
                 }
@@ -74,7 +61,6 @@ function toggleFollowButton() {
             success: function(response) {
                 if (response === "success") {
                     followButton.innerText = "팔로우";
-                    location.reload(true);
                 } else {
                     console.error("언팔로우 실패");
                 }
@@ -87,49 +73,53 @@ function toggleFollowButton() {
 }
 
 
+	
+	  
+	  function addComment(walkLogNo) {
+		    var commentText = document.getElementById("commentText").value;
+		    console.log(commentText);
+		    console.log(${ShowLogVo.walkLogNo});
+		    
+		    if (commentText.trim() !== "") {
+		        // Ajax 호출
+		        $.ajax({
+		            type: "POST",
+		            url: "${pageContext.request.contextPath}/walkBlog/addComment",
+		            data: {
+		                walkLogNo: walkLogNo,
+		                content: commentText,
+		                userNo: ${blogInfoVo.authNo}
+		            },
+		            success: function (response) {
+		            	 // 댓글이 성공적으로 등록되면 화면에 추가
+		                var commentSection = $(".MRcomments");
 
-$(".addCommentBtn").on("click", function(){
-    var commentText = $("#coText").val();
-    
-    let $this = $(this);
-    var walkLogNo = $(this).data("walklogno");
-    
-    console.log(walkLogNo)
-    console.log(commentText)
+		                // 새로운 댓글을 화면에 추가하는 부분
+		                var newCommentHtml = `
+		                    <div class="MRcomment1" id="${response.walkLogCmtNo}">
+		                        <img src="${pageContext.request.contextPath}/rdimg/userProfile/${response.userSavename}" alt="">
+		                        <div class="replyDateCmtBox">
+		                            <div class="MRreplyDate">${response.regDate}</div>
+		                            <button class="deleteCommentButton" onclick="deleteComment('${response.walkLogCmtNo}')">삭제</button>
+		                        </div>
+		                        <div class="MRuserIdandContent">
+		                            <div class="MRreplyUserId">${response.name}</div>
+		                            <div class="MRreplyContent">${response.content}</div>
+		                        </div>
+		                    </div>
+		                `;
 
-    if (commentText.trim() !== "") {
-        $.ajax({
-            type: "POST",
-            url: "${pageContext.request.contextPath}/walkBlog/addComment",
-            data: {
-                walkLogNo: walkLogNo,
-                content: commentText,
-                userNo: ${blogInfoVo.authNo}
-            },
-            success: function (response) {
-                var commentSection = $(".MRcomments");
-                var newCommentHtml = `
-                    <div class="MRcomment1" id="${response.walkLogCmtNo}">
-                        <img src="${pageContext.request.contextPath}/rdimg/userProfile/${response.userSavename}" alt="">
-                        <div class="replyDateCmtBox">
-                            <div class="MRreplyDate">${response.regDate}</div>
-                            <button class="deleteCommentButton" onclick="deleteComment('${response.walkLogCmtNo}')">삭제</button>
-                        </div>
-                        <div class="MRuserIdandContent">
-                            <div class="MRreplyUserId">${response.name}</div>
-                            <div class="MRreplyContent">${response.content}</div>
-                        </div>
-                    </div>
-                `;
-                commentSection.append(newCommentHtml);
-                $(".commentText").val("");
-            },
-            error: function (error) {
-                console.error("댓글 등록 실패: " + error);
-            }
-        });
-    }
-});
+		                commentSection.append(newCommentHtml);
+
+		                // 등록 후 입력창 비우기
+		                document.getElementById("commentText").value = "";
+		            },
+		            error: function (error) {
+		                console.error("댓글 등록 실패: " + error);
+		            }
+		        });
+		    }
+		}
 
 		function deleteComment(cmtNo) {
 		    // Ajax 호출
@@ -143,7 +133,6 @@ $(".addCommentBtn").on("click", function(){
 		            // 성공 시, 화면 갱신 등 추가 작업 가능
 		            console.log("댓글 삭제 성공");
 		            $('#comment_' + cmtNo).remove();
-		            location.reload(true);
 		           
 		        },
 		        error: function (error) {
@@ -151,99 +140,9 @@ $(".addCommentBtn").on("click", function(){
 		        }
 		    });
 		}
+
 		
-		/* $('#usedTrailModal').on('show.bs.modal', function (event) {
-		    var modal = $(this);
-		    var button = $(event.relatedTarget); // 클릭한 버튼 가져오기
-		    var usedTrailList = button.data('usedTrailList'); // data-usedTrailList 속성에서 usedTrailList 값 가져오기
-		    
-		    console.log("usedTrailList:", usedTrailList); // 콘솔에 출력
-
-		    modal.find('#usedTrailModalBody').empty(); // 모달 내용 초기화
-
-		    // 이용 산책로 정보를 동적으로 추가
-		    $.each(usedTrailList, function (index, usedTrail) {
-		        var usedTrailHtml = `
-		            <div class="usedTrailInfo">
-		                <h5>${usedTrail.name}</h5>
-		                <div class="trailInfo">
-		                    <div class="info">
-		                        <span class="detail-text">${usedTrail.distanceFormatted}KM</span> <span class="detail-info">거리</span>
-		                    </div>
-		                    <div class="info">
-		                        <span class="detail-text">${usedTrail.etaFormatted}</span> <span class="detail-info">소요시간</span>
-		                    </div>
-		                    <div class="vr"></div>
-		                    <div class="info cntInfo">
-		                        <span class="detail-text">${usedTrail.trailHit}</span> <span class="detail-info">이용자</span>
-		                    </div>
-		                    <div class="info cntInfo">
-		                        <span class="detail-text">${usedTrail.trailStar}</span> <span class="detail-info">찜</span>
-		                    </div>
-		                    <div class="info cntInfo">
-		                        <span class="detail-text">${usedTrail.trailCmt}</span> <span class="detail-info">후기</span>
-		                    </div>
-		                </div>
-		            </div>
-		        `;
-		        modal.find('#usedTrailModalBody').append(usedTrailHtml);
-		    });
-		}); */
-
-		 $(document).ready(function(){
-	            // Tooltip initialization
-	            $('[data-toggle="tooltip"]').tooltip({
-	                trigger: 'manual',  // 수동으로 툴팁을 열고 닫음
-	                html: true,         // HTML 태그 사용 허용
-	                template: '<div class="tooltip" role="tooltip"><div class="arrow"></div><div class="tooltip-inner"></div></div>',
-	                title: function () {
-	                    // 툴팁 내용을 지연 로딩하기 위해 함수 사용
-	                    return $(this).attr('title');
-	                }
-	            });
-
-	            // 툴팁 열기
-	            $('.usedTrailButton').on('click', function () {
-	                $(this).tooltip('toggle');
-	            });
-
-	            // 툴팁 닫기
-	            $('.tooltip').on('click', function () {
-	                $(this).tooltip('hide');
-	            });
-	        });
-		
-}	
-
-
-$(function() {
 	
-
-	
-	
-	$(".datepicker").datepicker({
-		dateFormat: "yy-mm-dd", // 텍스트 필드에 입력되는 날짜 형식
-        onSelect: function(dateString) {
-        	
-        		      let paramCode = "${blogInfoVo.paramCode}" ;
-        	          let crtPage = "1"	
-        			  let dogNo = "${param.dogNo}"
-        	          console.log(dateString);
-                      console.log(paramCode);
-                      console.log(crtPage);
-            
-                      $(location).prop("href", "${pageContext.request.contextPath}/walkBlog/"+paramCode+"?crtPage="+crtPage+"&date="+dateString+"&dogNo="+dogNo );
-                      
-                      
-                      /* href="${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}?crtPage=${page}&date=${param.date} */
-                      /*  */
-                  }
-
-
-    });
-});
-
-
 </script>
 </head>
 <body>
@@ -272,8 +171,7 @@ $(function() {
 
 			<div class="profileSection">
 				<div class="calendar">
-					<div class="datepicker"></div>
-					<%-- <img src="${pageContext.request.contextPath}/assets/images/캘린더.png" alt=""> --%>
+					<img src="${pageContext.request.contextPath}/assets/images/캘린더.png" alt="">
 				</div>
 
 				<div class="profileWrapper">
@@ -302,22 +200,18 @@ $(function() {
 						<div class="coworkingDog">산책 파트너</div>
 						<div class="maindogCardBox">
 							<c:forEach items="${blogInfoVo.blogDogList}" var="blogDogVo">
-
-
-
-								<c:if test="${blogDogVo.dogNo eq param.dogNo}">
-									<div class="mainDogCard1 highlighted" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}?crtPage=1&date=${param.date}&dogNo=${blogDogVo.dogNo}'">
+								 <c:if test="${String.valueOf(blogDogVo.dogNo) eq String.valueOf(requestScope.dogNo)}">
+									<div class="mainDogCard1 highlighted" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}/dog/${blogDogVo.dogNo}'">
+										<img src="${pageContext.request.contextPath}/rdimg/dogProfile/${blogDogVo.saveName}" alt="">
+										<div class="mainDogCardName">${blogDogVo.name}</div>
+									</div>
+								</c:if> 
+								<c:if test="${blogDogVo.dogNo != requestScope.dogNo}">
+									<div class="mainDogCard1" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}/dog/${blogDogVo.dogNo}'">
 										<img src="${pageContext.request.contextPath}/rdimg/dogProfile/${blogDogVo.saveName}" alt="">
 										<div class="mainDogCardName">${blogDogVo.name}</div>
 									</div>
 								</c:if>
-								<c:if test="${blogDogVo.dogNo != param.dogNo}">
-									<div class="mainDogCard1" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}?crtPage=1&date=${param.date}&dogNo=${blogDogVo.dogNo}'">
-										<img src="${pageContext.request.contextPath}/rdimg/dogProfile/${blogDogVo.saveName}" alt="">
-										<div class="mainDogCardName">${blogDogVo.name}</div>
-									</div>
-								</c:if>
-
 							</c:forEach>
 						</div>
 
@@ -337,15 +231,13 @@ $(function() {
 
 					<div class="category">
 						<div class="tab record active">산책기록</div>
-						<div class="tab record ">산책모임</div>
 
-
+						<div class="tab meeting">산책모임</div>
 						<a href="${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}/following">
 							<div class="tab following">팔로잉</div>
 						</a>
 						<div class="tab blank">
-
-							<button type="button" class="homeButton" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}?crtPage=1'">홈으로</button>
+						<button type="button" class="homeButton" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}'">홈으로</button>
 						</div>
 					</div>
 
@@ -353,16 +245,11 @@ $(function() {
 					<div class="mainRecordSection">
 
 
-						<c:if test="${empty pMap.walkLogList }">
-							<div class="noData">
-								<img src="${pageContext.request.contextPath}/assets/images/우는강아지.png" alt="">
-								<h1>해당날짜의 산책기록이 없습니다.</h1>
 
-							</div>
-
-						</c:if>
-						<c:forEach items="${pMap.walkLogList}" var="ShowLogVo">
+						<c:forEach items="${walkLogList}" var="ShowLogVo">
 							<c:if test="${not empty ShowLogVo.status and  String.valueOf(ShowLogVo.status) eq 'T'}">
+
+
 								<div class="mainRecord1">
 
 
@@ -451,31 +338,11 @@ $(function() {
 
 										</div>
 										<div class="logButton">
-											<button type="button" class="usedTrailButton" data-toggle="tooltip" data-html="true"
-												title="<c:forEach items='${ShowLogVo.usedTrailList}' var='usedTrail'><div class='custom-tooltip'><strong>${usedTrail.name}</strong><br>거리: ${usedTrail.distanceFormatted}KM<br>소요시간: ${usedTrail.etaFormatted}<br>이용자: ${usedTrail.trailHit}<br>찜: ${usedTrail.trailStar}<br>후기: ${usedTrail.trailCmt}<br><a href='${pageContext.request.contextPath}/walkTrail/detail?trailNo=${usedTrail.trailNo}' class='custom-link'>상세보기</a><br><br></div></c:forEach>">
-												이용 산책로</button>
+											<button type="button" class="usedTrailButton" onclick="location.href='${pageContext.request.contextPath}/walkBlog/delete?no=${ShowLogVo.walkLogNo}'">이용산책로</button>
 											<button type="button" class="regButton" onclick="location.href='${pageContext.request.contextPath}/walkTrail/addForm?walkLogNo=${ShowLogVo.walkLogNo}'">산책로 등록</button>
+
 										</div>
 
-										<%-- <div class="likeButton">
-												<c:if test="${requestScope.blogInfoVo.authNo != 0}">
-													<c:if test="${requestScope.blogInfoVo.authNo != requestScope.blogInfoVo.ownerNo}">
-														<button id="likeButton" onclick="toggleLike(${ShowLogVo.walkLogNo})">
-															<c:choose>
-																<c:when test="${likedWalkLogs.contains(ShowLogVo.walkLogNo)}">
-																	<span class="heart red-heart">&#10084;</span>
-																	<!-- 이미 좋아요를 누른 경우 -->
-																</c:when>
-																<c:otherwise>
-																	<span class="heart">&#10084;</span>
-																	<!-- 좋아요를 누르지 않은 경우 -->
-																</c:otherwise>
-															</c:choose>
-															좋아요
-														</button>
-													</c:if>
-												</c:if>
-											</div> --%>
 										<div class="walkLogContent">${ShowLogVo.content}</div>
 									</div>
 
@@ -524,12 +391,12 @@ $(function() {
 
 
 										</div>
-										<c:if test="${requestScope.blogInfoVo.authNo != 0}">
+										<c:if test="${ requestScope.blogInfoVo.authNo != 0  }">
 											<div class="MRcommentInputBox">
 												<div class="MRinput-group">
-													<textarea id="coText" class="commentText form-control" aria-label="With textarea"></textarea>
+													<textarea id="commentText" class="form-control" aria-label="With textarea"></textarea>
 												</div>
-												<button class="MRreplyButton addCommentBtn" data-walklogno="${ShowLogVo.walkLogNo}">등록</button>
+												<button class="MRreplyButton" onclick="addComment('${ShowLogVo.walkLogNo}')">등록</button>
 											</div>
 										</c:if>
 
@@ -537,40 +404,18 @@ $(function() {
 									<div class="MRborder"></div>
 								</div>
 							</c:if>
+
 						</c:forEach>
 
 
+
+
+
+
 					</div>
-					<!-- //mainRecordSection -->
 
-
-					<!-- //paging -->
-					<div id="paging">
-						<ul>
-							<c:if test="${pMap.prev}">
-								<li><a href="${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}?crtPage=${pMap.startPageBtnNo-1}&date=${param.date}">◀</a></li>
-							</c:if>
-
-							<c:forEach begin="${pMap.startPageBtnNo}" end="${pMap.endPageBtnNo}" step="1" var="page">
-								<c:choose>
-									<c:when test="${param.crtPage == page or pMap.crtPage == page}">
-										<li class="active2"><a href="${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}?crtPage=${page}&date=${param.date}">${page}</a></li>
-									</c:when>
-									<c:otherwise>
-										<li><a href="${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}?crtPage=${page}&date=${param.date}">${page}</a></li>
-									</c:otherwise>
-								</c:choose>
-
-							</c:forEach>
-
-							<c:if test="${pMap.next}">
-								<li><a href="${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}?crtPage=${pMap.endPageBtnNo+1}&date=${param.date}">▶</a></li>
-							</c:if>
-						</ul>
-					</div>
 
 				</div>
-
 
 
 				<div class="mainSidebar">

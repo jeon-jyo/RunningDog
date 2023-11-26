@@ -9,18 +9,23 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://kit.fontawesome.com/98aecd1b62.js" crossorigin="anonymous"></script>
 <script>
-
+	
 </script>
 </head>
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
 
+	<c:if test="${ requestScope.blogInfoVo.bannerSavename == null  }">
+		<div class="backgroundImg">
+			<img src="${pageContext.request.contextPath}/assets/images/bannerDefault.png" alt="">
+		</div>
+	</c:if>
+	<c:if test="${ requestScope.blogInfoVo.bannerSavename != null  }">
+		<div class="backgroundImg">
+			<img src="${pageContext.request.contextPath}/rdimg/blogBanner/${blogInfoVo.bannerSavename}" alt="">
 
-	<div class="backgroundImg">
-		<img src="${pageContext.request.contextPath}/assets/images/${blogInfoVo.bannerSavename}" alt="">
-
-	</div>
-
+		</div>
+	</c:if>
 
 
 	<section>
@@ -37,7 +42,7 @@
 				<div class="profileWrapper">
 					<div class="wrap">
 						<div class="profileImg">
-							<img src="${pageContext.request.contextPath}/assets/images/${blogInfoVo.userSavename}" alt="">
+							<img src="${pageContext.request.contextPath}/rdimg/userProfile/${blogInfoVo.userSavename}" alt="">
 						</div>
 						<h1 class="userName">${blogInfoVo.name}</h1>
 						<c:if test="${ requestScope.blogInfoVo.authNo != 0  }">
@@ -45,7 +50,6 @@
 								<button id="followButton" class="followButton" onclick="toggleFollowButton()">
 									<c:if test="${requestScope.blogInfoVo.followNo == 0}">
 						팔로우
-						
 						</c:if>
 							</c:if>
 							<c:if test="${requestScope.blogInfoVo.followNo == 1}">
@@ -60,11 +64,11 @@
 						<div class="coworkingDog">산책 파트너</div>
 						<div class="maindogCardBox">
 							<c:forEach items="${blogInfoVo.blogDogList}" var="blogDogVo">
-							<div class="mainDogCard1">
-								<img src="${pageContext.request.contextPath}/assets/images/${blogDogVo.saveName}" alt="">
-								<div class="mainDogCardName">${blogDogVo.name}</div>
-							</div>
-							
+								<div class="mainDogCard1">
+									<img src="${pageContext.request.contextPath}/rdimg/dogProfile/${blogDogVo.saveName}" alt="">
+									<div class="mainDogCardName">${blogDogVo.name}</div>
+								</div>
+
 							</c:forEach>
 						</div>
 
@@ -83,11 +87,14 @@
 				<div class="mainPosts">
 
 					<div class="category">
-						<div class="tab record active">산책기록</div>
-
+						<a href="${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}">
+							<div class="tab record active">산책기록</div>
+						</a>
 						<div class="tab meeting"></div>
 						<div class="tab following"></div>
-						<div class="tab blank"></div>
+						<div class="tab blank">
+						
+						<button type="button" class="homeButton" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}'">홈으로</button></div>
 					</div>
 
 
@@ -129,11 +136,10 @@
 
 									</div>
 								</div>
-								<c:if test="${requestScope.blogInfoVo.authNo != requestScope.blogInfoVo.ownerNo }">
-								<div class="modifyDelete"></div>
-								</c:if>
-								<c:if test="${requestScope.blogInfoVo.authNo == requestScope.blogInfoVo.ownerNo }">
-									<div class="modifyDelete">
+
+
+								<div class="modifyDelete">
+									<c:if test="${requestScope.blogInfoVo.authNo == requestScope.blogInfoVo.ownerNo }">
 										<button type="button" class="deleteButton" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제</button>
 										<button class="modifyButton" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${blogInfoVo.paramCode}/${walkLog.walkLogNo}/modifyForm'">수정</button>
 										<!-- <button class="deleteButton">삭제</button> -->
@@ -153,9 +159,9 @@
 												</div>
 											</div>
 										</div>
+									</c:if>
+								</div>
 
-									</div>
-								</c:if>
 								<div class="MRdogCardBox">
 
 									<div class="MRpartnerDoglabel">함께한 강아지</div>
@@ -178,6 +184,15 @@
 
 
 								</div>
+
+								<div class="logButton">
+
+									<button type="button" class="usedTrailButton" onclick="location.href='${pageContext.request.contextPath}/walkBlog/'">이용산책로</button>
+									<c:if test="${requestScope.blogInfoVo.authNo == requestScope.blogInfoVo.ownerNo }">
+										<button type="button" class="regButton" onclick="location.href='${pageContext.request.contextPath}/walkTrail/addForm?walkLogNo=${walkLog.walkLogNo}'">산책로 등록</button>
+									</c:if>
+								</div>
+
 								<div class="walkLogContent">${walkLog.content}</div>
 
 
@@ -213,7 +228,7 @@
 
 
 				<div class="mainSidebar">
-					<div class="clubsWrapper">
+					<%-- <div class="clubsWrapper">
 						<h3 class="clubs">동아리</h3>
 						<div class="clubBox">
 							<div class="clubCard1">
@@ -233,7 +248,7 @@
 								<div class="clubCardName">동아리4</div>
 							</div>
 						</div>
-					</div>
+					</div> --%>
 					<div class="socialWrapper">
 						<div class="socialBox">
 							<h3 class="social">소셜 네트워크</h3>

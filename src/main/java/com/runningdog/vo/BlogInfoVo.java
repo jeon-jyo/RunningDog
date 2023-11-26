@@ -22,14 +22,28 @@ public class BlogInfoVo {
 	private MonthlyStatsVo monthlyStatsTotal;
 	
 	private List<BlogDogVo> blogDogList;
+	private List<FollowListVo> followerList;
+	private List<FollowListVo> followingList;
 	
 	
 	public BlogInfoVo() {}
 
 
+	
+
+
+
+
+
+
+
+
+
+
 	public BlogInfoVo(int no, String name, String userSavename, String bannerSavename, int authNo, int ownerNo,
 			String paramCode, int followerNum, int followingNum, int followNo, MonthlyStatsVo monthlyStatsThisMonth,
-			MonthlyStatsVo monthlyStatsTotal, List<BlogDogVo> blogDogList) {
+			MonthlyStatsVo monthlyStatsTotal, List<BlogDogVo> blogDogList, List<FollowListVo> followerList,
+			List<FollowListVo> followingList) {
 		super();
 		this.no = no;
 		this.name = name;
@@ -44,7 +58,84 @@ public class BlogInfoVo {
 		this.monthlyStatsThisMonth = monthlyStatsThisMonth;
 		this.monthlyStatsTotal = monthlyStatsTotal;
 		this.blogDogList = blogDogList;
+		this.followerList = followerList;
+		this.followingList = followingList;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public List<FollowListVo> getFollowerList() {
+		return followerList;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setFollowerList(List<FollowListVo> followerList) {
+		this.followerList = followerList;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public List<FollowListVo> getFollowingList() {
+		return followingList;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setFollowingList(List<FollowListVo> followingList) {
+		this.followingList = followingList;
+	}
+
+
+
+
+
+
+
+
+
+
+
 
 
 	public int getNo() {
@@ -177,23 +268,33 @@ public class BlogInfoVo {
 	}
 
 
+
+
+
+
+
+
+
+
+
+
+
 	@Override
 	public String toString() {
 		return "BlogInfoVo [no=" + no + ", name=" + name + ", userSavename=" + userSavename + ", bannerSavename="
 				+ bannerSavename + ", authNo=" + authNo + ", ownerNo=" + ownerNo + ", paramCode=" + paramCode
 				+ ", followerNum=" + followerNum + ", followingNum=" + followingNum + ", followNo=" + followNo
 				+ ", monthlyStatsThisMonth=" + monthlyStatsThisMonth + ", monthlyStatsTotal=" + monthlyStatsTotal
-				+ ", blogDogList=" + blogDogList + "]";
+				+ ", blogDogList=" + blogDogList + ", followerList=" + followerList + ", followingList=" + followingList
+				+ "]";
 	}
+
+
+
+
+
 	
-
-
-
-
-
-
-
-
+	
 	
 	
 	

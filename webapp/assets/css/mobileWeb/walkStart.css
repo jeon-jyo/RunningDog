@@ -5,6 +5,25 @@
 		padding: 0;
 	}
 	
+	/* 모임리스트 */
+
+    /* 각각의 텍스트에 대한 스타일 지정 */
+    .meeting-text {
+        margin-bottom: 5px;
+        font-size: 16px; /* 텍스트 크기 지정 */
+	    text-decoration: none; /* 밑줄 제거 */
+	    color: rgb(0, 0, 0);
+    	white-space: pre;
+    }
+	
+	.meeting-title {
+		color: rgb(128, 0, 0);
+		cursor: pointer; /* 마우스 포인터를 손가락 형태로 변경 */
+		font-weight: bold;
+	    text-decoration: none; /* 밑줄 제거 */
+	}
+	
+	
 	/* 표시되는 맵 */
 	#map {	
 		height: 820px;

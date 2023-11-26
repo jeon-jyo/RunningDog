@@ -2,7 +2,7 @@
 
 
 .global-header {
-	border-bottom: 1px solid black;
+	border-bottom: 1px solid rgb(190, 190, 190);
 	margin-bottom: 30px;
 }
 
@@ -34,9 +34,19 @@
 	margin-right: 13px;
 }
 
-.global-header .right {
+.global-header .my-menu{
+	float: right;
+}
+
+.global-header .my-menu .right {
 	line-height: 55px;
 	float: right;
+	padding-left: 16px;
+}
+
+.global-header .my-menu .left {
+	line-height: 55px;
+	float: left;
 }
 
 .global-header .right li:last-child {
@@ -63,6 +73,18 @@
 	padding-bottom: 13px;
 }
 
+.global-header > nav > .my-menu > .left > li > .oranged{
+	color: #FC5200;	
+	font-weight: bold;
+}
 
+.global-header > nav > .my-menu > ul > li a{
+	text-decoration: none;
+	color: grey;
+}
 
-
+.global-header > nav > .my-menu > ul > li {
+	display: inline-block;
+	line-height: 55px;
+	margin-right: 13px;
+}

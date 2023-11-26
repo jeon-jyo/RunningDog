@@ -1,5 +1,6 @@
 package com.runningdog.dao;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -8,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.runningdog.vo.BlogDogVo;
+import com.runningdog.vo.FollowListVo;
 import com.runningdog.vo.LogWalkedDogVo;
 import com.runningdog.vo.MonthlyStatsVo;
 import com.runningdog.vo.ShowLogCmtVo;
 import com.runningdog.vo.ShowLogVo;
+import com.runningdog.vo.UsedTrailVo;
 import com.runningdog.vo.WalkLogConImgVo;
 
 @Repository
@@ -49,8 +52,18 @@ public class WalkBlogDao {
 		sqlSession.delete("walkBlog.deleteFollow", map);
 	}
 
-	public List<ShowLogVo> walkLogList(String paramCode) {
-		List<ShowLogVo> walkLogList = sqlSession.selectList("walkBlog.walkLogList", paramCode);
+	public List<ShowLogVo> walkLogList(String paramCode, int startRNum, int endRNum, String date, int dogNo) {
+		
+		Map<String, Object> pageMap = new HashMap<String, Object>();
+		pageMap.put("paramCode", paramCode);
+		pageMap.put("startRNum", startRNum);
+		pageMap.put("endRNum", endRNum);
+		pageMap.put("date", date);
+		pageMap.put("dogNo", dogNo);
+		
+		System.out.println(pageMap);
+		
+		List<ShowLogVo> walkLogList = sqlSession.selectList("walkBlog.walkLogList", pageMap);
 
 		return walkLogList;
 	}
@@ -190,6 +203,59 @@ public class WalkBlogDao {
 	public String getUserSavenameByWalkLogNo(int walkLogNo) {
 		
 		return sqlSession.selectOne("walkBlog.getUserSavenameByWalkLogNo", walkLogNo);
+	}
+
+	public List<FollowListVo> getFollowerList(String paramCode) {
+		
+		return sqlSession.selectList("walkBlog.getFollowerList", paramCode);
+	}
+
+	public List<FollowListVo> getFollowingList(String paramCode) {
+		
+		return sqlSession.selectList("walkBlog.getFollowingList", paramCode);
+	}
+
+	public List<ShowLogVo> walkLogListByDog(String paramCode, int dogNo) {
+		
+		return null;
+	}
+
+	public List<ShowLogVo> walkLogListByDog(Map<String, Object> map) {
+		System.out.println("map = " + map);
+		List<ShowLogVo> walkLogList = sqlSession.selectList("walkBlog.walkLogListByDog", map);
+		
+		return walkLogList;
+	}
+
+	public List<UsedTrailVo> getUsedTrailList(int walkLogNo) {
+		List<UsedTrailVo> usedTrailList = sqlSession.selectList("walkBlog.usedTrailList", walkLogNo);
+		
+		return usedTrailList;
+	}
+	
+	public void insertLike(Map<String, Integer> map) {
+		sqlSession.insert("walkBlog.insertLike", map);
+	}
+
+	public void deleteLike(Map<String, Integer> map) {
+		sqlSession.delete("walkBlog.deleteLike", map);
+	}
+
+	public int getTotalWalkLogs(String paramCode) {
+	    return sqlSession.selectOne("walkBlog.getTotalWalkLogs", paramCode);
+	}
+
+	public int selectTotalCnt(String paramCode, String date, int dogNo) {
+		System.out.println("selectTotalCnt");
+		
+		Map<String, Object> pageMap = new HashMap<String, Object>();
+		pageMap.put("paramCode", paramCode);
+		pageMap.put("date", date);
+		pageMap.put("dogNo", dogNo);
+		
+		
+		int totalCount = sqlSession.selectOne("walkBlog.selectTotalCnt", pageMap);
+		return totalCount;
 	}
 
 	

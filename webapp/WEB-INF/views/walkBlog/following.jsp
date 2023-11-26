@@ -270,9 +270,9 @@
 				<div class="mainPosts">
 
 					<div class="category">
-						<div class="tab record ">산책기록</div>
+						<div class="tab record " onclick="location.href='${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}?crtPage=1'">산책기록</div>
 
-						<div class="tab meeting">산책모임</div>
+						<div class="tab record ">산책모임</div>
 						<a href="${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}/following">
 							<div class="tab following active">팔로잉</div>
 						</a>
@@ -284,30 +284,20 @@
 						<div class="selector">
 							<select id="followSelector" class="form-select form-select-sm" aria-label="Small select example" onchange="redirectBasedOnSelection()">
 								<option value="following" selected>팔로잉</option>
-								<option value="follower" >팔로워</option>
-								
+								<option value="follower">팔로워</option>
+
 							</select>
 						</div>
 						<div class="followings">
-							<div class="following1">
-								<button class="followButton">팔로우</button>
-								<img src="${pageContext.request.contextPath}/assets/images/연탄.png" alt="">
-								<div class="followingNickname">닉네임1</div>
+							<c:forEach items="${blogInfoVo.followingList}" var="following">
+								<div class="following1">
+									<button class="followButton">팔로우</button>
+									<img src="${pageContext.request.contextPath}/rdimg/userProfile/${following.userSavename}" alt="">
+									<div class="followingNickname">${following.name}</div>
 
-							</div>
+								</div>
+							</c:forEach>
 
-							<div class="following2">
-								<button class="followButton">팔로우</button>
-								<img src="${pageContext.request.contextPath}/assets/images/산책로.png" alt="">
-								<div class="followingNickname">닉네임2</div>
-
-							</div>
-							<div class="following3">
-								<button class="followButton">팔로우</button>
-								<img src="${pageContext.request.contextPath}/assets/images/산책로2.png" alt="">
-								<div class="followingNickname">닉네임3</div>
-
-							</div>
 						</div>
 					</div>
 

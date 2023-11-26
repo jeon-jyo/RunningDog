@@ -270,9 +270,9 @@
 				<div class="mainPosts">
 
 					<div class="category">
-						<div class="tab record">산책기록</div>
+						<div class="tab record" onclick="location.href='${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}?crtPage=1'">산책기록</div>
 
-						<div class="tab meeting">산책모임</div>
+						<div class="tab record ">산책모임</div>
 						<a href="${pageContext.request.contextPath}/walkBlog/${requestScope.blogInfoVo.paramCode}/following">
 							<div class="tab following active">팔로잉</div>
 						</a>
@@ -283,122 +283,114 @@
 						<h2>팔로워</h2>
 						<div class="selector">
 							<select id="followSelector" class="form-select form-select-sm" aria-label="Small select example" onchange="redirectBasedOnSelection()">
-								<option value="follower" selected >팔로워</option>
+								<option value="follower" selected>팔로워</option>
 								<option value="following">팔로잉</option>
-								
-								
+
+
 							</select>
 						</div>
 						<div class="followings">
-							<div class="following1">
-								<button class="followButton">팔로우</button>
-								<img src="${pageContext.request.contextPath}/assets/images/연탄.png" alt="">
-								<div class="followingNickname">닉네임1</div>
+							<c:forEach items="${blogInfoVo.followerList}" var="follower">
+								<div class="following1">
+									<button class="followButton">팔로우</button>
+									<img src="${pageContext.request.contextPath}/rdimg/userProfile/${follower.userSavename}" alt="">
+									<div class="followingNickname">${follower.name}</div>
 
-							</div>
+								</div>
 
-							<div class="following2">
-								<button class="followButton">팔로우</button>
-								<img src="${pageContext.request.contextPath}/assets/images/산책로.png" alt="">
-								<div class="followingNickname">닉네임2</div>
 
-							</div>
-							<div class="following3">
-								<button class="followButton">팔로우</button>
-								<img src="${pageContext.request.contextPath}/assets/images/산책로2.png" alt="">
-								<div class="followingNickname">닉네임3</div>
-
-							</div>
+							</c:forEach>
 						</div>
 					</div>
-
-
-
-
-
 				</div>
 
 
-				<div class="mainSidebar">
-					<div class="clubsWrapper">
-						<h3 class="clubs">동아리</h3>
-						<div class="clubBox">
-							<div class="clubCard1">
-								<img src="${pageContext.request.contextPath}/assets/images/산책로.png" alt="">
-								<div class="clubCardName">동아리1</div>
-							</div>
-							<div class="clubCard2">
-								<img src="${pageContext.request.contextPath}/assets/images/산책로3.png" alt="">
-								<div class="clubCardName">동아리2</div>
-							</div>
-							<div class="clubCard3">
-								<img src="${pageContext.request.contextPath}/assets/images/산책로2.png" alt="">
-								<div class="clubCardName">동아리3</div>
-							</div>
-							<div class="clubCard4">
-								<img src="${pageContext.request.contextPath}/assets/images/산책로.png" alt="">
-								<div class="clubCardName">동아리4</div>
-							</div>
-						</div>
-					</div>
-					<div class="socialWrapper">
-						<div class="socialBox">
-							<h3 class="social">소셜 네트워크</h3>
-							<div class="followingBox">
-								<div class="followText">팔로잉</div>
-								<div class="followNum">${blogInfoVo.followingNum}</div>
-							</div>
-							<div class="followerBox">
-								<div class="followText">팔로워</div>
-								<div class="followNum">${blogInfoVo.followerNum}</div>
-							</div>
-						</div>
 
 
-					</div>
-					<div class="stats">
-
-						<h3 class="statslabel">${blogInfoVo.name}님의기록</h3>
-
-						<table class="statsTable">
-							<tr>
-								<th>이번 달</th>
-							</tr>
-							<tr>
-								<td>산책횟수</td>
-								<td>${blogInfoVo.monthlyStatsThisMonth.walkCountThisMonth}</td>
-							</tr>
-							<tr>
-								<td>산책거리</td>
-								<td>${blogInfoVo.monthlyStatsThisMonth.totalDistanceThisMonthFormatted}</td>
-							</tr>
-							<tr>
-								<td>산책시간</td>
-								<td>${blogInfoVo.monthlyStatsThisMonth.totalLogTimeThisMonthFormatted}</td>
-							</tr>
-						</table>
-
-						<table class="statsTableAll">
-							<tr>
-								<th>총 기록</th>
-							</tr>
-							<tr>
-								<td>산책횟수</td>
-								<td>${blogInfoVo.monthlyStatsTotal.walkCountTotal}</td>
-							</tr>
-							<tr>
-								<td>산책거리</td>
-								<td>${blogInfoVo.monthlyStatsTotal.totalDistanceTotalFormatted}</td>
-							</tr>
-							<tr>
-								<td>산책시간</td>
-								<td>${blogInfoVo.monthlyStatsTotal.totalLogTimeTotalFormatted}</td>
-							</tr>
-						</table>
-					</div>
-				</div>
 
 			</div>
+
+
+			<div class="mainSidebar">
+				<div class="clubsWrapper">
+					<h3 class="clubs">동아리</h3>
+					<div class="clubBox">
+						<div class="clubCard1">
+							<img src="${pageContext.request.contextPath}/assets/images/산책로.png" alt="">
+							<div class="clubCardName">동아리1</div>
+						</div>
+						<div class="clubCard2">
+							<img src="${pageContext.request.contextPath}/assets/images/산책로3.png" alt="">
+							<div class="clubCardName">동아리2</div>
+						</div>
+						<div class="clubCard3">
+							<img src="${pageContext.request.contextPath}/assets/images/산책로2.png" alt="">
+							<div class="clubCardName">동아리3</div>
+						</div>
+						<div class="clubCard4">
+							<img src="${pageContext.request.contextPath}/assets/images/산책로.png" alt="">
+							<div class="clubCardName">동아리4</div>
+						</div>
+					</div>
+				</div>
+				<div class="socialWrapper">
+					<div class="socialBox">
+						<h3 class="social">소셜 네트워크</h3>
+						<div class="followingBox">
+							<div class="followText">팔로잉</div>
+							<div class="followNum">${blogInfoVo.followingNum}</div>
+						</div>
+						<div class="followerBox">
+							<div class="followText">팔로워</div>
+							<div class="followNum">${blogInfoVo.followerNum}</div>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="stats">
+
+					<h3 class="statslabel">${blogInfoVo.name}님의기록</h3>
+
+					<table class="statsTable">
+						<tr>
+							<th>이번 달</th>
+						</tr>
+						<tr>
+							<td>산책횟수</td>
+							<td>${blogInfoVo.monthlyStatsThisMonth.walkCountThisMonth}</td>
+						</tr>
+						<tr>
+							<td>산책거리</td>
+							<td>${blogInfoVo.monthlyStatsThisMonth.totalDistanceThisMonthFormatted}</td>
+						</tr>
+						<tr>
+							<td>산책시간</td>
+							<td>${blogInfoVo.monthlyStatsThisMonth.totalLogTimeThisMonthFormatted}</td>
+						</tr>
+					</table>
+
+					<table class="statsTableAll">
+						<tr>
+							<th>총 기록</th>
+						</tr>
+						<tr>
+							<td>산책횟수</td>
+							<td>${blogInfoVo.monthlyStatsTotal.walkCountTotal}</td>
+						</tr>
+						<tr>
+							<td>산책거리</td>
+							<td>${blogInfoVo.monthlyStatsTotal.totalDistanceTotalFormatted}</td>
+						</tr>
+						<tr>
+							<td>산책시간</td>
+							<td>${blogInfoVo.monthlyStatsTotal.totalLogTimeTotalFormatted}</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+		</div>
 
 
 

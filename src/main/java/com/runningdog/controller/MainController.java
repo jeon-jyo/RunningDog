@@ -10,14 +10,14 @@ public class MainController {
 	@RequestMapping("/")
 	public String main(){
 		
-		return "main/main";
+		return "main/index";
 	}
 	
 	
 	@RequestMapping("/index")
 	public String index(){
 		
-		return "main/index";
+		return "main/main";
 	}
 	
 }

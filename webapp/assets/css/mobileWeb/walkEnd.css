@@ -124,8 +124,8 @@
 		aspect-ratio: 1/1;	
 	}
 	
-	#likeIcon {
-		color: rgb(255, 85, 85);
+	.emptyIcon {
+		color: rgb(255, 128, 0);
 		font-size: 20px;
 		position: absolute;
 		right: 7px;

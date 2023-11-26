@@ -26,7 +26,9 @@ public class MoWalkLogVo {
 
 	private List<Integer> dogNoList;
 	private List<XYVo> polylinePath;
-
+	private List<Integer> trailList; // 이용한 산책로
+	private List<Integer> trailStar; // 찜한 산책로
+	
 	private MultipartFile mapImg;
 
 	public MoWalkLogVo() {
@@ -34,7 +36,8 @@ public class MoWalkLogVo {
 
 	public MoWalkLogVo(int walkLogNo, int userNo, int locationNo, int meetingNo, String title, String regDate,
 			String startTime, String endTime, int logTime, int distance, String content, String security, char status,
-			List<Integer> dogNoList, List<XYVo> polylinePath, MultipartFile mapImg) {
+			List<Integer> dogNoList, List<XYVo> polylinePath, List<Integer> trailList, List<Integer> trailStar,
+			MultipartFile mapImg) {
 		super();
 		this.walkLogNo = walkLogNo;
 		this.userNo = userNo;
@@ -51,6 +54,8 @@ public class MoWalkLogVo {
 		this.status = status;
 		this.dogNoList = dogNoList;
 		this.polylinePath = polylinePath;
+		this.trailList = trailList;
+		this.trailStar = trailStar;
 		this.mapImg = mapImg;
 	}
 
@@ -174,6 +179,22 @@ public class MoWalkLogVo {
 		this.polylinePath = polylinePath;
 	}
 
+	public List<Integer> getTrailList() {
+		return trailList;
+	}
+
+	public void setTrailList(List<Integer> trailList) {
+		this.trailList = trailList;
+	}
+
+	public List<Integer> getTrailStar() {
+		return trailStar;
+	}
+
+	public void setTrailStar(List<Integer> trailStar) {
+		this.trailStar = trailStar;
+	}
+
 	public MultipartFile getMapImg() {
 		return mapImg;
 	}
@@ -188,7 +209,10 @@ public class MoWalkLogVo {
 				+ ", meetingNo=" + meetingNo + ", title=" + title + ", regDate=" + regDate + ", startTime=" + startTime
 				+ ", endTime=" + endTime + ", logTime=" + logTime + ", distance=" + distance + ", content=" + content
 				+ ", security=" + security + ", status=" + status + ", dogNoList=" + dogNoList + ", polylinePath="
-				+ polylinePath + ", mapImg=" + mapImg + "]";
+				+ polylinePath + ", trailList=" + trailList + ", trailStar=" + trailStar + ", mapImg=" + mapImg + "]";
 	}
+
+	
+	
 
 }

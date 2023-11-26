@@ -9,7 +9,6 @@
 <title>Insert title here</title>
 <!-- 부트스트랩 cdn -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-<link href="${pageContext.request.contextPath}/assets/css/global/header.css" rel="stylesheet" type="text/css">
 <link href="${pageContext.request.contextPath}/assets/css/global/index.css" rel="stylesheet" type="text/css">
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
@@ -29,9 +28,7 @@
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=main">추천 산책로</a></li>
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=my">등록한 산책로</a></li>
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=star">찜한 산책로</a></li>
-							<c:if test="${sessionScope.authUser != null}">
-								<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/walkLog">산책로 등록하기</a></li>
-				 			</c:if>
+							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/walkLog">산책로 등록하기</a></li>
 						</ul>
 					</div>
 				</li>
@@ -50,7 +47,7 @@
 				<ul class="left">
 					<c:if test="${ authUser != null  }">
 						<li>
-							<a class="dropdown-item oranged" href="${pageContext.request.contextPath}/walkBlog/${authUser.code}?page=1">내 산책 블로그</a>
+							<a class="dropdown-item orange" href="${pageContext.request.contextPath}/walkBlog/${authUser.code}?page=1">내 산책 블로그</a>
 						</li>
 					</c:if>
 				</ul>

@@ -22,7 +22,9 @@ public class ShowLogVo {
 	private String title;
 	private String walkLogMap;
 	private String userSavename;
-
+	
+	
+	private List<UsedTrailVo> usedTrailList;
 	private List<ShowLogCmtVo> showLogCmtList;
 	private List<WalkLogConImgVo> imageList;
 	private List<LogWalkedDogVo> walkedDogList;
@@ -36,10 +38,17 @@ public class ShowLogVo {
 
 
 
+
+
+
+
+
+
 	public ShowLogVo(int walkLogNo, int userNo, int locationNo, String regDate, String startTime, String endTime,
 			long logTime, double distance, String distanceFormatted, String logTimeFormatted, String content,
 			String security, char status, String name, String title, String walkLogMap, String userSavename,
-			List<ShowLogCmtVo> showLogCmtList, List<WalkLogConImgVo> imageList, List<LogWalkedDogVo> walkedDogList) {
+			List<UsedTrailVo> usedTrailList, List<ShowLogCmtVo> showLogCmtList, List<WalkLogConImgVo> imageList,
+			List<LogWalkedDogVo> walkedDogList) {
 		super();
 		this.walkLogNo = walkLogNo;
 		this.userNo = userNo;
@@ -58,10 +67,49 @@ public class ShowLogVo {
 		this.title = title;
 		this.walkLogMap = walkLogMap;
 		this.userSavename = userSavename;
+		this.usedTrailList = usedTrailList;
 		this.showLogCmtList = showLogCmtList;
 		this.imageList = imageList;
 		this.walkedDogList = walkedDogList;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public List<UsedTrailVo> getUsedTrailList() {
+		return usedTrailList;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setUsedTrailList(List<UsedTrailVo> usedTrailList) {
+		this.usedTrailList = usedTrailList;
+	}
+
+
+
+
+
+
 
 
 
@@ -299,6 +347,12 @@ public class ShowLogVo {
 
 
 
+
+
+
+
+
+
 	@Override
 	public String toString() {
 		return "ShowLogVo [walkLogNo=" + walkLogNo + ", userNo=" + userNo + ", locationNo=" + locationNo + ", regDate="
@@ -306,9 +360,14 @@ public class ShowLogVo {
 				+ distance + ", distanceFormatted=" + distanceFormatted + ", logTimeFormatted=" + logTimeFormatted
 				+ ", content=" + content + ", security=" + security + ", status=" + status + ", name=" + name
 				+ ", title=" + title + ", walkLogMap=" + walkLogMap + ", userSavename=" + userSavename
-				+ ", showLogCmtList=" + showLogCmtList + ", imageList=" + imageList + ", walkedDogList=" + walkedDogList
-				+ "]";
+				+ ", usedTrailList=" + usedTrailList + ", showLogCmtList=" + showLogCmtList + ", imageList=" + imageList
+				+ ", walkedDogList=" + walkedDogList + "]";
 	}
+
+
+
+
+
 
 
 

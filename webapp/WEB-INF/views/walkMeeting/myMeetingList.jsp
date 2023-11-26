@@ -16,12 +16,12 @@
 <body>
 	<jsp:include page="../global/header.jsp"></jsp:include>
 	<div class="contents">
-		<h1>산책 모임</h1>
+		<h1>내 모임</h1>
 		<div class="infoHeader">
 <!-- 			<div class="left location"> -->
 <!-- 				<span class="myColor">천호동</span> 모임 <i class="fa-regular fa-square-caret-down"></i> -->
 <!-- 			</div> -->
-			<form action="${pageContext.request.contextPath}/walkmeeting/meetinglist?crtPage=1" method="post" id="searchUser">
+			<form action="${pageContext.request.contextPath}/walkmeeting/mymeetinglist?crtPage=1" method="post" id="searchUser">
 				<div class="searchBox">
 					<select name="what" id="searchUser">
 						<option value="name">모임 제목</option>
@@ -64,7 +64,7 @@
 			        	</c:if>	
 			        	<c:if test="${MeetingsVo.status == 'E'}">
 			        		<td>종료</td>	
-			        	</c:if>		
+			        	</c:if>	
 					</tr>
 		        </c:forEach>
 		        
@@ -73,23 +73,23 @@
 			<div id="paging">
 				<ul>
 					<c:if test="${meetingMap.prev}">
-						<li><a href="${pageContext.request.contextPath}/walkmeeting/meetinglist?keyword=${meetingMap.keyword}&crtPage=${meetingMap.startPageBtnNo-1}">◀</a></li>
+						<li><a href="${pageContext.request.contextPath}/walkmeeting/mymeetinglist?keyword=${meetingMap.keyword}&crtPage=${meetingMap.startPageBtnNo-1}">◀</a></li>
 					</c:if>
 					
 					<c:forEach begin="${meetingMap.startPageBtnNo}" end="${meetingMap.endPageBtnNo}" step="1" var="page">
 						<c:choose>
 							<c:when test="${param.crtPage == page}">
-								<li class="active"><a href="${pageContext.request.contextPath}/walkmeeting/meetinglist?keyword=${meetingMap.keyword}&crtPage=${page}">${page}</a></li>										
+								<li class="active"><a href="${pageContext.request.contextPath}/walkmeeting/mymeetinglist?keyword=${meetingMap.keyword}&crtPage=${page}">${page}</a></li>										
 							</c:when>
 							<c:otherwise>
-								<li><a href="${pageContext.request.contextPath}/walkmeeting/meetinglist?keyword=${meetingMap.keyword}&crtPage=${page}">${page}</a></li>
+								<li><a href="${pageContext.request.contextPath}/walkmeeting/mymeetinglist?keyword=${meetingMap.keyword}&crtPage=${page}">${page}</a></li>
 							</c:otherwise>
 						</c:choose>
 						
 					</c:forEach>
 					
 					<c:if test="${meetingMap.next}">
-						<li><a href="${pageContext.request.contextPath}/walkmeeting/meetinglist?keyword=${meetingMap.keyword}&crtPage=${meetingMap.endPageBtnNo+1}">▶</a></li>
+						<li><a href="${pageContext.request.contextPath}/walkmeeting/mymeetinglist?keyword=${meetingMap.keyword}&crtPage=${meetingMap.endPageBtnNo+1}">▶</a></li>
 					</c:if>
 
 				</ul>
@@ -98,50 +98,27 @@
 		</div>
 	</div>
 	
+<script>
+
+$(".mt").on("click", function(){
 	
+	let $this = $(this);
+	let mNo = parseInt($this.data("mno"));
+	window.location = '${pageContext.request.contextPath}/walkmeeting/meeting?no='+mNo;
 	
-<!-- 	<div class="fixedDate" data-bs-toggle="modal" data-bs-target="#exampleModal">
-		<i class="fa-solid fa-calendar" style="color: #000000;"></i>
-	</div>
-	Modal
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	    <div class="modal-dialog">
-	        <div class="modal-content">
-	            <div class="modal-header">
-	                <h1 class="modal-title fs-5" id="exampleModalLabel">모임 일정</h1>
-	                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-	            </div>
-		        <div class="modal-body">
-		          <div id='calendar'></div>
-		        </div>
-		        <div class="modal-footer">
-		            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-		        </div>
-	        </div>
-	    </div>
-	</div> -->
-	
-	<script>
-	
-	$(".mt").on("click", function(){
-		
-		let $this = $(this);
-		let mNo = parseInt($this.data("mno"));
-		window.location = '${pageContext.request.contextPath}/walkmeeting/meeting?no='+mNo;
-		
-	});
-	
-	
-	/* FullCalendar */
-	/* const myModalEl = document.getElementById('exampleModal')
-	myModalEl.addEventListener('shown.bs.modal', event => {
-		var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
-          locale: 'ko'
-        });
-        calendar.render();
-	}) */
-	</script>
+});
+
+
+/* FullCalendar */
+/* const myModalEl = document.getElementById('exampleModal')
+myModalEl.addEventListener('shown.bs.modal', event => {
+	var calendarEl = document.getElementById('calendar');
+       var calendar = new FullCalendar.Calendar(calendarEl, {
+         initialView: 'dayGridMonth',
+         locale: 'ko'
+       });
+       calendar.render();
+}) */
+</script>
 </body>
 </html>

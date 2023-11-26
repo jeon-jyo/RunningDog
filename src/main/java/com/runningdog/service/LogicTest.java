@@ -1,11 +1,16 @@
 package com.runningdog.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class LogicTest {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		
 		ArrayList<Object> arr = new ArrayList<Object>(Arrays.asList(
 			/* 0~9 */
@@ -35,9 +40,30 @@ public class LogicTest {
 		
 		System.out.println(list);
 		
-		for(int i = 0; i < 8; i++) {
-			System.out.println(list.get(i));
-		}
+//		for(int i = 0; i < 8; i++) {
+//			System.out.println(list.get(i));
+//		}
 		
+		LocalDate now = LocalDate.now();
+		LocalTime time = LocalTime.now();
+		int hour = time.getHour();
+		int minute = time.getMinute();
+		
+		String sysdate = now+" "+hour+":"+minute;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		Date today = sdf.parse(sysdate);
+
+		System.out.println(today);
+		
+		Date a = new Date();
+		System.out.println(a);
 	}
+
+	
 }
+
+
+
+
+
