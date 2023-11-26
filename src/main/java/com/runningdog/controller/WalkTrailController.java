@@ -192,21 +192,6 @@ public class WalkTrailController {
 		return deleteCnt;
 	}
 	
-	// 산책로 수정폼
-	@RequestMapping(value = "/modifyForm", method= { RequestMethod.GET, RequestMethod.POST})
-	public String trailModifyForm(@ModelAttribute TrailVo trailVo,
-			Model model) throws JsonProcessingException {
-		System.out.println("WalkTrailController.trailModifyForm()");
-		System.out.println("trailVo" + trailVo);
-
-		// 산책로 상세
-		Map<String, Object> detailMap = trailService.trailModifyDetail(trailVo);
-		
-		model.addAttribute("detailMap", detailMap);
-		
-		return "walkTrail/trailModifyForm";
-	}
-	
 	@RequestMapping(value = "/modifyForm2", method= { RequestMethod.GET, RequestMethod.POST})
 	public String trailModifyForm2() {
 		System.out.println("WalkTrailController.trailModifyForm2()");
@@ -279,6 +264,7 @@ public class WalkTrailController {
 			listMap = trailService.logListMap(fetchSet);
 		} else if(cmtNav == 2) {
 			// 산책로 모임일지
+			listMap = trailService.meetingListMap(fetchSet);
 		}
 		
 		if(authUser != null) {
@@ -368,6 +354,28 @@ public class WalkTrailController {
 		int starChk = trailService.trailStarUpdate(trailVo);
 		
 		return starChk;
+	}
+	
+	// 후기 좋아요 수정 ajax
+	@ResponseBody
+	@RequestMapping(value = "/cmtStarUpdate", method= { RequestMethod.GET, RequestMethod.POST})
+	public List<Integer> cmtStarUpdate(@ModelAttribute TrailCmtVo trailCmtVo,
+			@ModelAttribute TrailVo trailVo, HttpSession session) {
+		System.out.println("WalkTrailController.cmtStarUpdate()");
+		
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser != null) {
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(authUser.getUserNo());
+			trailCmtVo.setUsersVo(usersVo);
+		} else {
+			UsersVo usersVo = new UsersVo();
+			usersVo.setUserNo(2);
+			trailCmtVo.setUsersVo(usersVo);
+		}
+		List<Integer> cnts = trailService.cmtStarUpdate(trailCmtVo, trailVo);
+		
+		return cnts;
 	}
 	
 	@RequestMapping(value = "/detail/deleted", method= { RequestMethod.GET, RequestMethod.POST})

@@ -590,6 +590,10 @@
     width: 100%;
     background-color: white;
 }
+.comment-content > span > i.fa-solid,
+.detail-modal-info > span > i.fa-solid {
+	color: #fc5200;
+}
 
 /* comment-info */
 .comment-info {
@@ -784,6 +788,10 @@
 	width: 60%;
 	height: 200px;
 	padding-left: 15px;
+}
+.meetingList .meeting .meetingContent .meetingInfo > a {
+	text-decoration: none;
+	color: black;
 }
 .meetingList .meeting .meetingContent .meetingInfo p {
 	margin-bottom: 5px;

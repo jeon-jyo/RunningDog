@@ -102,7 +102,7 @@
 						</div>
 						<div class="user-modify">
 							<c:if test="${authUser.userNo == detailMap.trailVo.usersVo.userNo }">
-								<i class="fa-solid fa-pen trail-update"></i>
+								<!-- <i class="fa-solid fa-pen trail-update"></i> -->
 								<i class="fa-solid fa-trash trail-delete"></i>
 							</c:if>
 						</div>
@@ -183,7 +183,9 @@
 									<span>${walkLogVo.regDate }</span>
  									<span>${userMap.walkLogMap.infoList[status.index][0] }</span>
 									<span>${userMap.walkLogMap.infoList[status.index][1] }</span>
-									<i class="fa-solid fa-chevron-right"></i>
+									<a href = "${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code}/${userMap.walkLogMap.walkLogList[status.index].walkLogNo}">
+										<i class="fa-solid fa-chevron-right"></i>
+									</a>
 								</div>
 							</c:forEach> 
 						</c:if>
@@ -534,17 +536,18 @@
 			document.querySelector('#cmtAddBtn').addEventListener('click', function() {
 				console.log('업로드 ', dropzone.files);
 			});
-
+			 
 			this.on('sendingmultiple', function(files) {
 				console.log('보내는중 ', files);
 			});
 
-			this.on('successmultiple', function() {
+			this.on('successmultiple', function(file) {
 				console.log('성공');
 				
 				$('#addModal').modal('hide');
 				fetchList(trailNo);
 			});
+			
 
 			this.on('errormultiple', function() {
 			});
@@ -642,19 +645,14 @@
 				} else if(cmtIndex == 2) {
 					console.log("모임일지 목록");
 					
-					console.log("listMap ", listMap);
-					
-					nonListRender();
-					
-					/*
 					if(listMap.logList.length == 0) {
 						nonListRender();
 					} else {
+						cmtCnt.innerText = listMap.logCnt;
 						for(let i = 0; i < listMap.logList.length; i++) {
-							walkLogRender(listMap, i, "down");
+							meetingLogRender(listMap, i, "down");
 						}
 					}
-					*/
 				}
 			},
 			error : function(XHR, status, error) {
@@ -682,7 +680,15 @@
 		str += '	</div>';
 		str += '	<div class="comment-content">';
 		str += '		<div>' + content + '</div>';
-		str += '		<span><i class="fa-regular fa-heart"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
+		if(listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
+			if(listMap.userlikeList[index] == 0) {
+				str += '		<span><i class="fa-regular fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
+			} else {
+				str += '		<span><i class="fa-solid fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
+			}
+		} else {
+			str += '		<span><i class="fa-regular fa-heart"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
+		}
 		str += '	</div>';
 		str += '	<div class="comment-info">';
 		if(listMap.userImgList[index] != null) {
@@ -774,7 +780,16 @@
 		
 		$(".detail-modal-info").empty();
 		let infoStr = '';
-		infoStr += '<span><i class="fa-regular fa-heart"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
+		if(listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
+			if(listMap.userlikeList[index] == 0) {
+				infoStr += '		<span><i class="fa-regular fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
+			} else {
+				infoStr += '		<span><i class="fa-solid fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
+			}
+		} else {
+			infoStr += '		<span><i class="fa-regular fa-heart"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
+		}
+		// infoStr += '<span><i class="fa-regular fa-heart"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
 		infoStr += '<div class="img-info-detail">';
 		if(listMap.userImgList[index] != null) {
 			infoStr += '		<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.cmtList[index].usersVo.code + '">';
@@ -836,13 +851,95 @@
 		str += '	</div>';
 		str += '	<div class="meetingContent">';
 		str += '		<div class="meetingInfo left">';
-		str += '			<p class="info-border">' + listMap.logList[index].title + '</p>';
+		str += '			<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.logList[index].usersVo.code + '/' + listMap.logList[index].walkLogNo + '">'
+		str += '				<p class="info-border">' + listMap.logList[index].title + '</p>';
+		str += '			</a>';
 		str += '			<div class="img-info">';
 		str += '				<div class="img-info-detail">';
 		if(listMap.userImgList[index] != null) {
-			str += '		<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + listMap.userImgList[index].saveName + '">';
+			str += '			<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.logList[index].usersVo.code + '">'
+			str += '				<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + listMap.userImgList[index].saveName + '">';
+			str += '			</a>';
 		} else {
-			str += '		<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">';
+			str += '			<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.logList[index].usersVo.code + '">'
+			str += '				<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">';
+			str += '			</a>';
+		}
+		str += '					<div class="detail-text">';
+		str += '						<span>' + listMap.logList[index].usersVo.name + '</span>';
+		str += '						<span><i class="fa-solid fa-thumbs-up"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
+		str += '					</div>';
+		if(dogPath != "") {
+			str += '					<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/rdimg/dogProfile/' + dogPath + '"></div>';
+			if(listMap.dogCntList[index] > 1) {
+				str += '					<div class="imgCount">' + listMap.dogCntList[index] + '</div>';
+			}
+		} else {
+			str += '					<div class="dog-img leftImg"><img src="${pageContext.request.contextPath}/assets/images/dog_default_img.jpg"></div>';
+			if(listMap.dogCntList[index] > 1) {
+				str += '					<div class="imgCount">' + listMap.dogCntList[index] + '</div>';
+			}
+		}
+		str += '				</div>';
+		str += '			</div>';
+		str += '		</div>';
+		str += '		<div class="left walk-img">';
+		str += '			<div class="comment-img">';
+		if(path != "") {
+			str += '			<img src="${pageContext.request.contextPath }/rdimg/' + path + '">';
+			if(listMap.logImgList[index].type == "walkLogCon") {
+				if(listMap.logImgCntList[index] > 0) {
+					str += '			<div class="imgCount">' + listMap.logImgCntList[index] + '</div>';
+				}
+			}
+		} else {
+			str += '			<img src="${pageContext.request.contextPath}/assets/images/map1.jpg">';
+		}
+		str += '			</div>';
+		str += '		</div>';
+		str += '	</div>';
+		str += '</div>';
+		
+ 		if(dir == "up") {
+ 			$(".meetingList").prepend(str);
+		} else if(dir == "down") {
+			$(".meetingList").append(str);
+		} else {
+			console.log("잘못입력");
+		}
+	}
+	
+	// cmt meetingLog list
+	function meetingLogRender(listMap, index, dir) {
+		console.log("meetingLogRender()");
+		
+		// let path = (listMap.logImgList[index].saveName == "noImg") ? "" : listMap.logImgList[index].saveName;
+		let dogPath = (listMap.dogImgList[index].saveName == "noImg") ? "" : listMap.dogImgList[index].saveNam;
+				
+		let path = (listMap.logImgList[index].type == "walkLogCon") ? "conImg/" + listMap.logImgList[index][0].saveName
+				: (listMap.logImgList[index].type == "walkLogMap") ? "mapImg/" + listMap.logImgList[index][0].saveName
+				: "";
+
+ 		let str = '';
+ 		str += '<div class="meeting walkLog">';
+ 		str += '	<div class="meetingTitle walkTitle">';
+		str += '		<div class="left walk-title1">' + listMap.infoList[index][0] + '</div>';
+		str += '		<div class="left walk-title2">' + listMap.infoList[index][1] + '</div>';
+		str += '		<div class="right">' + listMap.logList[index].regDate + '</div>';
+		str += '	</div>';
+		str += '	<div class="meetingContent">';
+		str += '		<div class="meetingInfo left">';
+		str += '			<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.logList[index].usersVo.code + '/' + listMap.logList[index].walkLogNo + '">'
+		str += '				<p class="info-border">' + listMap.meetingList[index].name + '</p>';
+		str += '			</a>';
+		str += '			<div class="img-info">';
+		str += '				<div class="img-info-detail">';
+		if(listMap.userImgList[index] != null) {
+			str += '			<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.logList[index].usersVo.code + '">'
+			str += '				<img src="${pageContext.request.contextPath }/rdimg/userProfile/' + listMap.userImgList[index].saveName + '"></a>';
+		} else {
+			str += '			<a href="${pageContext.request.contextPath}/walkBlog/' + listMap.logList[index].usersVo.code + '">'
+			str += '				<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg"></a>';
 		}
 		str += '					<div class="detail-text">';
 		str += '						<span>' + listMap.logList[index].usersVo.name + '</span>';
@@ -977,16 +1074,18 @@
 		}
 	});
 	
+	/*
 	$(".trail-update").on("click", function() {
 		console.log("trail-update click");
 		
 		window.location.href = "${pageContext.request.contextPath}/walkTrail/modifyForm?trailNo=" + trailNo;
 	});
+	*/
 	
 	/* trail star */
-	let faStar = document.querySelector(".loginStar");
+	let loginStar = document.querySelector(".loginStar");
 	$(".loginStar").on("click", function() {
-		console.log("fa-star click");
+		console.log("loginStar click");
 		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/walkTrail/trailStarUpdate",
@@ -997,11 +1096,96 @@
 			success : function(starChk) {
 				console.log("starChk ", starChk);
 				if(starChk != 0) {
-					faStar.classList.remove("fa-regular");
-					faStar.classList.add("fa-solid");
+					loginStar.classList.remove("fa-regular");
+					loginStar.classList.add("fa-solid");
 				} else if(starChk == 0) {
-					faStar.classList.remove("fa-solid");
-					faStar.classList.add("fa-regular");
+					loginStar.classList.remove("fa-solid");
+					loginStar.classList.add("fa-regular");
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	});
+	
+	/* cmt star */ 
+	let cmtStar = document.querySelector(".cmtStar");
+	$(".cmt-list").on("click", ".cmtStar", function() {
+		console.log("cmtStar click");
+		
+		let $this = $(this);
+		let cmtNo = $this.data("cmtstarno");
+		
+		let thisParent = $this.parent();
+		let childSpan = thisParent.children(".childSpan");
+		
+		console.log("childSpan ", childSpan.text());
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/cmtStarUpdate",
+			type : "get",
+			data : {"trailCmtNo" : cmtNo,
+					"trailNo" : trailNo},
+					
+			dataType : "json",
+			success : function(cnts) {
+				let starChk = cnts[0];
+				let cmtCnt = cnts[1];
+				
+				if(starChk != 0) {
+					$this.removeClass("fa-regular");
+					$this.addClass("fa-solid");
+					
+					childSpan.text(cmtCnt);
+					
+				} else if(starChk == 0) {
+					$this.removeClass("fa-solid");
+					$this.addClass("fa-regular");
+					
+					childSpan.text(cmtCnt);
+				}
+			},
+			error : function(XHR, status, error) {
+				console.error(status + " : " + error);
+			}
+		});
+	});
+	
+	let detailModalInfo = document.querySelector(".detail-modal-info");
+	$(".detail-modal-info").on("click", ".cmtStar", function() {
+		console.log("cmtStar click");
+		
+		let $this = $(this);
+		let cmtNo = $this.data("cmtstarno");
+		
+		let thisParent = $this.parent();
+		let childSpan = thisParent.children(".childSpan");
+		
+		console.log("childSpan ", childSpan.text());
+		
+		$.ajax({
+			url : "${pageContext.request.contextPath}/walkTrail/cmtStarUpdate",
+			type : "get",
+			data : {"trailCmtNo" : cmtNo,
+					"trailNo" : trailNo},
+					
+			dataType : "json",
+			success : function(cnts) {
+				let starChk = cnts[0];
+				let cmtCnt = cnts[1];
+				
+				if(starChk != 0) {
+					$this.removeClass("fa-regular");
+					$this.addClass("fa-solid");
+					
+					childSpan.text(cmtCnt);
+					
+				} else if(starChk == 0) {
+					$this.removeClass("fa-solid");
+					$this.addClass("fa-regular");
+					
+					childSpan.text(cmtCnt);
 				}
 			},
 			error : function(XHR, status, error) {

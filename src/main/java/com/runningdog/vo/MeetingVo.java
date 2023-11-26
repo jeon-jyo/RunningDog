@@ -7,37 +7,32 @@ public class MeetingVo {
 	private String name;
 	private String description;
 	private String meetingDate;
-	private int maxPersonnel;
-	private char openStatus;
+	private int maxMember;
+	private int currentMember;
 	private char small;
 	private char medium;
 	private char large;
 	private char status;
-	private double lng;
-	private double lat;
-	private ClubVo clubVo;
 	private UsersVo usersVo;
 	private TrailVo trailVo;
+	
 	public MeetingVo() {}
-	public MeetingVo(int meetingNo, String name, String description, String meetingDate, int maxPersonnel,
-			char openStatus, char small, char medium, char large, char status, double lng, double lat, ClubVo clubVo,
-			UsersVo usersVo, TrailVo trailVo) {
+	public MeetingVo(int meetingNo, String name, String description, String meetingDate, int maxMember,
+			int currentMember, char small, char medium, char large, char status, UsersVo usersVo, TrailVo trailVo) {
 		this.meetingNo = meetingNo;
 		this.name = name;
 		this.description = description;
 		this.meetingDate = meetingDate;
-		this.maxPersonnel = maxPersonnel;
-		this.openStatus = openStatus;
+		this.maxMember = maxMember;
+		this.currentMember = currentMember;
 		this.small = small;
 		this.medium = medium;
 		this.large = large;
 		this.status = status;
-		this.lng = lng;
-		this.lat = lat;
-		this.clubVo = clubVo;
 		this.usersVo = usersVo;
 		this.trailVo = trailVo;
 	}
+	
 	public int getMeetingNo() {
 		return meetingNo;
 	}
@@ -62,17 +57,17 @@ public class MeetingVo {
 	public void setMeetingDate(String meetingDate) {
 		this.meetingDate = meetingDate;
 	}
-	public int getMaxPersonnel() {
-		return maxPersonnel;
+	public int getMaxMember() {
+		return maxMember;
 	}
-	public void setMaxPersonnel(int maxPersonnel) {
-		this.maxPersonnel = maxPersonnel;
+	public void setMaxMember(int maxMember) {
+		this.maxMember = maxMember;
 	}
-	public char getOpenStatus() {
-		return openStatus;
+	public int getCurrentMember() {
+		return currentMember;
 	}
-	public void setOpenStatus(char openStatus) {
-		this.openStatus = openStatus;
+	public void setCurrentMember(int currentMember) {
+		this.currentMember = currentMember;
 	}
 	public char getSmall() {
 		return small;
@@ -98,24 +93,6 @@ public class MeetingVo {
 	public void setStatus(char status) {
 		this.status = status;
 	}
-	public double getLng() {
-		return lng;
-	}
-	public void setLng(double lng) {
-		this.lng = lng;
-	}
-	public double getLat() {
-		return lat;
-	}
-	public void setLat(double lat) {
-		this.lat = lat;
-	}
-	public ClubVo getClubVo() {
-		return clubVo;
-	}
-	public void setClubVo(ClubVo clubVo) {
-		this.clubVo = clubVo;
-	}
 	public UsersVo getUsersVo() {
 		return usersVo;
 	}
@@ -128,14 +105,12 @@ public class MeetingVo {
 	public void setTrailVo(TrailVo trailVo) {
 		this.trailVo = trailVo;
 	}
+	
 	@Override
 	public String toString() {
-		return "meetingVo [meetingNo=" + meetingNo + ", name=" + name + ", description=" + description
-				+ ", meetingDate=" + meetingDate + ", maxPersonnel=" + maxPersonnel + ", openStatus=" + openStatus
-				+ ", small=" + small + ", medium=" + medium + ", large=" + large + ", status=" + status + ", lng=" + lng
-				+ ", lat=" + lat + ", clubVo=" + clubVo + "]";
+		return "MeetingVo [meetingNo=" + meetingNo + ", name=" + name + ", description=" + description
+				+ ", meetingDate=" + meetingDate + ", maxMember=" + maxMember + ", currentMember=" + currentMember
+				+ ", small=" + small + ", medium=" + medium + ", large=" + large + ", status=" + status + ", usersVo="
+				+ usersVo + ", trailVo=" + trailVo + "]";
 	}
-	
-	
-	
 }

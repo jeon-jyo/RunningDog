@@ -21,7 +21,7 @@
 				<div class="addInfo">예상 소요시간 : <strong id="trail-eta"></strong></div>
 				<div class="addInfo">거리 : <strong id="trail-distance"></strong></div>
 				<div class="addInfo" id="trail-address"></div>
-				<i class="fa-solid fa-location-dot selected-maker"></i>
+				<i class="fa-solid fa-location-pin-lock"></i>
 			</div>
 
 			<div class="main-content">
@@ -76,8 +76,8 @@
 				</div>
 				<div class="infoBox">
 					<i class="fa-solid fa-circle-info"></i>
-					<span>산책일지의 반경 범위 내에서 기존 거리보다 짧게만 가능하며, 여러 정보들로 꾸밀 수 있습니다.</span>
-					<button type="button" class="btn badge btn-secondary drawBtn" id="btn">그리기 완료</button>
+					<span>산책로의 이름과 태그, 마커, 설명을 수정할 수 있습니다.</span>
+					<!-- <button type="button" class="btn badge btn-secondary drawBtn" id="btn">그리기 불가</button> -->
 				</div>
 				<div class="main-map" id="map"></div>
 			</div>
@@ -87,18 +87,18 @@
 <script type="text/javascript">
 
 	/* map */
-	let coords = ${coordsJson };
+	// let detailMap = ${detailMap };
+	let trailVo = ${detailMap.trailVoJson };
+	let info = ${detailMap.infoJson };
+	let tagList = ${detailMap.tagListJson };
+	let coords = ${detailMap.coordsJson };
+	let markers = ${detailMap.markersJson };
 	
    	var map = new naver.maps.Map('map', {
 		zoom: 19,
 		center: new naver.maps.Point(coords[0].lng, coords[0].lat),
 	});
-   	var chk = true;
-	var btn = document.querySelector("#btn");
-	
-	var errorRange = 25;	// 오차 범위 (미터단위)
-	var matchRate = 50;		// 몇퍼센트 이상 일치해야 하는지 (일치율)
-	
+
 	let overlayMarker = [];
 	let overlayInfoMarker = [];
 	
@@ -127,152 +127,6 @@
        }
     });
 	
-	var polyline2 = new naver.maps.Polyline({
-        path: [],
-        strokeColor: '#fc5200',
-        strokeOpacity: 0.8,
-        strokeWeight: 5,
-        zIndex: 2,
-        clickable: true,
-        map: map
-    });
-	
-	naver.maps.Event.addListener(map, 'click', function(e) {
-		if (chk) {
-			// console.log("chk");
-			drawLine(e.coord, polyline2);
-		}
-	});
-	
-	// 두 점 사이에 비교군인 점을 추가로 찍어주는 함수
-	function drawLine(point, line) {
-		// console.log("drawLine");
-		
-		let path = line.getPath();
-		// 최초로 찍은 점이 아닐때만 
-		if(path.length != 0) {
-			var projection = map.getProjection();
-			var prevCoord = path._array[path.length-1];		// 방금 찍은 점의 전 포인트
-			var degree = getAngle(prevCoord, point);		// 두 점의 각도를 계산
-		    var distance = projection.getDistance(prevCoord, point);	// 두 점 사이의 거리 반환
-			var spotCount = distance / (errorRange * 2);
-			for(var i = 0; i <= spotCount; i++) {
-				var newPoint = projection.getDestinationCoord(prevCoord, degree, errorRange * 2 * i);
-				path.push(newPoint);
-			}
-		} else {
-			var marker = new naver.maps.Marker({
-				map : map,
-				position : point,
-				icon: {
-					url: '${pageContext.request.contextPath}/assets/images/walkTrail/marker.png',
-				    size: new naver.maps.Size(30, 30),
-				    scaledSize: new naver.maps.Size(30, 30),
-		       }
-			});
-			overlayMarker.push(marker);
-		}
-		path.push(point);
-	}
-	
-	// 두 점의 각도를 반환하는 함수
-	function getAngle(prevCoord, coord) {
-		var lat1 = prevCoord.y * Math.PI / 180;
-		var lat2 = coord.y * Math.PI / 180;
-		var lng1 = prevCoord.x * Math.PI / 180;
-		var lng2 = coord.x * Math.PI / 180;
-		var y = Math.sin(lng2 - lng1) * Math.cos(lat2);
-		var x = Math.cos(lat1) * Math.sin(lat2) -
-				Math.sin(lat1) * Math.cos(lat2) * Math.cos(lng2 - lng1);
-		var radian = Math.atan2(y,x);
-		var degree = (radian * 180 / Math.PI + 360) % 360;
-		return degree;
-	}
-	
-	/*
-		두 선을 비교해 일치하면 true 아니면 false 반환하는 함수
-		line = 방금 그린 선
-		compareLine = 비교할 선
-	*/
-	function getMatchLine(line, compareLine) {
-		var paths = line.getPath()._array;
-		var comparePaths = compareLine.getPath()._array;
-		var projection = map.getProjection();
-		var cnt = 0;
-		for (var i = 0; i < comparePaths.length; i++) {
-			for (var j = 0; j < paths.length; j++) {
-				var distance = projection.getDistance(paths[j], comparePaths[i]) // 두 좌표 사이의 거리를 반환하는 함수
-				// 해당 거리가 오차범위보다 낮다면
-				if (distance <= errorRange) {
-					// cnt를 1씩 늘려준다
-					cnt++;
-					// 한 비교군에서 여러번 cnt가 늘어나면 안되기에 break
-					break;
-				}
-			}
-		}
-		var percent = (cnt / comparePaths.length) * 100;
-		if (percent >= matchRate && cnt != 0) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	/* draw start end btn */
-	btn.addEventListener("click", function() {
-		if(chk) {
-			chk = false;
-			let check = getMatchLine(polyline2, polyline);
-			if(check) {
-				let checkInfo = setNewTrailInfo();
-				if(checkInfo) {
-					btn.innerText = "다시 그리기";
-					btn.classList.add('new-draw');
-					
-					getAddress();
-				} else {
-					alert("산책로를 다시 그려주세요.");
-					
-					btn.innerText = "그리기 완료";
-					btn.classList.remove('new-draw');
-					
-					polyline2.getPath().clear();
-					overlayMarker[0].setMap(null);
-					overlayMarker.length = 0;
-					chk = true;
-					addressInfo.innerText = "";
-					distanceInfo.innerText = "";
-					etaInfo.innerText = "";
-				}
-			} else {
-				alert("산책로를 다시 그려주세요.");
-				
-				btn.innerText = "그리기 완료";
-				btn.classList.remove('new-draw');
-				
-				polyline2.getPath().clear();
-				overlayMarker[0].setMap(null);
-				overlayMarker.length = 0;
-				chk = true;
-				addressInfo.innerText = "";
-				distanceInfo.innerText = "";
-				etaInfo.innerText = "";
-			}
-		} else {
-			btn.innerText = "그리기 완료";
-			btn.classList.remove('new-draw');
-			
-			polyline2.getPath().clear();
-			overlayMarker[0].setMap(null);
-			overlayMarker.length = 0;
-			chk = true;
-			addressInfo.innerText = "";
-			distanceInfo.innerText = "";
-			etaInfo.innerText = "";
-		}
-	})
-	
 	/* coords to address */
 	let addressInfo = document.querySelector("#trail-address");
 	let distanceInfo = document.querySelector("#trail-distance");
@@ -280,64 +134,12 @@
 	let locationInfo;
 	let infoNum;
 	
-	function getAddress() {
-		// console.log("getAddress()");
-		
-		let path = polyline2.getPath()._array;
-		
- 		naver.maps.Service.reverseGeocode({
-	        coords: new naver.maps.Point(path[0].x, path[0].y),
-	        orders: [
-	            naver.maps.Service.OrderType.ADDR,
-	            naver.maps.Service.OrderType.ROAD_ADDR
-	        ].join(',')
-	    }, function(status, response) {
-	        if (status === naver.maps.Service.Status.ERROR) {
-	            return alert('Something Wrong!');
-	        }
-	        // console.log("response ", response);
-	        
-	        var results = response.v2.results,
-            address = response.v2.address.jibunAddress,
-            location = response.v2.results[0].code.id;
-
-	        // console.log("address ", address);
-	        // console.log("location ", location);
-
-	        addressInfo.innerText = address;
-	        locationInfo = location;
-	    });
-	}
+	getTrailInfo();
 	
-	function setNewTrailInfo() {
-		console.log("setNewTrailInfo()");
-		
-		let logDistance = Math.floor(polyline.getDistance());
-		let distance = Math.floor(polyline2.getDistance());
-		console.log("logDistance ", logDistance);
-		console.log("distance ", distance);
-		
-		if(logDistance < distance) {
-			return false;
-		} else {
-			infoNum = distance;
-
-	        if(distance >= 1000) {
-	        	distanceInfo.innerText = Math.floor(distance / 1000) + "." + Math.floor((distance % 1000) / 10) + "km";
-	        } else {
-	        	distanceInfo.innerText = distance + "m";
-	        }
-	        
-	        let minute = Math.floor(distance / 60);
-	        if(60 <= minute) {
-	        	let hour = Math.floor(minute / 60);
-	        	minute -= hour * 60;
-	        	etaInfo.innerHTML +=  hour +  "시간&nbsp;";
-	        }
-	        etaInfo.innerHTML +=  minute + "분";
-			
-			return true;
-		}
+	function getTrailInfo() {
+		addressInfo.innerText = trailVo.spot;
+        distanceInfo.innerText = info[0];
+        etaInfo.innerHTML = info[1];
 	}
 	
 	/* trail Add */
@@ -577,6 +379,7 @@
  	const tagGroup = document.querySelectorAll(".tag-btn button");
  	let tagActive = false;
  	let tagArr = [];
+ 	tagArr = tagList;
  	
  	tagGroup.forEach(function (item, index) {
         item.addEventListener("click", function () {

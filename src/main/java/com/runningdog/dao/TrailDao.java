@@ -11,6 +11,7 @@ import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.DogVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
+import com.runningdog.vo.MeetingVo;
 import com.runningdog.vo.TrailCmtVo;
 import com.runningdog.vo.TrailStarVo;
 import com.runningdog.vo.TrailTagVo;
@@ -233,7 +234,7 @@ public class TrailDao {
 		System.out.println("TrailDao.userwalkLogList()");
 		
 		List<WalkLogVo> walkLogList =  sqlSession.selectList("walkTrail.userwalkLogList", trailVo);
-		
+		System.out.println("walkLogList " + walkLogList);
 		return walkLogList;
 	}
 
@@ -372,6 +373,24 @@ public class TrailDao {
 		return imagesVo;
 	}
 	
+	// 산책로 모임일지
+	public List<WalkLogVo> meetingLogList(Map<String, Object> fetchSet) {
+		System.out.println("TrailDao.meetingLogList()");
+		
+		List<WalkLogVo> logList = sqlSession.selectList("walkTrail.meetingLogList", fetchSet);
+		
+		return logList;
+	}
+	
+	// 모임일지 전체 수
+	public int meetingLogCnt(Map<String, Object> fetchSet) {
+		System.out.println("TrailDao.meetingLogCnt()");
+		
+		int logCnt = sqlSession.selectOne("walkTrail.meetingLogCnt", fetchSet);
+		
+		return logCnt;
+	}
+	
 	// 후기 삭제
 	public int trailCmtDelete(int trailCmtNo) {
 		System.out.println("TrailDao.trailCmtDelete()");
@@ -406,6 +425,51 @@ public class TrailDao {
 		int deleteCnt = sqlSession.delete("walkTrail.trailStarDelete", trailVo);
 		
 		return deleteCnt;
+	}
+
+	// 후기 좋아요 확인
+	public int userCmtStar(TrailCmtVo userCmtStarVo) {
+		System.out.println("TrailDao.userCmtStar()");
+		
+		int selectCnt = sqlSession.selectOne("walkTrail.userCmtStar", userCmtStarVo);
+		
+		return selectCnt;
+	}
+
+	// 후기 좋아요 추가
+	public int cmtStarAdd(TrailCmtVo trailCmtVo) {
+		System.out.println("TrailDao.cmtStarAdd()");
+		
+		int insertCnt = sqlSession.insert("walkTrail.cmtStarAdd", trailCmtVo);
+		
+		return insertCnt;
+	}
+
+	// 후기 좋아요 삭제
+	public int cmtStarDelete(TrailCmtVo trailCmtVo) {
+		System.out.println("TrailDao.cmtStarDelete()");
+		
+		int deleteCnt = sqlSession.delete("walkTrail.cmtStarDelete", trailCmtVo);
+		
+		return deleteCnt;
+	}
+	
+	// 모임 정보
+	public MeetingVo meetingInfo(int meetingNo) {
+		System.out.println("TrailDao.meetingInfo()");
+		
+		MeetingVo meetingVo = sqlSession.selectOne("walkTrail.meetingInfo", meetingNo);
+
+		return meetingVo;
+	}
+
+	// 참석한 강아지 수
+	public int meetingDogCnt(int meetingNo) {
+		System.out.println("TrailDao.meetingDogCnt()");
+		
+		int selectCnt = sqlSession.selectOne("walkTrail.meetingDogCnt", meetingNo);
+		
+		return selectCnt;
 	}
 
 }

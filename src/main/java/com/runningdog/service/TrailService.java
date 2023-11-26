@@ -22,6 +22,7 @@ import com.runningdog.vo.CoordsVo;
 import com.runningdog.vo.DogVo;
 import com.runningdog.vo.ImagesVo;
 import com.runningdog.vo.LocationVo;
+import com.runningdog.vo.MeetingVo;
 import com.runningdog.vo.TrailCmtVo;
 import com.runningdog.vo.TrailTagVo;
 import com.runningdog.vo.TrailVo;
@@ -265,18 +266,7 @@ public class TrailService {
 		return deleteCnt;
 	}
 	
-	// 산책로 좌표 - 산책로 수정
-	public String trailCoordsList(TrailVo trailVo) throws JsonProcessingException {
-		System.out.println("TrailService.trailCoordsList()");
-		
-		// 산책로 좌표
-		List<CoordsVo> coords = trailDao.coordsList(trailVo.getTrailNo());
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String coordsJson = mapper.writeValueAsString(coords);
-		
-		return coordsJson;
-	}
+
 	
 	// trailDetail //////////////////////////////
 
@@ -382,6 +372,7 @@ public class TrailService {
 		int userUsedCnt = trailDao.userUsedCnt(trailVo);
 		// 최근 산책일지 목록
 		List<WalkLogVo> walkLogList = trailDao.userwalkLogList(trailVo);
+		System.out.println("walkLogList " + walkLogList);
 		
 		String[][] infoList = new String[walkLogList.size()][2];
 		for (int i = 0; i < walkLogList.size(); i++) {
@@ -424,6 +415,7 @@ public class TrailService {
 		userMap.put("userImg", userImg);
 		userMap.put("userUsedCnt", userUsedCnt);
 		userMap.put("walkLogMap", walkLogMap);
+		
 		
 		System.out.println("starChk : " + starChk);
 		
@@ -476,6 +468,13 @@ public class TrailService {
 	public Map<String, Object> cmtListMap(Map<String, Object> fetchSet) {
 		System.out.println("TrailService.cmtListMap()");
 		
+		int userNo = (int) fetchSet.get("userNo");
+		if(userNo == 0) {
+			userNo = 2;
+		}
+		UsersVo usersVo = new UsersVo();
+		usersVo.setUserNo(userNo);
+		
 		List<TrailCmtVo> cmtList = trailDao.cmtList(fetchSet);
 		// System.out.println("cmtList : " + cmtList);
 		
@@ -488,13 +487,22 @@ public class TrailService {
 		List<List<ImagesVo>> cmtImgList = new ArrayList<List<ImagesVo>>();
 		List<ImagesVo> userImgList = new ArrayList<ImagesVo>();
 		List<Integer> likeCntList = new ArrayList<Integer>();
+		List<Integer> userlikeList = new ArrayList<Integer>();
 		for (TrailCmtVo trailCmtVo : cmtList) {
+			
+			TrailCmtVo userCmtStarVo = new TrailCmtVo();
+			userCmtStarVo.setTrailCmtNo(trailCmtVo.getTrailCmtNo());
+			userCmtStarVo.setUsersVo(usersVo);
+			System.out.println("userCmtStarVo " + userCmtStarVo);
+			
 			// 후기 이미지 목록
 			List<ImagesVo> images = trailDao.cmtImages(trailCmtVo.getTrailCmtNo());
 			// 유저 프로필
 			ImagesVo userImg = trailDao.userImg(trailCmtVo.getUsersVo().getUserNo());
 			// 후기 좋아요수
 			int cmtLikeCnt = trailDao.cmtLikeCnt(trailCmtVo.getTrailCmtNo());
+			// 후기 좋아요 확인
+			int starChk = trailDao.userCmtStar(userCmtStarVo);
 			
 			if(CollectionUtils.isEmpty(images)) {
 				ImagesVo vo = new ImagesVo();
@@ -505,16 +513,20 @@ public class TrailService {
 			cmtImgList.add(images);
 			userImgList.add(userImg);
 			likeCntList.add(cmtLikeCnt);
+			userlikeList.add(starChk);
 			// System.out.println("cmtImgList : " + cmtImgList);
 			// System.out.println("userImgList : " + userImgList);
 			// System.out.println("likeCntList : " + likeCntList);
 		}
+		System.out.println("userlikeList : " + userlikeList);
+		
 		Map<String, Object> listMap = new HashMap<String, Object>();
 		listMap.put("cmtList", cmtList);
 		listMap.put("cmtCnt", cmtCnt);
 		listMap.put("cmtImgList", cmtImgList);
 		listMap.put("userImgList", userImgList);
 		listMap.put("likeCntList", likeCntList);
+		listMap.put("userlikeList", userlikeList);
 		
 		return listMap;
 	}
@@ -524,7 +536,7 @@ public class TrailService {
 		System.out.println("TrailService.logListMap()");
 		
 		List<WalkLogVo> logList = trailDao.logList(fetchSet);
-		// System.out.println("logList : " + logList);
+		System.out.println("logList : " + logList);
 		
 		// 산책일지 전체 수
 		int logCnt = trailDao.logCnt(fetchSet);
@@ -637,6 +649,133 @@ public class TrailService {
 		
 		return listMap;
 	}
+	
+	// 산책로 모임일지
+	public Map<String, Object> meetingListMap(Map<String, Object> fetchSet) {
+		System.out.println("TrailService.meetingListMap()");
+		
+		List<WalkLogVo> logList = trailDao.meetingLogList(fetchSet);
+		System.out.println("logList : " + logList.get(0).getMeetingVo());
+		
+		// 모임일지 전체 수
+		int logCnt = trailDao.meetingLogCnt(fetchSet);
+		
+		String[][] infoList = new String[logList.size()][2];
+		List<ImagesVo> logImgList = new ArrayList<ImagesVo>();
+		List<ImagesVo> userImgList = new ArrayList<ImagesVo>();
+		List<ImagesVo> dogImgList = new ArrayList<ImagesVo>();
+		List<Integer> logImgCntList = new ArrayList<Integer>();
+		List<Integer> dogCntList = new ArrayList<Integer>();
+		List<Integer> likeCntList = new ArrayList<Integer>();
+		List<MeetingVo> meetingList = new ArrayList<MeetingVo>();
+		for (int i = 0; i < logList.size(); i++) {
+			
+			String[] info = {"", ""};
+			if(logList.get(i).getDistance() >= 1000) {
+				info[0] = (int) Math.floor(logList.get(i).getDistance() / 1000) + "." +(int) Math.floor((logList.get(i).getDistance() % 1000) / 10) + "km";
+			} else {
+				info[0] = logList.get(i).getDistance() + "m";
+			}
+			
+			int minute = (int) Math.floor(logList.get(i).getLogTime() / 60);
+			if(60 <= minute) {
+				int hour = (int) Math.floor(minute / 60);
+	        	minute = minute - (hour * 60);
+
+	        	info[1] +=  hour +  "시간 ";
+	        }
+			info[1] += minute + "분";
+			
+			// 산책일지 이미지
+			ImagesVo logImg = trailDao.logImg(logList.get(i).getWalkLogNo());
+			// 유저 프로필
+			ImagesVo userImg = trailDao.userImg(logList.get(i).getUsersVo().getUserNo());
+			// 산책한 강아지
+			List<DogVo> dogList = trailDao.walkedDog(logList.get(i).getWalkLogNo());
+			
+			if(CollectionUtils.isEmpty(dogList)) {
+				DogVo dogVo = new DogVo();
+				dogVo.setDogNo(0);
+				dogList.add(dogVo);
+			}
+			
+			ImagesVo dogImg = null;
+			if(dogList.get(0).getDogNo() != 0) {
+				// 강아지 프로필
+				dogImg = trailDao.dogImg(dogList.get(0).getDogNo());
+			}
+			
+			System.out.println("logList.get(i).getMeetingVo().getMeetingNo() " + logList.get(i).getMeetingVo().getMeetingNo());
+			
+			// 모임 정보
+			MeetingVo meetingVo = trailDao.meetingInfo(logList.get(i).getMeetingVo().getMeetingNo());
+			
+			// 참석한 강아지 수
+			int dogCnt = trailDao.meetingDogCnt(logList.get(i).getMeetingVo().getMeetingNo());
+			// 산책일지 이미지 수
+			int logImgCnt = trailDao.logImgCnt(logList.get(i).getWalkLogNo());
+			// 산책일지 좋아요 수
+			int logLikeCnt = trailDao.logLikeCnt(logList.get(i).getWalkLogNo());
+			
+			if(logImg == null) {
+				// 산책일지 맵 이미지
+				ImagesVo vo = trailDao.logMapImg(logList.get(i).getWalkLogNo());
+				logImg = vo;
+			}
+			if(logImg == null) {
+				ImagesVo vo = new ImagesVo();
+				vo.setSaveName("noImg");
+				vo.setImageOrder(0);
+				logImg = vo;
+			}
+			if(dogImg == null) {
+				ImagesVo vo = new ImagesVo();
+				vo.setSaveName("noImg");
+				vo.setImageOrder(0);
+				dogImg = vo;
+			}
+			
+			infoList[i][0] = info[0];
+			infoList[i][1] = info[1];
+			
+			logImgList.add(logImg);
+			userImgList.add(userImg);
+			dogImgList.add(dogImg);
+			logImgCntList.add(logImgCnt);
+			dogCntList.add(dogCnt);
+			likeCntList.add(logLikeCnt);
+			meetingList.add(meetingVo);
+	    }
+		// System.out.println("logImgList : " + logImgList);
+		// System.out.println("userImgList : " + userImgList);
+		// System.out.println("dogImgList : " + dogImgList);
+		// System.out.println("logImgCntList : " + logImgCntList);
+		// System.out.println("dogCntList : " + dogCntList);
+		// System.out.println("likeCntList : " + likeCntList);
+		// System.out.println("meetingList : " + meetingList);
+		/*
+		for (int i = 0; i < infoList.length; i++) {
+		    for (int j = 0; j < infoList[i].length; j++) {
+		        System.out.print(infoList[i][j] + " ");
+		    }
+		    System.out.println();
+		}
+		*/
+		
+		Map<String, Object> listMap = new HashMap<String, Object>();
+		listMap.put("logList", logList);
+		listMap.put("logCnt", logCnt);
+		listMap.put("logImgList", logImgList);
+		listMap.put("userImgList", userImgList);
+		listMap.put("dogImgList", dogImgList);
+		listMap.put("logImgCntList", logImgCntList);
+		listMap.put("dogCntList", dogCntList);
+		listMap.put("likeCntList", likeCntList);
+		listMap.put("infoList", infoList);
+		listMap.put("meetingList", meetingList);
+		
+		return listMap;
+	}
 
 	// 산책로 후기 작성 ajax
 	public int trailCmtAdd(TrailCmtVo trailCmtVo) {
@@ -742,76 +881,30 @@ public class TrailService {
 		return starChk;
 	}
 
-	public Map<String, Object> trailModifyDetail(TrailVo vo) throws JsonProcessingException {
-		String[] info = {"", ""};
-		String[] markers = {"parking", "restroom", "trashCan"};
-		ObjectMapper mapper = new ObjectMapper();
+	// 후기 좋아요 수정 ajax
+	public List<Integer> cmtStarUpdate(TrailCmtVo trailCmtVo, TrailVo trailVo) {
+		System.out.println("TrailService.cmtStarUpdate()");
 		
-		// 산책로 정보
-		TrailVo trailVo = trailDao.trailDetail(vo.getTrailNo());
-		System.out.println("trailVo : " + trailVo);
-		
-		if(trailVo.getDistance() >= 1000) {
-			info[0] = (int) Math.floor(trailVo.getDistance() / 1000) + "." +(int) Math.floor((trailVo.getDistance() % 1000) / 10) + "km";
+		int starChk = trailDao.userCmtStar(trailCmtVo);
+		if(starChk != 0) {
+			// 후기 좋아요 삭제
+			trailDao.cmtStarDelete(trailCmtVo);
+			starChk = trailDao.userCmtStar(trailCmtVo);
 		} else {
-			info[0] = trailVo.getDistance() + "m";
+			// 후기 좋아요 추가
+			trailDao.cmtStarAdd(trailCmtVo);
+			starChk = trailDao.userCmtStar(trailCmtVo);
 		}
+		System.out.println("starChk : " + starChk);
 		
-		int minute = (int) Math.floor(trailVo.getEta() / 60);
-		if(60 <= minute) {
-			int hour = (int) Math.floor(minute / 60);
-        	minute = minute - (hour * 60);
-
-        	info[1] +=  hour +  "시간 ";
-        }
-		info[1] += minute + "분";
+		// 후기 좋아요수
+		int cmtLikeCnt = trailDao.cmtLikeCnt(trailCmtVo.getTrailCmtNo());
 		
-		// 산책로 태그
-		List<TrailTagVo> tagList = trailDao.tagList(vo.getTrailNo());
-		// System.out.println("tagList : " + tagList);
-		// 산책로 좌표
-		List<CoordsVo> coords = trailDao.coordsList(vo.getTrailNo());
-		String coordsJson = mapper.writeValueAsString(coords);
+		List<Integer> cnts = new ArrayList<Integer>();
+		cnts.add(starChk);
+		cnts.add(cmtLikeCnt);
 		
-		List<CoordsVo> markerCoords = new ArrayList<CoordsVo>();
-		if(trailVo.getParking() == 'T') {
-			CoordsVo markerVo = new CoordsVo();
-			markerVo.setType(markers[0]);
-			markerVo.setUseNo(vo.getTrailNo());
-			
-			// 산책로 정보 좌표
-			CoordsVo resultVo = trailDao.markerCoords(markerVo);
-			markerCoords.add(resultVo);
-		}
-		if(trailVo.getRestroom() == 'T') {
-			CoordsVo markerVo = new CoordsVo();
-			markerVo.setType(markers[1]);
-			markerVo.setUseNo(vo.getTrailNo());
-			
-			// 산책로 정보 좌표
-			CoordsVo resultVo = trailDao.markerCoords(markerVo);
-			markerCoords.add(resultVo);
-		}
-		if(trailVo.getTrashCan() == 'T') {
-			CoordsVo markerVo = new CoordsVo();
-			markerVo.setType(markers[2]);
-			markerVo.setUseNo(vo.getTrailNo());
-			
-			// 산책로 정보 좌표
-			CoordsVo resultVo = trailDao.markerCoords(markerVo);
-			markerCoords.add(resultVo);
-		}
-		// System.out.println("markerCoords : " + markerCoords);
-		String markersJson = mapper.writeValueAsString(markerCoords);
-		
-		Map<String, Object> detailMap = new HashMap<String, Object>();
-		detailMap.put("trailVo", trailVo);
-		detailMap.put("info", info);
-		detailMap.put("tagList", tagList);
-		detailMap.put("coordsJson", coordsJson);
-		detailMap.put("markersJson", markersJson);
-		
-		return detailMap;
+		return cnts;
 	}
 
 }

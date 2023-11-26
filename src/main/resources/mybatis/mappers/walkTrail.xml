@@ -48,6 +48,16 @@
 		<collection property="usersVo" resultMap="UsersMap"></collection>
 	</resultMap>
 	
+	<resultMap id="MeetingMap" type="com.runningdog.vo.MeetingVo">
+		<result column="meetingNo" property="meetingNo"></result>
+		<result column="name" property="name"></result>
+		<result column="description" property="description"></result>
+		<result column="meetingDate" property="meetingDate"></result>
+		<result column="status" property="status"></result>
+		<collection property="trailVo" resultMap="TrailMap"></collection>
+		<collection property="usersVo" resultMap="UsersMap"></collection>
+	</resultMap>
+	
 	<resultMap id="WalkLogMap" type="com.runningdog.vo.WalkLogVo">
 		<result column="walkLogNo" property="walkLogNo"></result>
 		<result column="title" property="title"></result>
@@ -61,8 +71,9 @@
 		<result column="status" property="status"></result>
 		<collection property="usersVo" resultMap="UsersMap"></collection>
 		<collection property="locationVo" resultMap="LocationMap"></collection>
+		<collection property="meetingVo" resultMap="MeetingMap"></collection>
 	</resultMap>
-
+	
 	<!-- trailMain -->
 	
 	<!-- 유저 설정 위치 -->
@@ -476,7 +487,7 @@
 	</select>
 	
 	<!-- 산책로 찜 확인 -->
-	<select id="userTrailStar" parameterType="int" resultType="int">
+	<select id="userTrailStar" parameterType="com.runningdog.vo.TrailVo" resultType="int">
 		 <![CDATA[
 			SELECT COUNT(*)
 			  FROM trailStar ts, trail t, users u
@@ -499,26 +510,30 @@
 	</select>
 	
 	<!-- 최근 산책일지 목록 -->
-	<select id="userwalkLogList" parameterType="com.runningdog.vo.TrailVo" resultType="com.runningdog.vo.WalkLogVo">
+	<select id="userwalkLogList" parameterType="com.runningdog.vo.TrailVo" resultMap="WalkLogMap">
 		<![CDATA[
 			SELECT ort.walkLogNo
 			       ,ort.userNo
+			       ,ort.code
 			       ,ort.distance
 			       ,ort.logTime
 			       ,ort.regDate
 			  FROM (SELECT ROWNUM rn
 			               ,ot.walkLogNo
 			               ,ot.userNo
+			               ,ot.code
 			               ,ot.distance
 			               ,ot.logTime
 			               ,ot.regDate
 			          FROM (SELECT w.walklogNo
-			                       ,w.userNo
+			                       ,u.userNo
+			                       ,u.code
 			                       ,w.distance
 			                       ,w.logTime
-			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI') regDate
-			                  FROM trailUsed tu, walkLog w
+			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI:SS') regDate
+			                  FROM trailUsed tu, walkLog w, users u
 			                 WHERE tu.walklogno = w.walkLogNo
+			                   AND w.userNo = u.userNo
 			                   AND w.status = 'T'
 			                   AND w.userNo = #{usersVo.userNo}
 			                   AND tu.trailNo = #{trailNo}
@@ -812,6 +827,103 @@
 		 ]]>
 	</select>
 	
+	<!-- 산책로 모임일지 -->
+	<select id="meetingLogList" parameterType="java.util.Map" resultMap="WalkLogMap">
+		 <![CDATA[
+			SELECT ort.walkLogNo
+			       ,ort.meetingNo
+			       ,ort.userNo
+			       ,ort.name userName
+			       ,ort.code
+			       ,ort.distance
+			       ,ort.logTime
+			       ,ort.content
+			       ,ort.title
+			       ,ort.regDate
+			  FROM (SELECT ROWNUM rn
+			               ,ot.walkLogNo
+			               ,ot.meetingNo
+			               ,ot.userNo
+			               ,ot.name
+			               ,ot.code
+			               ,ot.distance
+			               ,ot.logTime
+			               ,ot.content
+			               ,ot.title
+			               ,ot.regDate
+			          FROM (SELECT w.walklogNo
+			                       ,m.meetingNo
+			                       ,u.userNo
+						           ,u.name
+						           ,u.code
+			                       ,w.distance
+			                       ,w.logTime
+			                       ,w.content
+			                       ,w.title
+			                       ,TO_CHAR(w.regdate, 'YY-MM-DD HH24:MI') regDate
+			                  FROM users u, meeting m, walkLog w
+			                  LEFT OUTER JOIN ( SELECT COUNT(likeNo) cnt
+			                                                 ,useNo
+			                                            FROM userLike
+			                                           WHERE type = 'walkLog'
+			                                           GROUP BY useNo ) gt
+			                    ON w.walkLogNo = gt.useNo
+			                 WHERE m.meetingNo = w.meetingNo
+			                   AND m.userNo = w.userNo
+			                   AND w.userNo = u.userNo
+			                   AND w.status = 'T'
+			                   AND w.security = '공개'
+			                   AND m.trailNo = 1
+		]]>
+		<if test='cmtOrderNav == 0'>
+			<![CDATA[
+							 ORDER BY regDate DESC, w.walklogNo DESC
+			]]>
+		</if>
+		<if test='cmtOrderNav == 1'>
+			<![CDATA[
+							 ORDER BY gt.cnt DESC NULLS LAST, regDate DESC, w.walklogNo DESC
+			]]>
+		</if>
+		<![CDATA[
+			               ) ot
+			       ) ort
+			 WHERE ort.rn >= 1
+			   AND ort.rn <= 10
+		]]>
+	</select>
+	
+	<!-- 모임일지 전체 수 -->
+	<select id="meetingLogCnt" parameterType="int" resultType="int">
+		 <![CDATA[
+		 	SELECT COUNT(*)
+			  FROM meeting m, trail t, walkLog w
+			 WHERE m.trailNo = t.trailNo
+			   AND m.meetingNo = w.meetingNo
+			   AND t.trailNo = #{trailNo}
+		 ]]>
+	</select>
+	
+	<!-- 모임 정보 -->
+	<select id="meetingInfo" parameterType="int" resultType="com.runningdog.vo.MeetingVo">
+		 <![CDATA[
+		 	SELECT meetingNo
+			       ,name
+			       ,description
+			  FROM meeting
+			 WHERE meetingNo = #{meetingNo}
+		 ]]>
+	</select>
+	
+	<!-- 참석한 강아지 수 -->
+	<select id="meetingDogCnt" parameterType="int" resultType="int">
+		 <![CDATA[
+		 	SELECT COUNT(*)
+			  FROM meetingInfo
+			 WHERE meetingNo = #{meetingNo}
+		 ]]>
+	</select>
+	
 	<!-- 후기 삭제 -->
 	<update id="trailCmtDelete" parameterType="int">
 		<![CDATA[
@@ -844,6 +956,35 @@
 			DELETE FROM trailStar
 			 WHERE userNo = #{usersVo.userNo}
 			   AND trailNo = #{trailNo}
+		]]>
+	</delete>
+	
+	<!-- 후기 좋아요 확인 -->
+	<select id="userCmtStar" parameterType="com.runningdog.vo.TrailCmtVo" resultType="int">
+		 <![CDATA[
+			SELECT COUNT(*)
+			  FROM userLike l, users u
+			 WHERE l.userNo = u.userNo
+			   AND l.userNo = #{usersVo.userNo}
+			   AND l.useNo = #{trailCmtNo}
+		 ]]>
+	</select>
+	
+	<!-- 후기 좋아요 추가 -->
+	<insert id="cmtStarAdd" parameterType="com.runningdog.vo.TrailCmtVo">
+		<![CDATA[
+			INSERT INTO userLike
+			VALUES (seq_userlike_no.NEXTVAL, #{usersVo.userNo}, 'trailCmt', #{trailCmtNo})
+		]]>
+	</insert>
+	
+	<!-- 후기 좋아요 삭제 -->
+	<delete id="cmtStarDelete" parameterType="com.runningdog.vo.TrailCmtVo">
+		<![CDATA[
+			DELETE userLike
+			 WHERE type= 'trailCmt'
+			   AND userNo = #{usersVo.userNo}
+			   AND useNo = #{trailCmtNo}
 		]]>
 	</delete>
 	
