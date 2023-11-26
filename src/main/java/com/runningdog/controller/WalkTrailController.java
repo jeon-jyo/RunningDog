@@ -117,8 +117,8 @@ public class WalkTrailController {
 		if(authUser != null) {
 			fetchSet.put("userNo", authUser.getUserNo());
 		} else {
-			fetchSet.put("userNo", 0);
-			// fetchSet.put("userNo", 2);
+			// fetchSet.put("userNo", 0);
+			fetchSet.put("userNo", 2);
 		}
 		List<WalkLogVo> walkLogList = trailService.walkLogList(fetchSet);
 		
@@ -176,6 +176,19 @@ public class WalkTrailController {
 		int insertCnt = trailService.trailAdd(fetchSet);
 		
 		return insertCnt;
+	}
+	
+	// 산책로 등록 - 맵 이미지
+	@RequestMapping(value = "/trailMap", method= { RequestMethod.GET, RequestMethod.POST})
+	public String trailMap(@RequestParam(name = "trailNo") int trailNo,
+			Model model) throws JsonProcessingException {
+		System.out.println("WalkTrailController.trailMap()");
+		
+		String coordsJson = trailService.trailMap(trailNo);
+		
+		model.addAttribute("coordsJson", coordsJson);
+		
+		return "walkTrail/trailMap";
 	}
 	
 	// 산책로 삭제 ajax

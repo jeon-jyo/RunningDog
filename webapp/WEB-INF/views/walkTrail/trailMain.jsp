@@ -73,16 +73,20 @@
 					<button type="button" class="btn btn-outline-dark">최신순</button>
 				</div>
 
+				<c:if test="${authUser != null }">
+					<i class="fa-solid fa-circle-plus"></i>
+				</c:if>
+				<!--
 				<c:if test="${listKey eq 'main' }">
-					<!-- <button type="button" class="btn btn-primary">MY</button> -->
+					<button type="button" class="btn btn-primary">MY</button>
 				</c:if>
 				<c:if test="${listKey eq 'my' }">
-					<i class="fa-solid fa-circle-plus"></i>
 					<button type="button" class="btn btn-primary">자세히 보기</button>
 				</c:if>
 				<c:if test="${listKey eq 'star' }">
 					<button type="button" class="btn btn-primary">자세히 보기</button>
 				</c:if>
+				-->
 			</div>
 
 			<div class="main-content">

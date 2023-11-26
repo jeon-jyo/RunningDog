@@ -292,11 +292,11 @@ public class TrailDao {
 		return insertCnt;
 	}
 
-	// 후기 이미지 업로드
-	public int cmtImgAdd(ImagesVo imagesVo) {
-		System.out.println("TrailDao.cmtImgAdd()");
+	// 이미지 업로드
+	public int imgUpload(ImagesVo imagesVo) {
+		System.out.println("TrailDao.imgUpload()");
 		
-		int insertCnt = sqlSession.insert("walkTrail.cmtImgAdd", imagesVo);
+		int insertCnt = sqlSession.insert("walkTrail.imgUpload", imagesVo);
 		
 		return insertCnt;
 	}

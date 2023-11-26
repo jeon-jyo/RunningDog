@@ -248,7 +248,7 @@ public class TrailService {
 			}
 			
 			// 맵 이미지 등록
-			// mapImgSave(trailVo.getTrailNo());
+			mapImgSave(trailVo.getTrailNo());
 			
 			insertCnt = 1;
 		} else {
@@ -268,44 +268,54 @@ public class TrailService {
 		return insertCnt;
 	}
 	
+	// 산책로 등록 - 맵 이미지
+	public String trailMap(int trailNo) throws JsonProcessingException {
+		System.out.println("TrailService.trailMap()");
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		// 산책로 좌표
+		List<CoordsVo> coords = trailDao.coordsList(trailNo);
+		String coordsJson = mapper.writeValueAsString(coords);
+		
+		return coordsJson;
+	}
+	
 	// 맵 이미지 등록 - 셀레리움으로 화면캡쳐
-	private String mapImgSave(int walkLogNo) {
+	private String mapImgSave(int trailNo) {
 		System.out.println("TrailService.mapImgSave()");
 		
 		String path = System.getProperty("user.dir");
         System.out.println("현재 작업 경로: " + path);
 		
-        System.setProperty("webdriver.chrome.driver", "C:\\javaStudy\\RunningDog\\webapp\\assets\\driver\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", "D:\\HiMedia\\workspace_web\\RunningDogJH\\webapp\\assets\\driver\\chromedriver.exe");
 
         // Create a new instance of the Chrome driver
         WebDriver driver = new ChromeDriver();
         
-        //driver.get("http://localhost:433/RunningDog/m/walkMap?walkLogNo="+walkLogNo); // 학원 경로
-        driver.get("http://localhost:8000/RunningDogJH/m/walkMap?walkLogNo="+walkLogNo); // 집 경로
+        driver.get("http://localhost:8000/RunningDogJH/walkTrail/trailMap?trailNo=" + trailNo);
         driver.manage().window().setSize(new Dimension(745+16, 380+138));
  
         String savePath = null;
         try {
-        	ImagesVo imagesVo = new ImagesVo();
-        	
         	String saveName = System.currentTimeMillis()+UUID.randomUUID().toString()+".jpg";
-        	
-            // 캡쳐 코드
-        	savePath = "C:\\javaStudy\\rdimg\\trail\\" + saveName; // 저장 경로변경
+        	savePath = "C:\\javaStudy\\rdimg\\trail\\" + saveName;	// 저장 경로변경
+            
+        	// 캡쳐 코드
             File srcFile = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(srcFile, new File(savePath));
             
-            // (6) Vo로 묶기
-    		imagesVo.setFilePath(savePath);
-    		imagesVo.setOrgName(saveName);
-    		imagesVo.setSaveName(saveName);
-    		imagesVo.setType("walkLogMap"); // 타입지정   // 산책로일때 'trailMap'
-    		imagesVo.setUseNo(walkLogNo); // 셀렉트키 넣기 
-    		//imagesVo.setFileSize(fileSize);	
-    		
-    		// (7) Dao 만들어서 저장하기
-    		System.out.println("맵이미지 db에 저장 " + imagesVo);
-    		// moWebDao.imgsSave(imagesVo);            
+            ImagesVo imagesVo = new ImagesVo();
+			imagesVo.setUseNo(trailNo);
+			imagesVo.setOrgName(saveName);
+			imagesVo.setSaveName(saveName);
+			imagesVo.setFilePath(savePath);
+			imagesVo.setFileSize(0);
+			imagesVo.setImageOrder(0);
+			imagesVo.setType("trailMap");
+            
+			// 이미지 업로드
+    		trailDao.imgUpload(imagesVo);
             
         } catch (Exception e) {
             e.printStackTrace();
@@ -873,10 +883,11 @@ public class TrailService {
 				imagesVo.setFilePath(filePath);
 				imagesVo.setFileSize(fileSize);
 				imagesVo.setImageOrder(index);
+				imagesVo.setType("trailCmt");
 				
 				// DB 연결
-				// 후기 이미지 업로드
-				int imgInsertCnt = trailDao.cmtImgAdd(imagesVo);
+				// 이미지 업로드
+				int imgInsertCnt = trailDao.imgUpload(imagesVo);
 				if(imgInsertCnt == 1) {
 					System.out.println("후기 이미지 업로드 성공");
 					
