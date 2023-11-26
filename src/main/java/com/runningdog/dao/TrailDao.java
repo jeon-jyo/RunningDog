@@ -234,7 +234,7 @@ public class TrailDao {
 		System.out.println("TrailDao.userwalkLogList()");
 		
 		List<WalkLogVo> walkLogList =  sqlSession.selectList("walkTrail.userwalkLogList", trailVo);
-		System.out.println("walkLogList " + walkLogList);
+
 		return walkLogList;
 	}
 
@@ -391,6 +391,24 @@ public class TrailDao {
 		return logCnt;
 	}
 	
+	// 모임 정보
+	public MeetingVo meetingInfo(int meetingNo) {
+		System.out.println("TrailDao.meetingInfo()");
+		
+		MeetingVo meetingVo = sqlSession.selectOne("walkTrail.meetingInfo", meetingNo);
+
+		return meetingVo;
+	}
+
+	// 참석한 강아지 수
+	public int meetingDogCnt(int meetingNo) {
+		System.out.println("TrailDao.meetingDogCnt()");
+		
+		int selectCnt = sqlSession.selectOne("walkTrail.meetingDogCnt", meetingNo);
+		
+		return selectCnt;
+	}
+	
 	// 후기 삭제
 	public int trailCmtDelete(int trailCmtNo) {
 		System.out.println("TrailDao.trailCmtDelete()");
@@ -452,24 +470,6 @@ public class TrailDao {
 		int deleteCnt = sqlSession.delete("walkTrail.cmtStarDelete", trailCmtVo);
 		
 		return deleteCnt;
-	}
-	
-	// 모임 정보
-	public MeetingVo meetingInfo(int meetingNo) {
-		System.out.println("TrailDao.meetingInfo()");
-		
-		MeetingVo meetingVo = sqlSession.selectOne("walkTrail.meetingInfo", meetingNo);
-
-		return meetingVo;
-	}
-
-	// 참석한 강아지 수
-	public int meetingDogCnt(int meetingNo) {
-		System.out.println("TrailDao.meetingDogCnt()");
-		
-		int selectCnt = sqlSession.selectOne("walkTrail.meetingDogCnt", meetingNo);
-		
-		return selectCnt;
 	}
 
 }
