@@ -8,6 +8,7 @@
 <title>trailMap</title>
 <script type="text/javascript" src="${pageContext.request.contextPath }/assets/js/jquery/jquery-1.12.4.js"></script>
 <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=ovgjjriioc&submodules=geocoder"></script>
+<link href="${pageContext.request.contextPath}/assets/css/global/reset.css" rel="stylesheet" type="text/css">
 <style>
 	#map {
 		width: 745px;
@@ -33,15 +34,22 @@
 		trailPath.push(new naver.maps.LatLng(coords[i].lat, coords[i].lng));
 	}
 	
-	var polyline = new naver.maps.Polyline({
-		path: trailPath,
-        strokeColor: '#fc5200',
-        strokeOpacity: 0.8,
-        strokeWeight: 5,
-        zIndex: 2,
-        clickable: true,
-        map: map
-    });
+	if (trailPath) {
+		// 맵을 Polyline에 맞게 조절
+		map.fitBounds(trailPath, {
+			padding : 20
+		});
+		
+		var polyline = new naver.maps.Polyline({
+			path : trailPath,
+			strokeColor : '#fc5200',
+			strokeOpacity : 0.8,
+			strokeWeight : 5,
+			zIndex : 2,
+			clickable : true,
+			map : map
+		});
+	}
 	
 </script>
 </html>
