@@ -680,14 +680,10 @@
 		str += '	</div>';
 		str += '	<div class="comment-content">';
 		str += '		<div>' + content + '</div>';
-		if(listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
-			if(listMap.userlikeList[index] == 0) {
-				str += '		<span><i class="fa-regular fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
-			} else {
-				str += '		<span><i class="fa-solid fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
-			}
+		if(listMap.userlikeList[index] == 0) {
+			str += '		<span><i class="fa-regular fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
 		} else {
-			str += '		<span><i class="fa-regular fa-heart"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
+			str += '		<span><i class="fa-solid fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
 		}
 		str += '	</div>';
 		str += '	<div class="comment-info">';
@@ -780,14 +776,10 @@
 		
 		$(".detail-modal-info").empty();
 		let infoStr = '';
-		if(listMap.cmtList[index].usersVo.userNo == listMap.authUserNo) {
-			if(listMap.userlikeList[index] == 0) {
-				infoStr += '		<span><i class="fa-regular fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
-			} else {
-				infoStr += '		<span><i class="fa-solid fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
-			}
+		if(listMap.userlikeList[index] == 0) {
+			infoStr += '		<span><i class="fa-regular fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
 		} else {
-			infoStr += '		<span><i class="fa-regular fa-heart"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
+			infoStr += '		<span><i class="fa-solid fa-heart cmtStar" data-cmtstarno="' + listMap.cmtList[index].trailCmtNo + '"></i>&nbsp;<span class="childSpan">' + listMap.likeCntList[index] + '</span></span>';
 		}
 		// infoStr += '<span><i class="fa-regular fa-heart"></i>&nbsp;' + listMap.likeCntList[index] + '</span>';
 		infoStr += '<div class="img-info-detail">';
