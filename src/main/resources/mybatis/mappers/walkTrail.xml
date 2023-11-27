@@ -430,6 +430,7 @@
 			UPDATE trail
 			   SET status = 'F'
 			       ,updateDate = sysdate
+			       ,name = '삭제된 산책로'
 			 WHERE trailNo = #{trailNo}
 		]]>
 	</update>
