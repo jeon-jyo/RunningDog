@@ -171,7 +171,16 @@ public class TrailDao {
 		int deleteCnt = sqlSession.delete("walkTrail.trailDelete", trailVo);
 		
 		return deleteCnt;
-	}	
+	}
+	
+	// 산책로 좌표 삭제
+	public int trailCoordsDelete(TrailVo trailVo) {
+		System.out.println("TrailDao.trailCoordsDelete()");
+		
+		int deleteCnt = sqlSession.delete("walkTrail.trailCoordsDelete", trailVo);
+		
+		return deleteCnt;
+	}
 	
 	// trailDetail //////////////////////////////
 	

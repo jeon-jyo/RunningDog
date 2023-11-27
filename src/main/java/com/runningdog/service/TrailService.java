@@ -334,6 +334,12 @@ public class TrailService {
 		System.out.println("TrailService.trailDelete()");
 		
 		int deleteCnt = trailDao.trailDelete(trailVo);
+		if(deleteCnt != 0) {
+			System.out.println("산책로 삭제 성공");
+			
+			// 산책로 좌표 삭제
+			trailDao.trailCoordsDelete(trailVo);
+		}
 		
 		return deleteCnt;
 	}

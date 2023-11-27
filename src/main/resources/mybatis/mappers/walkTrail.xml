@@ -434,6 +434,15 @@
 		]]>
 	</update>
 	
+	<!-- 산책로 좌표 삭제 -->
+	<delete id="trailCoordsDelete" parameterType="com.runningdog.vo.TrailVo">
+		<![CDATA[
+			DELETE coords
+			 WHERE type = 'trail'
+			   AND useNo = #{trailNo}
+		]]>
+	</delete>
+	
 	<!-- trailDetail -->
 	
 	<!-- 산책로 태그 -->
