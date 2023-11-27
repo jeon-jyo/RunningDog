@@ -288,11 +288,13 @@ public class TrailService {
 		String path = System.getProperty("user.dir");
         System.out.println("현재 작업 경로: " + path);
 		
+        // System.setProperty("webdriver.chrome.driver", "C:\\javaStudy\\RunningDog\\webapp\\assets\\driver\\chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", "D:\\HiMedia\\workspace_web\\RunningDogJH\\webapp\\assets\\driver\\chromedriver.exe");
 
         // Create a new instance of the Chrome driver
         WebDriver driver = new ChromeDriver();
         
+        // driver.get("http://localhost:433/RunningDog/walkTrail/trailMap?trailNo=" + trailNo);
         driver.get("http://localhost:8000/RunningDogJH/walkTrail/trailMap?trailNo=" + trailNo);
         driver.manage().window().setSize(new Dimension(745+16, 380+138));
  
@@ -312,7 +314,7 @@ public class TrailService {
 			imagesVo.setFilePath(savePath);
 			imagesVo.setFileSize(0);
 			imagesVo.setImageOrder(0);
-			imagesVo.setType("trailMap");
+			imagesVo.setType("trail");
             
 			// 이미지 업로드
     		trailDao.imgUpload(imagesVo);

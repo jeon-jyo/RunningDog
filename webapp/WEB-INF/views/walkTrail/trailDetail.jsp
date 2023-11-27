@@ -836,10 +836,10 @@
 		console.log("walkLogRender()");
 		
 		// let path = (listMap.logImgList[index].saveName == "noImg") ? "" : listMap.logImgList[index].saveName;
-		let dogPath = (listMap.dogImgList[index].saveName == "noImg") ? "" : listMap.dogImgList[index].saveNam;
+		let dogPath = (listMap.dogImgList[index].saveName == "noImg") ? "" : listMap.dogImgList[index].saveName;
 				
-		let path = (listMap.logImgList[index].type == "walkLogCon") ? "conImg/" + listMap.logImgList[index][0].saveName
-				: (listMap.logImgList[index].type == "walkLogMap") ? "mapImg/" + listMap.logImgList[index][0].saveName
+		let path = (listMap.logImgList[index].type == "walkLogCon") ? "conImg/" + listMap.logImgList[index].saveName
+				: (listMap.logImgList[index].type == "walkLogMap") ? "mapImg/" + listMap.logImgList[index].saveName
 				: "";
 
  		let str = '';
@@ -914,10 +914,10 @@
 		console.log("meetingLogRender()");
 		
 		// let path = (listMap.logImgList[index].saveName == "noImg") ? "" : listMap.logImgList[index].saveName;
-		let dogPath = (listMap.dogImgList[index].saveName == "noImg") ? "" : listMap.dogImgList[index].saveNam;
+		let dogPath = (listMap.dogImgList[index].saveName == "noImg") ? "" : listMap.dogImgList[index].saveName;
 				
-		let path = (listMap.logImgList[index].type == "walkLogCon") ? "conImg/" + listMap.logImgList[index][0].saveName
-				: (listMap.logImgList[index].type == "walkLogMap") ? "mapImg/" + listMap.logImgList[index][0].saveName
+		let path = (listMap.logImgList[index].type == "walkLogCon") ? "conImg/" + listMap.logImgList[index].saveName
+				: (listMap.logImgList[index].type == "walkLogMap") ? "mapImg/" + listMap.logImgList[index].saveName
 				: "";
 
  		let str = '';
