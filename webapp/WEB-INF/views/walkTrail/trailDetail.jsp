@@ -201,12 +201,12 @@
 					<h2>공유 메이트</h2>
 					<div class="detail-bar">
 						<c:if test="${! empty detailMap.userImg }">
-							<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+							<a href="${pageContext.request.contextPath}/walkBlog/${detailMap.trailVo.usersVo.code }">
 								<img src="${pageContext.request.contextPath }/rdimg/userProfile/${detailMap.userImg.saveName }">
 							</a>
 						</c:if>
 						<c:if test="${empty detailMap.userImg }">
-							<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+							<a href="${pageContext.request.contextPath}/walkBlog/${detailMap.trailVo.usersVo.code }">
 								<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
 							</a>
 						</c:if>
@@ -235,12 +235,12 @@
 						<c:forEach items="${userUsedMap.userList }" var="usersVo" varStatus="status">
 							<div class="ranking-detail-bar">
 								<c:if test="${!empty userUsedMap.imgList[status.index] }">
-									<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+									<a href="${pageContext.request.contextPath}/walkBlog/${usersVo.code }">
 										<img src="${pageContext.request.contextPath }/rdimg/userProfile/${userUsedMap.imgList[status.index].saveName }">
 									</a>
 								</c:if>
 								<c:if test="${empty userUsedMap.imgList[status.index] }">
-									<a href="${pageContext.request.contextPath}/walkBlog/${userMap.usersVo.code }">
+									<a href="${pageContext.request.contextPath}/walkBlog/${usersVo.code } ">
 										<img src="${pageContext.request.contextPath}/assets/images/default_profile_img_white.jpg">
 									</a>
 								</c:if>
