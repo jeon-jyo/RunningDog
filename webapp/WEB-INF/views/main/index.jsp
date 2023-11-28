@@ -35,7 +35,6 @@
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=main">추천 산책로</a></li>
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=my">등록한 산책로</a></li>
 							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/main?listKey=star">찜한 산책로</a></li>
-							<li><a class="dropdown-item" href="${pageContext.request.contextPath}/walkTrail/walkLog">산책로 등록하기</a></li>
 						</ul>
 					</div>
 				</li>
@@ -51,14 +50,13 @@
 			</ul>
 			
 			<div class="my-menu">
-				<ul class="left">
-					<c:if test="${ authUser != null  }">
+				<c:if test="${ authUser != null}">
+					<ul class="left">
 						<li>
 							<a class="dropdown-item orange" href="${pageContext.request.contextPath}/walkBlog/${authUser.code}?page=1">내 산책 블로그</a>
 						</li>
-					</c:if>
-				</ul>
-				
+					</ul>
+				</c:if>
 				<ul class="right">
 					<!-- 로그인 전 메뉴 -->
 					<c:if test="${sessionScope.authUser == null}">
