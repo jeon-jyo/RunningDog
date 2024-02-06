@@ -24,6 +24,9 @@ public class BlogInfoVo {
 	private List<BlogDogVo> blogDogList;
 	private List<FollowListVo> followerList;
 	private List<FollowListVo> followingList;
+	private List<AuthFollowListVo> authFollowList;
+	
+	
 	
 	
 	public BlogInfoVo() {}
@@ -40,10 +43,23 @@ public class BlogInfoVo {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 	public BlogInfoVo(int no, String name, String userSavename, String bannerSavename, int authNo, int ownerNo,
 			String paramCode, int followerNum, int followingNum, int followNo, MonthlyStatsVo monthlyStatsThisMonth,
 			MonthlyStatsVo monthlyStatsTotal, List<BlogDogVo> blogDogList, List<FollowListVo> followerList,
-			List<FollowListVo> followingList) {
+			List<FollowListVo> followingList, List<AuthFollowListVo> authFollowList) {
 		super();
 		this.no = no;
 		this.name = name;
@@ -60,7 +76,79 @@ public class BlogInfoVo {
 		this.blogDogList = blogDogList;
 		this.followerList = followerList;
 		this.followingList = followingList;
+		this.authFollowList = authFollowList;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public List<AuthFollowListVo> getAuthFollowList() {
+		return authFollowList;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setAuthFollowList(List<AuthFollowListVo> authFollowList) {
+		this.authFollowList = authFollowList;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

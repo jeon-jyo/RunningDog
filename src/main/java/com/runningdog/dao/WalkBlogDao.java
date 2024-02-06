@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.runningdog.vo.AuthFollowListVo;
 import com.runningdog.vo.BlogDogVo;
 import com.runningdog.vo.FollowListVo;
 import com.runningdog.vo.LogWalkedDogVo;
@@ -97,10 +98,25 @@ public class WalkBlogDao {
 
 	}
 
+	//댓글 저장하기
 	public void addComment(ShowLogCmtVo comment) {
 		sqlSession.insert("walkBlog.addComment", comment);
 	}
 
+	
+	//댓글 1개 가져오기
+	public ShowLogCmtVo selectCommentByWalkLogCmtNo(int walkLogCmtNo) {
+		System.out.println("WalkBlogDao.selectCommentByWalkLogCmtNo");
+		
+		ShowLogCmtVo showLogCmtVo = sqlSession.selectOne("walkBlog.selectCommentByWalkLogCmtNo", walkLogCmtNo);
+		
+		return showLogCmtVo;
+	}
+
+	
+	
+	
+	
 	public int selectOwnerNo(String paramCode) {
 
 		return sqlSession.selectOne("walkBlog.selectOwnerNo", paramCode);
@@ -257,6 +273,42 @@ public class WalkBlogDao {
 		int totalCount = sqlSession.selectOne("walkBlog.selectTotalCnt", pageMap);
 		return totalCount;
 	}
+	
+	public int selectMeetingTotalCnt(String paramCode, String date, int dogNo) {
+		System.out.println("selectTotalCnt");
+		
+		Map<String, Object> pageMap = new HashMap<String, Object>();
+		pageMap.put("paramCode", paramCode);
+		pageMap.put("date", date);
+		pageMap.put("dogNo", dogNo);
+		
+		
+		int totalCount = sqlSession.selectOne("walkBlog.selectMeetingTotalCnt", pageMap);
+		return totalCount;
+	}
+
+	public List<ShowLogVo> meetingLogList(String paramCode, int startRNum, int endRNum, String date, int dogNo) {
+
+		Map<String, Object> pageMap = new HashMap<String, Object>();
+		pageMap.put("paramCode", paramCode);
+		pageMap.put("startRNum", startRNum);
+		pageMap.put("endRNum", endRNum);
+		pageMap.put("date", date);
+		pageMap.put("dogNo", dogNo);
+		
+		System.out.println(pageMap);
+		
+		List<ShowLogVo> meetingLogList = sqlSession.selectList("walkBlog.meetingLogList", pageMap);
+
+		return meetingLogList;
+	}
+
+	public List<AuthFollowListVo> getAuthFolloweeList(int authUserNo) {
+		return sqlSession.selectList("walkBlog.getAuthFolloweeList", authUserNo);
+		
+	}
+
+	
 
 	
 }

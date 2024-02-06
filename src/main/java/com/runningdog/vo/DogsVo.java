@@ -16,6 +16,7 @@ public class DogsVo {
 	private char status;
 	private String userName;
 	private int userNo;
+	private String code;
 	private String saveName;
 	
 	
@@ -25,7 +26,7 @@ public class DogsVo {
 
 	
 	public DogsVo(int dogNo, String dogName, String birth, String gender, float weight, String kind, String neuter,
-			String personality, String color, char status, String userName, int userNo, String saveName) {
+			String personality, String color, char status, String userName, int userNo, String saveName, String code) {
 		super();
 		this.dogNo = dogNo;
 		this.dogName = dogName;
@@ -40,6 +41,7 @@ public class DogsVo {
 		this.userName = userName;
 		this.userNo = userNo;
 		this.saveName = saveName;
+		this.code = code;
 	}
 
 
@@ -147,13 +149,25 @@ public class DogsVo {
 		this.dogNo = dogNo;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+
 	@Override
 	public String toString() {
-		return "DogListVo [dogNo=" + dogNo + ", dogName=" + dogName + ", birth=" + birth + ", gender=" + gender
+		return "DogsVo [dogNo=" + dogNo + ", dogName=" + dogName + ", birth=" + birth + ", gender=" + gender
 				+ ", weight=" + weight + ", kind=" + kind + ", neuter=" + neuter + ", personality=" + personality
 				+ ", color=" + color + ", status=" + status + ", userName=" + userName + ", userNo=" + userNo
-				+ ", saveName=" + saveName + "]";
+				+ ", code=" + code + ", saveName=" + saveName + "]";
 	}
+
+
 
 }
 

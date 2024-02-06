@@ -7,20 +7,105 @@ public class FollowListVo {
 	private int followNo;
 	private int followeeNo;
 	private int followerNo;
+	private int userNo;
+	private String code;
 	
 	public FollowListVo() {}
 	
 	
 
 
-	public FollowListVo(String name, String userSavename, int followNo, int followeeNo, int followerNo) {
+	
+
+
+
+
+
+
+
+
+
+
+	public FollowListVo(String name, String userSavename, int followNo, int followeeNo, int followerNo, int userNo,
+			String code) {
 		super();
 		this.name = name;
 		this.userSavename = userSavename;
 		this.followNo = followNo;
 		this.followeeNo = followeeNo;
 		this.followerNo = followerNo;
+		this.userNo = userNo;
+		this.code = code;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public String getCode() {
+		return code;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public int getUserNo() {
+		return userNo;
+	}
+
+
+
+
+
+
+
+
+	public void setUserNo(int userNo) {
+		this.userNo = userNo;
+	}
+
+
+
+
 
 
 

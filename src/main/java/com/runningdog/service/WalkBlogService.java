@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.runningdog.dao.WalkBlogDao;
+import com.runningdog.vo.AuthFollowListVo;
 import com.runningdog.vo.BlogDogVo;
 import com.runningdog.vo.BlogInfoVo;
 import com.runningdog.vo.FollowListVo;
@@ -60,6 +61,8 @@ public class WalkBlogService {
 		blogInfoVo.setParamCode(paramCode);
 		
 		
+		
+		
 		blogInfoVo.setFollowerNum(walkBlogDao.selectfollowerNum(paramCode));
 		
 		blogInfoVo.setFollowingNum(walkBlogDao.selectfollowingNum(paramCode));
@@ -84,10 +87,14 @@ public class WalkBlogService {
 		        blogInfoVo.getMonthlyStatsTotal().getTotalLogTimeTotal()
 		    );
 		    
+		   
+		    List<AuthFollowListVo> authFolloweeList =  walkBlogDao.getAuthFolloweeList(authUserNo);
+		    blogInfoVo.setAuthFollowList(authFolloweeList);
 		    
 		    List<FollowListVo> followerList =  walkBlogDao.getFollowerList(paramCode);
+		    System.out.println("followerList is = "+followerList);
 		    List<FollowListVo> followingList =  walkBlogDao.getFollowingList(paramCode);
-		    
+		    System.out.println("followerList is = "+followingList);
 		    blogInfoVo.setFollowerList(followerList);
 		    blogInfoVo.setFollowingList(followingList);
 		
@@ -246,8 +253,14 @@ public class WalkBlogService {
 		
 	}
 
-	public void addComment(ShowLogCmtVo comment) {
-	    walkBlogDao.addComment(comment);
+	public ShowLogCmtVo addComment(ShowLogCmtVo comment) {
+		System.out.println("WalkBlogService.addComment()");
+	    
+		walkBlogDao.addComment(comment);
+	    ShowLogCmtVo showLogCmtVo = walkBlogDao.selectCommentByWalkLogCmtNo(comment.getWalkLogCmtNo());
+	    
+	    return showLogCmtVo;
+	    
 	}
 	
 	public void deleteComment(int walkLogCmtNo) {
@@ -284,12 +297,24 @@ public class WalkBlogService {
         }
     	
     	System.out.println(walkedDogList);
+    	
+    	walkLog.setUserSavename(walkBlogDao.getUserSavenameByWalkLogNo(walkLogNo));
+    	
+    	walkLog.setWalkLogMap(walkBlogDao.getWalkLogMap(walkLogNo));
 		
+    	
+    	
     	
     	
         walkLog.setWalkedDogList(walkedDogList);
+        
+        List<UsedTrailVo> usedTrailList = walkBlogDao.getUsedTrailList(walkLog.getWalkLogNo());
+        walkLog.setUsedTrailList(usedTrailList);
+        System.out.println("usedTrailList="+usedTrailList);
+        
 		
-		
+        List<ShowLogCmtVo> cmtList = walkBlogDao.getShowLogCmtList(walkLog.getWalkLogNo());
+        walkLog.setShowLogCmtList(cmtList);
 		
 		List<WalkLogConImgVo> imageList = walkBlogDao.getShowLogImageList(walkLogNo);
 		
@@ -409,6 +434,119 @@ public class WalkBlogService {
 	
 	public int getTotalWalkLogs(String paramCode) {
 	    return walkBlogDao.getTotalWalkLogs(paramCode);
+	}
+
+	public Map<String, Object> meetingLogList(String paramCode, int crtPage, String date, int dogNo) {
+		
+
+		// 페이지당 글갯수
+		int listCnt = 5;
+
+		// 현재페이지 crtPage 파라미터 받는다
+		// 없는 페이지면 1로 보낸다
+		crtPage = (crtPage > 0) ? crtPage : (crtPage = 1);
+
+		// 시작글번호
+		int startRNum = (crtPage - 1) * listCnt + 1;
+
+		// 끝글번호
+		int endRNum = (startRNum + listCnt) - 1;
+
+		//walkLog리스트 가져오기
+		List<ShowLogVo> walkLogList = walkBlogDao.meetingLogList(paramCode, startRNum, endRNum, date, dogNo);
+
+
+		 // 각 walkLog에 대한 댓글 리스트 설정
+        for (ShowLogVo walkLog : walkLogList) {
+            List<ShowLogCmtVo> cmtList = walkBlogDao.getShowLogCmtList(walkLog.getWalkLogNo());
+            walkLog.setShowLogCmtList(cmtList);
+        }
+        
+        for (ShowLogVo walkLog : walkLogList) {
+            List<UsedTrailVo> usedTrailList = walkBlogDao.getUsedTrailList(walkLog.getWalkLogNo());
+            walkLog.setUsedTrailList(usedTrailList);
+            
+            System.out.println("usedTrailList = "+usedTrailList);
+        }
+        
+        
+        for (ShowLogVo walkLog : walkLogList) {
+            
+            walkLog.setWalkLogMap(walkBlogDao.getWalkLogMap(walkLog.getWalkLogNo()));
+            walkLog.setUserSavename(walkBlogDao.getUserSavenameByWalkLogNo(walkLog.getWalkLogNo()));
+        }
+        
+        
+        for (ShowLogVo walkLog : walkLogList) {
+        	System.out.println(walkLog.getWalkLogNo());
+        	List<LogWalkedDogVo> walkedDogList = walkBlogDao.getWalkedDogList(walkLog.getWalkLogNo());
+        	System.out.println(walkedDogList);
+        	for (LogWalkedDogVo walkedDog : walkedDogList) {
+                walkedDog.setSaveName(walkBlogDao.getWalkedDogImg(walkedDog.getDogNo()));
+                System.out.println(walkedDog.getSaveName());
+            }
+    		
+        	
+        	
+            walkLog.setWalkedDogList(walkedDogList);
+           
+        }
+        
+        for (ShowLogVo walkLog : walkLogList) {
+            List<WalkLogConImgVo> imageList = walkBlogDao.getShowLogImageList(walkLog.getWalkLogNo());
+            walkLog.setImageList(imageList);
+            System.out.println(imageList);
+        }
+
+        
+        
+		///////////////////////////////////////////
+		// 페이징 계산
+		int pageBtnCount = 3; // 페이지당 버튼 갯수
+		
+		int totalCnt = walkBlogDao.selectMeetingTotalCnt(paramCode , date, dogNo); // 전체 글 갯수
+		
+		// 마지막버튼번호
+		int endPageBtnNo = (int) Math.ceil(crtPage / (double) pageBtnCount) * pageBtnCount;
+		
+		// 시작버튼번호
+		int startPageBtnNo = (endPageBtnNo - pageBtnCount) + 1;
+		
+		// 다음화살표 유무
+		boolean next = false;
+		if (listCnt * endPageBtnNo < totalCnt) {
+			next = true;
+		} else { // 다음버튼이 없을때
+			endPageBtnNo = (int) Math.ceil(totalCnt / (double) listCnt);
+		}
+		
+		// 이전화살표 유무
+		boolean prev = false;
+		if (startPageBtnNo != 1) {
+			prev = true;
+		}
+		
+		
+		
+		Map<String, Object> pMap = new HashMap<String, Object>();
+		pMap.put("startPageBtnNo", startPageBtnNo);
+		pMap.put("endPageBtnNo", endPageBtnNo);
+		pMap.put("prev", prev);
+		pMap.put("next", next);
+		/* pMap.put("date", date); */
+		pMap.put("walkLogList", walkLogList);
+		
+		/* return pMap; */
+        
+		System.out.println(pMap);
+        
+        
+		
+       
+	
+		
+		
+		return pMap;
 	}
 
 

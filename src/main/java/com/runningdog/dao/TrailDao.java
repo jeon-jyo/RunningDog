@@ -172,7 +172,7 @@ public class TrailDao {
 		
 		return deleteCnt;
 	}
-	
+
 	// 산책로 좌표 삭제
 	public int trailCoordsDelete(TrailVo trailVo) {
 		System.out.println("TrailDao.trailCoordsDelete()");

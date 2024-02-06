@@ -14,6 +14,7 @@ public class ShowLogVo {
 	private double distance;
 	private String distanceFormatted;
 	private String logTimeFormatted;
+	private int meetingNo;
 	
 	private String content;
 	private String security;
@@ -22,6 +23,7 @@ public class ShowLogVo {
 	private String title;
 	private String walkLogMap;
 	private String userSavename;
+	private int likeCount;
 	
 	
 	private List<UsedTrailVo> usedTrailList;
@@ -36,19 +38,11 @@ public class ShowLogVo {
 
 
 
-
-
-
-
-
-
-
-
 	public ShowLogVo(int walkLogNo, int userNo, int locationNo, String regDate, String startTime, String endTime,
-			long logTime, double distance, String distanceFormatted, String logTimeFormatted, String content,
-			String security, char status, String name, String title, String walkLogMap, String userSavename,
-			List<UsedTrailVo> usedTrailList, List<ShowLogCmtVo> showLogCmtList, List<WalkLogConImgVo> imageList,
-			List<LogWalkedDogVo> walkedDogList) {
+			long logTime, double distance, String distanceFormatted, String logTimeFormatted, int meetingNo,
+			String content, String security, char status, String name, String title, String walkLogMap,
+			String userSavename, int likeCount, List<UsedTrailVo> usedTrailList, List<ShowLogCmtVo> showLogCmtList,
+			List<WalkLogConImgVo> imageList, List<LogWalkedDogVo> walkedDogList) {
 		super();
 		this.walkLogNo = walkLogNo;
 		this.userNo = userNo;
@@ -60,6 +54,7 @@ public class ShowLogVo {
 		this.distance = distance;
 		this.distanceFormatted = distanceFormatted;
 		this.logTimeFormatted = logTimeFormatted;
+		this.meetingNo = meetingNo;
 		this.content = content;
 		this.security = security;
 		this.status = status;
@@ -67,11 +62,84 @@ public class ShowLogVo {
 		this.title = title;
 		this.walkLogMap = walkLogMap;
 		this.userSavename = userSavename;
+		this.likeCount = likeCount;
 		this.usedTrailList = usedTrailList;
 		this.showLogCmtList = showLogCmtList;
 		this.imageList = imageList;
 		this.walkedDogList = walkedDogList;
 	}
+
+	
+
+
+
+
+
+
+
+
+
+
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+
+
+
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
+	}
+
+
+
+
+
+	public int getMeetingNo() {
+		return meetingNo;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	public void setMeetingNo(int meetingNo) {
+		this.meetingNo = meetingNo;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

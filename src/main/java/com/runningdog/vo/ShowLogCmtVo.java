@@ -6,6 +6,7 @@ public class ShowLogCmtVo {
 	private int walkLogCmtNo;
 	private int walkLogNo;
 	private int userNo;
+	private String code;
 	private String name;
 	private String content;
 	private String regDate;
@@ -13,13 +14,21 @@ public class ShowLogCmtVo {
 	private char status;
 	
 	
+
+
+
 	
-	public ShowLogCmtVo(int walkLogCmtNo, int walkLogNo, int userNo, String name, String content, String regDate,
-			String userSavename, char status) {
+	
+	
+	
+	
+	public ShowLogCmtVo(int walkLogCmtNo, int walkLogNo, int userNo, String code, String name, String content,
+			String regDate, String userSavename, char status) {
 		super();
 		this.walkLogCmtNo = walkLogCmtNo;
 		this.walkLogNo = walkLogNo;
 		this.userNo = userNo;
+		this.code = code;
 		this.name = name;
 		this.content = content;
 		this.regDate = regDate;
@@ -30,11 +39,8 @@ public class ShowLogCmtVo {
 
 
 
-	
-	
-	
-	
-	
+
+
 	public ShowLogCmtVo() {}
 	
 	
@@ -42,6 +48,24 @@ public class ShowLogCmtVo {
 
 	
 	
+	public String getCode() {
+		return code;
+	}
+
+
+
+
+
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+
+
+
+
+
 	public String getUserSavename() {
 		return userSavename;
 	}

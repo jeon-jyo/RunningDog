@@ -24,6 +24,7 @@ public class MeetingsVo {
 	private String saveName;
 	private String trailName;
 	private String userName;
+	private String code;
 	
 	public MeetingsVo() {
 		
@@ -173,14 +174,25 @@ public class MeetingsVo {
 		this.userName = userName;
 	}
 
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
 	@Override
 	public String toString() {
 		return "MeetingsVo [meetingNo=" + meetingNo + ", name=" + name + ", description=" + description
 				+ ", meetingDate=" + meetingDate + ", maxMember=" + maxMember + ", currentMember=" + currentMember
 				+ ", small=" + small + ", medium=" + medium + ", large=" + large + ", status=" + status + ", userNo="
 				+ userNo + ", trailNo=" + trailNo + ", spot=" + spot + ", time=" + time + ", dogNo=" + dogNo
-				+ ", saveName=" + saveName + ", trailName=" + trailName + ", userName=" + userName + "]";
+				+ ", saveName=" + saveName + ", trailName=" + trailName + ", userName=" + userName + ", code=" + code
+				+ "]";
 	}
+
+	
 
 }
 
