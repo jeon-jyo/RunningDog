@@ -140,3 +140,9 @@ Google Charts는 GET 요청으로 구동되는 차트여서 JavaScript 기반 Ch
 ## 📑 시연 영상
 
 https://www.miricanvas.com/v/12nocit
+
+<br>
+
+## 📑 팀 깃허브
+
+https://github.com/solchan010113/RunningDog
